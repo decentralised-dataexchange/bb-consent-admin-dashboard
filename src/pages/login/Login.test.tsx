@@ -10,7 +10,7 @@ test('renders the Govstack logo', async () => {
             <Login />
         </AdminContext>
     );
-    const logo = screen.getByAltText('Logo');
+    const logo = screen.getByAltText('Logo1');
     expect(logo).toBeInTheDocument();
 })
 

@@ -26,7 +26,7 @@ export const Login = () => {
                             justifyContent: 'center',
                         }}
                     >
-                        <img src={Logo} alt="Logo" />
+                        <img src={Logo} alt="Logo1" />
                     </Box>
                     <Box
                         sx={{
