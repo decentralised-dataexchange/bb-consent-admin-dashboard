@@ -24,6 +24,15 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       
+      # Install dependencies
+      - name: Install Dependencies
+        run: npm install
+      
+      - name: Run Tests and Generate Coverage
+        run: npm test
+        # If your test script does not generate coverage by default, you might need:
+        # run: npm test -- --coverage
+      
       - uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

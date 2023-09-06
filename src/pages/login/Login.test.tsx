@@ -1,4 +1,5 @@
 import React from 'react';
+import '@testing-library/jest-dom'
 import { AdminContext } from 'react-admin';
 import { render, screen } from '@testing-library/react';
 

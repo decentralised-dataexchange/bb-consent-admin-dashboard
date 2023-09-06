@@ -32,6 +32,9 @@ replay_pid*
 # production
 /build
 
+# coverage
+coverage/
+
 # misc
 .DS_Store
 .env.local
