@@ -29,9 +29,6 @@ replay_pid*
 /.pnp
 .pnp.js
 
-# testing
-/coverage
-
 # production
 /build
 
