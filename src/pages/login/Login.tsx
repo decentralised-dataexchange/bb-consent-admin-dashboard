@@ -1,4 +1,5 @@
 import { Form, TextInput } from 'react-admin';
+import { useNavigate } from "react-router-dom";
 import { Box, Divider, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
 
 // icons
@@ -8,7 +9,10 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 
 import Logo from "../../assets/GovstackLogoBlue.svg"
 
+
 export const Login = () => {
+    const navigate = useNavigate()
+
     return (
         <Form noValidate>
             <Box
@@ -53,10 +57,9 @@ export const Login = () => {
                             sx={{ height: "25px" }}
                             label={false}
                             placeholder='User ID'
-                            className='input'
                             fullWidth
                             InputProps={{
-                                startAdornment: <PersonOutlineOutlinedIcon style={{ color: "#A1A1A1" }} />,
+                                startAdornment: <PersonOutlineOutlinedIcon  style={{ color: "#A1A1A1" }} />,
                                 disableUnderline: true,
                             }}
                         />
@@ -72,7 +75,9 @@ export const Login = () => {
                             InputProps={{
                                 startAdornment: <LockOpenIcon style={{ color: "#A1A1A1" }} />,
                                 disableUnderline: true,
-                                endAdornment: <ArrowCircleRightOutlinedIcon style={{ color: "#A1A1A1", cursor: "pointer" }} />,
+                                endAdornment: <ArrowCircleRightOutlinedIcon 
+                                style={{ color: "#A1A1A1", cursor: "pointer" }}
+                                onClick={()=>navigate('/start')} />,
                             }}
                         />
                     </Box>
