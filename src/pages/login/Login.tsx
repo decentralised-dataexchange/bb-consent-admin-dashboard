@@ -9,20 +9,20 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 
 import Logo from "../../assets/GovstackLogoBlue.svg"
 
-
 export const Login = () => {
     const navigate = useNavigate()
 
     return (
-        <Form noValidate>
-            <Box
-                style={{
-                    display: 'flex',
-                    minHeight: '100vh',
-                    alignItems: 'center',
-                    justifyContent: "center",
-                }}
-            >
+        <Box
+            style={{
+                display: 'flex',
+                minHeight: '90dvh',
+                alignItems: 'center',
+                justifyContent: "center",
+                backgroundColor: "#FFFF"
+            }}
+        >
+            <Form noValidate>
                 <Box sx={{ width: 350 }}>
                     <Box
                         sx={{
@@ -59,7 +59,7 @@ export const Login = () => {
                             placeholder='User ID'
                             fullWidth
                             InputProps={{
-                                startAdornment: <PersonOutlineOutlinedIcon  style={{ color: "#A1A1A1" }} />,
+                                startAdornment: <PersonOutlineOutlinedIcon style={{ color: "#A1A1A1" }} />,
                                 disableUnderline: true,
                             }}
                         />
@@ -75,9 +75,9 @@ export const Login = () => {
                             InputProps={{
                                 startAdornment: <LockOpenIcon style={{ color: "#A1A1A1" }} />,
                                 disableUnderline: true,
-                                endAdornment: <ArrowCircleRightOutlinedIcon 
-                                style={{ color: "#A1A1A1", cursor: "pointer" }}
-                                onClick={()=>navigate('/start')} />,
+                                endAdornment: <ArrowCircleRightOutlinedIcon
+                                    style={{ color: "#A1A1A1", cursor: "pointer" }}
+                                    onClick={() => navigate('/start')} />,
                             }}
                         />
                     </Box>
@@ -95,8 +95,8 @@ export const Login = () => {
                         </Box>
                     </FormGroup>
                 </Box>
-            </Box>
-        </Form >
+            </Form >
+        </Box>
     );
 };
 
