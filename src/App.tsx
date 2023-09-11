@@ -21,13 +21,13 @@ function App() {
       <Resource name='start' options={{ label: 'Getting Started' }} list={GettingStarted} icon={HouseIcon} />
       <Resource name='dataagreement' options={{ label: 'Data Agreements' }} icon={InsertDriveFileOutlinedIcon}  />
       <Resource name='personaldata' options={{ label: 'Personal Data' }} icon={InsertChartOutlinedOutlinedIcon}/>
-      <Resource name='dataagreementrecords' options={{ label: 'DA Records'}} />
-      <Resource name='subscription' options={{ label: 'Subscription' }}/>
+      <Resource name='userrecords' options={{ label: 'User Records'}} />
+      <Resource name='configuration' options={{ label: 'Configuration' }}/>
       <Resource name='privacyboard' options={{ label: 'Privacy Board' }} icon={HealthAndSafetyOutlinedIcon} />
       <Resource name='manageadmin' options={{ label: 'Manage Admin' }} />
       <Resource name='developerapi' options={{ label: 'Developer APIs' }} />
-      <Resource name='viewlogs' options={{ label: 'View logs' }} />
-      <Resource name='webhooks' options={{ label: 'Web Hooks' }} />
+      <Resource name='viewlogs' options={{ label: 'View Logs' }} />
+      <Resource name='webhooks' options={{ label: 'Webhooks' }} />
     </Admin>
   );
 }
