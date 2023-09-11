@@ -123,7 +123,7 @@ const GettingStarted = () => {
                                         source="organisationname"
                                         variant="standard"
                                         label={false}
-                                        placeholder='Organisation name'
+                                        placeholder='Organisation Name'
                                         fullWidth
                                         style={editStyleEnable}
                                         InputProps={{
@@ -157,7 +157,7 @@ const GettingStarted = () => {
                                     />
                                 </> :
                                     <>
-                                        <Typography style={editStyledisabled}>Organisation name</Typography>
+                                        <Typography style={editStyledisabled}>Organisation Name</Typography>
                                         <Typography color='#9F9F9F' height='23px' >Sector: </Typography>
                                         <Typography color='#9F9F9F' height='23px' >Location:</Typography>
                                         <Typography color='#9F9F9F' height='23px' >Policy URL:</Typography>
@@ -209,7 +209,7 @@ const GettingStarted = () => {
                     <Grid container spacing={2} >
                         <Grid item lg={3} md={6} sm={6} xs={12}>
                             <Item sx={{ cursor: "pointer" }} onClick={() => navigate('/dataagreement')}>
-                                <Typography color="black" variant="h6">Prepare consent agreements</Typography>
+                                <Typography color="black" variant="h6">Prepare Consent Agreements</Typography>
                             </Item>
                         </Grid>
                         <Grid item lg={3} md={6} sm={6} xs={12} >

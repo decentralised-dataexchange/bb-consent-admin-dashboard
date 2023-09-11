@@ -8,12 +8,12 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 import SubMenu from './SubMenu';
 
-type MenuName = 'manageconsents' | 'account'
+type MenuName = 'manageusers' | 'account'
 
 export default function MyMenu({ dense = false }: MenuProps) {
     const [open] = useSidebarState();
     const [state, setState] = useState({
-        manageconsents: false,
+        manageusers: false,
         account: false,
     });
 
@@ -33,14 +33,14 @@ export default function MyMenu({ dense = false }: MenuProps) {
             <Menu.ResourceItem name="dataagreement" />
             <Menu.ResourceItem name="personaldata" />
             <SubMenu
-                handleToggle={() => handleToggle('manageconsents')}
-                isOpen={state.manageconsents}
-                name="Manage consents"
+                handleToggle={() => handleToggle('manageusers')}
+                isOpen={state.manageusers}
+                name="Manage Users"
                 icon={<PeopleAltOutlinedIcon />}
                 dense={!dense}
             >
-                <Menu.Item to="/dataagreementrecords" primaryText="DA Records"/>
-                <Menu.Item to="/subscription" primaryText="Subscription"/>
+                <Menu.Item to="/configuration" primaryText="Configuration"/>
+                <Menu.Item to="/userrecords" primaryText="User Records"/>
             </SubMenu>
             <Menu.ResourceItem name="privacyboard" />
             <SubMenu
@@ -52,8 +52,8 @@ export default function MyMenu({ dense = false }: MenuProps) {
             >
                 <Menu.Item to="/manageadmin" primaryText="Manage Admin"/>
                 <Menu.Item to="/developerapi" primaryText="Developer APIs"/>
-                <Menu.Item to="/viewlogs" primaryText="View logs"/>
-                <Menu.Item to="/webhooks" primaryText="Web Hooks"/>
+                <Menu.Item to="/viewlogs" primaryText="View Logs"/>
+                <Menu.Item to="/webhooks" primaryText="Webhooks"/>
             </SubMenu>
 
             {open ?
