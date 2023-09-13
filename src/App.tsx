@@ -6,7 +6,11 @@ import { MyLayout } from './components/layout/MyLayout';
 
 // pages
 import { Login } from './pages/login/Login';
-import GettingStarted from "./pages/GettingStarted"
+import GettingStarted from "./pages/gettingStarted/GettingStarted"
+import DataAgreements from "./pages/dataAgreements/DataAgreements"
+
+import { dataProvider } from './components/dataprovider/dataProvider';
+import { theme } from './components/theme/theme'
 
 // icons
 import HouseIcon from '@mui/icons-material/HouseOutlined';
@@ -16,10 +20,10 @@ import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutl
 
 function App() {
   return (
-    <Admin layout={MyLayout} loginPage={Login}>
+    <Admin layout={MyLayout} loginPage={Login} dataProvider={dataProvider} theme={theme}>
       <Resource name='login' list={Login} />
       <Resource name='start' options={{ label: 'Getting Started' }} list={GettingStarted} icon={HouseIcon} />
-      <Resource name='dataagreement' options={{ label: 'Data Agreements' }} icon={InsertDriveFileOutlinedIcon}  />
+      <Resource name='dataagreement' options={{ label: 'Data Agreements' }} list={DataAgreements} icon={InsertDriveFileOutlinedIcon}  />
       <Resource name='personaldata' options={{ label: 'Personal Data' }} icon={InsertChartOutlinedOutlinedIcon}/>
       <Resource name='userrecords' options={{ label: 'User Records'}} />
       <Resource name='configuration' options={{ label: 'Configuration' }}/>
