@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Logo from "../../assets/GovstackLogo.svg"
 
-const AppBarName = styled('p')(({ theme }) => ({
+const AppBarName = styled('div')(({ theme }) => ({
     fontSize: 24,
     [theme.breakpoints.down('sm')]: {
         fontSize: 20
@@ -38,7 +38,7 @@ export default function MyAppBar() {
     };
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box>
             <AppBar sx={{ backgroundColor: "#0A065E", height: 80, display: "flex", justifyContent: "center" }}>
                 <Toolbar>
                     <IconButton
@@ -87,13 +87,13 @@ export default function MyAppBar() {
                             </Typography>
                         </Box>
                         <Box style={{ color: "black" }}>
-                            <Box style={{display:"flex", alignItems:"center", paddingLeft:12}} onClick={()=>navigate('/personaldata')}>
+                            <Box style={{display:"flex", alignItems:"center", paddingLeft:12, cursor:"pointer"}} onClick={()=>navigate('/personaldata')}>
                                 <SettingsSuggestIcon />
                                 <Typography ml={1}>
                                     Settings
                                 </Typography>
                             </Box>
-                            <Box style={{display:"flex", alignItems:"center", paddingLeft:12, marginTop:9}} onClick={()=>navigate('/login')}>
+                            <Box style={{display:"flex", alignItems:"center", paddingLeft:12, cursor:"pointer", marginTop:9,}} onClick={()=>navigate('/login')}>
                                 <ExitToAppIcon />
                                 <Typography ml={1}>
                                     Signout
