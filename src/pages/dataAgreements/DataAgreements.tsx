@@ -13,12 +13,14 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 
 import BreadCrumb from '../../components/Breadcrumbs'
 import GlobalDataPolicyConfigModal from '../../components/modals/globalDataPolicyConfig';
+import DeleteDataAgreementModal from "../../components/modals/generalModal";
+
 
 const Container = styled('p')(({ theme }) => ({
     margin: '52px 15px 0 15px',
     background: '#FFFF',
     [theme.breakpoints.down('sm')]: {
-        margin: '52px 0 10px 0'
+        margin: '52px 0 10px 0',
     },
 }));
 
@@ -44,6 +46,8 @@ const DataAgreement = () => {
     //     { field: 'published_at', order: 'DESC' }
     // );
     const [openGlobalDataPolicyModal, setOpenGlobalDataPolicyModal] = useState(false)
+    const [openDeleteDataAgreementModal, setOpenDeleteDataAgreementModal] = useState(false)
+
 
     return (
         <Container >
@@ -88,7 +92,9 @@ const DataAgreement = () => {
                     </HeaderContainer>
                     <Typography variant='body1' mt={1}>Manage data agreements for your organisation.</Typography>
                 </Form>
-                <Grid mt={1}>
+                <Box mt={1}
+                // style={{ overflowX: 'auto',width:"360px", display: "flex", justifyContent:"center"}} 
+                >
 
                     <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" }} >
                         <TextField source="usagePurpose" label={"Usage Purpose"} />
@@ -107,14 +113,30 @@ const DataAgreement = () => {
                                 <EditOutlinedIcon fontSize="small" color="disabled" style={{ cursor: "pointer" }} />
                             </Tooltip>
                             <Tooltip title="Delete Data Agreement" placement='top'>
-                                <DeleteOutlineOutlinedIcon fontSize="small" color="disabled" style={{ cursor: "pointer" }} />
+                                <DeleteOutlineOutlinedIcon onClick={() => setOpenDeleteDataAgreementModal(true)} fontSize="small" color="disabled" style={{ cursor: "pointer" }} />
                             </Tooltip>
                         </Box>
                     </Datagrid>
-                </Grid>
+                </Box>
             </List>
             {/* Modals */}
             <GlobalDataPolicyConfigModal open={openGlobalDataPolicyModal} setOpen={setOpenGlobalDataPolicyModal} />
+            <DeleteDataAgreementModal
+                open={openDeleteDataAgreementModal}
+                setOpen={setOpenDeleteDataAgreementModal}
+                headerText={"Delete Data Agreement:"}
+                dataExchange={"Issue Licence"}
+                daId={"964018b7-f978-4a54-b2a9-c49375c35feb"}
+                confirmText="DELETE"
+                buttonName={"DELETE"}
+                modalDescriptionText={
+                    <Typography sx={{ wordWrap: "breakWord" }}>
+                        You are about to delete an existing data agreement. Please type {" "}
+                        <span style={{ fontWeight: "bold" }}>DELETE</span> {" "}
+                        to confirm and click OK. This action is not reversible.
+                    </Typography>
+                }
+            />
         </Container>
 
     )
