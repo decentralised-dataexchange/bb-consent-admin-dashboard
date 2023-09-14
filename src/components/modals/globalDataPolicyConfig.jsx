@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { Box, Drawer, Typography, Grid, Avatar, Button } from '@mui/material';
+import { Box, Drawer, Typography, Avatar, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -154,7 +154,6 @@ export default function GlobalDataPolicyConfigModal(props) {
 
               <Box mt={2}>
                 <Typography variant='subtitle1'> Global Data Policy Configurations </Typography>
-
                 <table style={{ border: 'solid 1px #dee2e6', width: '100%', maxWidth: '100%', marginBottom: '5rem', marginTop:'.5rem' }}>
                   <tbody>
                     <tr>
@@ -257,17 +256,12 @@ export default function GlobalDataPolicyConfigModal(props) {
                 </table>
               </Box>
             </Box>
-
-
           </DetailsContainer>
-
           <FooterContainer>
             <Button onClick={() => setOpen(false)} style={buttonStyle} sx={{ marginRight: "10px" }} variant="outlined">Close</Button>
             <Button style={buttonStyle} variant="outlined" sx={{ marginRight: "20px" }} >Save</Button>
           </FooterContainer>
-
         </Container>
-
       </Drawer>
     </React.Fragment>
   )

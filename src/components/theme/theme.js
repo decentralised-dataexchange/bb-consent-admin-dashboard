@@ -25,5 +25,17 @@ export const theme = {
               }
            }
         },
-    }
-};
+        MuiTextField: {
+          styleOverrides: {
+            root: {
+              "& .MuiInputBase-root": {
+                "&.Mui-focused fieldset": {
+                  borderColor: "black",
+                  borderWidth:"1px"
+                }
+              }
+            }
+         }
+      },
+    },
+}
