@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { List, Datagrid, TextField, Form, } from 'react-admin';
 
-import { Box, Typography, Button, Tooltip, Radio, RadioGroup, FormControlLabel, Grid } from '@mui/material'
+import { Box, Typography, Button, Tooltip, Radio, RadioGroup, FormControlLabel } from '@mui/material'
 import { styled } from '@mui/material/styles';
 
 // icons
@@ -14,7 +14,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import BreadCrumb from '../../components/Breadcrumbs'
 import GlobalDataPolicyConfigModal from '../../components/modals/globalDataPolicyConfig';
 import DeleteDataAgreementModal from "../../components/modals/generalModal";
-
+import PublishDataAgreementModal from "../../components/modals/generalModal";
 
 const Container = styled('p')(({ theme }) => ({
     margin: '52px 15px 0 15px',
@@ -47,7 +47,7 @@ const DataAgreement = () => {
     // );
     const [openGlobalDataPolicyModal, setOpenGlobalDataPolicyModal] = useState(false)
     const [openDeleteDataAgreementModal, setOpenDeleteDataAgreementModal] = useState(false)
-
+    const [openPublishDataAgreementModal, setOpenPublishDataAgreementModal] = useState(false)
 
     return (
         <Container >
@@ -104,7 +104,7 @@ const DataAgreement = () => {
                         <TextField source="lawfulBasisOfProcessing" label={"Lawful Basis Of Processing"} />
                         <Box style={{ display: 'flex', alignItems: 'center', justifyContent: "space-around", width: "100%" }}>
                             <Tooltip title="Publish Data Agreement" placement='top'>
-                                <UploadOutlinedIcon fontSize="small" color="disabled" style={{ cursor: "pointer" }} />
+                                <UploadOutlinedIcon onClick={() => setOpenPublishDataAgreementModal(true)} fontSize="small" color="disabled" style={{ cursor: "pointer" }} />
                             </Tooltip>
                             <Tooltip title="View Data Agreement" placement='top'>
                                 <RemoveRedEyeOutlinedIcon fontSize="small" color="disabled" style={{ cursor: "pointer" }} />
@@ -134,6 +134,21 @@ const DataAgreement = () => {
                         You are about to delete an existing data agreement. Please type {" "}
                         <span style={{ fontWeight: "bold" }}>DELETE</span> {" "}
                         to confirm and click OK. This action is not reversible.
+                    </Typography>
+                }
+            />
+            <PublishDataAgreementModal
+                open={openPublishDataAgreementModal}
+                setOpen={setOpenPublishDataAgreementModal}
+                headerText={"Publish Data Agreement:"}
+                dataExchange={"Issue Licence"}
+                daId={"964018b7-f978-4a54-b2a9-c49375c35feb"}
+                confirmText="PUBLISH"
+                modalDescriptionText={
+                    <Typography sx={{ wordWrap: "breakWord" }}>
+                        You are about to publish a data agreement. Please type {" "}
+                        <span style={{ fontWeight: "bold" }}>PUBLISH</span> {" "}
+                        to confirm and click PUBLISH. This action is not reversible.
                     </Typography>
                 }
             />
