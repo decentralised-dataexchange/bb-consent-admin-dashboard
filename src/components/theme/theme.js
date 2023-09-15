@@ -7,6 +7,9 @@ export const theme = {
           default: "#FFFF",
       },
     },
+    sidebar: {
+      closedWidth: 0, 
+    },
     components: {
         ...defaultTheme.components,
         RaDatagrid: {

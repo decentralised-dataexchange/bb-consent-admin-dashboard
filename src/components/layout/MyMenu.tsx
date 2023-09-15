@@ -27,7 +27,7 @@ export default function MyMenu({ dense = false }: MenuProps) {
             position: 'fixed',
             height: '100vh',
             backgroundColor: "#F7F6F6",
-            paddingTop:'34px',
+            paddingTop:'54px',
         }} >
             <Menu.ResourceItem name="start" />
             <Menu.ResourceItem name="dataagreement" />

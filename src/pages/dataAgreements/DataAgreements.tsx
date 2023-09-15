@@ -90,7 +90,7 @@ const DataAgreement = () => {
                             </Box>
                         </Box>
                     </HeaderContainer>
-                    <Typography variant='body1' mt={1}>Manage data agreements for your organisation.</Typography>
+                    <Typography variant='body1' mt={1}>Manage Data Agreements for your organisation.</Typography>
                 </Form>
                 <Box mt={1}
                 // style={{ overflowX: 'auto',width:"360px", display: "flex", justifyContent:"center"}} 
