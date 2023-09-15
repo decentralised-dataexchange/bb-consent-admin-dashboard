@@ -41,7 +41,7 @@ const SubMenu = (props: Props) => {
                     {header}
                 </Tooltip>
             )}
-            <Collapse in={sidebarIsOpen === true && isOpen} timeout="auto" unmountOnExit>
+            <Collapse in={isOpen} timeout="auto" unmountOnExit>
                 <List
                     dense={dense}
                     component="div"
@@ -50,7 +50,7 @@ const SubMenu = (props: Props) => {
                         '& a': {
                             transition:
                                 'padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
-                            paddingLeft: sidebarIsOpen ? 9 : 2,
+                            paddingLeft: 9,
                         },
                     }}
                 >
