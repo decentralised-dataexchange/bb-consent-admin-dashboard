@@ -8,6 +8,7 @@ import { MyLayout } from './components/layout/MyLayout';
 import { Login } from './pages/login/Login';
 import GettingStarted from "./pages/gettingStarted/GettingStarted"
 import DataAgreements from "./pages/dataAgreements/DataAgreements"
+import PersonalData from './pages/personalData/personalData';
 
 import { dataProvider } from './components/dataprovider/dataProvider';
 import { theme } from './components/theme/theme'
@@ -24,7 +25,7 @@ function App() {
       <Resource name='login' list={Login} />
       <Resource name='start' options={{ label: 'Getting Started' }} list={GettingStarted} icon={HouseIcon} />
       <Resource name='dataagreement' options={{ label: 'Data Agreements' }} list={DataAgreements} icon={InsertDriveFileOutlinedIcon}  />
-      <Resource name='personaldata' options={{ label: 'Personal Data' }} icon={InsertChartOutlinedOutlinedIcon}/>
+      <Resource name='personaldata' options={{ label: 'Personal Data' }} list={PersonalData} icon={InsertChartOutlinedOutlinedIcon}/>
       <Resource name='userrecords' options={{ label: 'User Records'}} />
       <Resource name='configuration' options={{ label: 'Configuration' }}/>
       <Resource name='privacyboard' options={{ label: 'Privacy Board' }} icon={HealthAndSafetyOutlinedIcon} />
