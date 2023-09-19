@@ -10,8 +10,11 @@ export const dataProvider = fakeDataProvider({
         { id: 5, usagePurpose: 'User Registration', version: '1.0.2', dataExchange:"Data Using Service", status:"Saved", lawfulBasisOfProcessing: "Consent"},
 
     ],
-    comments: [
-        { id: 0, post_id: 0, author: 'John Doe', body: 'Sensational!' },
-        { id: 1, post_id: 0, author: 'Jane Doe', body: 'I agree' },
+    personaldata: [
+        { id: 0, dataAttributeName: 'Aadhar name', description: 'Aadhar names', dataAgreement: 'Verify Aadhaar' },
+        { id: 1, dataAttributeName: 'Aadhar name', description: 'Aadhar names', dataAgreement: 'Verify Aadhaar' },
+        { id: 2, dataAttributeName: 'Aadhar name', description: 'Aadhar names', dataAgreement: 'Verify Aadhaar' },
+        { id: 3, dataAttributeName: 'Aadhar name', description: 'Aadhar names', dataAgreement: 'Verify Aadhaar' },
+        { id: 4, dataAttributeName: 'Aadhar name', description: 'Aadhar names', dataAgreement: 'Verify Aadhaar' },
     ],
 })

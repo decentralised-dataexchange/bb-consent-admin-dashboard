@@ -56,14 +56,11 @@ const disabledDropDownStyle = {
 interface Props {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  confirmText?: string;
-  dataExchange?: string;
   mode: string;
-  daId?: string;
 }
 
 export default function DataAgreementModal(props: Props) {
-  const { open, setOpen, dataExchange, daId, mode } = props;
+  const { open, setOpen, mode } = props;
   const [dataExchangeModes, setDataExchangeModes] = useState([
     { mode: "Data Source" },
     { mode: "Data Using Service" },
@@ -92,9 +89,10 @@ export default function DataAgreementModal(props: Props) {
                   {mode === "Update" && "Edit Data Agreement: Issue Licence"}
                   {mode === "Read" && "View Data Agreement: Issue Licence"}
                 </Typography>
+                {mode !== "Create" &&
                 <Typography color="#F3F3F6">
                   {"964018b7-f978-4a54-b2a9-c49375c35feb"}
-                </Typography>
+                </Typography>}
               </Box>
               <CloseIcon
                 onClick={() => setOpen(false)}

@@ -117,15 +117,15 @@ export default function RestrictionModal(props: Props) {
     setRestrcitionValues(newRestrcitionValues);
   };
 
-  let handleChangeRestrcitionValues = (
-    i: number,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    // console.log(i)
-    let newRestrcitionValues = [...restrcitionValues];
-    newRestrcitionValues[i][e.target.name] = e.target.value;
-    setRestrcitionValues(newRestrcitionValues);
-  };
+  // let handleChangeRestrcitionValues = (
+  //   i: number,
+  //   e: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   // console.log(i)
+  //   let newRestrcitionValues = [...restrcitionValues];
+  //   newRestrcitionValues[i][e.target.name] = e.target.value;
+  //   setRestrcitionValues(newRestrcitionValues);
+  // };
 
   return (
     <React.Fragment>
