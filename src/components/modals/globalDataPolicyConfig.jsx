@@ -2,98 +2,36 @@ import * as React from 'react';
 import { useState } from 'react';
 
 import { Box, Drawer, Typography, Avatar, Button } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 
 import Banner from '../../assets/DummyBanner.jpeg'
 
-const Container = styled('div')(({ theme }) => ({
-  height: '100vh',
-  backgroundColor: 'white',
-  marginTop: 0,
-  width: '480px',
-  [theme.breakpoints.down('md')]: {
-    marginTop: 0,
-    width: '380px',
-  },
-}));
-
-const HeaderContainer = styled('div')({
-  fontSize: '16px',
-  backgroundColor: "#eeeeee",
-  display: "flex",
-  alignItems: "center",
-  height: '65px',
-  width: '100%',
-  justifyContent: "space-between",
-})
-
-const BannerContainer = styled('div')(({ theme }) => ({
-  height: 200,
-  width: '480px',
-  backgroundColor: "#E6E6E6",
-  marginTop: '0px',
-  [theme.breakpoints.down('md')]: {
-    marginTop: 0,
-    width: '380px',
-  },
-}));
-
-const DetailsContainer = styled('div')(({ theme }) => ({
-  height: "auto",
-  width: '480px',
-  borderRadius: 2,
-  backgroundColor: "#FFFFF",
-  marginTop: '60px',
-  [theme.breakpoints.down('md')]: {
-    width: '370px',
-  },
-}));
-
-const FooterContainer = styled('div')(({ theme }) => ({
-  position: 'fixed',
-  bottom: '0px',
-  width: '480px',
-  borderTop: '1px solid #E9ECEF',
-  height: "65px",
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'right',
-  backgroundColor:'white',
-  zindex:1,
-  [theme.breakpoints.down('md')]: {
-    width: '380px',
-  },
-}));
-
-const buttonStyle = {
-  color: "black",
-  height: 30,
-  width: 150,
-  borderRadius: 0,
-  border: '1px solid #DFDFDF'
-}
+import { Container, HeaderContainer,BannerContainer, DetailsContainer, FooterContainer, buttonStyle } from "./modalStyle"
 
 const tableCellStyle = {
   fontWeight: 'normal',
   fontSize: '14px',
-  border: 'solid 1px #dee2e6',
+  borderTop: 'solid 1px #dee2e6',
   textAlign: 'left',
+  borderRight: 'solid 1px #dee2e6',
 }
 
 const inputDataConfigStyle = {
+  color: "#495057",
   border: "none",
   outline: 'none',
   fontSize: "14px",
-  width:"100%"
+  width:"100%",
+  backgroundColor: "transparent",
 };
 
 const dropDownStyle = {
+  color: "#495057",
   border: "none",
   outline: 'none',
   fontSize: "14px",
   width: "100%",
-  backgroundColor: "#ffff",
+  backgroundColor: "transparent",
 };
 
 
@@ -119,10 +57,10 @@ export default function GlobalDataPolicyConfigModal(props) {
       >
         <Container>
           <HeaderContainer>
-            <Typography pl={2}>
+            <Typography pl={2} color='#F3F3F6'>
               Global Data Policy Configurations{" "}
             </Typography>
-            <CloseIcon onClick={() => setOpen(false)} sx={{ paddingRight: 2, cursor: "pointer" }} color="disabled" />
+            <CloseIcon onClick={() => setOpen(false)} sx={{ paddingRight: 2, cursor: "pointer", color:'#F3F3F6' }} />
           </HeaderContainer>
           <BannerContainer>
             <Box
@@ -132,7 +70,7 @@ export default function GlobalDataPolicyConfigModal(props) {
               src={Banner}
             />
           </BannerContainer>
-          <Box>
+          <Box sx={{marginBottom: '60px'}}>
             <Avatar
               src=''
               style={{
@@ -157,11 +95,11 @@ export default function GlobalDataPolicyConfigModal(props) {
                 <table style={{ border: 'solid 1px #dee2e6', width: '100%', maxWidth: '100%', marginBottom: '5rem', marginTop:'.5rem' }}>
                   <tbody>
                     <tr>
-                      <th style={tableCellStyle} scope="row">
+                      <th style={{...tableCellStyle, borderTop: 0}} scope="row">
                         Policy URL
                       </th>
 
-                      <td style={tableCellStyle}>
+                      <td style={{...tableCellStyle, borderTop: 0}}>
                         <input
                           autoComplete="off"
                           type="text"
@@ -195,7 +133,7 @@ export default function GlobalDataPolicyConfigModal(props) {
                         Industry scope
                       </th>
 
-                      <td style={tableCellStyle}>
+                      <td style={{...tableCellStyle, borderRight: 0}}>
                         <select
                           type="text"
                           style={dropDownStyle}
@@ -236,7 +174,7 @@ export default function GlobalDataPolicyConfigModal(props) {
                         Geographic restriction
                       </th>
 
-                      <td style={tableCellStyle}>
+                      <td style={{...tableCellStyle, borderRight: 0}}>
                         <select
                           type="text"
                           style={dropDownStyle}

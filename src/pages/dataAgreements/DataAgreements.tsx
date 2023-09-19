@@ -13,8 +13,9 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 
 import BreadCrumb from '../../components/Breadcrumbs'
 import GlobalDataPolicyConfigModal from '../../components/modals/globalDataPolicyConfig';
-import DeleteDataAgreementModal from "../../components/modals/generalModal";
-import PublishDataAgreementModal from "../../components/modals/generalModal";
+import GeneralModal from "../../components/modals/generalModal";
+import DataAgreementModal from "../../components/modals/dataAgreementModal";
+
 
 const Container = styled('p')(({ theme }) => ({
     margin: '52px 15px 0 15px',
@@ -48,6 +49,10 @@ const DataAgreement = () => {
     const [openGlobalDataPolicyModal, setOpenGlobalDataPolicyModal] = useState(false)
     const [openDeleteDataAgreementModal, setOpenDeleteDataAgreementModal] = useState(false)
     const [openPublishDataAgreementModal, setOpenPublishDataAgreementModal] = useState(false)
+    const [openDataAgreementModal, setOpenDataAgreementModal] = useState(false)
+    const [dataAgreementMode, setDataAgreementMode] = useState("")
+
+
 
     return (
         <Container >
@@ -64,7 +69,7 @@ const DataAgreement = () => {
                         }}>
                             <Typography variant='h6' fontWeight="bold">Data Agreements</Typography>
                             <Tooltip title="Create Data Agreement" placement='top'>
-                                <AddCircleOutlineOutlinedIcon style={{ cursor: "pointer" }} />
+                                <AddCircleOutlineOutlinedIcon onClick={() => {setOpenDataAgreementModal(true); setDataAgreementMode("Create")}} style={{ cursor: "pointer" }} />
                             </Tooltip>
                         </Box>
                         <Box style={{
@@ -95,7 +100,6 @@ const DataAgreement = () => {
                 <Box mt={1}
                 // style={{ overflowX: 'auto',width:"360px", display: "flex", justifyContent:"center"}} 
                 >
-
                     <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" }} >
                         <TextField source="usagePurpose" label={"Usage Purpose"} />
                         <TextField source="version" label={"Version"} />
@@ -107,10 +111,10 @@ const DataAgreement = () => {
                                 <UploadOutlinedIcon onClick={() => setOpenPublishDataAgreementModal(true)} fontSize="small" color="disabled" style={{ cursor: "pointer" }} />
                             </Tooltip>
                             <Tooltip title="View Data Agreement" placement='top'>
-                                <RemoveRedEyeOutlinedIcon fontSize="small" color="disabled" style={{ cursor: "pointer" }} />
+                                <RemoveRedEyeOutlinedIcon onClick={() => {setOpenDataAgreementModal(true); setDataAgreementMode("Read")}}  fontSize="small" color="disabled" style={{ cursor: "pointer" }} />
                             </Tooltip>
                             <Tooltip title="Edit Data Agreement" placement='top'>
-                                <EditOutlinedIcon fontSize="small" color="disabled" style={{ cursor: "pointer" }} />
+                                <EditOutlinedIcon onClick={() => {setOpenDataAgreementModal(true); setDataAgreementMode("Update")}} fontSize="small" color="disabled" style={{ cursor: "pointer" }} />
                             </Tooltip>
                             <Tooltip title="Delete Data Agreement" placement='top'>
                                 <DeleteOutlineOutlinedIcon onClick={() => setOpenDeleteDataAgreementModal(true)} fontSize="small" color="disabled" style={{ cursor: "pointer" }} />
@@ -120,8 +124,18 @@ const DataAgreement = () => {
                 </Box>
             </List>
             {/* Modals */}
+
+            {/* Create, Update & Read Data agreement */}
+            <DataAgreementModal
+                open={openDataAgreementModal}
+                setOpen={setOpenDataAgreementModal}
+                mode={dataAgreementMode}
+                />
+
             <GlobalDataPolicyConfigModal open={openGlobalDataPolicyModal} setOpen={setOpenGlobalDataPolicyModal} />
-            <DeleteDataAgreementModal
+
+            {/* DeleteDataAgreementModal */}
+            <GeneralModal
                 open={openDeleteDataAgreementModal}
                 setOpen={setOpenDeleteDataAgreementModal}
                 headerText={"Delete Data Agreement:"}
@@ -133,11 +147,13 @@ const DataAgreement = () => {
                     <Typography sx={{ wordWrap: "breakWord" }}>
                         You are about to delete an existing data agreement. Please type {" "}
                         <span style={{ fontWeight: "bold" }}>DELETE</span> {" "}
-                        to confirm and click OK. This action is not reversible.
+                        to confirm and click DELETE. This action is not reversible.
                     </Typography>
                 }
             />
-            <PublishDataAgreementModal
+
+            {/* PublishDataAgreementModal */}
+            <GeneralModal
                 open={openPublishDataAgreementModal}
                 setOpen={setOpenPublishDataAgreementModal}
                 headerText={"Publish Data Agreement:"}
