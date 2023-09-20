@@ -18,6 +18,7 @@ import HouseIcon from '@mui/icons-material/HouseOutlined';
 import InsertChartOutlinedOutlinedIcon from '@mui/icons-material/InsertChartOutlinedOutlined';
 import HealthAndSafetyOutlinedIcon from '@mui/icons-material/HealthAndSafetyOutlined';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
+import UserAccess from './pages/userAccess/userAcess';
 
 function App() {
   return (
@@ -27,7 +28,7 @@ function App() {
       <Resource name='dataagreement' options={{ label: 'Data Agreements' }} list={DataAgreements} icon={InsertDriveFileOutlinedIcon}  />
       <Resource name='personaldata' options={{ label: 'Personal Data' }} list={PersonalData} icon={InsertChartOutlinedOutlinedIcon}/>
       <Resource name='userrecords' options={{ label: 'User Records'}} />
-      <Resource name='configuration' options={{ label: 'Configuration' }}/>
+      <Resource name='configuration' options={{ label: 'Configuration' }} list={UserAccess}/>
       <Resource name='privacyboard' options={{ label: 'Privacy Board' }} icon={HealthAndSafetyOutlinedIcon} />
       <Resource name='manageadmin' options={{ label: 'Manage Admin' }} />
       <Resource name='developerapi' options={{ label: 'Developer APIs' }} />
