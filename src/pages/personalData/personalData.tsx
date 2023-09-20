@@ -100,7 +100,7 @@ const PersonalData = () => {
                 width: "100%",
               }}
             >
-              <Tooltip title="Edit Data Agreement" placement="top">
+              <Tooltip title="Edit Personal Data" placement="top">
                 <EditOutlinedIcon
                   onClick={() => {
                     setOpenEditPersonalDataModal(true);
@@ -110,7 +110,7 @@ const PersonalData = () => {
                   style={{ cursor: "pointer" }}
                 />
               </Tooltip>
-              <Tooltip title="Delete Data Agreement" placement="top">
+              <Tooltip title="Delete Personal Data" placement="top">
                 <DeleteOutlineOutlinedIcon
                   onClick={() => setOpenDeletePersonalDataModal(true)}
                   fontSize="small"
