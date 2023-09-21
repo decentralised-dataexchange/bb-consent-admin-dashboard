@@ -21,6 +21,7 @@ import HealthAndSafetyOutlinedIcon from '@mui/icons-material/HealthAndSafetyOutl
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
 import UserAccess from './pages/userAccess/userAcess';
 import Privacyboard from './pages/privacyBoard/privacyBoard';
+import ManageAdmin from './pages/manageAdmin/manageAdmin';
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
       <Resource name='configuration' options={{ label: 'Configuration' }} list={UserAccess}/>
       <Resource name='userrecords' options={{ label: 'User Records'}} list={UserRecords} />
       <Resource name='privacyboard' options={{ label: 'Privacy Board' }} list={Privacyboard} icon={HealthAndSafetyOutlinedIcon} />
-      <Resource name='manageadmin' options={{ label: 'Manage Admin' }} />
+      <Resource name='manageadmin' options={{ label: 'Manage Admin' }} list={ManageAdmin} />
       <Resource name='developerapi' options={{ label: 'Developer APIs' }} />
       <Resource name='viewlogs' options={{ label: 'View Logs' }} />
       <Resource name='webhooks' options={{ label: 'Webhooks' }} />
