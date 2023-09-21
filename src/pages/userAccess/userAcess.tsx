@@ -12,7 +12,7 @@ import BreadCrumb from "../../components/Breadcrumbs";
 import GeneralModal from "../../components/modals/generalModal";
 import EditUserAccessModal from "../../components/modals/editUserAccessModal";
 
-const Container = styled("p")(({ theme }) => ({
+const Container = styled("div")(({ theme }) => ({
   margin: "52px 15px 0 15px",
   background: "#FFFF",
   [theme.breakpoints.down("sm")]: {
@@ -28,19 +28,17 @@ const HeaderContainer = styled("div")({
   marginTop: 10,
 });
 
-const Item = styled("div")(({ theme }) => ({
+const Item = styled("div")({
   display: "flex",
   alignItems: "center",
   backgroundColor: "#fff",
-  paddingLeft: "30px",
-  paddingRight: "30px",
+  padding: "25px 30px 25px 30px" ,
   marginTop: "13px",
   justifyContent: "space-between",
-  color: "#0000",
-  height: 83,
+  height: 'auto',
   borderRadius: 3,
   border: "1px solid #E1E1E1",
-}));
+});
 
 const buttonStyle = {
   borderRadius: 0,
