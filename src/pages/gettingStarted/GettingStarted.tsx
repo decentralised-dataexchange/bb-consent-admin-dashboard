@@ -11,7 +11,7 @@ import Banner from '../../assets/DummyBanner.jpeg'
 import BreadCrumb from '../../components/Breadcrumbs'
 import OrgImageUpload from '../../components/OrgImageUpload';
 
-const Container = styled('p')(({ theme }) => ({
+const Container = styled('div')(({ theme }) => ({
     margin: '52px 15px 0 15px',
     background: '#FFFF',
     [theme.breakpoints.down('sm')]: {
