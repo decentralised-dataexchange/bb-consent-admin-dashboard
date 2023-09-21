@@ -19,6 +19,7 @@ import InsertChartOutlinedOutlinedIcon from '@mui/icons-material/InsertChartOutl
 import HealthAndSafetyOutlinedIcon from '@mui/icons-material/HealthAndSafetyOutlined';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
 import UserAccess from './pages/userAccess/userAcess';
+import Privacyboard from './pages/privacyBoard/privacyBoard';
 
 function App() {
   return (
@@ -29,7 +30,7 @@ function App() {
       <Resource name='personaldata' options={{ label: 'Personal Data' }} list={PersonalData} icon={InsertChartOutlinedOutlinedIcon}/>
       <Resource name='userrecords' options={{ label: 'User Records'}} />
       <Resource name='configuration' options={{ label: 'Configuration' }} list={UserAccess}/>
-      <Resource name='privacyboard' options={{ label: 'Privacy Board' }} icon={HealthAndSafetyOutlinedIcon} />
+      <Resource name='privacyboard' options={{ label: 'Privacy Board' }} list={Privacyboard} icon={HealthAndSafetyOutlinedIcon} />
       <Resource name='manageadmin' options={{ label: 'Manage Admin' }} />
       <Resource name='developerapi' options={{ label: 'Developer APIs' }} />
       <Resource name='viewlogs' options={{ label: 'View Logs' }} />
