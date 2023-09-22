@@ -23,6 +23,7 @@ import UserAccess from './pages/userAccess/userAcess';
 import Privacyboard from './pages/privacyBoard/privacyBoard';
 import ManageAdmin from './pages/manageAdmin/manageAdmin';
 import DeveloperAPIs from './pages/developerAPIs/developerAPIs'
+import ViewLogs from './pages/viewLogs/viewLogs';
 
 function App() {
   return (
@@ -36,7 +37,7 @@ function App() {
       <Resource name='privacyboard' options={{ label: 'Privacy Board' }} list={Privacyboard} icon={HealthAndSafetyOutlinedIcon} />
       <Resource name='manageadmin' options={{ label: 'Manage Admin' }} list={ManageAdmin} />
       <Resource name='developerapi' options={{ label: 'Developer APIs' }} list={DeveloperAPIs} />
-      <Resource name='viewlogs' options={{ label: 'View Logs' }} />
+      <Resource name='viewlogs' options={{ label: 'View Logs' }} list={ViewLogs} />
       <Resource name='webhooks' options={{ label: 'Webhooks' }} />
     </Admin>
   );

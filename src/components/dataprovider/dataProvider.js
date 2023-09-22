@@ -23,4 +23,11 @@ export const dataProvider = fakeDataProvider({
         { id: 3, subscriberID: 'e9b045f4-5401-4722-a447-3a4d6031a492', dataAgreement: 'Market and Campaign', lawfulBasis: 'Consent', agreementEvent: 'Opt-in', timestamp:'2023-08-26T18:52:33z'},
         { id: 4, subscriberID: 'e9b045f4-5401-4722-a447-3a4d6031a492', dataAgreement: 'Market and Campaign', lawfulBasis: 'Consent', agreementEvent: 'Opt-in', timestamp:'2023-08-26T18:52:33z'},
     ],
+    viewlogs: [
+        { id: 0, action: 'admin@retail.com logged in', category: 'Security', timestamp: '2023-09-22 05:26:58 +0000 UTC'},
+        { id: 1, action: 'admin@retail.com logged in', category: 'Security', timestamp: '2023-09-22 05:26:58 +0000 UTC'},
+        { id: 2, action: 'admin@retail.com logged in', category: 'Security', timestamp: '2023-09-22 05:26:58 +0000 UTC'},
+        { id: 3, action: 'admin@retail.com logged in', category: 'Security', timestamp: '2023-09-22 05:26:58 +0000 UTC'},
+        { id: 4, action: 'admin@retail.com logged in', category: 'Security', timestamp: '2023-09-22 05:26:58 +0000 UTC'},
+    ],
 })

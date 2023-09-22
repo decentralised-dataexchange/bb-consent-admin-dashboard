@@ -9,13 +9,14 @@ import {
 } from "@mui/material";
 
 interface Props {
-    displayValue: string
+    displayValue: string,
+    selectWidth?: string
 }
 
 const OrganisationSubscriptionMethod = ["Value 1", "Value 2"];
 
 const Dropdown = (props: Props) => {
-    const { displayValue } = props
+    const { displayValue, selectWidth } = props
   const [subscriptionMethodValue, setSubscriptionMethodValue] = React.useState<
     string[]
   >([]);
@@ -33,7 +34,7 @@ const Dropdown = (props: Props) => {
   };
 
   return (
-    <FormControl>
+    <FormControl sx={{width:selectWidth ? selectWidth :"auto"}}>
       <Select
         displayEmpty
         value={subscriptionMethodValue}
