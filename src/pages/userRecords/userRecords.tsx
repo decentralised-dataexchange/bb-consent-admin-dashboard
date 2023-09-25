@@ -79,7 +79,7 @@ const UserRecords = () => {
               autoFocus
               variant="outlined"
               label={false}
-              placeholder="Search by Consent Agreement ID, Consent Record ID or Subscriber ID"
+              placeholder="Search by Data Agreement ID, Data Agreement Record ID or Subscriber ID"
               helperText={false}
               style={{ width: "40%" }}
             />
@@ -119,7 +119,7 @@ const UserRecords = () => {
                     control={<Radio color="default" />}
                     label=""
                   />
-                  <Dropdown displayValue={"Filter by Puropse"} />
+                  <Dropdown displayValue={"Filter by Purpose"} />
                 </Box>
                 <Box sx={{
                   display: "flex",
