@@ -87,7 +87,7 @@ const UserAccess = () => {
 
   return (
     <Container>
-      <BreadCrumb Link="Manage Users  /  User Access" />
+      <BreadCrumb Link="Manage Users  /  Configuration" />
       <HeaderContainer>
         <Box
           style={{
