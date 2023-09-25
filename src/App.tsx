@@ -24,6 +24,7 @@ import Privacyboard from './pages/privacyBoard/privacyBoard';
 import ManageAdmin from './pages/manageAdmin/manageAdmin';
 import DeveloperAPIs from './pages/developerAPIs/developerAPIs'
 import ViewLogs from './pages/viewLogs/viewLogs';
+import Webhooks from './pages/webhooks/webhooks';
 
 function App() {
   return (
@@ -38,7 +39,7 @@ function App() {
       <Resource name='manageadmin' options={{ label: 'Manage Admin' }} list={ManageAdmin} />
       <Resource name='developerapi' options={{ label: 'Developer APIs' }} list={DeveloperAPIs} />
       <Resource name='viewlogs' options={{ label: 'View Logs' }} list={ViewLogs} />
-      <Resource name='webhooks' options={{ label: 'Webhooks' }} />
+      <Resource name='webhooks' options={{ label: 'Webhooks' }} list={Webhooks} />
     </Admin>
   );
 }
