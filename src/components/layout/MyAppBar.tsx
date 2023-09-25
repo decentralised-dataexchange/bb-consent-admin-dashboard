@@ -76,24 +76,24 @@ export default function MyAppBar() {
                     >
                         <Box style={{ display: "grid", justifyItems: "center", width: 200, padding: 10 }}>
                             <Avatar style={{ width: "70px", height: "70px" }} />
-                            <Typography variant='h6'>
+                            <Typography style={{ fontSize: 15, fontWeight:"bold", marginBottom:"4px" }}>
                                 John Doe
                             </Typography>
-                            <Typography style={{ fontSize: 12 }}>
+                            <Typography style={{ fontSize: 12, marginBottom:"5px" }}>
                                 johndoe@gmail.com
                             </Typography>
-                            <Typography style={{ fontSize: 12 }}>
+                            <Typography style={{ fontSize: 12,  marginBottom:"3px" }}>
                                 Last Visit : September 7, 12.58PM
                             </Typography>
                         </Box>
-                        <Box style={{ color: "black" }}>
-                            <Box style={{display:"flex", alignItems:"center", paddingLeft:12, cursor:"pointer"}} onClick={()=>navigate('/personaldata')}>
+                        <Box style={{ color: "black", borderTop: "1px solid #BDBDBD" }}>
+                            <Box style={{display:"flex", alignItems:"center",padding:7, paddingLeft:15, cursor:"pointer"}} onClick={()=>navigate('/manageadmin')}>
                                 <SettingsSuggestIcon />
                                 <Typography ml={1}>
                                     Settings
                                 </Typography>
                             </Box>
-                            <Box style={{display:"flex", alignItems:"center", paddingLeft:12, cursor:"pointer", marginTop:9,}} onClick={()=>navigate('/login')}>
+                            <Box style={{display:"flex", alignItems:"center",padding:7, paddingLeft:15, cursor:"pointer", marginTop:5}} onClick={()=>navigate('/login')}>
                                 <ExitToAppIcon />
                                 <Typography ml={1}>
                                     Signout
