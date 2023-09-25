@@ -34,7 +34,7 @@ const Dropdown = (props: Props) => {
   };
 
   return (
-    <FormControl sx={{width:selectWidth ? selectWidth :"auto"}}>
+    <FormControl sx={{width:selectWidth ? selectWidth :"250px"}}>
       <Select
         displayEmpty
         value={subscriptionMethodValue}

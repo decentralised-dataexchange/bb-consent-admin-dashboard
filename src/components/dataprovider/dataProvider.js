@@ -30,4 +30,11 @@ export const dataProvider = fakeDataProvider({
         { id: 3, action: 'admin@retail.com logged in', category: 'Security', timestamp: '2023-09-22 05:26:58 +0000 UTC'},
         { id: 4, action: 'admin@retail.com logged in', category: 'Security', timestamp: '2023-09-22 05:26:58 +0000 UTC'},
     ],
+    webhooks: [
+        { id: 0, callBackURL: 'https://webhook.igrant.io', status: 'Active'},
+        { id: 1, callBackURL: 'https://webhook.igrant.io', status: 'Active'},
+        { id: 2, callBackURL: 'https://webhook.igrant.io', status: 'Active'},
+        { id: 3, callBackURL: 'https://webhook.igrant.io', status: 'Active'},
+        { id: 4, callBackURL: 'https://webhook.igrant.io', status: 'Active'},
+    ],
 })
