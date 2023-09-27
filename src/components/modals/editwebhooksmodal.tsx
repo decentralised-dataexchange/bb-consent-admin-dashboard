@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-import Dropdown from "../dropdowns/dropdown";
+import ContentTypeDropdown from "../dropdowns/webhookContentTypeDropdown";
 
 import {
   Container,
@@ -58,16 +58,16 @@ export default function EditWebooks(props: Props) {
               <Typography variant="subtitle1" mt={1.5}>
                 Content Type
               </Typography>
-              <Dropdown displayValue={"Select"} selectWidth={"100%"} />
+              <ContentTypeDropdown displayValue={"Select..."} selectWidth={"100%"} />
               <Typography variant="subtitle1" mt={1.5}>
-                Select Key
+                Secret Key
                 <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
               </Typography>
               <TextField
                 autoFocus
                 variant="standard"
                 fullWidth
-                placeholder="Please provide a select key"
+                placeholder="Please provide a secret key"
               />
              <CheckboxTree />
             </Box>

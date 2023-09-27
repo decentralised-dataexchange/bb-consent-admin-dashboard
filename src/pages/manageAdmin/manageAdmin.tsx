@@ -16,11 +16,11 @@ import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined
 import BreadCrumb from "../../components/Breadcrumbs";
 import OrgImageUpload from "../../components/OrgImageUpload";
 
-const Container = styled("div")(({ theme }) => ({
-  margin: "52px 15px 0 15px",
-  background: "#FFFF",
-  [theme.breakpoints.down("sm")]: {
-    margin: "52px 0 10px 0",
+const Container = styled('div')(({ theme }) => ({
+  margin: '58px 15px 0px 15px',
+  paddingBottom:"50px",
+  [theme.breakpoints.down('sm')]: {
+      margin: '52px 0 10px 0'
   },
 }));
 
@@ -29,7 +29,7 @@ const HeaderContainer = styled("div")({
   justifyContent: "space-between",
   alignItems: "center",
   flexWrap: "wrap",
-  marginTop: 10,
+  marginTop: '10px',
 });
 
 const DetailsContainer = styled("div")({
@@ -72,14 +72,14 @@ const ManageAdmin = () => {
 
   return (
     <Container>
-      <BreadCrumb Link="Account  /  Manage Admin" />
+      <BreadCrumb Link="Account" Link2="Manage Admin" />
       <HeaderContainer>
         <Typography variant="h6" fontWeight="bold">
           Admin User
         </Typography>
       </HeaderContainer>
       <DetailsContainer sx={{ flexGrow: 1 }}>
-        <Typography variant="body1" mt={1} mb={0.7}>
+        <Typography variant="body1" mt={1.25} mb={1.5}>
           Manage admin user configurations.
         </Typography>
         <Grid container spacing={2}>
@@ -102,7 +102,7 @@ const ManageAdmin = () => {
                   xs={12}
                   sx={{ height: "130px" }}
                 >
-                  <Box>
+                  <Box sx={{width:"100%",height:"100%",display:"flex", justifyContent:{xs:"center", sm:"center", md:"normal"} }}>
                     <Avatar
                       src=""
                       style={{
@@ -132,7 +132,7 @@ const ManageAdmin = () => {
                     <Grid item lg={3} md={6} sm={6} xs={6}>
                       <Typography variant="body1">Name:</Typography>
                     </Grid>
-                    <Grid item lg={5} md={5} sm={5} xs={5}>
+                    <Grid item lg={9} md={5} sm={5} xs={5}>
                       {editMode ? (
                         <TextField
                           variant="standard"
@@ -140,7 +140,7 @@ const ManageAdmin = () => {
                           sx={{ marginTop: -1.5 }}
                         />
                       ) : (
-                        <Typography variant="body1">John Doe</Typography>
+                        <Typography variant="body1" sx={{wordWrap: "break-word"}}>John Doe</Typography>
                       )}
                     </Grid>
                   </Grid>
@@ -148,16 +148,16 @@ const ManageAdmin = () => {
                     <Grid item lg={3} md={6} sm={6} xs={6}>
                       <Typography variant="body1">Email:</Typography>
                     </Grid>
-                    <Grid item lg={5} md={5} sm={5} xs={5}>
-                      <Typography variant="body1">johndoe@gmail.com</Typography>
+                    <Grid item lg={9} md={5} sm={5} xs={5}>
+                      <Typography variant="body1" sx={{wordWrap: "break-word"}}>johndoe@gmail.com</Typography>
                     </Grid>
                   </Grid>
                   <Grid container>
                     <Grid item lg={3} md={6} sm={6} xs={6}>
                       <Typography variant="body1">User ID:</Typography>
                     </Grid>
-                    <Grid item lg={5} md={5} sm={5} xs={5}>
-                      <Typography variant="body1">
+                    <Grid item lg={9} md={5} sm={5} xs={5}>
+                      <Typography variant="body1"  sx={{wordWrap: "break-word"}}>
                         603e67db69dd720001c74f90
                       </Typography>
                     </Grid>

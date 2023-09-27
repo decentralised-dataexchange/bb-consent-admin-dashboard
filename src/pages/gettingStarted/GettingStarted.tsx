@@ -12,8 +12,8 @@ import BreadCrumb from '../../components/Breadcrumbs'
 import OrgImageUpload from '../../components/OrgImageUpload';
 
 const Container = styled('div')(({ theme }) => ({
-    margin: '52px 15px 0 15px',
-    background: '#FFFF',
+    margin: '58px 15px 0px 15px',
+    paddingBottom:"50px",
     [theme.breakpoints.down('sm')]: {
         margin: '52px 0 10px 0'
     },
@@ -50,18 +50,11 @@ const Item = styled('div')(({ theme }) => ({
     border: "1px solid #EEEEEE"
 }));
 
-const editStyledisabled: React.CSSProperties = {
-    fontSize: 23,
-    fontWeight: 800,
-    color: '#495057'
-}
-
 const editStyleEnable: React.CSSProperties = {
     borderWidth: 1,
     borderBottomStyle: "solid",
     borderBottomColor: "#DFE0E1",
     height: 23,
-    margin: 0
 };
 
 const buttonStyle = {
@@ -114,13 +107,13 @@ const GettingStarted = () => {
                                     }}
                                 />
                                 {editMode &&
-                                    <Box style={{ position: "relative", top: "-75px", marginLeft: "75px" }}>
+                                    <Box style={{ position: "relative", top: "-75px", marginLeft: "75px"   }}>
                                         <OrgImageUpload imageType="logo" />
                                     </Box>}
                             </Box>
                         </Grid>
-                        <Grid item lg={6} md={5} sm={12} xs={12} maxHeight={23}>
-                            <Box style={{ position: "relative", display: "inline-block" }}>
+                        <Grid item lg={6} md={5} sm={12} xs={12} height={23}>
+                            <Box sx={{ position: "relative", display: "inline-block"}}>
                                 {editMode ? <>
                                     <TextInput
                                         autoFocus
@@ -129,12 +122,12 @@ const GettingStarted = () => {
                                         label={false}
                                         placeholder='Organisation Name'
                                         fullWidth
-                                        style={editStyleEnable}
+                                        style={{...editStyleEnable, marginTop:"3px"}}
                                         InputProps={{
                                             disableUnderline: true,
                                         }}
                                     />
-                                    <Typography color='#9F9F9F' height='23px' >Sector: Retail</Typography>
+                                    <Typography color='#9F9F9F' height='23px'style={{marginTop:"2px"}} >Sector</Typography> 
                                     <TextInput
                                         autoFocus
                                         source="location"
@@ -142,7 +135,7 @@ const GettingStarted = () => {
                                         label={false}
                                         placeholder='Location'
                                         fullWidth
-                                        style={editStyleEnable}
+                                        style={{...editStyleEnable, marginTop:"-1px"}}
                                         InputProps={{
                                             disableUnderline: true,
                                         }}
@@ -154,17 +147,17 @@ const GettingStarted = () => {
                                         label={false}
                                         placeholder='Policy URL'
                                         fullWidth
-                                        style={editStyleEnable}
+                                        style={{...editStyleEnable, marginTop:"-4px"}}
                                         InputProps={{
                                             disableUnderline: true,
                                         }}
-                                    />
+                                    />  
                                 </> :
                                     <>
-                                        <Typography style={editStyledisabled}>Organisation Name</Typography>
-                                        <Typography color='#9F9F9F' height='23px' >Sector: </Typography>
-                                        <Typography color='#9F9F9F' height='23px' >Location:</Typography>
-                                        <Typography color='#9F9F9F' height='23px' >Policy URL:</Typography>
+                                        <Typography variant='h6' fontWeight="bold">Organisation Name</Typography>
+                                        <Typography variant='body1' height='23px' >Sector:</Typography>
+                                        <Typography variant='body1' height='23px' >Location:</Typography>
+                                        <Typography variant='body1' height='23px' >Policy URL:</Typography>
                                     </>
                                 }
                             </Box>
@@ -181,7 +174,7 @@ const GettingStarted = () => {
                         </Grid>
                     </Grid>
                     <Grid sx={{ marginTop: 7 }}>
-                        <Typography variant='subtitle1' fontWeight="bold">Overview</Typography>
+                        <Typography variant='h6' fontWeight="bold">Overview</Typography>
                         <Box sx={{ minHeight: 100, maxHeight: 150, overflow: "auto" }}>
                             {editMode ?
                                 <TextInput
@@ -190,8 +183,9 @@ const GettingStarted = () => {
                                     variant="standard"
                                     multiline={true}
                                     label={false}
-                                    placeholder='<Description of orgainsation with character limit of 500 characters>'
+                                    placeholder='Description of organisation with character limit of 500 characters'
                                     fullWidth
+                                    style={{marginTop:"1px"}}
                                     InputProps={{
                                         disableUnderline: true,
                                     }}
@@ -200,9 +194,9 @@ const GettingStarted = () => {
                                 <Typography
                                     variant="subtitle1"
                                     align="left"
-                                    style={{ wordWrap: "break-word", }}
+                                    style={{ wordWrap: "break-word" }}
                                 >
-                                    Description of orgainsation with character limit of 500 characters
+                                    Description of organisation with character limit of 500 characters
                                 </Typography>
                             }
                         </Box>

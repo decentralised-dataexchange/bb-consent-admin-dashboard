@@ -35,7 +35,7 @@ const BannerContainer = styled('div')(({ theme }) => ({
 const DetailsContainer = styled('div')(({ theme }) => ({
   width: '480px',
   borderRadius: 2,
-  backgroundColor: "#FFFFF",
+  backgroundColor: "#F7F6F6",
   [theme.breakpoints.down('md')]: {
     width: '370px',
   },

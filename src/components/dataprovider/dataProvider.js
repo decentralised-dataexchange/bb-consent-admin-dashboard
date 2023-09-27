@@ -17,11 +17,11 @@ export const dataProvider = fakeDataProvider({
         { id: 4, dataAttributeName: 'Aadhar name', description: 'Aadhar names', dataAgreement: 'Verify Aadhaar' },
     ],
     userrecords: [
-        { id: 0, subscriberID: 'e8b045f4-5401-4722-a447-3a4d6031a492', dataAgreement: 'Market and Campaign', lawfulBasis: 'Consent', agreementEvent: 'Opt-in', timestamp:'2023-08-26T18:52:33z'},
-        { id: 1, subscriberID: 'e9b045f4-5401-4722-a447-3a4d6031a492', dataAgreement: 'Campaign', lawfulBasis: 'Consent', agreementEvent: 'Opt-in', timestamp:'2023-08-26T18:52:33z'},
-        { id: 2, subscriberID: 'e9b045f4-5401-4722-a447-3a4d6031a492', dataAgreement: 'Marketing', lawfulBasis: 'Consent', agreementEvent: 'Opt-in', timestamp:'2023-08-26T18:52:33z'},
-        { id: 3, subscriberID: 'e9b045f4-5401-4722-a447-3a4d6031a492', dataAgreement: 'Market and Campaign', lawfulBasis: 'Consent', agreementEvent: 'Opt-in', timestamp:'2023-08-26T18:52:33z'},
-        { id: 4, subscriberID: 'e9b045f4-5401-4722-a447-3a4d6031a492', dataAgreement: 'Market and Campaign', lawfulBasis: 'Consent', agreementEvent: 'Opt-in', timestamp:'2023-08-26T18:52:33z'},
+        { id: 0, subscriberID: 'e8b045f4-5401-4722-a447-3a4d6031a492', purpose: 'Market and Campaign', lawfulBasis: 'Consent', agreementEvent: 'Opt-in', timestamp:'2023-08-26T18:52:33z'},
+        { id: 1, subscriberID: 'e9b045f4-5401-4722-a447-3a4d6031a492', purpose: 'Campaign', lawfulBasis: 'Consent', agreementEvent: 'Opt-in', timestamp:'2023-08-26T18:52:33z'},
+        { id: 2, subscriberID: 'e9b045f4-5401-4722-a447-3a4d6031a492', purpose: 'Marketing', lawfulBasis: 'Consent', agreementEvent: 'Opt-in', timestamp:'2023-08-26T18:52:33z'},
+        { id: 3, subscriberID: 'e9b045f4-5401-4722-a447-3a4d6031a492', purpose: 'Market and Campaign', lawfulBasis: 'Consent', agreementEvent: 'Opt-in', timestamp:'2023-08-26T18:52:33z'},
+        { id: 4, subscriberID: 'e9b045f4-5401-4722-a447-3a4d6031a492', purpose: 'Market and Campaign', lawfulBasis: 'Consent', agreementEvent: 'Opt-in', timestamp:'2023-08-26T18:52:33z'},
     ],
     viewlogs: [
         { id: 0, action: 'admin@retail.com logged in', category: 'Security', timestamp: '2023-09-22 05:26:58 +0000 UTC'},

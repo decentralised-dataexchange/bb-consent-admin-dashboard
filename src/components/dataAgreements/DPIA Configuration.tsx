@@ -14,6 +14,7 @@ const inputDataConfigStyle = {
   outline: "none",
   fontSize: "14px",
   width: "100%",
+  backgroundColor: "#F7F6F6",
 };
 
 interface Props {

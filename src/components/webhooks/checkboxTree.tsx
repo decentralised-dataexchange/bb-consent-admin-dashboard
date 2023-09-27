@@ -8,11 +8,16 @@ import {
 } from "@mui/material";
 
 const eventData: any = [
-  { name: "event 1" },
-  { name: "event 2" },
-  { name: "event 3" },
-  { name: "event 4" },
-  { name: "event 5" },
+  { name: "consent.allowed" },
+  { name: "consent.disallowed" },
+  { name: "consent.auto_expiry" },
+  { name: "org.subscribed" },
+  { name: "data.delete.initiated" },
+  { name: "data.delete.cancelled" },
+  { name: "data.update.cancelled" },
+  { name: "org.unsubscribed" },
+  { name: "data.update.initiated" },
+  { name: "data.download.cancelled" },
 ];
 
 const CheckboxTree = () => {
@@ -95,11 +100,12 @@ const CheckboxTree = () => {
           <div key={index}>
             <input
               type="checkbox"
+              style={{height:"13px", width:"13px", marginBottom:"15px"}}
               name={event.name}
               checked={event?.isChecked || false}
               onChange={handleChange}
             />
-            <label>{event.name}</label>
+            <label style={{fontSize: 16, marginLeft:"3px"}}>{event.name}</label>
           </div>
         ))}
       </form>

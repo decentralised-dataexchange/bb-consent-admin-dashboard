@@ -12,11 +12,11 @@ import BreadCrumb from "../../components/Breadcrumbs";
 import GeneralModal from "../../components/modals/generalModal";
 import EditUserAccessModal from "../../components/modals/editUserAccessModal";
 
-const Container = styled("div")(({ theme }) => ({
-  margin: "52px 15px 0 15px",
-  background: "#FFFF",
-  [theme.breakpoints.down("sm")]: {
-    margin: "52px 0 10px 0",
+const Container = styled('div')(({ theme }) => ({
+  margin: '58px 15px 0px 15px',
+  paddingBottom:"50px",
+  [theme.breakpoints.down('sm')]: {
+      margin: '52px 0 10px 0'
   },
 }));
 
@@ -25,7 +25,7 @@ const HeaderContainer = styled("div")({
   justifyContent: "space-between",
   alignItems: "center",
   flexWrap: "wrap",
-  marginTop: 10,
+  marginTop: "15px"
 });
 
 const Item = styled("div")({
@@ -87,14 +87,11 @@ const UserAccess = () => {
 
   return (
     <Container>
-      <BreadCrumb Link="Manage Users  /  Configuration" />
+      <BreadCrumb Link="Manage Users" Link2="Configuration" />
       <HeaderContainer>
         <Box
           style={{
-            maxWidth: "250px",
-            width: "150px",
             display: "flex",
-            justifyContent: "space-between",
             alignItems: "center",
           }}
         >
@@ -102,11 +99,11 @@ const UserAccess = () => {
             User Access
           </Typography>
           <Tooltip title="Create Data Agreement" placement="top">
-            <AddCircleOutlineOutlinedIcon style={{ cursor: "pointer" }}  onClick={() => {setOpenEditUserAccessModal(true)}}/>
+            <AddCircleOutlineOutlinedIcon style={{ cursor: "pointer", marginLeft:"7px" }}  onClick={() => {setOpenEditUserAccessModal(true)}}/>
           </Tooltip>
         </Box>
       </HeaderContainer>
-      <Typography variant="body1" mt={1}>
+      <Typography variant="body1" mt={1.35}>
         Manage how individual users of your organisation can access the privacy
         board.
       </Typography>

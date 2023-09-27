@@ -19,45 +19,64 @@ import BreadCrumb from "../../components/Breadcrumbs";
 import DataAgreementModal from "../../components/modals/dataAgreementModal";
 import Dropdown from "../../components/dropdowns/dropdown";
 
-const Container = styled("p")(({ theme }) => ({
-  margin: "52px 15px 0 15px",
-  background: "#FFFF",
+const Container = styled("div")(({ theme }) => ({
+  margin: "58px 15px 0px 15px",
+  paddingBottom: "50px",
   [theme.breakpoints.down("sm")]: {
     margin: "52px 0 10px 0",
   },
 }));
-
 const HeaderContainer = styled("div")({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
   flexWrap: "wrap",
-  marginTop: 10,
+  marginTop: "10px",
   width: "100%",
 });
 
-const Item = styled("div")({
+const Item = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   backgroundColor: "#fff",
   padding: "10px 30px 10px 30px",
-  marginTop: "13px",
+  marginTop: "16px",
   justifyContent: "space-between",
   flexWrap: "wrap",
   color: "#0000",
   height: "auto",
   borderRadius: 3,
   border: "1px solid #E1E1E1",
-});
+  [theme.breakpoints.down("sm")]: {
+    display: "grid",
+  },
+}));
 
 const UserRecords = () => {
   const [openDataAgreementModal, setOpenDataAgreementModal] = useState(false);
+
+  const lawfullBasisOfProcessingDropdownvalues = [
+    { value: "Consent" },
+    { value: "Contract" },
+    { value: "Legal Obligation" },
+    { value: "Contract" },
+    { value: "Vital Interest" },
+    { value: "Public Task" },
+    { value: "Legitimate Interest" },
+  ]
+
+  const purposeDropdownvalues = [
+    { value: "Market and Campaign	" },
+    { value: "Campaign" },
+    { value: "Market and Campaign	" },
+  ]
+
 
   return (
     <Container>
       <List actions={false} sx={{ width: "100%", overflow: "hidden" }}>
         <Form>
-          <BreadCrumb Link="Manage Users  /  User Records" />
+          <BreadCrumb Link="Manage Users" Link2="User Records" />
           <HeaderContainer>
             <Typography variant="h6" fontWeight="bold">
               User Records
@@ -103,34 +122,49 @@ const UserRecords = () => {
                   justifyContent: "space-between",
                 }}
               >
-                <FormControlLabel
-                  value="viewall"
-                  control={<Radio color="default" />}
-                  label="View All"
-                  sx={{ color: "black" }}
-                />
-                <Box sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems:"center"
-                }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <FormControlLabel
+                    value="viewall"
+                    control={<Radio color="default" />}
+                    label=""
+                    sx={{ color: "black" }}
+                  />
+                  <Typography sx={{ color: "black" }}>View All</Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
                   <FormControlLabel
                     value="filter1"
                     control={<Radio color="default" />}
                     label=""
                   />
-                  <Dropdown displayValue={"Filter by Purpose"} />
+                  <Dropdown displayValue={"Filter by Purpose"} dropdownValues={purposeDropdownvalues} />
                 </Box>
-                <Box sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems:"center"
-                }}>                  <FormControlLabel
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  {" "}
+                  <FormControlLabel
                     value="filter2"
                     control={<Radio color="default" />}
                     label=""
                   />
-                  <Dropdown displayValue={"Filter by Lawful Basis"} />
+                  <Dropdown displayValue={"Filter by Lawful Basis"} dropdownValues={lawfullBasisOfProcessingDropdownvalues}/>
                 </Box>
               </RadioGroup>
             </FormControl>
@@ -139,7 +173,7 @@ const UserRecords = () => {
         <Box mt={1.5}>
           <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" }}>
             <TextField source="subscriberID" label={"Subscriber ID"} />
-            <TextField source="dataAgreement" label={"Data Agreement "} />
+            <TextField source="purpose" label={"Purpose"} />
             <TextField source="lawfulBasis" label={"Lawful Basis"} />
             <TextField source="agreementEvent" label={"Agreement Event"} />
             <TextField source="timestamp" label={"Timestamp"} />

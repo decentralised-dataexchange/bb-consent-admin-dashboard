@@ -4,25 +4,14 @@ import { useState } from 'react'
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
-import { styled } from '@mui/material/styles';
 import { AppBar, Box, Toolbar, IconButton, Menu, Avatar, Typography } from '@mui/material';
 
 import { useSidebarState } from "ra-ui-materialui";
 import { useNavigate } from 'react-router-dom';
 
 import Logo from "../../assets/GovstackLogo.svg"
-
-const AppBarName = styled('div')(({ theme }) => ({
-    fontSize: 24,
-    [theme.breakpoints.down('sm')]: {
-        fontSize: 20
-    },
-    [theme.breakpoints.only('xs')]: {
-        fontSize: 14
-    },
-}));
 
 export default function MyAppBar() {
     const navigate = useNavigate()
@@ -46,17 +35,18 @@ export default function MyAppBar() {
                         color="inherit"
                         onClick={() => setOpen(!open)}
                     >
-                        <MenuIcon style={{ height: 60, width: 60 }} />
+                        <MenuIcon style={{ height: 60, width: 60}} />
                     </IconButton>
                     <img src={Logo} alt="Logo" />
 
-                    <AppBarName sx={{ flexGrow: 1 }}>
+                    <Typography sx={{ flexGrow: 1, display: {xs: "none", sm:"contents"}, fontSize:{sm:20, md:24}}}>
                         Consent Building Block - Admin Dashboard
-                    </AppBarName>
+                    </Typography>
                     <IconButton
                         edge="end"
                         color="inherit"
                         onClick={handleMenu}
+                        sx={{marginLeft:"auto"}}
                     >
                         <AccountCircle style={{ height: 60, width: 60 }} />
                     </IconButton>
@@ -76,10 +66,10 @@ export default function MyAppBar() {
                     >
                         <Box style={{ display: "grid", justifyItems: "center", width: 200, padding: 10 }}>
                             <Avatar style={{ width: "70px", height: "70px" }} />
-                            <Typography style={{ fontSize: 15, fontWeight:"bold", marginBottom:"4px" }}>
+                            <Typography style={{ fontSize: 16, fontWeight:"bold", marginBottom:"4px" }}>
                                 John Doe
                             </Typography>
-                            <Typography style={{ fontSize: 12, marginBottom:"5px" }}>
+                            <Typography style={{ fontSize: 12, marginBottom:"6px" }}>
                                 johndoe@gmail.com
                             </Typography>
                             <Typography style={{ fontSize: 12,  marginBottom:"3px" }}>
@@ -88,7 +78,7 @@ export default function MyAppBar() {
                         </Box>
                         <Box style={{ color: "black", borderTop: "1px solid #BDBDBD" }}>
                             <Box style={{display:"flex", alignItems:"center",padding:7, paddingLeft:15, cursor:"pointer"}} onClick={()=>navigate('/manageadmin')}>
-                                <SettingsSuggestIcon />
+                                <SettingsOutlinedIcon />
                                 <Typography ml={1}>
                                     Settings
                                 </Typography>
