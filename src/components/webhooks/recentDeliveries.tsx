@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
-import WidgetsIcon from "@mui/icons-material/Widgets";
+import { FiBox } from "react-icons/fi";
 
 function createData(id: string, timestamp: string) {
   return { id, timestamp };
@@ -40,14 +40,41 @@ const RecentDeliveries = () => {
                   height: 0,
                 }}
               >
+                <TableCell sx={{ width: "10px" }}>
+                  <DoneIcon
+                    color="success"
+                    style={{ height: "15px", width: "15px" }}
+                  />
+                </TableCell>
+                {/* <TableCell sx={{ width: "10px" }}>
+                  <FiBox style={{ color: "grey", height:"15px", width:"15px" }} />
+                </TableCell> */}
                 <TableCell align="left">
-                  <DoneIcon color="success" />
+                  <Typography
+                    sx={{
+                      color: "grey",
+                      fontSize: "14px",
+                      display: "inline-block",
+                      backgroundColor: "#E1F3FE",
+                      textAlign: "center",
+                    }}
+                  >
+                    <FiBox
+                      style={{
+                        color: "grey",
+                        height: "15px",
+                        width: "15px",
+                        marginRight: "10",
+                      }}
+                    />
+                    {row.id}
+                  </Typography>
                 </TableCell>
-                <TableCell align="center">
-                  <WidgetsIcon color="inherit" />
+                <TableCell align="right">
+                  <Typography sx={{ color: "grey", fontSize: "14px" }}>
+                    {row.timestamp}
+                  </Typography>
                 </TableCell>
-                <TableCell align="left">{row.id}</TableCell>
-                <TableCell align="right">{row.timestamp}</TableCell>
               </TableRow>
             ))}
           </TableBody>

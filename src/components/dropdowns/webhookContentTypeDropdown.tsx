@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import { useState } from "react";
 import {
   FormControl,
   Select,
@@ -9,20 +9,17 @@ import {
 } from "@mui/material";
 
 interface Props {
-  displayValue: string;
-  selectWidth?: string;
-  dropdownValues: {
-    value: string;
-  }[];
+    displayValue: string,
+    selectWidth?: string
 }
 
-const Dropdown = (props: Props) => {
-  const { displayValue, selectWidth, dropdownValues } = props;
-  const [subscriptionMethodValue, setSubscriptionMethodValue] = React.useState<
+const OrganisationSubscriptionMethod = ["application/x-www-form-urlencoded", "application/json"];
+
+const WebhookContentTypeDropdown = (props: Props) => {
+    const { displayValue, selectWidth } = props
+  const [subscriptionMethodValue, setSubscriptionMethodValue] = useState<
     string[]
   >([]);
-
-  console.log("dp values", dropdownValues)
 
   const handleChange = (
     event: SelectChangeEvent<typeof subscriptionMethodValue>
@@ -37,7 +34,7 @@ const Dropdown = (props: Props) => {
   };
 
   return (
-    <FormControl sx={{ width: selectWidth ? selectWidth : "250px" }}>
+    <FormControl sx={{width:selectWidth ? selectWidth :"250px"}}>
       <Select
         displayEmpty
         value={subscriptionMethodValue}
@@ -52,14 +49,19 @@ const Dropdown = (props: Props) => {
         }}
         inputProps={{ "aria-label": "Without label" }}
       >
-        {dropdownValues.map((dropdownValues) => (
-          <MenuItem key={dropdownValues.value} value={dropdownValues.value}>
-            {dropdownValues.value}
-          </MenuItem>
-        ))}
+        {OrganisationSubscriptionMethod.map(
+          (OrganisationSubscriptionMethod) => (
+            <MenuItem
+              key={OrganisationSubscriptionMethod}
+              value={OrganisationSubscriptionMethod}
+            >
+              {OrganisationSubscriptionMethod}
+            </MenuItem>
+          )
+        )}
       </Select>
     </FormControl>
   );
 };
 
-export default Dropdown;
+export default WebhookContentTypeDropdown;

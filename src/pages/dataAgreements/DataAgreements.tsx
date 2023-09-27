@@ -17,11 +17,11 @@ import GeneralModal from "../../components/modals/generalModal";
 import DataAgreementModal from "../../components/modals/dataAgreementModal";
 
 
-const Container = styled('p')(({ theme }) => ({
-    margin: '52px 15px 0 15px',
-    background: '#FFFF',
+const Container = styled('div')(({ theme }) => ({
+    margin: '58px 15px 0px 15px',
+    paddingBottom:"50px",
     [theme.breakpoints.down('sm')]: {
-        margin: '52px 0 10px 0',
+        margin: '52px 0 10px 0'
     },
 }));
 
@@ -30,12 +30,12 @@ const HeaderContainer = styled('div')({
     justifyContent: "space-between",
     alignItems: "center",
     flexWrap: "wrap",
-    marginTop: 10
+    marginTop: "10px"
 });
 
 const buttonStyle = {
     color: 'black',
-    borderRadius: 0,
+    borderRadius: 5,
     border: '1px solid black',
     backgroundColor: '#E5E4E4'
 }
@@ -62,14 +62,12 @@ const DataAgreement = () => {
                     <HeaderContainer >
                         <Box style={{
                             maxWidth: "300px",
-                            width: "200px",
                             display: "flex",
-                            justifyContent: "space-between",
                             alignItems: "center",
                         }}>
                             <Typography variant='h6' fontWeight="bold">Data Agreements</Typography>
                             <Tooltip title="Create Data Agreement" placement='top'>
-                                <AddCircleOutlineOutlinedIcon onClick={() => {setOpenDataAgreementModal(true); setDataAgreementMode("Create")}} style={{ cursor: "pointer" }} />
+                                <AddCircleOutlineOutlinedIcon onClick={() => {setOpenDataAgreementModal(true); setDataAgreementMode("Create")}} style={{ cursor: "pointer", marginLeft:"5px" }} />
                             </Tooltip>
                         </Box>
                         <Box style={{
@@ -95,9 +93,9 @@ const DataAgreement = () => {
                             </Box>
                         </Box>
                     </HeaderContainer>
-                    <Typography variant='body1' mt={1}>Manage Data Agreements for your organisation.</Typography>
+                    <Typography variant='body1' sx={{marginTop:"10px"}}>Manage Data Agreements for your organisation.</Typography>
                 </Form>
-                <Box mt={1}
+                <Box sx={{marginTop:"20px"}}
                 // style={{ overflowX: 'auto',width:"360px", display: "flex", justifyContent:"center"}} 
                 >
                     <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" }} >

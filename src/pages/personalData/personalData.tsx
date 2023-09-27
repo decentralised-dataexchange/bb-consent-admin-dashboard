@@ -19,11 +19,11 @@ import BreadCrumb from "../../components/Breadcrumbs";
 import GeneralModal from "../../components/modals/generalModal";
 import EditPersonalDataModal from "../../components/modals/editPersonalDataModal";
 
-const Container = styled("p")(({ theme }) => ({
-  margin: "52px 15px 0 15px",
-  background: "#FFFF",
-  [theme.breakpoints.down("sm")]: {
-    margin: "52px 0 10px 0",
+const Container = styled('div')(({ theme }) => ({
+  margin: '58px 15px 0px 15px',
+  paddingBottom:"50px",
+  [theme.breakpoints.down('sm')]: {
+      margin: '52px 0 10px 0'
   },
 }));
 
@@ -32,7 +32,7 @@ const HeaderContainer = styled("div")({
   justifyContent: "space-between",
   alignItems: "center",
   flexWrap: "wrap",
-  marginTop: 10,
+  marginTop: "10px"
 });
 
 const PersonalData = () => {
@@ -75,14 +75,14 @@ const PersonalData = () => {
               </RadioGroup>
             </Box>
           </HeaderContainer>
-          <Typography variant="body1" mt={1}>
+          <Typography variant="body1" mt={1.25}>
             Manage the personal data attributes. Personal data attributes can be
             used for Internal purposes, can be exposed as a Data Source or is
             consumed as a Data Using Service
           </Typography>
         </Form>
         <Box
-          mt={1}
+          mt={2.5}
           // style={{ overflowX: 'auto',width:"360px", display: "flex", justifyContent:"center"}}
         >
           <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" }}>

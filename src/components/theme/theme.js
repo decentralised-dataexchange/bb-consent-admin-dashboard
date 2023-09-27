@@ -17,9 +17,10 @@ export const theme = {
               root: {
                   backgroundColor: "#FFFF",
                   "& .RaDatagrid-headerCell": {
-                    fontWeight:'bold',
+                      fontWeight:'bold',
                       backgroundColor: "#E5E4E4",
                       border: '1px solid #D7D6D6',
+                      fontSize:"16px"
 
                   },
                   "& .RaDatagrid-rowCell	": {

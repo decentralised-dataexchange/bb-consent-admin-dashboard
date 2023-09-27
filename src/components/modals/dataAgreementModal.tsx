@@ -35,7 +35,7 @@ const dropDownStyle = {
   border: "1px solid lightgray",
   outline: "none",
   fontSize: "14px",
-  backgroundColor: "#ffff",
+  backgroundColor: "#F7F6F6",
   height: "38px",
   width: "200px",
   borderRadius: "5px",
@@ -46,7 +46,7 @@ const disabledDropDownStyle = {
   border: "1px solid lightgray",
   outline: "none",
   fontSize: "14px",
-  backgroundColor: "#ffff",
+  backgroundColor: "#F7F6F6",
   height: "38px",
   width: "200px",
   borderRadius: "5px",
@@ -226,7 +226,7 @@ export default function DataAgreementModal(props: Props) {
                       ...inputStyle,
                       cursor: mode === "Read" ? "not-allowed" : "auto",
                       height: "120px",
-                      fontSize: "12px",
+                      fontSize: "14px",
                     }}
                     name="usagePurposeDescription"
                     // value={this.props.dataAgreementState.usagePurposeDescription}

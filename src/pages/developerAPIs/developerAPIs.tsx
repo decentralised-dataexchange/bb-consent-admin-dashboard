@@ -13,11 +13,11 @@ import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 
 import BreadCrumb from "../../components/Breadcrumbs";
 
-const Container = styled("div")(({ theme }) => ({
-  margin: "52px 15px 0 15px",
-  background: "#FFFF",
-  [theme.breakpoints.down("sm")]: {
-    margin: "52px 0 10px 0",
+const Container = styled('div')(({ theme }) => ({
+  margin: '58px 15px 0px 15px',
+  paddingBottom:"50px",
+  [theme.breakpoints.down('sm')]: {
+      margin: '52px 0 10px 0'
   },
 }));
 
@@ -26,7 +26,7 @@ const HeaderContainer = styled("div")({
   justifyContent: "space-between",
   alignItems: "center",
   flexWrap: "wrap",
-  marginTop: 10,
+  marginTop: "10px",
 });
 
 const DetailsContainer = styled("div")({
@@ -48,14 +48,14 @@ const DeveloperAPIs = () => {
 
   return (
     <Container>
-      <BreadCrumb Link="Account  /  Developer APIs" />
+      <BreadCrumb Link="Account" Link2="Developer APIs" />
       <HeaderContainer>
         <Typography variant="h6" fontWeight="bold">
           Developer APIs and Credentials
         </Typography>
       </HeaderContainer>
       <DetailsContainer sx={{ flexGrow: 1 }}>
-        <Typography variant="body1" mt={1} mb={0.7}>
+        <Typography variant="body1" mt={1.25} mb={1}>
           All API requests require you to authenticate using the credentials
           below
         </Typography>

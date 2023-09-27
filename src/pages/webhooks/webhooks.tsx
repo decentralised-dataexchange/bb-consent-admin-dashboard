@@ -14,9 +14,9 @@ import GeneralModal from "../../components/modals/generalModal";
 import EditWebhooks from "../../components/modals/editwebhooksmodal";
 import RecentDeliveries from "../../components/webhooks/recentDeliveries";
 
-const Container = styled("p")(({ theme }) => ({
-  margin: "52px 15px 0 15px",
-  background: "#FFFF",
+const Container = styled("div")(({ theme }) => ({
+  margin: "58px 15px 0px 15px",
+  paddingBottom: "50px",
   [theme.breakpoints.down("sm")]: {
     margin: "52px 0 10px 0",
   },
@@ -27,7 +27,7 @@ const HeaderContainer = styled("div")({
   justifyContent: "space-between",
   alignItems: "center",
   flexWrap: "wrap",
-  marginTop: 10,
+  marginTop: '10px',
 });
 
 const Webhooks = () => {
@@ -40,13 +40,11 @@ const Webhooks = () => {
     <Container>
       <List actions={false} sx={{ width: "100%", overflow: "hidden" }}>
         <Form>
-          <BreadCrumb Link="Account  /  Webhooks" />
+          <BreadCrumb Link="Account" Link2="Webhooks" />
           <HeaderContainer>
             <Box
               style={{
-                maxWidth: "300px",
                 display: "flex",
-                justifyContent: "space-between",
                 alignItems: "center",
               }}
             >
@@ -56,19 +54,18 @@ const Webhooks = () => {
               <Tooltip title="Create Webhooks" placement="top">
                 <AddCircleOutlineOutlinedIcon
                   onClick={() => setOpenEditWebhooks(true)}
-                  style={{ cursor: "pointer", marginLeft: "10px" }}
+                  style={{ cursor: "pointer", marginLeft: "7px" }}
                 />
               </Tooltip>
             </Box>
           </HeaderContainer>
-          <Typography variant="body1" mt={1}>
+          <Typography variant="body1" mt={1.25}>
             Manage webhooks for user events. Webhooks allow external services to
             be notified when certain events happen.
           </Typography>
         </Form>
-        <Box
-          mt={1}
-          // style={{ overflowX: 'auto',width:"360px", display: "flex", justifyContent:"center"}}
+        <Box style={{marginTop:"20px"}}
+          /* style={{ overflowX: 'auto',width:"360px", display: "flex", justifyContent:"center"}} */
         >
           <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" }} >
             <TextField source="callBackURL" label={"Call Back URL"} onClick={()=> setShowRecentDeliveries(!showRecentDeliveries)} sx={{cursor:"pointer"}}/>
