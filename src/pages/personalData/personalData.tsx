@@ -19,11 +19,11 @@ import BreadCrumb from "../../components/Breadcrumbs";
 import GeneralModal from "../../components/modals/generalModal";
 import EditPersonalDataModal from "../../components/modals/editPersonalDataModal";
 
-const Container = styled('div')(({ theme }) => ({
-  margin: '58px 15px 0px 15px',
-  paddingBottom:"50px",
-  [theme.breakpoints.down('sm')]: {
-      margin: '52px 0 10px 0'
+const Container = styled("div")(({ theme }) => ({
+  margin: "58px 15px 0px 15px",
+  paddingBottom: "50px",
+  [theme.breakpoints.down("sm")]: {
+    margin: "52px 0 10px 0",
   },
 }));
 
@@ -32,7 +32,7 @@ const HeaderContainer = styled("div")({
   justifyContent: "space-between",
   alignItems: "center",
   flexWrap: "wrap",
-  marginTop: "10px"
+  marginTop: "10px",
 });
 
 const PersonalData = () => {
@@ -82,10 +82,19 @@ const PersonalData = () => {
           </Typography>
         </Form>
         <Box
-          mt={2.5}
-          // style={{ overflowX: 'auto',width:"360px", display: "flex", justifyContent:"center"}}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "20px",
+          }}
         >
-          <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" }}>
+          <Datagrid
+            bulkActionButtons={false}
+            sx={{
+              overflow: "auto",
+              width: { xs: "359px", sm: "100%", md: "100%", lg: "100%" },
+            }}
+          >
             <TextField
               source="dataAttributeName"
               label={"Data Attribute Name"}

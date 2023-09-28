@@ -95,10 +95,8 @@ const DataAgreement = () => {
                     </HeaderContainer>
                     <Typography variant='body1' sx={{marginTop:"10px"}}>Manage Data Agreements for your organisation.</Typography>
                 </Form>
-                <Box sx={{marginTop:"20px"}}
-                // style={{ overflowX: 'auto',width:"360px", display: "flex", justifyContent:"center"}} 
-                >
-                    <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" }} >
+                <Box style={{ display: "flex", justifyContent:"center", marginTop:"20px"}}>
+                    <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" , width:{xs:"359px",sm:"100%",md:"100%", lg:"100%"}}} >
                         <TextField source="usagePurpose" label={"Usage Purpose"} />
                         <TextField source="version" label={"Version"} />
                         <TextField source="dataExchange" label={"Data Exchange"} />

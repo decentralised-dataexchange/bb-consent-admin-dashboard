@@ -77,8 +77,8 @@ const ViewLogs = () => {
             <Button style={buttonStyle}>View All</Button>
           </DetailsContainer>
         </Form>
-        <Box mt={1}>
-          <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" }}>
+        <Box style={{ display: "flex", justifyContent:"center", marginTop:"18px"}}>
+          <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" , width:{xs:"359px",sm:"100%",md:"100%", lg:"100%"}}} >
             <TextField source="action" label={"Action"} />
             <TextField source="category" label={"Category"} />
             <TextField source="timestamp" label={"Timestamp"} />

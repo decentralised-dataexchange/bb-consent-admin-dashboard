@@ -29,7 +29,7 @@ const RecentDeliveries = () => {
       <Typography variant="h6" fontWeight="bold" mb={1}>
         Recent Deliveries
       </Typography>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ overflow: "auto" , width:{xs:"359px",sm:"100%",md:"100%", lg:"100%"}}}>
         <Table aria-label="simple table">
           <TableBody>
             {rows.map((row) => (

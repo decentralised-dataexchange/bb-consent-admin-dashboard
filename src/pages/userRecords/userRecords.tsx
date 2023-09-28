@@ -170,8 +170,8 @@ const UserRecords = () => {
             </FormControl>
           </Item>
         </Form>
-        <Box mt={1.5}>
-          <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" }}>
+        <Box style={{ display: "flex", justifyContent:"center", marginTop:"18px"}}>
+          <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" , width:{xs:"359px",sm:"100%",md:"100%", lg:"100%"}}} >
             <TextField source="subscriberID" label={"Subscriber ID"} />
             <TextField source="purpose" label={"Purpose"} />
             <TextField source="lawfulBasis" label={"Lawful Basis"} />
