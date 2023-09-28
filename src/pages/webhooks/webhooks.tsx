@@ -64,10 +64,8 @@ const Webhooks = () => {
             be notified when certain events happen.
           </Typography>
         </Form>
-        <Box style={{marginTop:"20px"}}
-          /* style={{ overflowX: 'auto',width:"360px", display: "flex", justifyContent:"center"}} */
-        >
-          <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" }} >
+        <Box style={{ display: "flex", justifyContent:"center", marginTop:"20px"}}>
+          <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" , width:{xs:"359px",sm:"100%",md:"100%", lg:"100%"}}} >
             <TextField source="callBackURL" label={"Call Back URL"} onClick={()=> setShowRecentDeliveries(!showRecentDeliveries)} sx={{cursor:"pointer"}}/>
             <TextField source="status" label={"Status"} />
             <Box
