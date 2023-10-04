@@ -41,6 +41,7 @@ const DetailsContainer = styled("div")({
 const Item = styled("div")(({ theme }) => ({
   backgroundColor: "#fff",
   padding: 10,
+  paddingLeft:30,
   height: "215px",
   borderRadius: 2,
   border: "1px solid #CECECE",
@@ -60,7 +61,7 @@ const buttonStyle = {
 const ManageAdmin = () => {
   const [editMode, setEditMode] = useState(false);
   const [passwordEditMode, setPasswordEditMode] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(true);
 
   const handleEdit = (event: React.MouseEvent<HTMLElement>) => {
     setEditMode(!editMode);
@@ -96,13 +97,13 @@ const ManageAdmin = () => {
               <Grid container>
                 <Grid
                   item
-                  lg={4}
+                  lg={3}
                   md={4}
                   sm={12}
                   xs={12}
                   sx={{ height: "130px" }}
                 >
-                  <Box sx={{width:"100%",height:"100%",display:"flex", justifyContent:{xs:"center", sm:"center", md:"normal"} }}>
+                  <Box sx={{width:"100%",height:"100%",display:"flex", justifyContent:{xs:"center", sm:"center", md:"normal", lg:"center"} }}>
                     <Avatar
                       src=""
                       style={{
@@ -122,11 +123,11 @@ const ManageAdmin = () => {
                 </Grid>
                 <Grid
                   item
-                  lg={8}
+                  lg={9}
                   md={4}
                   sm={12}
                   xs={12}
-                  sx={{ display: "grid", alignContent: "center" }}
+                  sx={{ display: "grid", alignContent: "center",}}
                 >
                   <Grid container>
                     <Grid item lg={3} md={6} sm={6} xs={6}>
@@ -177,17 +178,17 @@ const ManageAdmin = () => {
                     </Button>
                   </Box>
                 ) : (
+                  <Box style={{width: "100%",display:"flex", justifyContent:"right"}}>
                   <Typography
                     onClick={handleEdit}
                     style={{
                       cursor: "pointer",
-                      textAlign: "right",
                       color: "grey",
-                      width: "100%",
                     }}
-                  >
+                    >
                     Edit
                   </Typography>
+                    </Box>
                 )}
               </Grid>
             </Item>
@@ -205,32 +206,68 @@ const ManageAdmin = () => {
                   width: "80%",
                 }}
               >
-                <Typography variant="body1">Password:</Typography>
+                <Typography variant="body1">Current Password:</Typography>
                 <TextField
                   variant="standard"
-                  placeholder="xxxxxxxxx"
-                  type={showPassword ? "password" : "text"}
-                  disabled={passwordEditMode ? false : true}
+                  placeholder="Enter Current Password"
+                  type="password"
+                  sx={{width:"50%"}}
+
+                  // type={showPassword ? "password" : "text"}
+                  // disabled={passwordEditMode ? false : true}
                   InputProps={{
-                    disableUnderline: passwordEditMode ? false : true,
-                    endAdornment:
-                      passwordEditMode === true &&
-                      (showPassword ? (
-                        <VisibilityOutlinedIcon
-                          style={{ color: "#A1A1A1", cursor: "pointer" }}
-                          onClick={() => setShowPassword(!showPassword)}
-                        />
-                      ) : (
-                        <VisibilityOffOutlinedIcon
-                          style={{ color: "#A1A1A1", cursor: "pointer" }}
-                          onClick={() => setShowPassword(!showPassword)}
-                        />
-                      )),
+                    // disableUnderline: passwordEditMode ? false : true,
+                    // endAdornment:
+                      // passwordEditMode === true &&
+                      // (showPassword ? (
+                      //   <VisibilityOutlinedIcon
+                      //     style={{ color: "#A1A1A1", cursor: "pointer" }}
+                      //     onClick={() => setShowPassword(!showPassword)}
+                      //   />
+                      // ) : (
+                      //   <VisibilityOffOutlinedIcon
+                      //     style={{ color: "#A1A1A1", cursor: "pointer" }}
+                      //     onClick={() => setShowPassword(!showPassword)}
+                      //   />
+                      // )),
                   }}
                 />
               </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  width: "80%",
+                }}
+              >
+                <Typography variant="body1">New Password:</Typography>
+                <TextField
+                  variant="standard"
+                  placeholder="Enter New Password"
+                  type="password"
+                  sx={{width:"50%"}}
+                />
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  width: "80%",
+                }}
+              >
+                <Typography variant="body1">Confirm New Password:</Typography>
+                <TextField
+                  variant="standard"
+                  placeholder="Confirm New Password"
+                  type="password"
+                  sx={{width:"50%"}}
+                />
+              </Box>
+              
               <Box sx={{height:"30px"}}>
-                {passwordEditMode ? (
+                {/* {passwordEditMode ? (
                   <Box style={{ textAlign: "right", width: "100%" }}>
                     <Button
                       onClick={handleEditPassword}
@@ -243,7 +280,7 @@ const ManageAdmin = () => {
                       Save
                     </Button>
                   </Box>
-                ) : (
+                ) : ( */}
                   <Typography
                     onClick={handleEditPassword}
                     style={{
@@ -255,7 +292,7 @@ const ManageAdmin = () => {
                   >
                     Change Password
                   </Typography>
-                )}
+                {/* )} */}
               </Box>
             </Item>
           </Grid>

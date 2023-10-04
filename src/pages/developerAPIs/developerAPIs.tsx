@@ -38,6 +38,7 @@ const DetailsContainer = styled("div")({
 const Item = styled("div")(({ theme }) => ({
   backgroundColor: "#fff",
   padding: 10,
+  paddingLeft:20,
   height: "auto",
   borderRadius: 2,
   border: "1px solid #CECECE",
@@ -115,7 +116,7 @@ const DeveloperAPIs = () => {
               >
                 API Key
               </Typography>
-              <Grid container spacing={2} direction="row">
+              <Grid container direction="row">
                 <Grid item lg={10} md={9} sm={8} xs={12}>
                   {showAPI ? (
                     <Typography
@@ -142,9 +143,9 @@ const DeveloperAPIs = () => {
                     {showAPI ? (
                       <Box
                         onClick={() => setShowAPI(!showAPI)}
-                        sx={{ cursor: "pointer" }}
+                        sx={{ cursor: "pointer", display:"flex", alignItems:"center" }}
                       >
-                        <VisibilityOutlinedIcon />
+                        <VisibilityOutlinedIcon style={{marginRight:5}}/>
                         <Typography
                           variant="subtitle1"
                           sx={{ wordBreak: "break-all" }}
@@ -155,9 +156,9 @@ const DeveloperAPIs = () => {
                     ) : (
                       <Box
                         onClick={() => setShowAPI(!showAPI)}
-                        sx={{ cursor: "pointer" }}
+                        sx={{ cursor: "pointer", display:"flex", alignItems:"center" }}
                       >
-                        <VisibilityOffOutlinedIcon />
+                        <VisibilityOffOutlinedIcon style={{marginRight:5}}/>
                         <Typography
                           variant="subtitle1"
                           sx={{ wordBreak: "break-all" }}
@@ -166,8 +167,8 @@ const DeveloperAPIs = () => {
                         </Typography>
                       </Box>
                     )}
-                    <Box sx={{ cursor: "pointer" }}>
-                      <ContentCopyOutlinedIcon />
+                    <Box sx={{ cursor: "pointer", display:"flex", alignItems:"center" }}>
+                      <ContentCopyOutlinedIcon style={{marginRight:5}} />
                       <Typography
                         variant="subtitle1"
                         sx={{ wordBreak: "break-all" }}
