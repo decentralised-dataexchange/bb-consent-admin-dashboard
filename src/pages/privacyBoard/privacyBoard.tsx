@@ -1,13 +1,16 @@
-import { Grid, Typography } from "@mui/material";
+import { useState } from "react";
+import { Button, Grid, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 import BreadCrumb from "../../components/Breadcrumbs";
+import { Box } from "@mui/system";
+import ConfigurePrivacyboard from "../../components/modals/configurePrivacyboard";
 
-const Container = styled('div')(({ theme }) => ({
-  margin: '58px 15px 0px 15px',
-  paddingBottom:"50px",
-  [theme.breakpoints.down('sm')]: {
-      margin: '52px 0 10px 0'
+const Container = styled("div")(({ theme }) => ({
+  margin: "58px 15px 0px 15px",
+  paddingBottom: "50px",
+  [theme.breakpoints.down("sm")]: {
+    margin: "52px 0 10px 0",
   },
 }));
 
@@ -16,7 +19,7 @@ const HeaderContainer = styled("div")({
   justifyContent: "space-between",
   alignItems: "center",
   flexWrap: "wrap",
-  marginTop: '10px',
+  marginTop: "10px",
 });
 
 const Item = styled("div")({
@@ -42,6 +45,8 @@ const ItemGrid = styled("div")({
 });
 
 const Privacyboard = () => {
+  const [openEditUserAccessModal, setOpenEditUserAccessModal] = useState(false);
+
   return (
     <Container>
       <BreadCrumb Link="Privacy Board" />
@@ -58,9 +63,26 @@ const Privacyboard = () => {
         <Typography color="black" variant="subtitle1" fontWeight="bold">
           Current Status
         </Typography>
-        <Typography color="black" variant="subtitle1" fontWeight="bold">
-          CONFIGURED
-        </Typography>
+        <Box sx={{ display: { xs: "grid", sm: "flex" }, alignItems: "center" }}>
+          <Typography color="black" variant="subtitle1" fontWeight="bold">
+            CONFIGURED
+          </Typography>
+          <Button
+            variant="outlined"
+            onClick={()=>setOpenEditUserAccessModal(true)}
+            sx={{
+              marginLeft: { sx: 0, md: "20px" },
+              border: "1px solid black",
+              color: "black",
+              background: "white",
+              fontSize: "16px",
+              borderRadius: 0,
+              width: "190px",
+            }}
+          >
+            CONFIGURE
+          </Button>
+        </Box>
       </Item>
       <ItemGrid>
         <Typography color="black" variant="subtitle1" fontWeight="bold">
@@ -91,6 +113,14 @@ const Privacyboard = () => {
           </Grid>
         </Grid>
       </ItemGrid>
+
+      {/* Modals */}
+
+      <ConfigurePrivacyboard
+        open={openEditUserAccessModal}
+        setOpen={setOpenEditUserAccessModal}
+        headerText={"Privacy Dashboard Configuration"}
+      />
     </Container>
   );
 };

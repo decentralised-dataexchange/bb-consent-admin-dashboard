@@ -12,6 +12,15 @@ export const theme = {
     },
     components: {
         ...defaultTheme.components,
+        RaList:{
+          styleOverrides: {
+            root: {
+                '& .RaList-content': {
+                    boxShadow:"none",
+                },
+            }
+         }
+        },
         RaDatagrid: {
             styleOverrides: {
               root: {
@@ -21,7 +30,6 @@ export const theme = {
                       backgroundColor: "#E5E4E4",
                       border: '1px solid #D7D6D6',
                       fontSize:"16px"
-
                   },
                   "& .RaDatagrid-rowCell	": {
                     border: '1px solid #D7D6D6',

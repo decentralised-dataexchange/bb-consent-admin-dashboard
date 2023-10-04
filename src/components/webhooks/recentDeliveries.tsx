@@ -29,14 +29,13 @@ const RecentDeliveries = () => {
       <Typography variant="h6" fontWeight="bold" mb={1}>
         Recent Deliveries
       </Typography>
-      <TableContainer component={Paper} sx={{ overflow: "auto" , width:{xs:"359px",sm:"100%",md:"100%", lg:"100%"}}}>
-        <Table aria-label="simple table">
+      <TableContainer component={Paper} sx={{display:"flex",justifyContent:"center",boxShadow:"none", }}>
+        <Table aria-label="simple table" sx={{ overflow: "auto",width:{xs:"359px",sm:"100%",md:"100%", lg:"100%"}}}>
           <TableBody>
             {rows.map((row) => (
               <TableRow
                 //   key={row.name}
                 sx={{
-                  "&:last-child td, &:last-child th": { border: 0 },
                   height: 0,
                 }}
               >

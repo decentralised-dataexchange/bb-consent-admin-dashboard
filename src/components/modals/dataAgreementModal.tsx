@@ -62,6 +62,7 @@ interface Props {
 export default function DataAgreementModal(props: Props) {
   const { open, setOpen, mode } = props;
   const [dataExchangeModes, setDataExchangeModes] = useState([
+    { mode: "None" },
     { mode: "Data Source" },
     { mode: "Data Using Service" },
   ]);
@@ -221,12 +222,11 @@ export default function DataAgreementModal(props: Props) {
                   <textarea
                     disabled={mode === "Read"}
                     placeholder="Brief description about the usage of data (3-500 characters)"
-                    // type="text"
                     style={{
                       ...inputStyle,
                       cursor: mode === "Read" ? "not-allowed" : "auto",
                       height: "120px",
-                      fontSize: "14px",
+                      fontFamily:"Roboto,Helvetica,Arial,sans-serif"
                     }}
                     name="usagePurposeDescription"
                     // value={this.props.dataAgreementState.usagePurposeDescription}
@@ -234,7 +234,7 @@ export default function DataAgreementModal(props: Props) {
                     rows={5}
                     cols={25}
                     maxLength={500}
-                  />
+                  />               
 
                   <Typography mb={1.3} mt={1.3} variant="subtitle1">
                     Lawful Basis Of Processing

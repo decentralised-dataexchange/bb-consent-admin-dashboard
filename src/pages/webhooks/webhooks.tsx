@@ -67,13 +67,12 @@ const Webhooks = () => {
         <Box style={{ display: "flex", justifyContent:"center", marginTop:"20px"}}>
           <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" , width:{xs:"359px",sm:"100%",md:"100%", lg:"100%"}}} >
             <TextField source="callBackURL" label={"Call Back URL"} onClick={()=> setShowRecentDeliveries(!showRecentDeliveries)} sx={{cursor:"pointer"}}/>
-            <TextField source="status" label={"Status"} />
+            <TextField source="status" label={"Status"}/>
             <Box
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-around",
-                width: "100%",
+                justifyContent: "center",
               }}
             >
               <Tooltip title="Edit Webhooks" placement="top">
@@ -83,7 +82,7 @@ const Webhooks = () => {
                   }}
                   fontSize="small"
                   color="disabled"
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer", marginRight:10 }}
                 />
               </Tooltip>
               <Tooltip title="Delete Webhooks" placement="top">

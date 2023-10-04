@@ -27,16 +27,19 @@ interface Props {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   headerText: string;
-  setConfigured: Dispatch<SetStateAction<boolean>>;
 }
 
-const OrganisationSubscriptionMethod = ["Open-ID Connect"];
+const OrganisationSubscriptionMethod = ["v1.1.14", "v1.1.15", "v1.1.16",];
 
-export default function EditUserAccesModal(props: Props) {
-  const { open, setOpen, headerText, setConfigured } = props;
-  const [subscriptionMethodValue, setSubscriptionMethodValue] = React.useState<string[]>([]);
+export default function ConfigurePrivacyboard(props: Props) {
+  const { open, setOpen, headerText } = props;
+  const [subscriptionMethodValue, setSubscriptionMethodValue] = React.useState<
+    string[]
+  >([]);
 
-  const handleChange = (event: SelectChangeEvent<typeof subscriptionMethodValue>) => {
+  const handleChange = (
+    event: SelectChangeEvent<typeof subscriptionMethodValue>
+  ) => {
     const {
       target: { value },
     } = event;
@@ -62,7 +65,7 @@ export default function EditUserAccesModal(props: Props) {
           <DetailsContainer>
             <Box p={1.5}>
               <Typography variant="subtitle1" mb={0}>
-                Authentication Protocol
+                Dashboard Release:
               </Typography>
               <FormControl fullWidth sx={{ marginBottom: "15px" }}>
                 <Select
@@ -72,7 +75,7 @@ export default function EditUserAccesModal(props: Props) {
                   input={<OutlinedInput />}
                   renderValue={(selected) => {
                     if (selected.length === 0) {
-                      return <em>Open-ID Connect</em>;
+                      return <em>v1.1.16</em>;
                     }
 
                     return selected.join(", ");
@@ -92,38 +95,18 @@ export default function EditUserAccesModal(props: Props) {
                 </Select>
               </FormControl>
               <Typography variant="subtitle1" mb={0}>
-                Authorisation URL
-                <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
+                Deployed Domain Address:
               </Typography>
-              <TextField
-                sx={{ margin: 0, marginBottom: "10px" }}
-                autoFocus
-                variant="outlined"
-                fullWidth
-                placeholder="Authorisation URL"
-              />
-
-              <Typography variant="subtitle1" mb={0}>
-                Token URL
-              </Typography>
-              <TextField
-                sx={{ margin: 0, marginBottom: "10px" }}
-                autoFocus
-                variant="outlined"
-                fullWidth
-                placeholder="Token URL"
-              />
-
-              <Typography variant="subtitle1" mb={0}>
-                Logout URL
-              </Typography>
-              <TextField
-                sx={{ margin: 0, marginBottom: "10px" }}
-                autoFocus
-                variant="outlined"
-                fullWidth
-                placeholder="Logout URL"
-              />
+              <Box sx={{display:"flex", alignItems:"center"}}>
+                <TextField
+                  sx={{ margin: 0, marginBottom: "10px", width: "70%" }}
+                  autoFocus
+                  variant="standard"
+                  // fullWidth
+                  placeholder="Please type atleast 3 characters"
+                />
+                <Typography>.igrant.io</Typography>
+              </Box>
             </Box>
           </DetailsContainer>
           <FooterContainer>
@@ -140,14 +123,10 @@ export default function EditUserAccesModal(props: Props) {
               variant="outlined"
               sx={{
                 marginRight: "20px",
-                // cursor: !isOk ? "not-allowed" : "pointer",
               }}
-              onClick={() => {
-                setConfigured(true);
-                setOpen(false);
-              }}
+              onClick={() => {}}
             >
-              SAVE{" "}
+              CONFIRM{" "}
             </Button>
           </FooterContainer>
         </Container>

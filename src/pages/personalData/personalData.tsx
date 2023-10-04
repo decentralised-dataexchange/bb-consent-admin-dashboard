@@ -13,10 +13,8 @@ import { styled } from "@mui/material/styles";
 
 // icons
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 import BreadCrumb from "../../components/Breadcrumbs";
-import GeneralModal from "../../components/modals/generalModal";
 import EditPersonalDataModal from "../../components/modals/editPersonalDataModal";
 
 const Container = styled("div")(({ theme }) => ({
@@ -37,8 +35,6 @@ const HeaderContainer = styled("div")({
 
 const PersonalData = () => {
   const [openEditPersonalDataModal, setOpenEditPersonalDataModal] =
-    useState(false);
-  const [openDeletePersonalDataModal, setOpenDeletePersonalDataModal] =
     useState(false);
 
   return (
@@ -119,38 +115,12 @@ const PersonalData = () => {
                   style={{ cursor: "pointer" }}
                 />
               </Tooltip>
-              <Tooltip title="Delete Personal Data" placement="top">
-                <DeleteOutlineOutlinedIcon
-                  onClick={() => setOpenDeletePersonalDataModal(true)}
-                  fontSize="small"
-                  color="disabled"
-                  style={{ cursor: "pointer" }}
-                />
-              </Tooltip>
             </Box>
           </Datagrid>
         </Box>
       </List>
 
       {/* Modals */}
-
-      {/* DeletePersonalModal */}
-      <GeneralModal
-        open={openDeletePersonalDataModal}
-        setOpen={setOpenDeletePersonalDataModal}
-        headerText={"Delete Personal Data: "}
-        dataExchange={"Aadhar name"}
-        daId={"964018b7-f978-4a54-b2a9-c49375c35feb"}
-        confirmText="DELETE"
-        buttonName={"DELETE"}
-        modalDescriptionText={
-          <Typography sx={{ wordWrap: "breakWord" }}>
-            You are about to delete an existing personal data. Please type{" "}
-            <span style={{ fontWeight: "bold" }}>DELETE</span> to confirm and
-            click DELETE. This action is not reversible.
-          </Typography>
-        }
-      />
 
       <EditPersonalDataModal
         open={openEditPersonalDataModal}

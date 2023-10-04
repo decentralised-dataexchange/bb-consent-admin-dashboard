@@ -105,7 +105,7 @@ const CheckboxTree = () => {
               checked={event?.isChecked || false}
               onChange={handleChange}
             />
-            <label style={{fontSize: 16, marginLeft:"3px"}}>{event.name}</label>
+            <label style={{fontSize: 16, marginLeft:"3px",fontFamily:"Roboto,Helvetica,Arial,sans-serif"}}>{event.name}</label>
           </div>
         ))}
       </form>

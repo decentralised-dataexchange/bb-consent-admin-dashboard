@@ -207,7 +207,7 @@ const GettingStarted = () => {
                     <Grid container spacing={2} >
                         <Grid item lg={3} md={6} sm={6} xs={12}>
                             <Item sx={{ cursor: "pointer" }} onClick={() => navigate('/dataagreement')}>
-                                <Typography color="black" variant="h6">Prepare Consent Agreements</Typography>
+                                <Typography color="black" variant="h6">Prepare Data Agreements</Typography>
                             </Item>
                         </Grid>
                         <Grid item lg={3} md={6} sm={6} xs={12} >
