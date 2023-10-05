@@ -11,7 +11,8 @@ import DataAgreements from "./pages/dataAgreements/DataAgreements"
 import PersonalData from './pages/personalData/personalData';
 import UserRecords from './pages/userRecords/userRecords';
 
-import { dataProvider } from './components/dataprovider/dataProvider';
+import { dataProvider } from './components/providers/dataProvider';
+import { authProvider } from './components/providers/authprovider'
 import { theme } from './components/theme/theme'
 
 // icons
@@ -28,8 +29,7 @@ import Webhooks from './pages/webhooks/webhooks';
 
 function App() {
   return (
-    <Admin layout={MyLayout} loginPage={Login} dataProvider={dataProvider} theme={theme}>
-      <Resource name='login' list={Login} />
+    <Admin layout={MyLayout} loginPage={Login} dataProvider={dataProvider} theme={theme} authProvider={authProvider} requireAuth>
       <Resource name='start' options={{ label: 'Getting Started' }} list={GettingStarted} icon={HouseIcon} />
       <Resource name='dataagreement' options={{ label: 'Data Agreements' }} list={DataAgreements} icon={InsertDriveFileOutlinedIcon}  />
       <Resource name='personaldata' options={{ label: 'Personal Data' }} list={PersonalData} icon={InsertChartOutlinedOutlinedIcon}/>
