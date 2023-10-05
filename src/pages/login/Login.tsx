@@ -1,5 +1,7 @@
-import { Form, TextInput } from "react-admin";
-import { Link, useNavigate } from "react-router-dom";
+/* eslint-disable no-lone-blocks */
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Form, TextInput, useLogin } from "react-admin";
 import {
   Box,
   Divider,
@@ -16,6 +18,7 @@ import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOu
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 
 import Logo from "../../assets/GovstackLogoBlue.svg";
+import SnackbarComponent from "../../components/notification";
 
 const FooterContainer = styled("div")({
   position: "fixed",
@@ -26,7 +29,18 @@ const FooterContainer = styled("div")({
 });
 
 export const Login = () => {
-  const navigate = useNavigate();
+  const login = useLogin();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const [error, setError] = useState("");
+
+  const submit = () => {
+    login({ username, password }).catch((error) => {
+      setError(error)
+      setOpenSnackBar(true);
+    });
+  };
 
   return (
     <Box
@@ -39,6 +53,11 @@ export const Login = () => {
       }}
     >
       <Form noValidate>
+        <SnackbarComponent
+          open={openSnackBar}
+          setOpen={setOpenSnackBar}
+          message={error}
+        />
         <Box sx={{ width: 350 }}>
           <Box
             sx={{
@@ -69,6 +88,10 @@ export const Login = () => {
           >
             <TextInput
               autoFocus
+              name="email"
+              type="email"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               source="username"
               variant="standard"
               sx={{ height: "25px" }}
@@ -84,10 +107,13 @@ export const Login = () => {
             />
             <Divider />
             <TextInput
+              name="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               source="password"
               variant="standard"
               label={false}
-              type="password"
               placeholder="Password"
               fullWidth
               sx={{ height: "25px" }}
@@ -97,7 +123,8 @@ export const Login = () => {
                 endAdornment: (
                   <ArrowCircleRightOutlinedIcon
                     style={{ color: "#A1A1A1", cursor: "pointer" }}
-                    onClick={() => navigate("/start")}
+                    // type="submit"
+                    onClick={submit}
                   />
                 ),
               }}
@@ -132,14 +159,26 @@ export const Login = () => {
         </Box>
       </Form>
       <FooterContainer>
-        <Typography mb={.5}>v2023.8.1</Typography>
+        <Typography mb={0.5}>v2023.8.1</Typography>
         <Box mb={2} display={"flex"} justifyContent={"center"}>
-          <Typography color="grey"  variant="subtitle2">Powered by </Typography>
-          <Link to="https://igrant.io/" target="blank" style={{textDecoration:"none", color:"#1890ff", fontSize:"14px"}}>&nbsp;iGrant.io</Link>
-          <Typography color="grey" variant="subtitle2">, Swedan</Typography>
+          <Typography color="grey" variant="subtitle2">
+            Powered by{" "}
+          </Typography>
+          <Link
+            to="https://igrant.io/"
+            target="blank"
+            style={{
+              textDecoration: "none",
+              color: "#1890ff",
+              fontSize: "14px",
+            }}
+          >
+            &nbsp;iGrant.io
+          </Link>
+          <Typography color="grey" variant="subtitle2">
+            , Swedan
+          </Typography>
         </Box>
-        
-
       </FooterContainer>
     </Box>
   );
