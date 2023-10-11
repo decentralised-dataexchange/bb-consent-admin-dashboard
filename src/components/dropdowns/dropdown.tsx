@@ -22,8 +22,6 @@ const Dropdown = (props: Props) => {
     string[]
   >([]);
 
-  console.log("dp values", dropdownValues)
-
   const handleChange = (
     event: SelectChangeEvent<typeof subscriptionMethodValue>
   ) => {

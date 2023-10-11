@@ -1,6 +1,9 @@
-import { HttpService } from "../../service/services";
+import { HttpService } from "../../service/HTTPService";
+import { addRefreshAuthToAuthProvider } from "react-admin";
+import { refreshAuth } from "./refreshAuth";
+import { LocalStorageService } from "../../service/localStorageService";
 
-export const authProvider = {
+export const myAuthProvider = {
   login: ({
     username,
     password,
@@ -11,19 +14,39 @@ export const authProvider = {
     return HttpService.login(username, password)
       .then((res) => {
         const auth = res.data;
-        localStorage.setItem("auth", JSON.stringify(auth));
-        return res;
+        LocalStorageService.updateToken(auth.Token);
+        LocalStorageService.updateUser(auth.User);
+        return res.data;
       })
       .catch((error) => {
-        throw (error.response.data.error_description ? error.response.data.error_description : error.response.data.Message );
+        throw error.response.data.error_description
+          ? error.response.data.error_description
+          : error.response.data.Message;
       });
   },
   checkError: (error: any): Promise<any> => Promise.resolve(),
   checkAuth: () =>
-    JSON.parse(localStorage.getItem("auth")!)?.Token?.access_token
+    LocalStorageService.getAccessToken()
       ? Promise.resolve()
       : Promise.reject({ message: false }),
-  logout: (): Promise<any> => Promise.resolve(),
-  getIdentity: (): Promise<any> => Promise.resolve(),
+  logout: () => {
+    return HttpService.logout()
+      .then((res) => {})
+      .catch((error) => {});
+  },
+  getIdentity: (): Promise<any> => {
+    try {
+      const { lastVisit, name, imageUrl, email } =
+        LocalStorageService.getUser();
+      return Promise.resolve({ lastVisit, name, imageUrl, email });
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  },
   getPermissions: (params: any): Promise<any> => Promise.resolve(),
 };
+
+export const authProvider = addRefreshAuthToAuthProvider(
+  myAuthProvider,
+  refreshAuth
+);

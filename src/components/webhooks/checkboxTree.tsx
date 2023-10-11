@@ -27,9 +27,6 @@ const CheckboxTree = () => {
   const handleChange = (e: any) => {
     const { name, checked } = e.target;
 
-    console.log("name", name);
-    console.log("selected", selected);
-
     if (name === "allSelected") {
       setSelected(false);
       let tempEvents = events.map((user: any) => {

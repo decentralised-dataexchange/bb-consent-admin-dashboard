@@ -381,7 +381,6 @@ export default function RestrictionModal(props: Props) {
                 >
                   <Typography
                     variant="subtitle1"
-                    onClick={() => console.log("ddddddddd")}
                   >
                     Add more
                   </Typography>

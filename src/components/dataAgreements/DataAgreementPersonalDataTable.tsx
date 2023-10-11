@@ -70,7 +70,6 @@ const DataAgreementPersonalDataTable = (props: Props) => {
   };
 
   let removePersonalDataFields = (i: number) => {
-    console.log(i);
     let newPersonalDataValues = [...personalDataValues];
     newPersonalDataValues.splice(i, 1);
     setPersonalDataValues(newPersonalDataValues);
@@ -80,7 +79,6 @@ const DataAgreementPersonalDataTable = (props: Props) => {
     i: number,
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    // console.log(i)
     let newPersonalDataValues = [...personalDataValues];
     newPersonalDataValues[i][e.target.name] = e.target.value;
     setPersonalDataValues(newPersonalDataValues);
