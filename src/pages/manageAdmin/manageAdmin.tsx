@@ -14,7 +14,7 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 
 import BreadCrumb from "../../components/Breadcrumbs";
-import OrgImageUpload from "../../components/OrgImageUpload";
+import OrgLogoImageUpload from "../../components/OrganisationDetails/OrgLogoImageUpload";
 
 const Container = styled('div')(({ theme }) => ({
   margin: '58px 15px 0px 15px',
@@ -62,7 +62,7 @@ const ManageAdmin = () => {
   const [editMode, setEditMode] = useState(false);
   const [passwordEditMode, setPasswordEditMode] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
-
+  const ImageBase64 = ""
   const handleEdit = (event: React.MouseEvent<HTMLElement>) => {
     setEditMode(!editMode);
   };
@@ -116,7 +116,7 @@ const ManageAdmin = () => {
                     />
                     {editMode && (
                       <Box style={{ position: "relative" }}>
-                        <OrgImageUpload imageType="logo" size={"small"} />
+                        <OrgLogoImageUpload editMode={editMode} logoImageBase64={ImageBase64}  />
                       </Box>
                     )}
                   </Box>

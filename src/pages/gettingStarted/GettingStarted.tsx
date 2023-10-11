@@ -1,237 +1,144 @@
-import { useState } from 'react';
+import { useEffect, useState } from "react";
 
-import { Form, TextInput, } from 'react-admin';
-import { Box, Grid, Avatar, Typography, Button } from '@mui/material'
-import { styled } from '@mui/material/styles';
+import { Form } from "react-admin";
+import { Grid, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
 import { useNavigate } from "react-router-dom";
 
-import Banner from '../../assets/DummyBanner.jpeg'
+import BreadCrumb from "../../components/Breadcrumbs";
+import OrgCoverImageUpload from "../../components/OrganisationDetails/OrgCoverImageUpload";
 
-import BreadCrumb from '../../components/Breadcrumbs'
-import OrgImageUpload from '../../components/OrgImageUpload';
+import { HttpService } from "../../service/HTTPService";
+import OrganisationDetailsContainer from "../../components/OrganisationDetails/OrgDetailsContainer";
 
-const Container = styled('div')(({ theme }) => ({
-    margin: '58px 15px 0px 15px',
-    paddingBottom:"50px",
-    [theme.breakpoints.down('sm')]: {
-        margin: '52px 0 10px 0'
-    },
+const Container = styled("div")(({ theme }) => ({
+  margin: "58px 15px 0px 15px",
+  paddingBottom: "50px",
+  [theme.breakpoints.down("sm")]: {
+    margin: "52px 0 10px 0",
+  },
 }));
 
-const BannerContainer = styled('div')({
-    height: 300,
-    width: '100%',
-    borderRadius: 2,
-    backgroundColor: "#E6E6E6",
-    marginTop: "1em",
-    position: 'relative',
-    top: 0,
-    left: 0
+const DetailsContainer = styled("div")({
+  height: "auto",
+  width: "100%",
+  borderRadius: 2,
+  backgroundColor: "#FFFFF",
+  padding: 10,
 });
 
-const DetailsContainer = styled('div')({
-    height: "auto",
-    width: '100%',
-    borderRadius: 2,
-    backgroundColor: "#FFFFF",
-    padding: 10,
-});
-
-const Item = styled('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    padding: theme.spacing(1),
-    justifyContent: 'center',
-    color: '#0000',
-    height: 100,
-    borderRadius: 7,
-    border: "1px solid #EEEEEE"
+const Item = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  backgroundColor: "#fff",
+  padding: theme.spacing(1),
+  justifyContent: "center",
+  color: "#0000",
+  height: 100,
+  borderRadius: 7,
+  border: "1px solid #EEEEEE",
 }));
-
-const editStyleEnable: React.CSSProperties = {
-    borderWidth: 1,
-    borderBottomStyle: "solid",
-    borderBottomColor: "#DFE0E1",
-    height: 23,
-};
-
-const buttonStyle = {
-    color: "black",
-    height: 30,
-    width: 100,
-    borderRadius: 0,
-    border: '1px solid #DFDFDF'
-}
 
 const GettingStarted = () => {
-    const navigate = useNavigate()
-    const [editMode, setEditMode] = useState(false)
+  const navigate = useNavigate();
+  const [editMode, setEditMode] = useState(false);
+  const [coverImageBase64, setCoverImageBase64] = useState<any>(null);
+  const [logoImageBase64, setLogoImageBase64] = useState<any>(null);
+  const [organisationDetails, setOganisationDetails] = useState<{
+    [key: string]: any;
+  }>({});
 
-    const handleEdit = (event: React.MouseEvent<HTMLElement>) => {
-        setEditMode(!editMode)
-    };
+  useEffect(() => {
+    HttpService.getOrganisationDetails()
+      .then((organisation) => {
+        setOganisationDetails(organisation);
 
-    return (
-        <Form >
-            <Container >
-                <BreadCrumb Link="Getting Started" />
-                <BannerContainer>
-                    <Box
-                        style={{ height: "100%", width: "100%" }}
-                        component="img"
-                        alt="Banner"
-                        src={Banner}
-                        sx={{ opacity: editMode ? 0.25 : 1 }}
-                    />
-                    {editMode &&
-                        <Box style={{ position: "absolute", right: 20, top: 10 }} >
-                            <OrgImageUpload imageType='banner' />
-                        </Box>}
-                </BannerContainer>
-                <DetailsContainer sx={{ flexGrow: 1 }}>
-                    <Grid container spacing={2}>
-                        <Grid item lg={3} md={4} sm={12} xs={12} style={{ height: '90px' }}>
-                            <Box>
-                                <Avatar
-                                    src=''
-                                    style={{
-                                        position: "absolute",
-                                        opacity: editMode ? 0.75 : 1,
-                                        marginLeft: 50,
-                                        marginTop: '-100px',
-                                        width: "200px",
-                                        height: "200px",
-                                        border: "solid white 6px",
-                                    }}
-                                />
-                                {editMode &&
-                                    <Box style={{ position: "relative", top: "-75px", marginLeft: "75px"   }}>
-                                        <OrgImageUpload imageType="logo" />
-                                    </Box>}
-                            </Box>
-                        </Grid>
-                        <Grid item lg={6} md={5} sm={12} xs={12} height={23}>
-                            <Box sx={{ position: "relative", display: "inline-block"}}>
-                                {editMode ? <>
-                                    <TextInput
-                                        autoFocus
-                                        source="organisationname"
-                                        variant="standard"
-                                        label={false}
-                                        placeholder='Organisation Name'
-                                        fullWidth
-                                        style={{...editStyleEnable, marginTop:"3px"}}
-                                        InputProps={{
-                                            disableUnderline: true,
-                                        }}
-                                    />
-                                    <Typography color='#9F9F9F' height='23px'style={{marginTop:"2px"}} >Sector</Typography> 
-                                    <TextInput
-                                        autoFocus
-                                        source="location"
-                                        variant="standard"
-                                        label={false}
-                                        placeholder='Location'
-                                        fullWidth
-                                        style={{...editStyleEnable, marginTop:"-1px"}}
-                                        InputProps={{
-                                            disableUnderline: true,
-                                        }}
-                                    />
-                                    <TextInput
-                                        autoFocus
-                                        source="policyurl"
-                                        variant="standard"
-                                        label={false}
-                                        placeholder='Policy URL'
-                                        fullWidth
-                                        style={{...editStyleEnable, marginTop:"-4px"}}
-                                        InputProps={{
-                                            disableUnderline: true,
-                                        }}
-                                    />  
-                                </> :
-                                    <>
-                                        <Typography variant='h6' fontWeight="bold">Organisation Name</Typography>
-                                        <Typography variant='body1' height='23px' >Sector:</Typography>
-                                        <Typography variant='body1' height='23px' >Location:</Typography>
-                                        <Typography variant='body1' height='23px' >Policy URL:</Typography>
-                                    </>
-                                }
-                            </Box>
-                        </Grid>
-                        <Grid item lg={3} md={3} sm={12} xs={12} >
-                            {editMode ?
-                                <Box style={{ textAlign: "right" }}>
-                                    <Button onClick={handleEdit} style={buttonStyle} variant="outlined">Cancel</Button>
-                                    <Button style={buttonStyle} variant="outlined" >Save</Button>
-                                </Box>
-                                :
-                                <Typography onClick={handleEdit} style={{ cursor: "pointer", textAlign: "right" }} >Edit</Typography>
-                            }
-                        </Grid>
-                    </Grid>
-                    <Grid sx={{ marginTop: 7 }}>
-                        <Typography variant='h6' fontWeight="bold">Overview</Typography>
-                        <Box sx={{ minHeight: 100, maxHeight: 150, overflow: "auto" }}>
-                            {editMode ?
-                                <TextInput
-                                    source="overview"
-                                    autoFocus
-                                    variant="standard"
-                                    multiline={true}
-                                    label={false}
-                                    placeholder='Description of organisation with character limit of 500 characters'
-                                    fullWidth
-                                    style={{marginTop:"1px"}}
-                                    InputProps={{
-                                        disableUnderline: true,
-                                    }}
-                                />
-                                :
-                                <Typography
-                                    variant="subtitle1"
-                                    align="left"
-                                    style={{ wordWrap: "break-word" }}
-                                >
-                                    Description of organisation with character limit of 500 characters
-                                </Typography>
-                            }
-                        </Box>
-                    </Grid>
-                </DetailsContainer>
+        HttpService.getCoverImage(organisation.CoverImageID).then(
+          (coverImage) => {
+            setCoverImageBase64(coverImage);
+          }
+        );
+        HttpService.getLogoImage(organisation.LogoImageID).then((logoImage) => {
+          setLogoImageBase64(logoImage);
+        });
+      })
+      .catch((error) => {
+         console.log(error);
+      });
+  }, []);
 
-                <DetailsContainer sx={{ flexGrow: 1 }}>
-                    <Grid container spacing={2} >
-                        <Grid item lg={3} md={6} sm={6} xs={12}>
-                            <Item sx={{ cursor: "pointer" }} onClick={() => navigate('/dataagreement')}>
-                                <Typography color="black" variant="h6">Prepare Data Agreements</Typography>
-                            </Item>
-                        </Grid>
-                        <Grid item lg={3} md={6} sm={6} xs={12} >
-                            <Item sx={{ cursor: "pointer" }} onClick={() => navigate('/developerapi')}>
-                                <Typography color="black" variant="h6">Developer APIs</Typography>
-                            </Item>
-                        </Grid>
-                        <Grid item lg={3} md={6} sm={6} xs={12} >
-                            <Item sx={{ cursor: "pointer" }} onClick={() => navigate('/manageadmin')}>
-                                <Typography color="black" variant="h6">Manage Admin Users</Typography>
-                            </Item>
-                        </Grid>
-                        <Grid item lg={3} md={6} sm={6} xs={12} >
-                            <Item sx={{ cursor: "pointer" }}>
-                                <a href="https://docs.igrant.io/docs/" target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
-                                    <Typography color="black" variant="h6">Developer Documentation</Typography>
-                                </a>
-                            </Item>
-                        </Grid>
-                    </Grid>
-                </DetailsContainer>
-            </Container>
-        </Form>
-    );
-}
+  const handleEdit = () => {
+    setEditMode(!editMode);
+  };
+
+  return (
+    <Form>
+      <Container>
+        <BreadCrumb Link="Getting Started" />
+        <OrgCoverImageUpload
+          editMode={editMode}
+          coverImageBase64={coverImageBase64}
+        />
+        <OrganisationDetailsContainer
+          editMode={editMode}
+          logoImageBase64={logoImageBase64}
+          organisationDetails={organisationDetails}
+          handleEdit={handleEdit}
+          setOganisationDetails={setOganisationDetails}
+        />
+
+        <DetailsContainer sx={{ flexGrow: 1 }}>
+          <Grid container spacing={2}>
+            <Grid item lg={3} md={6} sm={6} xs={12}>
+              <Item
+                sx={{ cursor: "pointer" }}
+                onClick={() => navigate("/dataagreement")}
+              >
+                <Typography color="black" variant="h6">
+                  Prepare Data Agreements
+                </Typography>
+              </Item>
+            </Grid>
+            <Grid item lg={3} md={6} sm={6} xs={12}>
+              <Item
+                sx={{ cursor: "pointer" }}
+                onClick={() => navigate("/developerapi")}
+              >
+                <Typography color="black" variant="h6">
+                  Developer APIs
+                </Typography>
+              </Item>
+            </Grid>
+            <Grid item lg={3} md={6} sm={6} xs={12}>
+              <Item
+                sx={{ cursor: "pointer" }}
+                onClick={() => navigate("/manageadmin")}
+              >
+                <Typography color="black" variant="h6">
+                  Manage Admin Users
+                </Typography>
+              </Item>
+            </Grid>
+            <Grid item lg={3} md={6} sm={6} xs={12}>
+              <Item sx={{ cursor: "pointer" }}>
+                <a
+                  href="https://docs.igrant.io/docs/"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ textDecoration: "none" }}
+                >
+                  <Typography color="black" variant="h6">
+                    Developer Documentation
+                  </Typography>
+                </a>
+              </Item>
+            </Grid>
+          </Grid>
+        </DetailsContainer>
+      </Container>
+    </Form>
+  );
+};
 
 export default GettingStarted;

@@ -36,10 +36,14 @@ export const Login = () => {
   const [error, setError] = useState("");
 
   const submit = () => {
-    login({ username, password }).catch((error) => {
-      setError(error)
-      setOpenSnackBar(true);
-    });
+    login({ username, password })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        setError(error);
+        setOpenSnackBar(true);
+      });
   };
 
   return (
