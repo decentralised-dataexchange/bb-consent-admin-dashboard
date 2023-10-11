@@ -9,8 +9,6 @@ import { LocalStorageService } from "./localStorageService";
 import { Organization } from "../interfaces/Organisation";
 import { imageBlobToBase64 } from "../utils/imageUtils";
 import { UpdateOrganisationReq } from "../interfaces/UpdateOrganisation";
-import { refreshAuth } from "../components/providers/refreshAuth";
-import { AccessTokenClaims } from "../interfaces/AccessToken";
 
 const httpClient = axios.create({
   baseURL:
@@ -23,44 +21,45 @@ const getAuthenticatedHeaders = () => {
   };
 };
 
-// httpClient.interceptors.response.use(
-//   (response) => response,
-//   async (error) => {
-//     const originalRequest = error.config;
-//     if (error.response.status === 401 && !originalRequest._retry) {
-//       originalRequest._retry = true;
+export const refreshTokenAndUpdateLocalStorage = async () => {
+  try {
+    const refresh_token = LocalStorageService.getRefreshToken();
+    const res = await HttpService.refreshToken(refresh_token);
+    LocalStorageService.updateToken(res.data); // Assuming this function is implemented to update token in local storage
+    return res.data.access_token;
+  } catch (error) {
+    console.error("Unable to refresh token", error);
+    throw error; // Re-throwing error after logging it for further handling in the calling function
+  }
+};
 
-//       const accessToken = LocalStorageService.getAccessToken();
-//       const refreshToken = LocalStorageService.getRefreshToken();
-//       if (accessToken) {
-//         const claims: AccessTokenClaims = JSON.parse(
-//           atob(accessToken.split(".")[1])
-//         );
+httpClient.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const originalRequest = error.config;
+    if (
+      error.response.status === 401 &&
+      !originalRequest._retry &&
+      error.config.url !== ENDPOINTS.refreshToken()
+    ) {
+      originalRequest._retry = true;
+      try {
+        // Using the new function here
+        const newToken = await refreshTokenAndUpdateLocalStorage();
 
-//         const currentTime = Date.now() / 1000 + 300;
-//         const expiryTime = claims.exp;
-//         if (expiryTime < currentTime) {
-//           // This function will fetch the new tokens from the authentication service and update them in localStorage
-//           HttpService.refreshToken(refreshToken).then((res) => {
-//             console.log("Successfully refreshed the token");
-//             LocalStorageService.updateToken(res.data);
-//             originalRequest.headers["Authorization"] =
-//               "Bearer " + res.data.access_token;
-
-//             console.log("After refresh; access token: ", res.data.access_token);
-//           });
-//         }
-//       }
-
-
-//       console.log("We are about to retry!!!");
-//       console.log(originalRequest.headers["Authorization"]);
-//       return httpClient.request(originalRequest);
-//     }
-
-//     return Promise.reject(error);
-//   }
-// );
+        // Update Authorization in the original request and retry it
+        originalRequest.headers.Authorization = 'Bearer ' + newToken;
+        return httpClient(originalRequest);
+      } catch (refreshError) {
+        // Further handling token refresh error if needed, e.g., redirect to login
+        return Promise.reject(refreshError);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const HttpService = {
   login: async (username: string, password: string): Promise<any> => {
