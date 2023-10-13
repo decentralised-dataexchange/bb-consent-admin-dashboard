@@ -1,16 +1,15 @@
 export interface User {
-    id: string
-    name: string
-    iamId: string
-    email: string
-    phone: string
-    imageId: string
-    imageUrl: string
-    lastVisit: string
-    client: any
-    orgs: any[]
-    apiKey: string
-    roles: any[]
-    incompleteProfile: boolean
-  }
-  
+  ID: string;
+  Name: string;
+  IamID: string;
+  Email: string;
+  Phone: string;
+  ImageID: string;
+  ImageURL: string;
+  LastVisit: string;
+  Client: any;
+  Orgs: any[];
+  APIKey: string;
+  Roles: any[];
+  IncompleteProfile: boolean;
+}

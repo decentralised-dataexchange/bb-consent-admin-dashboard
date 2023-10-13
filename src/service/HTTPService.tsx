@@ -9,6 +9,11 @@ import { LocalStorageService } from "./localStorageService";
 import { Organization } from "../interfaces/Organisation";
 import { imageBlobToBase64 } from "../utils/imageUtils";
 import { UpdateOrganisationReq } from "../interfaces/UpdateOrganisation";
+import {
+  DataAgreements,
+  convertPurposeForClient,
+  PurposeForDataProvider,
+} from "../interfaces/DataAgreement";
 
 const httpClient = axios.create({
   baseURL:
@@ -50,7 +55,7 @@ httpClient.interceptors.response.use(
         const newToken = await refreshTokenAndUpdateLocalStorage();
 
         // Update Authorization in the original request and retry it
-        originalRequest.headers.Authorization = 'Bearer ' + newToken;
+        originalRequest.headers.Authorization = "Bearer " + newToken;
         return httpClient(originalRequest);
       } catch (refreshError) {
         // Further handling token refresh error if needed, e.g., redirect to login
@@ -185,8 +190,6 @@ export const HttpService = {
   updateOrganisationDetails: async (
     payload: UpdateOrganisationReq
   ): Promise<any> => {
-    console.log("Inside updateOrganisationDetails");
-
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
@@ -197,5 +200,19 @@ export const HttpService = {
       payload,
       config
     );
+  },
+  listDataAgreements: async (): Promise<PurposeForDataProvider[]> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient
+      .get(
+        ENDPOINTS.getDataAgreements(LocalStorageService.getOrganisationId()),
+        config
+      )
+      .then((res) => {
+        const dataAgreements: DataAgreements = res.data;
+        return convertPurposeForClient(dataAgreements.Purposes);
+      });
   },
 };

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { List, Datagrid, TextField, Form, } from 'react-admin';
+import { List, Datagrid, TextField, Form } from 'react-admin';
 
 import { Box, Typography, Button, Tooltip, Radio, RadioGroup, FormControlLabel } from '@mui/material'
 import { styled } from '@mui/material/styles';
@@ -15,7 +15,6 @@ import BreadCrumb from '../../components/Breadcrumbs'
 import GlobalDataPolicyConfigModal from '../../components/modals/globalDataPolicyConfig';
 import GeneralModal from "../../components/modals/generalModal";
 import DataAgreementModal from "../../components/modals/dataAgreementModal";
-
 
 const Container = styled('div')(({ theme }) => ({
     margin: '58px 15px 0px 15px',
@@ -41,22 +40,14 @@ const buttonStyle = {
 }
 
 const DataAgreement = () => {
-    // const { data, ids, loading, error } = useGetList(
-    //     'dataagreement',
-    //     { page: 1, perPage: 10 },
-    //     { field: 'published_at', order: 'DESC' }
-    // );
     const [openGlobalDataPolicyModal, setOpenGlobalDataPolicyModal] = useState(false)
     const [openDeleteDataAgreementModal, setOpenDeleteDataAgreementModal] = useState(false)
     const [openPublishDataAgreementModal, setOpenPublishDataAgreementModal] = useState(false)
     const [openDataAgreementModal, setOpenDataAgreementModal] = useState(false)
     const [dataAgreementMode, setDataAgreementMode] = useState("")
 
-
-
     return (
         <Container >
-            <List actions={false} sx={{ width: "100%", overflow: "hidden" }}>
                 <Form >
                     <BreadCrumb Link="Data Agreements" />
                     <HeaderContainer >
@@ -95,13 +86,14 @@ const DataAgreement = () => {
                     </HeaderContainer>
                     <Typography variant='body1' sx={{marginTop:"10px"}}>Manage Data Agreements for your organisation.</Typography>
                 </Form>
+            <List actions={false} sx={{ width: "100%", overflow: "hidden" }} empty={false} >
                 <Box style={{ display: "flex", justifyContent:"center", marginTop:"20px"}}>
                     <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" , width:{xs:"359px",sm:"100%",md:"100%", lg:"100%"}}} >
-                        <TextField source="usagePurpose" label={"Usage Purpose"} />
-                        <TextField source="version" label={"Version"} />
-                        <TextField source="dataExchange" label={"Data Exchange"} />
-                        <TextField source="status" />
-                        <TextField source="lawfulBasisOfProcessing" label={"Lawful Basis Of Processing"} />
+                        <TextField source="Name" label={"Usage Purpose"} />
+                        <TextField source="Version" label={"Version"} />
+                        <TextField source="MethodOfUse" label={"Data Exchange"} />
+                        <TextField source="PublishFlag" label={"Status"} />
+                        <TextField source="LawfulBasisOfProcessing" label={"Lawful Basis Of Processing"} />
                         <Box style={{ display: 'flex', alignItems: 'center', justifyContent: "space-around", width: "100%" }}>
                             <Tooltip title="Publish Data Agreement" placement='top'>
                                 <UploadOutlinedIcon onClick={() => setOpenPublishDataAgreementModal(true)} fontSize="small" color="disabled" style={{ cursor: "pointer" }} />
