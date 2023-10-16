@@ -18,6 +18,7 @@ import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import BreadCrumb from "../../components/Breadcrumbs";
 import DataAgreementModal from "../../components/modals/dataAgreementModal";
 import Dropdown from "../../components/dropdowns/dropdown";
+import { DataAgreementsCRUDProvider } from "../../components/providers/dataAgreementsCRUDProvider";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -200,11 +201,13 @@ const UserRecords = () => {
       {/* Modals */}
 
       {/* Read Data agreement */}
+      <DataAgreementsCRUDProvider>
       <DataAgreementModal
         open={openDataAgreementModal}
         setOpen={setOpenDataAgreementModal}
         mode={"Read"}
       />
+      </DataAgreementsCRUDProvider>
     </Container>
   );
 };

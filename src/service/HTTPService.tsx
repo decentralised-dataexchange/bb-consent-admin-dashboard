@@ -13,7 +13,10 @@ import {
   DataAgreements,
   convertPurposeForClient,
   PurposeForDataProvider,
+  Purpose,
+  AddDataAgreements,
 } from "../interfaces/DataAgreement";
+import { DataAttributeInterface } from "../interfaces/DataAttribute";
 
 const httpClient = axios.create({
   baseURL:
@@ -214,5 +217,54 @@ export const HttpService = {
         const dataAgreements: DataAgreements = res.data;
         return convertPurposeForClient(dataAgreements.Purposes);
       });
+  },
+  addDataAgreements: async (payload: AddDataAgreements): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.post(
+      ENDPOINTS.addDataAgreements(LocalStorageService.getOrganisationId()),
+      payload,
+      config
+    );
+  },
+  getDataAttributes: async (): Promise<DataAttributeInterface[]> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient
+      .get(
+        ENDPOINTS.getDataAttributes(LocalStorageService.getOrganisationId()),
+        config
+      )
+      .then((res) => {
+        return res.data.Templates;
+      });
+  },
+  addDataAttributes: async (payload: any): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.post(
+      ENDPOINTS.addDataAttributes(LocalStorageService.getOrganisationId()),
+      payload,
+      config
+    );
+  },
+  updateDataAttributes: async (
+    payload: any,
+    templateID: string
+  ): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.put(
+      ENDPOINTS.updateDataAttributesById(
+        LocalStorageService.getOrganisationId(),
+        templateID
+      ),
+      payload,
+      config
+    );
   },
 };

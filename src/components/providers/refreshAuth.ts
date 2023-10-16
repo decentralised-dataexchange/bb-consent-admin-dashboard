@@ -18,7 +18,7 @@ export const refreshAuth = async () => {
         console.log("Successfully refreshed the token");
       } catch (error) {
         console.error("Failed to refresh token", error);
-        // Handle token refresh error if needed
+        return Promise.reject({ redirectTo: '/login', message: false });
       }
     }
   }

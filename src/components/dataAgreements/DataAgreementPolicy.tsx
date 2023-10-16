@@ -1,4 +1,7 @@
 import CSS from "csstype";
+import { useFormContext } from "react-hook-form";
+import { GeographicRestrictionsFormControl } from "./GeographicRestrctions";
+import { ThirdPartyDataSharingFormControl } from "./ThirdPartySharing";
 
 const tableCellStyle: CSS.Properties = {
   fontWeight: "normal",
@@ -15,16 +18,6 @@ const inputDataConfigStyle = {
   fontSize: "14px",
   width: "100%",
   backgroundColor: "#F7F6F6",
-
-};
-
-const dropDownStyle = {
-  color: "#495057",
-  border: "none",
-  outline: "none",
-  fontSize: "14px",
-  width: "100%",
-  backgroundColor: "#F7F6F6",
 };
 
 interface Props {
@@ -33,16 +26,7 @@ interface Props {
 
 const DataAgreementPolicy = (props: Props) => {
   const { mode } = props;
-  const geographicRestrictions = [
-    {
-      value: "Europe",
-      label: "Europe",
-    },
-    {
-      value: "Not restricted",
-      label: "Not restricted",
-    },
-  ];
+  const { register } = useFormContext();
 
   return (
     <table
@@ -65,13 +49,15 @@ const DataAgreementPolicy = (props: Props) => {
               autoComplete="off"
               type="text"
               disabled={mode === "Read"}
+              defaultValue={"https://igrant.io/policy.html"}
               style={{
                 ...inputDataConfigStyle,
                 cursor: mode === "Read" ? "not-allowed" : "auto",
               }}
-              name={"policyUrl"}
-              // value={'policyUrl'}
-              // onChange={handleChangeConfig}
+              {...register("PolicyURL", {
+                required: true,
+                minLength: 1,
+              })}
             />
           </td>
         </tr>
@@ -90,9 +76,11 @@ const DataAgreementPolicy = (props: Props) => {
                 ...inputDataConfigStyle,
                 cursor: mode === "Read" ? "not-allowed" : "auto",
               }}
-              name={"jurisdiction"}
-              // value={jurisdiction}
-              // onChange={handleChangeConfig}
+              defaultValue={"London, GB"}
+              {...register("Jurisdiction", {
+                required: true,
+                minLength: 1,
+              })}
             />
           </td>
         </tr>
@@ -111,9 +99,11 @@ const DataAgreementPolicy = (props: Props) => {
                 ...inputDataConfigStyle,
                 cursor: mode === "Read" ? "not-allowed" : "auto",
               }}
-              name={"industryScope"}
-              // value={industryScope}
-              // onChange={handleChangeConfig}
+              defaultValue={"Retail"}
+              {...register("IndustryScope", {
+                required: true,
+                minLength: 1,
+              })}
             />
           </td>
         </tr>
@@ -127,14 +117,14 @@ const DataAgreementPolicy = (props: Props) => {
             <input
               autoComplete="off"
               type="text"
-              disabled
               style={{
                 ...inputDataConfigStyle,
-                cursor: mode === "Read" ? "not-allowed" : "auto",
               }}
-              name={"storageLocation"}
-              // value={storageLocation}
-              // onChange={handleChangeConfig}
+              defaultValue={"Europe"}
+              {...register("StorageLocation", {
+                required: true,
+                minLength: 1,
+              })}
             />
           </td>
         </tr>
@@ -153,35 +143,21 @@ const DataAgreementPolicy = (props: Props) => {
                 ...inputDataConfigStyle,
                 cursor: mode === "Read" ? "not-allowed" : "auto",
               }}
-              name={"dataRetentionPeriod"}
-              // value={dataRetentionPeriod}
-              // onChange={handleChangeConfig}
+              defaultValue={3}
+              {...register("DataRetentionPeriod", {
+                required: true,
+                minLength: 1,
+              })}
             />
           </td>
         </tr>
 
         <tr>
-          <th style={tableCellStyle}>Geographic restriction</th>
+          <GeographicRestrictionsFormControl mode={mode} />
+        </tr>
 
-          <td style={{ ...tableCellStyle, borderRight: 0 }}>
-            <select
-              // type="text"
-              disabled={mode === "Read"}
-              style={{
-                ...dropDownStyle,
-                cursor: mode === "Read" ? "not-allowed" : "auto",
-              }}
-              name={"selectedGeographicRestriction"}
-            >
-              {geographicRestrictions.map((type, i) => {
-                return (
-                  <option key={i} value={type.label}>
-                    {type.label}
-                  </option>
-                );
-              })}
-            </select>
-          </td>
+        <tr>
+          <ThirdPartyDataSharingFormControl mode={mode} />
         </tr>
       </tbody>
     </table>

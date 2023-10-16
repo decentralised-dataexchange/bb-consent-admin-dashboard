@@ -59,7 +59,6 @@ export default function GeneralModal(props) {
               </Button>
               <Button style={!isOk ? disabledButtonstyle : buttonStyle} variant="outlined"
                 sx={{ marginRight: "20px", cursor: !isOk ? "not-allowed" : "pointer" }}
-              // onClick={() => console.log("ddddd")}
               >
                 {confirmText}
               </Button>

@@ -12,6 +12,10 @@ export const ENDPOINTS = {
   getCoverImage: (organizationId: string, imageId: string) => { return `/organizations/${organizationId}/image/${imageId}`},
   getLogoImage: (organizationId: string, imageId: string) => { return `/organizations/${organizationId}/image/${imageId}`},
   updateOrganisationDetails: (organizationId: string,) => {return `/organizations/${organizationId}`},
-  getDataAgreements: (organizationId: string) => { return `/organizations/${organizationId}/purposes`}
+  getDataAgreements: (organizationId: string) => { return `/organizations/${organizationId}/purposes`},
+  addDataAgreements: (organizationId: string) => { return `/organizations/${organizationId}/purposes`},
+  getDataAttributes: (organizationId: string) => { return `/organizations/${organizationId}/templates`},
+  addDataAttributes: (organizationId: string) => { return `/organizations/${organizationId}/templates`},
+  updateDataAttributesById: (organizationId: string, templateId: string) => { return `/organizations/${organizationId}/templates/${templateId}`},
 };
 

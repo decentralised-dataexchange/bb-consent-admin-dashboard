@@ -1,14 +1,14 @@
-import * as React from "react";
-import { useState, Dispatch, SetStateAction } from "react";
-import { Form } from "react-admin";
+import { useState, Dispatch, SetStateAction, useContext } from "react";
+import { useForm, FormProvider, useFieldArray } from "react-hook-form";
 
 import { Drawer, Typography, Button, Box, Avatar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import DefaultBanner from "../../assets/OrganisationDefaultBanner.jpg";
+import DefaultLogo from "../../assets/OrganisationDefaultLogo.png";
 
-import Banner from "../../assets/DummyBanner.jpeg";
 import DataAgreementPersonalDataTable from "../dataAgreements/DataAgreementPersonalDataTable";
 import DataAgreementPolicy from "../dataAgreements/DataAgreementPolicy";
-import DPIAConfigurations from "../dataAgreements/DPIA Configuration";
+import DPIAConfigurations from "../dataAgreements/DPIAConfiguration";
 import DataSchemaModal from "./dataSchemaModal";
 import {
   Container,
@@ -16,299 +16,283 @@ import {
   BannerContainer,
   DetailsContainer,
   FooterContainer,
+  buttonStyle,
   disabledButtonstyle,
 } from "./modalStyle";
-
-const inputStyle = {
-  width: "100%",
-  border: "1",
-  outline: "none",
-  fontSize: "16px",
-  color: "#495057",
-  borderWidth: 0,
-  borderRadius: 0,
-  backgroundColor: "#F7F6F6",
-  borderBottom: "2px solid #DFE0E1",
-};
-
-const dropDownStyle = {
-  border: "1px solid lightgray",
-  outline: "none",
-  fontSize: "14px",
-  backgroundColor: "#F7F6F6",
-  height: "38px",
-  width: "200px",
-  borderRadius: "5px",
-  cursor: "pointer",
-};
-
-const disabledDropDownStyle = {
-  border: "1px solid lightgray",
-  outline: "none",
-  fontSize: "14px",
-  backgroundColor: "#F7F6F6",
-  height: "38px",
-  width: "200px",
-  borderRadius: "5px",
-  cursor: "not-allowed",
-};
+import {
+  AddDataAttributesPayload,
+  DataAgreementPayload,
+  UpdateDataAttributesPayload,
+} from "../dataAgreements/DataAgreementActions";
+import { HttpService } from "../../service/HTTPService";
+import { Purpose } from "../dataAgreements/Purpose";
+import { Version } from "../dataAgreements/Version";
+import { DataExchangeModeFormControl } from "../dataAgreements/DataExchangeMode";
+import { PurposeDescription } from "../dataAgreements/PurposeDescription";
+import { DataAgreementsCRUDProvider } from "../providers/dataAgreementsCRUDProvider";
+import { LawfullBasisOfProcessingFormControll } from "../dataAgreements/LawfullBasisOfProcessing";
+import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
 
 interface Props {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   mode: string;
+  successCallback?: any;
 }
+const defaultValue = {
+  Name: "",
+  Description: "",
+  Version: "1.0.0",
+  AttributeType: 0,
+  LawfulBasisOfProcessing: 0,
+  PolicyURL: "https://igrant.io/policy.html",
+  Jurisdiction: "London, GB",
+  IndustryScope: "Retail",
+  StorageLocation: "Europe",
+  DataRetentionPeriod: 0,
+  Restriction: "Europe",
+  Shared3PP: false,
+  DpiaDate: new Date().toISOString().slice(0, 16),
+  DpiaSummaryURL: "https://privacyant.se/dpia_results.html",
+  dataAttributes: [{ attributeName: "", attributeDescription: "" }],
+};
 
 export default function DataAgreementModal(props: Props) {
-  const { open, setOpen, mode } = props;
-  const [dataExchangeModes, setDataExchangeModes] = useState([
-    { mode: "None" },
-    { mode: "Data Source" },
-    { mode: "Data Using Service" },
-  ]);
+  const methods = useForm({
+    mode: "onChange",
+    defaultValues: {
+      ...defaultValue,
+    },
+  });
+
+  const { control } = methods;
+  const { fields, remove, append } = useFieldArray({
+    control,
+    name: "dataAttributes",
+  });
+
+  const { open, setOpen, mode, successCallback } = props;
+  const [publishFlag, setPublishFlag] = useState(false);
   const [openExistingSchemaModal, setOpenExistingSchemaModal] = useState(false);
 
-  const [lawfullBasisOfProcessing, setLawfullBasisOfProcessing] = useState([
-    { value: "Consent" },
-    { value: "Contract" },
-    { value: "Legal Obligation" },
-    { value: "Contract" },
-    { value: "Vital Interest" },
-    { value: "Public Task" },
-    { value: "Legitimate Interest" },
-  ]);
+  const { organisationDetails, logoImageBase64, coverImageBase64 }: any =
+    useContext(OrganizationDetailsCRUDContext);
+
+  const onSubmit = (createdData: any) => {
+    console.log("createdData", createdData);
+    HttpService.addDataAgreements(
+      DataAgreementPayload(createdData, publishFlag)
+    ).then((response) => {
+      let purposeArrayLength = response.data.Organization.Purposes.length;
+      let purposeID =
+        response.data.Organization.Purposes[purposeArrayLength - 1].ID;
+      let UpdateDataAttributesValues = createdData?.dataAttributes?.filter(
+        (value: any) => value.ID !== undefined
+      );
+      console.log("UpdateDataAttributesValues", UpdateDataAttributesValues);
+      let AddDataAttributesValues = createdData?.dataAttributes.filter(
+        (value: any) => value.ID === undefined
+      );
+      console.log("AddDataAttributesValues", AddDataAttributesValues);
+
+      AddDataAttributesValues.length !== 0 &&
+        HttpService.addDataAttributes(
+          AddDataAttributesPayload(AddDataAttributesValues, purposeID)
+        ).then((response) => {});
+
+      UpdateDataAttributesValues.length !== 0 &&
+        UpdateDataAttributesValues.map((UpdateDataAttribute: any) => {
+          HttpService.updateDataAttributes(
+            UpdateDataAttributesPayload(UpdateDataAttribute, purposeID),
+            UpdateDataAttribute.ID
+          ).then((response) => {});
+        });
+      successCallback();
+      methods.reset({ ...defaultValue });
+      setOpen(false);
+    });
+  };
 
   return (
-    <React.Fragment>
+    <>
       <Drawer anchor="right" open={open}>
-        <Container>
-          <Form>
-            <HeaderContainer>
-              <Box pl={2}>
-                <Typography color="#F3F3F6">
-                  {mode === "Create" && "Add Data Agreement"}
-                  {mode === "Update" && "Edit Data Agreement: Issue Licence"}
-                  {mode === "Read" && "View Data Agreement: Issue Licence"}
-                </Typography>
-                {mode !== "Create" &&
-                <Typography color="#F3F3F6">
-                  {"964018b7-f978-4a54-b2a9-c49375c35feb"}
-                </Typography>}
-              </Box>
-              <CloseIcon
-                onClick={() => setOpen(false)}
-                sx={{ paddingRight: 2, cursor: "pointer", color: "#F3F3F6" }}
-              />
-            </HeaderContainer>
-            <BannerContainer>
-              <Box
-                style={{ height: "200px", width: "100%" }}
-                component="img"
-                alt="Banner"
-                src={Banner}
-              />
-            </BannerContainer>
-            <Box sx={{ marginBottom: "60px" }}>
-              <Avatar
-                src=""
-                style={{
-                  position: "absolute",
-                  marginLeft: 50,
-                  marginTop: "-75px",
-                  width: "130px",
-                  height: "130px",
-                  border: "solid white 6px",
-                }}
-              />
-            </Box>
-            <DetailsContainer>
-              <Box p={1.5}>
-                <Typography variant="h6" fontWeight="bold">
-                  Organisation Name
-                </Typography>
-                <Typography variant="subtitle1" mt={3}>
-                  Overview
-                </Typography>
-                <Typography
-                  variant="subtitle2"
-                  color="#9F9F9F"
-                  mt={1}
-                  sx={{ wordWrap: "breakWord" }}
-                >
-                  For queries about how we are managing your data please contact
-                  the Data Protection Officer, dpo@retail.com
-                </Typography>
-
-                <Box mt={2}>
-                  <Typography mb={1.3} variant="subtitle1">
-                    Usage Purpose
-                    <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
-                  </Typography>
-                  <input
-                    placeholder="E.g. Marketing and campaign (minimum 3 characters)"
-                    type="text"
-                    disabled={mode === "Read"}
-                    style={{
-                      ...inputStyle,
-                      cursor: mode === "Read" ? "not-allowed" : "auto",
-                    }}
-                    name="usagePurpose"
-                    // value={this.props.dataAgreementState.usagePurpose}
-                    // onChange={this.handleChangeDADetails}
-                    autoComplete="off"
-                  />
-
-                  <Typography mt={1.3} mb={1.3} variant="subtitle1">
-                    Version
-                    <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
-                  </Typography>
-                  <input
-                    disabled={mode === "Read"}
-                    style={{
-                      ...inputStyle,
-                      cursor: mode === "Read" ? "not-allowed" : "auto",
-                    }}
-                    placeholder="E.g. Marketing and campaign (minimum 3 characters)"
-                    type="text"
-                    name="usagePurpose"
-                    value={"1.0.0"}
-                    // onChange={this.handleChangeDADetails}
-                    autoComplete="off"
-                  />
-
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      marginTop: "20px",
-                    }}
-                  >
-                    <Typography variant="subtitle1">Data Exchange</Typography>
-                    <select
-                      disabled={mode === "Read"}
-                      style={
-                        mode === "Read" ? disabledDropDownStyle : dropDownStyle
-                      }
-                      name={"industryScope"}
-                      // value={industryScope}
-                      // onChange={handleChangeConfig}
-                    >
-                      {dataExchangeModes.map((mode, i) => {
-                        return (
-                          <option key={i} value={mode.mode}>
-                            {mode.mode}
-                          </option>
-                        );
-                      })}
-                    </select>
+        <DataAgreementsCRUDProvider>
+          <Container>
+            <FormProvider {...methods}>
+              <form onSubmit={methods.handleSubmit(onSubmit)}>
+                <HeaderContainer>
+                  <Box pl={2}>
+                    <Typography color="#F3F3F6">
+                      {mode === "Create" && "Add Data Agreement"}
+                      {mode === "Update" &&
+                        "Edit Data Agreement: Issue Licence"}
+                      {mode === "Read" && "View Data Agreement: Issue Licence"}
+                    </Typography>
+                    {mode !== "Create" && (
+                      <Typography color="#F3F3F6">
+                        {"964018b7-f978-4a54-b2a9-c49375c35feb"}
+                      </Typography>
+                    )}
                   </Box>
-                  <Typography
-                    onClick={()=> {mode !== 'Read' && setOpenExistingSchemaModal(true)}}
-                    style={{
-                      fontSize: "14px",
-                      textDecoration: "underline",
-                      color: mode === "Read" ? "grey" : "blue",
-                      marginTop: "-7px",
-                      cursor: mode === "Read" ? "not-allowed" : "pointer",
+                  <CloseIcon
+                    onClick={() => {
+                      setOpen(false);
+                      methods.reset({ ...defaultValue });
                     }}
-                  >
-                    (Choose existing schemas)
-                  </Typography>
-                  <Typography mb={1.3} mt={1.3} variant="subtitle1">
-                    Description
-                    <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
-                  </Typography>
-                  <textarea
-                    disabled={mode === "Read"}
-                    placeholder="Brief description about the usage of data (3-500 characters)"
-                    style={{
-                      ...inputStyle,
-                      cursor: mode === "Read" ? "not-allowed" : "auto",
-                      height: "120px",
-                      fontFamily:"Roboto,Helvetica,Arial,sans-serif"
+                    sx={{
+                      paddingRight: 2,
+                      cursor: "pointer",
+                      color: "#F3F3F6",
                     }}
-                    name="usagePurposeDescription"
-                    // value={this.props.dataAgreementState.usagePurposeDescription}
-                    // onChange={this.handleChangeDADetails}
-                    rows={5}
-                    cols={25}
-                    maxLength={500}
-                  />               
-
-                  <Typography mb={1.3} mt={1.3} variant="subtitle1">
-                    Lawful Basis Of Processing
-                    <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
-                  </Typography>
-                  <select
-                    disabled={mode === "Read"}
-                    style={
-                      mode === "Read"
-                        ? {
-                            ...disabledDropDownStyle,
-                            width: "100%",
-                            marginBottom: "15px",
-                            height: "42px",
-                          }
-                        : {
-                            ...dropDownStyle,
-                            width: "100%",
-                            marginBottom: "15px",
-                            height: "42px",
-                          }
+                  />
+                </HeaderContainer>
+                <BannerContainer>
+                  <Box
+                    style={{ height: "200px", width: "100%" }}
+                    component="img"
+                    alt="Banner"
+                    src={
+                      coverImageBase64
+                        ? `data:image/jpeg;charset=utf-8;base64,${coverImageBase64}`
+                        : DefaultBanner
                     }
-                    // style={{ ...dropDownStyle, width: "100%", marginBottom: "15px", height: "42px" }}
-                    name={"industryScope"}
-                    // value={industryScope}
-                    // onChange={handleChangeConfig}
-                  >
-                    {lawfullBasisOfProcessing.map((value, i) => {
-                      return (
-                        <option key={i} value={value.value}>
-                          {value.value}
-                        </option>
-                      );
-                    })}
-                  </select>
-
-                  <Typography variant="subtitle1">
-                    Data Policy Configurations
-                  </Typography>
-                  <DataAgreementPolicy mode={mode} />
-
-                  <Typography variant="subtitle1">
-                    DPIA Configurations
-                  </Typography>
-                  <DPIAConfigurations mode={mode} />
+                  />
+                </BannerContainer>
+                <Box sx={{ marginBottom: "60px" }}>
+                  <Avatar
+                    src={
+                      logoImageBase64
+                        ? `data:image/jpeg;charset=utf-8;base64,${logoImageBase64}`
+                        : DefaultLogo
+                    }
+                    style={{
+                      position: "absolute",
+                      marginLeft: 50,
+                      marginTop: "-75px",
+                      width: "130px",
+                      height: "130px",
+                      border: "solid white 6px",
+                    }}
+                  />
                 </Box>
+                <DetailsContainer>
+                  <Box p={1.5}>
+                    <Typography variant="h6" fontWeight="bold">
+                      {organisationDetails.Name}
+                    </Typography>
+                    <Typography variant="subtitle1" mt={3}>
+                      Overview
+                    </Typography>
+                    <Typography
+                      variant="subtitle2"
+                      color="#9F9F9F"
+                      mt={1}
+                      sx={{ wordWrap: "breakWord" }}
+                    >
+                      {organisationDetails.Description}
+                    </Typography>
 
-                <DataAgreementPersonalDataTable mode={mode} />
-              </Box>
-            </DetailsContainer>
-            <FooterContainer>
-              <Button
-                variant="outlined"
-                sx={{ cursor: "not-allowed" }}
-                style={disabledButtonstyle}
-              >
-                PUBLISH
-              </Button>
-              <Button
-                variant="outlined"
-                style={disabledButtonstyle}
-                sx={{ cursor: "not-allowed", marginLeft: "10px" }}
-              >
-                SAVE
-              </Button>
-            </FooterContainer>
-          </Form>
-          <DataSchemaModal
-            open={openExistingSchemaModal}
-            setOpen={setOpenExistingSchemaModal}
-            mode={mode}
-          />
-        </Container>
+                    <Box mt={2}>
+                      <Purpose open={props.open} mode={props.mode} />
+
+                      <Version />
+
+                      <DataExchangeModeFormControl
+                        open={props.open}
+                        mode={props.mode}
+                      />
+
+                      <Typography
+                        style={{
+                          fontSize: "14px",
+                          textDecoration: "underline",
+                          color: "grey",
+                          marginTop: "-7px",
+                          cursor: "not-allowed",
+                        }}
+                      >
+                        (Choose existing schemas)
+                      </Typography>
+
+                      <PurposeDescription open={props.open} mode={props.mode} />
+
+                      <LawfullBasisOfProcessingFormControll
+                        open={props.open}
+                        mode={props.mode}
+                      />
+
+                      <Typography variant="subtitle1">
+                        Data Policy Configurations
+                      </Typography>
+                      <DataAgreementPolicy mode={mode} />
+
+                      <Typography variant="subtitle1">
+                        DPIA Configurations
+                      </Typography>
+                      <DPIAConfigurations mode={mode} />
+                    </Box>
+
+                    <DataAgreementPersonalDataTable
+                      mode={mode}
+                      append={append}
+                      fields={fields}
+                      remove={remove}
+                      formController={control}
+                    />
+                  </Box>
+                </DetailsContainer>
+                <FooterContainer>
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      cursor: methods.formState.isValid
+                        ? "pointer"
+                        : "not-allowed",
+                    }}
+                    style={
+                      methods.formState.isValid
+                        ? buttonStyle
+                        : disabledButtonstyle
+                    }
+                    type="submit"
+                    onClick={() => {
+                      setPublishFlag(true);
+                    }}
+                  >
+                    PUBLISH
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    type="submit"
+                    style={
+                      methods.formState.isValid
+                        ? buttonStyle
+                        : disabledButtonstyle
+                    }
+                    sx={{
+                      cursor: methods.formState.isValid
+                        ? "pointer"
+                        : "not-allowed",
+                      marginLeft: "10px",
+                    }}
+                    onClick={() => {
+                      setPublishFlag(false);
+                    }}
+                  >
+                    SAVE
+                  </Button>
+                </FooterContainer>
+              </form>
+            </FormProvider>
+
+            <DataSchemaModal
+              open={openExistingSchemaModal}
+              setOpen={setOpenExistingSchemaModal}
+              mode={mode}
+            />
+          </Container>
+        </DataAgreementsCRUDProvider>
       </Drawer>
-    </React.Fragment>
+    </>
   );
 }

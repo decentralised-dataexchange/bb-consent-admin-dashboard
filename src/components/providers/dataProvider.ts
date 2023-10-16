@@ -2,6 +2,8 @@ import fakeDataProvider from "ra-data-fakerest";
 import { combineDataProviders } from "react-admin";
 import { HttpService } from "../../service/HTTPService";
 import { paginate } from "../../utils/paginateFunction";
+import { DataAgreementPayload } from "../dataAgreements/DataAgreementActions";
+import { convertPurposeForClient } from "../../interfaces/DataAgreement";
 
 const fakePersonalDataDataProvider = [
   {
