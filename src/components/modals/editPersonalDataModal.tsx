@@ -55,7 +55,7 @@ export default function EditPersonalDataModal(props: Props) {
                   sx={{margin:0}}
                   autoFocus
                   variant="standard"
-                  label={false}
+                  // label={false}
                   fullWidth
                   placeholder="Please type atleast 3 characters..."
                 />
@@ -75,9 +75,7 @@ export default function EditPersonalDataModal(props: Props) {
                 variant="outlined"
                 sx={{
                   marginRight: "20px",
-                  // cursor: !isOk ? "not-allowed" : "pointer",
                 }}
-                // onClick={() => console.log("ddddd")}
               >
                 SAVE{" "}
               </Button>

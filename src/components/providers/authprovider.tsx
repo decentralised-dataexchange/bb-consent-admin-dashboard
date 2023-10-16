@@ -25,14 +25,18 @@ export const myAuthProvider = {
       });
   },
   checkError: (error: any): Promise<any> => Promise.resolve(),
-  checkAuth: () =>
-    LocalStorageService.getAccessToken()
-      ? Promise.resolve()
-      : Promise.reject({ message: false }),
+  checkAuth: () => {
+    if (LocalStorageService.getAccessToken()) {
+      return Promise.resolve()
+    } else {
+      return Promise.reject({ message: false })
+    }
+  }
+  ,
   logout: () => {
     return HttpService.logout()
-      .then((res) => {})
-      .catch((error) => {});
+      .then((res) => { })
+      .catch((error) => { });
   },
   getIdentity: (): Promise<any> => {
     try {

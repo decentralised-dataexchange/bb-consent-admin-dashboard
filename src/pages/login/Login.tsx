@@ -38,7 +38,6 @@ export const Login = () => {
   const submit = () => {
     login({ username, password })
       .then((res) => {
-        console.log(res);
       })
       .catch((error) => {
         setError(error);

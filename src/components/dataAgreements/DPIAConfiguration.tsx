@@ -1,4 +1,5 @@
 import CSS from "csstype";
+import { useFormContext } from 'react-hook-form';
 
 const tableCellStyle: CSS.Properties = {
   fontWeight: "normal",
@@ -23,6 +24,7 @@ interface Props {
 
 const DPIAConfigurations = (props: Props) => {
   const { mode } = props;
+  const { register } = useFormContext();
 
   return (
     <table
@@ -48,10 +50,12 @@ const DPIAConfigurations = (props: Props) => {
                 ...inputDataConfigStyle,
                 cursor: mode === "Read" ? "not-allowed" : "auto",
               }}
-              name={"dpiaDate"}
               type="datetime-local"
-              // value={'policyUrl'}
-              // onChange={handleChangeConfig}
+              defaultValue={new Date().toISOString().slice(0, 16)}
+              {...register("DpiaDate", {
+                required: true,
+                minLength: 1
+            })}
             />
           </td>
         </tr>
@@ -70,9 +74,11 @@ const DPIAConfigurations = (props: Props) => {
                 ...inputDataConfigStyle,
                 cursor: mode === "Read" ? "not-allowed" : "auto",
               }}
-              name={"dpiaSummaryUrl"}
-              // value={jurisdiction}
-              // onChange={handleChangeConfig}
+              defaultValue={"https://privacyant.se/dpia_results.html"}
+              {...register("DpiaSummaryURL", {
+                required: true,
+                minLength: 1
+            })}
             />
           </td>
         </tr>

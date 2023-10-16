@@ -117,15 +117,15 @@ export default function RestrictionModal(props: Props) {
     setRestrcitionValues(newRestrcitionValues);
   };
 
-  // let handleChangeRestrcitionValues = (
-  //   i: number,
-  //   e: React.ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   // console.log(i)
-  //   let newRestrcitionValues = [...restrcitionValues];
-  //   newRestrcitionValues[i][e.target.name] = e.target.value;
-  //   setRestrcitionValues(newRestrcitionValues);
-  // };
+  let handleChangeRestrcitionValues = (
+    i: number,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    let newRestrcitionValues = [...restrcitionValues];
+    newRestrcitionValues[i][e.target.name] = e.target.value;
+    setRestrcitionValues(newRestrcitionValues);
+  };
+
 
   return (
     <React.Fragment>
@@ -179,7 +179,7 @@ export default function RestrictionModal(props: Props) {
                                 name={"attributeName"}
                                 value={rv.attributeName}
                                 onChange={(e) => {
-                                  // handleChangePersonalDataFields(index, e)
+                                  handleChangeRestrcitionValues(index, e)
                                 }}
                               />
                             </td>
@@ -233,21 +233,11 @@ export default function RestrictionModal(props: Props) {
                                 }}
                                 type="text"
                                 autoComplete="off"
-                                //   name={"personalDataDescription_" + index}
-                                //   value={pd.attributeDescription || ""}
-                                //   onChange={(e) => {
-                                //     this.onInputAttributeValues(e, pd, index);
-                                //   }}
-                                //   onKeyPress={(event) => {
-                                //     if (event.key === "Enter") {
-                                //       if (
-                                //         pd.attributeName.length >= 3 &&
-                                //         pd.attributeDescription.length >= 3
-                                //       ) {
-                                //         this.props.addAttributeField();
-                                //       }
-                                //     }
-                                //   }}
+                                name={"attributeDescription"}
+                                value={rv.attributeDescription}
+                                onChange={(e) => {
+                                  handleChangeRestrcitionValues(index, e)
+                                }}
                               />
                             </td>
                           </tr>
@@ -271,7 +261,7 @@ export default function RestrictionModal(props: Props) {
                             >
                               {" "}
                               <input
-                                // name={"schemaId-" + key}
+                                name={"schemaId-check"}
                                 type="checkbox"
                                 style={{
                                   cursor:
@@ -279,9 +269,6 @@ export default function RestrictionModal(props: Props) {
                                 }}
                                 checked={true}
                                 disabled={mode !== "Read" ? false : true}
-                                // onChange={(e) => {
-                                //   changeRestrictionCheckedState(e, attr, key);
-                                // }}
                               />
                             </th>
 
@@ -313,11 +300,11 @@ export default function RestrictionModal(props: Props) {
                                   cursor:
                                     mode !== "Read" ? "auto" : "not-allowed",
                                 }}
-                                // name={"schemaId-" + key}
-                                // value={attr.restrictions[0].schemaId}
-                                // onChange={(e) => {
-                                //   handleRestrictionChange(e, attr, key);
-                                // }}
+                                name={"schemaID"}
+                                value={rv.schemaID}
+                                onChange={(e) => {
+                                  handleChangeRestrcitionValues(index, e);
+                                }}
                               />
                             </td>
                           </tr>
@@ -357,11 +344,11 @@ export default function RestrictionModal(props: Props) {
                                   cursor:
                                     mode !== "Read" ? "auto" : "not-allowed",
                                 }}
-                                // name={"schemaId-" + key}
-                                // value={attr.restrictions[0].schemaId}
-                                // onChange={(e) => {
-                                //   handleRestrictionChange(e, attr, key);
-                                // }}
+                                name={"credDefID"}
+                                value={rv.credDefID}
+                                onChange={(e) => {
+                                  handleChangeRestrcitionValues(index, e);
+                                }}
                               />
                             </td>
                           </tr>

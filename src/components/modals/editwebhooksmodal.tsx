@@ -86,9 +86,7 @@ export default function EditWebooks(props: Props) {
               variant="outlined"
               sx={{
                 marginRight: "20px",
-                // cursor: !isOk ? "not-allowed" : "pointer",
               }}
-              // onClick={() => console.log("ddddd")}
             >
               SAVE{" "}
             </Button>

@@ -3,6 +3,10 @@ export interface DataAgreements {
   Purposes: Purpose[];
 }
 
+export interface AddDataAgreements {
+  purposes: PurposeForAddDataAgreement[];
+}
+
 export interface Purpose {
   ID: string;
   Name: string;
@@ -14,6 +18,7 @@ export interface Purpose {
   Jurisdiction: string;
   Disclosure: string;
   IndustryScope: string;
+  DPIA: DPIA;
   DataRetention: DataRetention;
   Restriction: string;
   Shared3PP: boolean;
@@ -23,6 +28,11 @@ export interface Purpose {
 export interface DataRetention {
   RetentionPeriod: number;
   Enabled: boolean;
+}
+
+export interface DPIA {
+  DPIADate: String;
+  DPIASummaryURL: string;
 }
 
 export interface PurposeForDataProvider
@@ -35,6 +45,8 @@ export interface PurposeForDataProvider
   LawfulBasisOfProcessing: string;
   PublishFlag: string;
 }
+
+export interface PurposeForAddDataAgreement extends Omit<Purpose, "ID"> {}
 
 enum DataExchangeModes {
   DataSource = "Data Source",
