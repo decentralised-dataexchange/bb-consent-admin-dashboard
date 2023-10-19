@@ -41,6 +41,9 @@ jobs:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_ZONE }}
           credentials: ${{ secrets.GKE_SA_KEY }}
+      
+      - name: Update REACT_APP_ENV in .env using sed
+        run: sed -i 's/^REACT_APP_ENV=".*"$/REACT_APP_ENV="demo"/' .env
 
       # Build docker image, publish docker image to gcp container registry, deploy to production
       - name: Build docker image, publish docker image to gcp container registry, deploy to production
