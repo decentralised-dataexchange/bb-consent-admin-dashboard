@@ -13,64 +13,94 @@ export interface createdDataProps {
   Shared3PP: boolean;
   DpiaDate: any;
   DpiaSummaryURL: string;
-  AttributeName: string;
+  dataAttributes: any
 }
-
+// 3rd party sharing value should be added to the payload once added from the backend
+//  value =  createdData.Shared3PP,
 export const DataAgreementPayload = (
   createdData: createdDataProps,
-  PublishFlag: boolean
-) => {
+  active: boolean,
+  lifecycle: string
+): any => {
   return {
-    purposes: [
-      {
-        Name: createdData.Name,
-        Description: createdData.Description,
-        LawfulUsage: false,
-        LawfulBasisOfProcessing: createdData.LawfulBasisOfProcessing,
-        PolicyURL: createdData.PolicyURL,
-        AttributeType: createdData.AttributeType,
-        Jurisdiction: createdData.Jurisdiction,
-        Disclosure: "true",
-        IndustryScope: createdData.IndustryScope,
-        DPIA: {
-          DPIADate: createdData.DpiaDate,
-          DPIASummaryURL: createdData.DpiaSummaryURL,
-        },
-        DataRetention: {
-          RetentionPeriod: parseInt(createdData.DataRetentionPeriod),
-          Enabled: false,
-        },
-        Restriction: createdData.Restriction,
-        Shared3PP: createdData.Shared3PP,
-        Version: createdData.Version,
-        PublishFlag: PublishFlag,
+    dataAgreement: {
+      version: createdData.Version,
+      controllerId: "string",
+      controllerUrl: "string",
+      controllerName: "string",
+      policy: {
+        name: "string",
+        version: "string",
+        url: createdData.PolicyURL,
+        jurisdiction: createdData.Jurisdiction,
+        industrySector: createdData.IndustryScope,
+        dataRetentionPeriodDays: parseInt(createdData.DataRetentionPeriod),
+        geographicRestriction: createdData.Restriction,
+        storageLocation: createdData.StorageLocation,
       },
-    ],
+      purpose: createdData.Name,
+      purposeDescription: createdData.Description,
+      lawfulBasis: createdData.LawfulBasisOfProcessing,
+      methodOfUse: createdData.AttributeType,
+      dpiaDate: createdData.DpiaDate,
+      dpiaSummaryUrl: createdData.DpiaSummaryURL,
+      signature: {
+        payload: "string",
+        signature: "string",
+        verificationMethod: "string",
+        verificationPayload: "string",
+        verificationPayloadHash: "string",
+        verificationArtifact: "string",
+        verificationSignedBy: "string",
+        verificationSignedAs: "string",
+        verificationJwsHeader: "string",
+        timestamp: "string",
+        signedWithoutObjectReference: false,
+        objectType: "revision",
+        objectReference: "string",
+      },
+      active: active,
+      forgettable: false,
+      compatibleWithVersionId: "string",
+      lifecycle: lifecycle,
+    },
   };
 };
 
 export const AddDataAttributesPayload = (
   CreatedDataAttributes: any,
-  purposeID: string
+  responsePurpose:  {id: string, purpose: string}
 ) => {
   return {
-    templates: CreatedDataAttributes?.map((value: any) => {
-      return {
-        consent: value.attributeName,
-        description: value.attributeDescription,
-        purposeids: [purposeID],
-      };
-    }),
+    dataAttribute: {
+        version: "1.0.0",
+        agreements: [responsePurpose],
+        agreementIds: [responsePurpose.id],
+        name: CreatedDataAttributes.attributeName,
+        description: CreatedDataAttributes.attributeName,
+        sensitivity: false,
+        category: "string",
+    }
   };
 };
 
 export const UpdateDataAttributesPayload = (
   CreatedDataAttributes: any,
-  purposeID: string
+  responsePurpose: {id: string, purpose: string}
 ) => {
   return {
-    Consent: CreatedDataAttributes.Consent,
-    PurposeIDs: [...CreatedDataAttributes.PurposeIDs, purposeID],
-    Description: CreatedDataAttributes.Description,
-  };
+    dataAttribute: {
+      id: CreatedDataAttributes.id,
+      version: CreatedDataAttributes.version,
+      agreements: [responsePurpose],
+      agreementIds: [
+        ...CreatedDataAttributes.agreementIds
+        , responsePurpose.id
+      ],
+      name: CreatedDataAttributes.name,
+      description: CreatedDataAttributes.description,
+      sensitivity: CreatedDataAttributes.sensitivity,
+      category: CreatedDataAttributes.sensitivity
+    }
+  }
 };

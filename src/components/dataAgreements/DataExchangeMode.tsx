@@ -3,9 +3,9 @@ import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 const dataExchangeModes = [
-  { value: 0, label: "None" },
-  { value: 1, label: "Data Source" },
-  { value: 2, label: "Data Using Service" },
+  { value: "null", label: "None" },
+  { value: "data_source", label: "Data Source" },
+  { value: "data_using_service", label: "Data Using Service" },
 ];
 
 interface DataExchangeModeFormControlProps {
@@ -49,7 +49,7 @@ export const DataExchangeMode = (props: DataExchangeModeProps) => {
         }}
         variant="outlined"
         fullWidth
-        defaultValue={0}
+        defaultValue={'null'}
         name="methodOfUse"
         disabled={props.mode === "Read"}
         style={
@@ -96,7 +96,6 @@ export const DataExchangeModeFormControl = (
           <Controller
             name="AttributeType"
             control={control}
-            defaultValue={0}
             rules={{
               required: true,
             }}

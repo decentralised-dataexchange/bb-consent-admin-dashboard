@@ -52,7 +52,7 @@ const OrgCoverImageUpload = (props: Props) => {
       HttpService.updateOrganisationCoverImage(formData)
         .then((res) => {
           // Get the newly uploaded image from the server
-          HttpService.getCoverImage(res.CoverImageID).then((imageBase64) => {
+          HttpService.getCoverImage().then((imageBase64) => {
             setCoverImageBase64(imageBase64);
           });
         })

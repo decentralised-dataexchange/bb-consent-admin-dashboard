@@ -41,7 +41,7 @@ const OrgLogoImageUpload = (props: Props) => {
       HttpService.updateOrganisationLogoImage(formData)
         .then((res) => {
           // Get the newly uploaded image from the server
-          HttpService.getLogoImage(res.LogoImageID).then((imageBase64) => {
+          HttpService.getLogoImage().then((imageBase64) => {
             setLogoImageBase64(imageBase64);
           });
         })

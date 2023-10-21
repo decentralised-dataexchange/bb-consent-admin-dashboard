@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { Box, Drawer, Typography, Avatar, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-import Banner from '../../assets/DummyBanner.jpeg'
+import Banner from '../../assets/OrganisationDefaultBanner.jpg'
+import logo from '../../assets/OrganisationDefaultLogo.png'
 
 import { Container, HeaderContainer,BannerContainer, DetailsContainer, FooterContainer, buttonStyle } from "./modalStyle"
 
@@ -72,7 +73,7 @@ export default function GlobalDataPolicyConfigModal(props) {
           </BannerContainer>
           <Box sx={{marginBottom: '60px'}}>
             <Avatar
-              src=''
+              src={logo}
               style={{
                 position: "absolute",
                 marginLeft: 50,

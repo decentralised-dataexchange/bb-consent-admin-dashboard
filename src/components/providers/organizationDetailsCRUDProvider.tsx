@@ -18,12 +18,10 @@ export const OrganizationDetailsCRUDProvider: FC<
       .then((organisation) => {
         setOrganisationDetails(organisation);
 
-        HttpService.getCoverImage(organisation.CoverImageID).then(
-          (coverImage) => {
-            setCoverImageBase64(coverImage);
-          }
-        );
-        HttpService.getLogoImage(organisation.LogoImageID).then((logoImage) => {
+        HttpService.getCoverImage().then((coverImage) => {
+          setCoverImageBase64(coverImage);
+        });
+        HttpService.getLogoImage().then((logoImage) => {
           setLogoImageBase64(logoImage);
         });
       })

@@ -57,7 +57,7 @@ const OrganisationDetailsContainer = (props: Props) => {
       name: organisationName,
       location: organisationLocation,
       description: organisationOverView,
-      policyurl: organisationPolicyURL,
+      policyUrl: organisationPolicyURL,
     };
     HttpService.updateOrganisationDetails(payload)
       .then((res) => {
@@ -134,16 +134,16 @@ const OrganisationDetailsContainer = (props: Props) => {
             ) : (
               <>
                 <Typography variant="h6" fontWeight="bold">
-                  {organisationDetails.Name}
+                  {organisationDetails.name}
                 </Typography>
                 <Typography variant="body1" height="23px">
                   Sector: {organisationDetails.Type?.Type}
                 </Typography>
                 <Typography variant="body1" height="23px">
-                  Location: {organisationDetails.Location}
+                  Location: {organisationDetails.location}
                 </Typography>
                 <Typography variant="body1" height="23px">
-                  Policy URL: {organisationDetails.PolicyURL}
+                  Policy URL: {organisationDetails.policyUrl}
                 </Typography>
               </>
             )}
@@ -204,7 +204,7 @@ const OrganisationDetailsContainer = (props: Props) => {
               align="left"
               style={{ wordWrap: "break-word" }}
             >
-              {organisationDetails.Description}
+              {organisationDetails.description}
             </Typography>
           )}
         </Box>

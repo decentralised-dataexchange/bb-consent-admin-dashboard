@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "react"
 import { List, Datagrid, TextField, Form, useGetList } from "react-admin";
 
 import {
@@ -23,7 +23,6 @@ import BreadCrumb from "../../components/Breadcrumbs";
 import GlobalDataPolicyConfigModal from "../../components/modals/globalDataPolicyConfig";
 import GeneralModal from "../../components/modals/generalModal";
 import DataAgreementModal from "../../components/modals/dataAgreementModal";
-import { DataAgreementsCRUDProvider } from "../../components/providers/dataAgreementsCRUDProvider";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -148,12 +147,12 @@ const DataAgreement = () => {
               width: { xs: "359px", sm: "100%", md: "100%", lg: "100%" },
             }}
           >
-            <TextField source="Name" label={"Usage Purpose"} />
-            <TextField source="Version" label={"Version"} />
-            <TextField source="MethodOfUse" label={"Data Exchange"} />
-            <TextField source="PublishFlag" label={"Status"} />
+            <TextField source="purpose" label={"Usage Purpose"} />
+            <TextField source="version" label={"Version"} />
+            <TextField source="methodOfUse" label={"Data Exchange"} />
+            <TextField source="lifecycle" label={"Status"} />
             <TextField
-              source="LawfulBasisOfProcessing"
+              source="lawfulBasis"
               label={"Lawful Basis Of Processing"}
             />
             <Box

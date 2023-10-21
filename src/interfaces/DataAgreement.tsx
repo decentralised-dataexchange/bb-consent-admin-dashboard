@@ -1,52 +1,39 @@
-export interface DataAgreements {
-  OrgID: string;
-  Purposes: Purpose[];
+export interface DataAgreementsResponse {
+  dataAgreements: DataAgreement[];
+  pagination: Pagination;
 }
 
-export interface AddDataAgreements {
-  purposes: PurposeForAddDataAgreement[];
-}
-
-export interface Purpose {
-  ID: string;
-  Name: string;
-  Description: string;
-  LawfulUsage: boolean;
-  LawfulBasisOfProcessing: number;
-  PolicyURL: string;
-  AttributeType: number;
-  Jurisdiction: string;
-  Disclosure: string;
-  IndustryScope: string;
-  DPIA: DPIA;
-  DataRetention: DataRetention;
-  Restriction: string;
-  Shared3PP: boolean;
-  Version: string;
-  PublishFlag: boolean;
-}
-export interface DataRetention {
-  RetentionPeriod: number;
-  Enabled: boolean;
-}
-
-export interface DPIA {
-  DPIADate: String;
-  DPIASummaryURL: string;
-}
-
-export interface PurposeForDataProvider
-  extends Omit<
-    Purpose,
-    "ID" | "AttributeType" | "LawfulBasisOfProcessing" | "PublishFlag"
-  > {
+export interface DataAgreement {
   id: string;
-  MethodOfUse: string;
-  LawfulBasisOfProcessing: string;
-  PublishFlag: string;
+  version: string;
+  controllerId: string;
+  controllerUrl: string;
+  controllerName: string;
+  policy: Policy;
+  purpose: string;
+  purposeDescription: string;
+  lawfulBasis: string;
+  methodOfUse: any;
+  dpiaDate: string;
+  dpiaSummaryUrl: string;
+  signature: any;
+  active: boolean;
+  forgettable: boolean;
+  compatibleWithVersionId: string;
+  lifecycle: string;
 }
 
-export interface PurposeForAddDataAgreement extends Omit<Purpose, "ID"> {}
+export interface Policy {
+  id: string;
+  name: string;
+  version: string;
+  url: string;
+  jurisdiction: string;
+  industrySector: string;
+  dataRetentionPeriodDays: number;
+  geographicRestriction: string;
+  storageLocation: string;
+}
 
 enum DataExchangeModes {
   DataSource = "Data Source",
@@ -63,64 +50,70 @@ enum LawfulBasisOfProcessingEnum {
   LegitimateInterestBasis = "Legitimate Interest Basis",
 }
 
+export interface Pagination {
+  currentPage: number;
+  totalItems: number;
+  totalPages: number;
+  limit: number;
+  hasPrevious: boolean;
+  hasNext: boolean;
+}
+
 enum PublishFlagEnum {
-  Saved = "Saved",
+  Saved = "Draft",
   Published = "Published",
 }
 
-export const getMethodOfUse = (attributeType: number) => {
-  if (attributeType === 0) {
+export const getMethodOfUse = (methodOfUse: string) => {
+  if (methodOfUse === "null") {
     return DataExchangeModes.None;
-  } else if (attributeType === 1) {
+  } else if (methodOfUse === "data_source") {
     return DataExchangeModes.DataSource;
   } else {
     return DataExchangeModes.DataUsingService;
   }
 };
 
-export const getLawfulBasisOfProcessing = (LawfulBasisOfProcessing: number) => {
-  if (LawfulBasisOfProcessing === 0) {
+export const getLawfulBasisOfProcessing = (LawfulBasisOfProcessing: string) => {
+  if (LawfulBasisOfProcessing === "consent") {
     return LawfulBasisOfProcessingEnum.ConsentBasis;
-  } else if (LawfulBasisOfProcessing === 1) {
+  } else if (LawfulBasisOfProcessing === "contract") {
     return LawfulBasisOfProcessingEnum.ContractBasis;
-  } else if (LawfulBasisOfProcessing === 2) {
+  } else if (LawfulBasisOfProcessing === "legal_obligation") {
     return LawfulBasisOfProcessingEnum.LegalObligationBasis;
-  } else if (LawfulBasisOfProcessing === 3) {
+  } else if (LawfulBasisOfProcessing === "vital_interest") {
     return LawfulBasisOfProcessingEnum.VitalInterestBasis;
-  } else if (LawfulBasisOfProcessing === 4) {
+  } else if (LawfulBasisOfProcessing === "public_task") {
     return LawfulBasisOfProcessingEnum.PublicTaskBasis;
   } else {
     return LawfulBasisOfProcessingEnum.LegitimateInterestBasis;
   }
 };
 
-export const getPublishValues = (PublishFlag: boolean) => {
-  if (PublishFlag === false) {
+export const getPublishValues = (lifecycle: string) => {
+  if (lifecycle === "draft") {
     return PublishFlagEnum.Saved;
   } else {
     return PublishFlagEnum.Published;
   }
 };
 
-export const convertPurposeForClient = (
-  purposes: Purpose[]
-): PurposeForDataProvider[] => {
-  return purposes.map((purpose) => {
-    const {
-      ID,
-      AttributeType,
-      LawfulBasisOfProcessing,
-      PublishFlag,
-      ...otherProps
-    } = purpose;
-    return {
-      id: ID.toLowerCase(),
-      MethodOfUse: getMethodOfUse(AttributeType),
-      LawfulBasisOfProcessing: getLawfulBasisOfProcessing(
-        LawfulBasisOfProcessing
-      ),
-      PublishFlag: getPublishValues(PublishFlag),
-      ...otherProps,
-    };
-  });
+export const convertPurposeForClient = (dataAgreements: any) => {
+  const dataAgreementConvertedDataForClientPurpose =
+    dataAgreements.dataAgreements.map((dataAgreement: any) => {
+      const { methodOfUse, lifecycle, lawfulBasis, ...otherProps } =
+        dataAgreement;
+      return {
+        methodOfUse: getMethodOfUse(methodOfUse),
+        lawfulBasis: getLawfulBasisOfProcessing(lawfulBasis),
+        lifecycle: getPublishValues(lifecycle),
+        ...otherProps,
+      };
+    });
+  const convertedDataAgreements = {
+    dataAgreements: dataAgreementConvertedDataForClientPurpose,
+    pagination: dataAgreements.pagination,
+  };
+
+  return convertedDataAgreements;
 };
