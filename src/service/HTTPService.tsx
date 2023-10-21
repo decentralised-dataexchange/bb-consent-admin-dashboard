@@ -10,13 +10,15 @@ import { Organization } from "../interfaces/Organisation";
 import { imageBlobToBase64 } from "../utils/imageUtils";
 import { UpdateOrganisationReq } from "../interfaces/UpdateOrganisation";
 import {
-  DataAgreements,
+  DataAgreementsResponse,
   convertPurposeForClient,
-  PurposeForDataProvider,
-  Purpose,
-  AddDataAgreements,
+  // PurposeForDataProvider,
+  DataAgreement,
 } from "../interfaces/DataAgreement";
-import { DataAttributeInterface } from "../interfaces/DataAttribute";
+import {
+  DataAttributepayloadInterface,
+  DataAttributeInterface,
+} from "../interfaces/DataAttribute";
 
 const httpClient = axios.create({
   baseURL:
@@ -31,10 +33,10 @@ const getAuthenticatedHeaders = () => {
 
 export const refreshTokenAndUpdateLocalStorage = async () => {
   try {
-    const refresh_token = LocalStorageService.getRefreshToken();
-    const res = await HttpService.refreshToken(refresh_token);
+    const refreshToken = LocalStorageService.getRefreshToken();
+    const res = await HttpService.refreshToken(refreshToken);
     LocalStorageService.updateToken(res.data); // Assuming this function is implemented to update token in local storage
-    return res.data.access_token;
+    return res.data.accessToken;
   } catch (error) {
     console.error("Unable to refresh token", error);
     throw error; // Re-throwing error after logging it for further handling in the calling function
@@ -77,25 +79,25 @@ export const HttpService = {
     };
     return httpClient.post(ENDPOINTS.login(), payload);
   },
-  logout: async (): Promise<any> => {
-    const config: object = {
-      headers: { ...getAuthenticatedHeaders() },
-    };
-    const refresh_token = LocalStorageService.getRefreshToken();
-    const payload: object = {
-      clientid: CLIENTID,
-      refreshtoken: refresh_token,
-    };
-    return httpClient.post(ENDPOINTS.logout(), payload, config);
-  },
+  // logout: async (): Promise<any> => {
+  //   const config: object = {
+  //     headers: { ...getAuthenticatedHeaders() },
+  //   };
+  //   const refresh_token = LocalStorageService.getRefreshToken();
+  //   const payload: object = {
+  //     clientid: CLIENTID,
+  //     refreshtoken: refresh_token,
+  //   };
+  //   return httpClient.post(ENDPOINTS.logout(), payload, config);
+  // },
   refreshToken: async (refresh_token: string): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
     // const refresh_token = LocalStorageService.getRefreshToken()
     const payload: object = {
-      clientid: CLIENTID,
-      refreshtoken: refresh_token,
+      clientId: CLIENTID,
+      refreshToken: refresh_token,
     };
     return httpClient.post(ENDPOINTS.refreshToken(), payload, config);
   },
@@ -104,49 +106,28 @@ export const HttpService = {
       headers: { ...getAuthenticatedHeaders() },
     };
     return httpClient
-      .get(
-        ENDPOINTS.getOrganisationDetails(
-          LocalStorageService.getOrganisationId()
-        ),
-        config
-      )
+      .get(ENDPOINTS.getOrganisationDetails(), config)
       .then((res) => {
-        return res.data.Organization;
+        return res.data.organisation;
       });
   },
-  getCoverImage: async (imageId: string): Promise<any> => {
+  getCoverImage: async (): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
       responseType: "arraybuffer",
     };
-    return httpClient
-      .get(
-        ENDPOINTS.getCoverImage(
-          LocalStorageService.getOrganisationId(),
-          imageId
-        ),
-        config
-      )
-      .then((res) => {
-        return imageBlobToBase64(res.data);
-      });
+    return httpClient.get(ENDPOINTS.getCoverImage(), config).then((res) => {
+      return imageBlobToBase64(res.data);
+    });
   },
-  getLogoImage: async (imageId: string): Promise<any> => {
+  getLogoImage: async (): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
       responseType: "arraybuffer",
     };
-    return httpClient
-      .get(
-        ENDPOINTS.getLogoImage(
-          LocalStorageService.getOrganisationId(),
-          imageId
-        ),
-        config
-      )
-      .then((res) => {
-        return imageBlobToBase64(res.data);
-      });
+    return httpClient.get(ENDPOINTS.getLogoImage(), config).then((res) => {
+      return imageBlobToBase64(res.data);
+    });
   },
   updateOrganisationLogoImage: async (formData: any): Promise<Organization> => {
     const config: object = {
@@ -157,13 +138,7 @@ export const HttpService = {
     };
     const payload = formData;
     return httpClient
-      .post(
-        ENDPOINTS.updateOrganisationLogoImage(
-          LocalStorageService.getOrganisationId()
-        ),
-        payload,
-        config
-      )
+      .post(ENDPOINTS.updateOrganisationLogoImage(), payload, config)
       .then((res) => {
         return res.data.Organization;
       });
@@ -179,13 +154,7 @@ export const HttpService = {
     };
     const payload = formData;
     return httpClient
-      .post(
-        ENDPOINTS.updateOrganisationCoverImage(
-          LocalStorageService.getOrganisationId()
-        ),
-        payload,
-        config
-      )
+      .post(ENDPOINTS.updateOrganisationCoverImage(), payload, config)
       .then((res) => {
         return res.data.Organization;
       });
@@ -196,73 +165,54 @@ export const HttpService = {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
-    return httpClient.patch(
-      ENDPOINTS.updateOrganisationDetails(
-        LocalStorageService.getOrganisationId()
-      ),
+    return httpClient.put(
+      ENDPOINTS.updateOrganisationDetails(),
       payload,
       config
     );
   },
-  listDataAgreements: async (): Promise<PurposeForDataProvider[]> => {
+  listDataAgreements: async (): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.get(ENDPOINTS.getDataAgreements(), config).then((res) => {
+      const dataAgreements: DataAgreementsResponse = res.data;
+      return convertPurposeForClient(dataAgreements);
+    });
+  },
+  addDataAgreements: async (payload: DataAgreement): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.post(ENDPOINTS.addDataAgreements(), payload, config);
+  },
+  listDataAttributes: async (): Promise<DataAttributeInterface[]> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
     return httpClient
-      .get(
-        ENDPOINTS.getDataAgreements(LocalStorageService.getOrganisationId()),
-        config
-      )
+      .get(ENDPOINTS.listDataAttributes(), config)
       .then((res) => {
-        const dataAgreements: DataAgreements = res.data;
-        return convertPurposeForClient(dataAgreements.Purposes);
+        return res.data.dataAttributes;
       });
   },
-  addDataAgreements: async (payload: AddDataAgreements): Promise<any> => {
+  addDataAttributes: async (
+    payload: any,
+  ): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
-    return httpClient.post(
-      ENDPOINTS.addDataAgreements(LocalStorageService.getOrganisationId()),
-      payload,
-      config
-    );
-  },
-  getDataAttributes: async (): Promise<DataAttributeInterface[]> => {
-    const config: object = {
-      headers: { ...getAuthenticatedHeaders() },
-    };
-    return httpClient
-      .get(
-        ENDPOINTS.getDataAttributes(LocalStorageService.getOrganisationId()),
-        config
-      )
-      .then((res) => {
-        return res.data.Templates;
-      });
-  },
-  addDataAttributes: async (payload: any): Promise<any> => {
-    const config: object = {
-      headers: { ...getAuthenticatedHeaders() },
-    };
-    return httpClient.post(
-      ENDPOINTS.addDataAttributes(LocalStorageService.getOrganisationId()),
-      payload,
-      config
-    );
+    return httpClient.post(ENDPOINTS.addDataAttributes(), payload, config);
   },
   updateDataAttributes: async (
     payload: any,
-    templateID: string
+    dataAttributeId: string
   ): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
     return httpClient.put(
-      ENDPOINTS.updateDataAttributesById(
-        LocalStorageService.getOrganisationId(),
-        templateID
-      ),
+      ENDPOINTS.updateDataAttributesById(dataAttributeId),
       payload,
       config
     );

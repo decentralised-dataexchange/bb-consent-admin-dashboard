@@ -34,12 +34,12 @@ const disabledDropDownStyle = {
 };
 
 const lawfullBasisOfProcessing = [
-  { value: 0, label: "Consent" },
-  { value: 1, label: "Contract" },
-  { value: 2, label: "Legal Obligation" },
-  { value: 3, label: "Vital Interest" },
-  { value: 4, label: "Public Task" },
-  { value: 6, label: "Legitimate Interest" },
+  { value: 'consent', label: "Consent" },
+  { value: 'contract', label: "Contract" },
+  { value: 'legal_obligation', label: "Legal Obligation" },
+  { value: 'vital_interest', label: "Vital Interest" },
+  { value: 'public_task', label: "Public Task" },
+  { value: 'legitimate_interest', label: "Legitimate Interest" },
 ];
 
 export const LawfullBasisMethods = (props: LawfullBasisProps) => {
@@ -51,7 +51,7 @@ export const LawfullBasisMethods = (props: LawfullBasisProps) => {
         }}
         variant="outlined"
         disabled={props.mode === "Read"}
-        defaultValue={0}
+        defaultValue={'consent'}
         fullWidth
         name="lawfulBasisOfProcessing"
         style={
@@ -96,7 +96,6 @@ export const LawfullBasisOfProcessingFormControll = (
         <Controller
           name="LawfulBasisOfProcessing"
           control={control}
-          defaultValue={0}
           rules={{
             required: true,
           }}

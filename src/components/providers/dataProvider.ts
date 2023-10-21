@@ -2,8 +2,6 @@ import fakeDataProvider from "ra-data-fakerest";
 import { combineDataProviders } from "react-admin";
 import { HttpService } from "../../service/HTTPService";
 import { paginate } from "../../utils/paginateFunction";
-import { DataAgreementPayload } from "../dataAgreements/DataAgreementActions";
-import { convertPurposeForClient } from "../../interfaces/DataAgreement";
 
 const fakePersonalDataDataProvider = [
   {
@@ -186,12 +184,14 @@ const dataAgreementDataProvider = {
         let pageSize = params.pagination.perPage;
         let pageNumber = params.pagination.page;
         const paginateddataAgreements = paginate(
-          dataAgreements,
+          dataAgreements.dataAgreements,
           pageSize,
           pageNumber
         );
-
-        return { data: paginateddataAgreements, total: dataAgreements.length };
+        return {
+          data: paginateddataAgreements,
+          total: dataAgreements.dataAgreements.length,
+        };
       })
       .catch((error) => {
         // throw error.response

@@ -1,21 +1,21 @@
-export const STAGING_BASE_URL = "https://staging-consent-bb-api.igrant.io/v1";
-export const DEMO_BASE_URL = "https://demo-consent-bb-api.igrant.io/v1";
+export const STAGING_BASE_URL = "https://staging-consent-bb-api.igrant.io/v2";
+export const DEMO_BASE_URL = "https://demo-consent-bb-api.igrant.io/v2";
 export const CLIENTID = "igrant-ios-app";
 
 export const ENDPOINTS = {
-  login: () => {return "/users/admin/login"},
-  logout: () => {return "/users/logout"},
-  refreshToken:() => {return "/users/token"  },
-  getOrganisationDetails: (organizationId: string) => {return `/organizations/${organizationId}`},
-  updateOrganisationLogoImage:(organizationId: string) => { return `organizations/${organizationId}/logoimage`},
-  updateOrganisationCoverImage:(organizationId: string) => { return `organizations/${organizationId}/coverimage`},
-  getCoverImage: (organizationId: string, imageId: string) => { return `/organizations/${organizationId}/image/${imageId}`},
-  getLogoImage: (organizationId: string, imageId: string) => { return `/organizations/${organizationId}/image/${imageId}`},
-  updateOrganisationDetails: (organizationId: string,) => {return `/organizations/${organizationId}`},
-  getDataAgreements: (organizationId: string) => { return `/organizations/${organizationId}/purposes`},
-  addDataAgreements: (organizationId: string) => { return `/organizations/${organizationId}/purposes`},
-  getDataAttributes: (organizationId: string) => { return `/organizations/${organizationId}/templates`},
-  addDataAttributes: (organizationId: string) => { return `/organizations/${organizationId}/templates`},
-  updateDataAttributesById: (organizationId: string, templateId: string) => { return `/organizations/${organizationId}/templates/${templateId}`},
+  login: () => {return "/onboard/admin/login"},
+  // logout: () => {return "/users/logout"},
+  refreshToken:() => {return "/onboard/token/refresh"  },
+  getOrganisationDetails: () => {return `/onboard/organisation`},
+  updateOrganisationLogoImage:() => { return `/onboard/organisation/logoimage`},
+  updateOrganisationCoverImage:() => { return `/onboard/organisation/coverimage`},
+  getCoverImage: () => { return `/onboard/organisation/coverimage`},
+  getLogoImage: () => { return `/onboard/organisation/logoimage`},
+  updateOrganisationDetails: () => {return `/onboard/organisation`},
+  getDataAgreements: () => { return `/config/data-agreements`},
+  addDataAgreements: () => { return '/config/data-agreement'},
+  listDataAttributes: () => { return '/config/data-agreements/data-attributes'},
+  addDataAttributes: () => { return '/config/data-agreements/data-attribute'},
+  updateDataAttributesById: (dataAttributeId: string) => { return `/config/data-agreements/data-attribute/${dataAttributeId}`}
 };
 

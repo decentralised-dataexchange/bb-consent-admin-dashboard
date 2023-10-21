@@ -41,7 +41,7 @@ const inputStyleAttr = {
 interface DataAtributeNameControllerProps {
   mode: string;
   index: number;
-  existingDataAttributes: DataAttributeInterface[];
+  existingDataAttributes: any;
   formController: any;
 }
 
@@ -64,6 +64,7 @@ export const DataAtributeNameController = (
         control={formController}
         rules={{
           required: true,
+          minLength: 3,
         }}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
@@ -76,8 +77,8 @@ export const DataAtributeNameController = (
               width: "100%",
               cursor: props.mode === "Read" ? "not-allowed" : "auto",
             }}
-            options={props.existingDataAttributes}
-            getOptionLabel={(option: string | DataAttributeInterface) => {
+            options={props?.existingDataAttributes}
+            getOptionLabel={(option: string | any) => {
               // When option is of type `string`
               // it means the option is new
               if (typeof option === "string") {
@@ -85,7 +86,7 @@ export const DataAtributeNameController = (
               } else {
                 // When option is of type `DataAttributeInterface`
                 // it means the option is existing
-                return option.Consent;
+                return option?.name;
               }
             }}
             onChange={(event, value) => {
@@ -98,21 +99,21 @@ export const DataAtributeNameController = (
                 // When option is of type `DataAttributeInterface`
                 // it means the option is existing
                 // and `attributeId` is available
-                const tempOption = value as DataAttributeInterface;
+                const tempOption = value;
                 setValue(`dataAttributes.${props.index}`, tempOption);
 
                 setValue(
                   `dataAttributes.${props.index}.attributeDescription`,
-                  tempOption.Description
+                  tempOption.description
                 );
               }
             }}
             freeSolo
             renderTags={(value: any, getTagProps) =>
-              value.map((option: DataAttributeInterface, index: number) => (
+              value?.map((option: DataAttributeInterface, index: number) => (
                 <Chip
                   variant="outlined"
-                  label={option.Consent}
+                  label={option?.Consent}
                   {...getTagProps({ index })}
                 />
               ))

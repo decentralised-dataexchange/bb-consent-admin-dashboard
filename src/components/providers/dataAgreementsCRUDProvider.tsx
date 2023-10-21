@@ -17,11 +17,11 @@ export const DataAgreementsCRUDProvider: FC<
   >([]);
 
   useEffect(() => {
-    HttpService.getDataAttributes()
-      .then((dataAttributes) => {
+    HttpService.listDataAttributes()
+      .then((dataAttributes: DataAttributeInterface[]) => {
         setExistingDataAttributes(dataAttributes);
       })
-      .catch((error) => {});
+      .catch((error: any) => {});
   }, []);
 
   return (

@@ -5,23 +5,20 @@ export const LocalStorageService = {
   updateToken: (token: AccessToken) => {
     localStorage.setItem("Token", JSON.stringify(token));
   },
-  updateUser: (user: User) => {
-    localStorage.setItem("User", JSON.stringify(user));
-  },
-  getUser: (): User => {
-    return JSON.parse(localStorage.getItem("User")!);
-  },
+  // updateUser: (user: User) => {
+  //   localStorage.setItem("User", JSON.stringify(user));
+  // },
+  // getUser: (): User => {
+  //   return JSON.parse(localStorage.getItem("User")!);
+  // },
   getAccessToken: () => {
-    return JSON.parse(localStorage.getItem("Token")!)?.access_token;
-  },
-  getOrganisationId: () => {
-    return JSON.parse(localStorage.getItem("User")!)?.roles[0]?.orgId;
+    return JSON.parse(localStorage.getItem("Token")!)?.accessToken;
   },
   getRefreshToken: () => {
-    return JSON.parse(localStorage.getItem("Token")!)?.refresh_token;
+    return JSON.parse(localStorage.getItem("Token")!)?.refreshToken;
   },
   clear: () => {
     localStorage.removeItem("Token");
-    localStorage.removeItem("User");
+    // localStorage.removeItem("User");
   },
 };

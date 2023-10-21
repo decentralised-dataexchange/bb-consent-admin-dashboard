@@ -43,8 +43,8 @@ const defaultValue = {
   Name: "",
   Description: "",
   Version: "1.0.0",
-  AttributeType: 0,
-  LawfulBasisOfProcessing: 0,
+  AttributeType: "null",
+  LawfulBasisOfProcessing: "consent",
   PolicyURL: "https://igrant.io/policy.html",
   Jurisdiction: "London, GB",
   IndustryScope: "Retail",
@@ -72,39 +72,42 @@ export default function DataAgreementModal(props: Props) {
   });
 
   const { open, setOpen, mode, successCallback } = props;
-  const [publishFlag, setPublishFlag] = useState(false);
+  const [active, setActive] = useState(false);
+  const [lifecycle, setLifecycle] = useState("draft");
+
   const [openExistingSchemaModal, setOpenExistingSchemaModal] = useState(false);
 
   const { organisationDetails, logoImageBase64, coverImageBase64 }: any =
     useContext(OrganizationDetailsCRUDContext);
 
   const onSubmit = (createdData: any) => {
-    console.log("createdData", createdData);
     HttpService.addDataAgreements(
-      DataAgreementPayload(createdData, publishFlag)
+      DataAgreementPayload(createdData, active, lifecycle)
     ).then((response) => {
-      let purposeArrayLength = response.data.Organization.Purposes.length;
-      let purposeID =
-        response.data.Organization.Purposes[purposeArrayLength - 1].ID;
+      let responsePurpose = {
+        id: response.data.dataAgreement.id,
+        purpose: response.data.dataAgreement.purpose,
+      };
+
       let UpdateDataAttributesValues = createdData?.dataAttributes?.filter(
-        (value: any) => value.ID !== undefined
+        (value: any) => value.id !== undefined
       );
-      console.log("UpdateDataAttributesValues", UpdateDataAttributesValues);
       let AddDataAttributesValues = createdData?.dataAttributes.filter(
-        (value: any) => value.ID === undefined
+        (value: any) => value.id === undefined
       );
-      console.log("AddDataAttributesValues", AddDataAttributesValues);
 
       AddDataAttributesValues.length !== 0 &&
-        HttpService.addDataAttributes(
-          AddDataAttributesPayload(AddDataAttributesValues, purposeID)
-        ).then((response) => {});
+        AddDataAttributesValues.map((AddDataAttributes: any) => {
+          HttpService.addDataAttributes(
+            AddDataAttributesPayload(AddDataAttributes, responsePurpose)
+          ).then((response) => {});
+        });
 
       UpdateDataAttributesValues.length !== 0 &&
         UpdateDataAttributesValues.map((UpdateDataAttribute: any) => {
           HttpService.updateDataAttributes(
-            UpdateDataAttributesPayload(UpdateDataAttribute, purposeID),
-            UpdateDataAttribute.ID
+            UpdateDataAttributesPayload(UpdateDataAttribute, responsePurpose),
+            UpdateDataAttribute.id
           ).then((response) => {});
         });
       successCallback();
@@ -256,7 +259,8 @@ export default function DataAgreementModal(props: Props) {
                     }
                     type="submit"
                     onClick={() => {
-                      setPublishFlag(true);
+                      setActive(true);
+                      setLifecycle("complete");
                     }}
                   >
                     PUBLISH
@@ -276,7 +280,8 @@ export default function DataAgreementModal(props: Props) {
                       marginLeft: "10px",
                     }}
                     onClick={() => {
-                      setPublishFlag(false);
+                      setActive(false);
+                      setLifecycle("draft");
                     }}
                   >
                     SAVE

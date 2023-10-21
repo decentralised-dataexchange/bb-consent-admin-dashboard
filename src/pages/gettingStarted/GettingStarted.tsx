@@ -54,12 +54,12 @@ const GettingStarted = () => {
       .then((organisation) => {
         setOganisationDetails(organisation);
 
-        HttpService.getCoverImage(organisation.CoverImageID).then(
+        HttpService.getCoverImage().then(
           (coverImage) => {
             setCoverImageBase64(coverImage);
           }
         );
-        HttpService.getLogoImage(organisation.LogoImageID).then((logoImage) => {
+        HttpService.getLogoImage().then((logoImage) => {
           setLogoImageBase64(logoImage);
         });
       })
