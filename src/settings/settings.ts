@@ -16,6 +16,7 @@ export const ENDPOINTS = {
   addDataAgreements: () => { return '/config/data-agreement'},
   listDataAttributes: () => { return '/config/data-agreements/data-attributes'},
   addDataAttributes: () => { return '/config/data-agreements/data-attribute'},
-  updateDataAttributesById: (dataAttributeId: string) => { return `/config/data-agreements/data-attribute/${dataAttributeId}`}
+  updateDataAttributesById: (dataAttributeId: string) => { return `/config/data-agreements/data-attribute/${dataAttributeId}`},
+  deleteDataAgreement: (dataAgreementId: string) => { return `/config/data-agreement/${dataAgreementId}`}
 };
 
