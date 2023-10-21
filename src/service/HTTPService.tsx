@@ -227,4 +227,26 @@ export const HttpService = {
       config
     );
   },
+  getDataAgreementByID: async (
+    dataAgreementId: any
+  ): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.get(
+      ENDPOINTS.getDataAgreementByID(dataAgreementId),
+      config
+    );
+  },
+  getDataAttributesByDataAgreementId:  async (
+    dataAgreementId: any
+  ): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.get(
+      ENDPOINTS.getDataAttributesByDataAgreementId(dataAgreementId),
+      config
+    );
+  },
 };

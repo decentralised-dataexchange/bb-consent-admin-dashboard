@@ -1,4 +1,10 @@
-import { useState, Dispatch, SetStateAction, useContext } from "react";
+import {
+  useState,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+} from "react";
 import { useForm, FormProvider, useFieldArray } from "react-hook-form";
 
 import { Drawer, Typography, Button, Box, Avatar } from "@mui/material";
@@ -32,6 +38,7 @@ import { PurposeDescription } from "../dataAgreements/PurposeDescription";
 import { DataAgreementsCRUDProvider } from "../providers/dataAgreementsCRUDProvider";
 import { LawfullBasisOfProcessingFormControll } from "../dataAgreements/LawfullBasisOfProcessing";
 import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
+import { useParams } from "react-router-dom";
 
 interface Props {
   open: boolean;
@@ -58,20 +65,77 @@ const defaultValue = {
 };
 
 export default function DataAgreementModal(props: Props) {
+  const { open, setOpen, mode, successCallback } = props;
   const methods = useForm({
     mode: "onChange",
     defaultValues: {
       ...defaultValue,
     },
   });
-
   const { control } = methods;
+
   const { fields, remove, append } = useFieldArray({
     control,
     name: "dataAttributes",
   });
 
-  const { open, setOpen, mode, successCallback } = props;
+  const params = useParams();
+  const selectedDataAgreementId = params["*"];
+
+  useEffect(() => {
+    if (selectedDataAgreementId){
+    HttpService.getDataAttributesByDataAgreementId(
+      selectedDataAgreementId
+    ).then((response) => {
+      let dataAgreements = response.data.dataAgreement;
+      let dataAttributes = response.data.dataAttributes;
+
+      if (mode !== "Create") {
+        methods.reset({
+          Name: dataAgreements.purpose,
+          Description: dataAgreements.purposeDescription,
+          Version: dataAgreements.version,
+          AttributeType: dataAgreements.methodOfUse,
+          LawfulBasisOfProcessing: dataAgreements.lawfulBasis,
+          PolicyURL: dataAgreements.policy.url,
+          Jurisdiction: dataAgreements.policy.jurisdiction,
+          IndustryScope: dataAgreements.policy.industrySector,
+          StorageLocation: dataAgreements.policy.storageLocation,
+          DataRetentionPeriod: dataAgreements.policy.dataRetentionPeriod,
+          Restriction: dataAgreements.policy.geographicRestriction,
+          Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
+          DpiaDate: dataAgreements.dpiaDate,
+          DpiaSummaryURL: dataAgreements.dpiaSummaryUrl,
+          dataAttributes: dataAttributes.map((attribute: any) => {
+            return {
+              attributeName: attribute.name,
+              attributeDescription: attribute.description,
+            };
+          }),
+        });
+      } else {
+        methods.reset({
+          Name: "",
+          Description: "",
+          Version: "1.0.0",
+          AttributeType: "null",
+          LawfulBasisOfProcessing: "consent",
+          PolicyURL: "https://igrant.io/policy.html",
+          Jurisdiction: "London, GB",
+          IndustryScope: "Retail",
+          StorageLocation: "Europe",
+          DataRetentionPeriod: 0,
+          Restriction: "Europe",
+          Shared3PP: false,
+          DpiaDate: new Date().toISOString().slice(0, 16),
+          DpiaSummaryURL: "https://privacyant.se/dpia_results.html",
+          dataAttributes: [{ attributeName: "", attributeDescription: "" }],
+        });
+      }
+    });
+  }
+  }, [selectedDataAgreementId, open]);
+
   const [active, setActive] = useState(false);
   const [lifecycle, setLifecycle] = useState("draft");
 
@@ -81,39 +145,41 @@ export default function DataAgreementModal(props: Props) {
     useContext(OrganizationDetailsCRUDContext);
 
   const onSubmit = (createdData: any) => {
-    HttpService.addDataAgreements(
-      DataAgreementPayload(createdData, active, lifecycle)
-    ).then((response) => {
-      let responsePurpose = {
-        id: response.data.dataAgreement.id,
-        purpose: response.data.dataAgreement.purpose,
-      };
+    if (mode === "Create") {
+      HttpService.addDataAgreements(
+        DataAgreementPayload(createdData, active, lifecycle)
+      ).then((response) => {
+        let responsePurpose = {
+          id: response.data.dataAgreement.id,
+          purpose: response.data.dataAgreement.purpose,
+        };
 
-      let UpdateDataAttributesValues = createdData?.dataAttributes?.filter(
-        (value: any) => value.id !== undefined
-      );
-      let AddDataAttributesValues = createdData?.dataAttributes.filter(
-        (value: any) => value.id === undefined
-      );
+        let UpdateDataAttributesValues = createdData?.dataAttributes?.filter(
+          (value: any) => value.id !== undefined
+        );
+        let AddDataAttributesValues = createdData?.dataAttributes.filter(
+          (value: any) => value.id === undefined
+        );
 
-      AddDataAttributesValues.length !== 0 &&
-        AddDataAttributesValues.map((AddDataAttributes: any) => {
-          HttpService.addDataAttributes(
-            AddDataAttributesPayload(AddDataAttributes, responsePurpose)
-          ).then((response) => {});
-        });
+        AddDataAttributesValues.length !== 0 &&
+          AddDataAttributesValues.map((AddDataAttributes: any) => {
+            HttpService.addDataAttributes(
+              AddDataAttributesPayload(AddDataAttributes, responsePurpose)
+            ).then((response) => {});
+          });
 
-      UpdateDataAttributesValues.length !== 0 &&
-        UpdateDataAttributesValues.map((UpdateDataAttribute: any) => {
-          HttpService.updateDataAttributes(
-            UpdateDataAttributesPayload(UpdateDataAttribute, responsePurpose),
-            UpdateDataAttribute.id
-          ).then((response) => {});
-        });
-      successCallback();
-      methods.reset({ ...defaultValue });
-      setOpen(false);
-    });
+        UpdateDataAttributesValues.length !== 0 &&
+          UpdateDataAttributesValues.map((UpdateDataAttribute: any) => {
+            HttpService.updateDataAttributes(
+              UpdateDataAttributesPayload(UpdateDataAttribute, responsePurpose),
+              UpdateDataAttribute.id
+            ).then((response) => {});
+          });
+        successCallback();
+        methods.reset({ ...defaultValue });
+        setOpen(false);
+      });
+    } else return {};
   };
 
   return (
@@ -248,12 +314,13 @@ export default function DataAgreementModal(props: Props) {
                   <Button
                     variant="outlined"
                     sx={{
-                      cursor: methods.formState.isValid
-                        ? "pointer"
-                        : "not-allowed",
+                      cursor:
+                        methods.formState.isValid && mode !== "Read"
+                          ? "pointer"
+                          : "not-allowed",
                     }}
                     style={
-                      methods.formState.isValid
+                      methods.formState.isValid && mode !== "Read"
                         ? buttonStyle
                         : disabledButtonstyle
                     }
@@ -269,14 +336,15 @@ export default function DataAgreementModal(props: Props) {
                     variant="outlined"
                     type="submit"
                     style={
-                      methods.formState.isValid
+                      methods.formState.isValid && mode !== "Read"
                         ? buttonStyle
                         : disabledButtonstyle
                     }
                     sx={{
-                      cursor: methods.formState.isValid
-                        ? "pointer"
-                        : "not-allowed",
+                      cursor:
+                        methods.formState.isValid && mode !== "Read"
+                          ? "pointer"
+                          : "not-allowed",
                       marginLeft: "10px",
                     }}
                     onClick={() => {

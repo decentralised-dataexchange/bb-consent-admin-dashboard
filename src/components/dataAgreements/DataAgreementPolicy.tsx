@@ -49,7 +49,6 @@ const DataAgreementPolicy = (props: Props) => {
               autoComplete="off"
               type="text"
               disabled={mode === "Read"}
-              defaultValue={"https://igrant.io/policy.html"}
               style={{
                 ...inputDataConfigStyle,
                 cursor: mode === "Read" ? "not-allowed" : "auto",
@@ -76,7 +75,6 @@ const DataAgreementPolicy = (props: Props) => {
                 ...inputDataConfigStyle,
                 cursor: mode === "Read" ? "not-allowed" : "auto",
               }}
-              defaultValue={"London, GB"}
               {...register("Jurisdiction", {
                 required: true,
                 minLength: 1,
@@ -99,7 +97,6 @@ const DataAgreementPolicy = (props: Props) => {
                 ...inputDataConfigStyle,
                 cursor: mode === "Read" ? "not-allowed" : "auto",
               }}
-              defaultValue={"Retail"}
               {...register("IndustryScope", {
                 required: true,
                 minLength: 1,
@@ -120,7 +117,6 @@ const DataAgreementPolicy = (props: Props) => {
               style={{
                 ...inputDataConfigStyle,
               }}
-              defaultValue={"Europe"}
               {...register("StorageLocation", {
                 required: true,
                 minLength: 1,
@@ -143,7 +139,6 @@ const DataAgreementPolicy = (props: Props) => {
                 ...inputDataConfigStyle,
                 cursor: mode === "Read" ? "not-allowed" : "auto",
               }}
-              defaultValue={3}
               {...register("DataRetentionPeriod", {
                 required: true,
                 minLength: 1,

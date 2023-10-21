@@ -50,7 +50,9 @@ export default function DeleteModal(props: Props) {
   const onSubmit = () => {
     HttpService.deleteDataAgreement(daId).then((response) => {
       onRefetch();
-      setOpen(false);
+      setTimeout(()=>{
+        setOpen(false);
+      },1000)
     });
   };
 
