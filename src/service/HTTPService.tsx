@@ -12,7 +12,6 @@ import { UpdateOrganisationReq } from "../interfaces/UpdateOrganisation";
 import {
   DataAgreementsResponse,
   convertPurposeForClient,
-  // PurposeForDataProvider,
   DataAgreement,
 } from "../interfaces/DataAgreement";
 import {
@@ -214,6 +213,17 @@ export const HttpService = {
     return httpClient.put(
       ENDPOINTS.updateDataAttributesById(dataAttributeId),
       payload,
+      config
+    );
+  },
+  deleteDataAgreement: async (
+    dataAgreementId: any
+  ): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.delete(
+      ENDPOINTS.deleteDataAgreement(dataAgreementId),
       config
     );
   },

@@ -1,5 +1,11 @@
-import { useState } from "react"
-import { List, Datagrid, TextField, Form, useGetList } from "react-admin";
+import { useState } from "react";
+import {
+  List,
+  Datagrid,
+  TextField,
+  Form,
+  useGetList,
+} from "react-admin";
 
 import {
   Box,
@@ -23,6 +29,7 @@ import BreadCrumb from "../../components/Breadcrumbs";
 import GlobalDataPolicyConfigModal from "../../components/modals/globalDataPolicyConfig";
 import GeneralModal from "../../components/modals/generalModal";
 import DataAgreementModal from "../../components/modals/dataAgreementModal";
+import DeleteModal from "../../components/modals/deleteModal";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -56,11 +63,12 @@ const DataAgreement = () => {
     useState(false);
   const [openDataAgreementModal, setOpenDataAgreementModal] = useState(false);
   const [dataAgreementMode, setDataAgreementMode] = useState("");
- 
-  const { refetch } = useGetList("dataagreement")
-  const onDACreate = () =>{
-    refetch()
-  }
+
+  const { refetch } = useGetList(`dataagreement`);
+  const onRefetch = () => {
+    refetch();
+  };
+
   return (
     <Container>
       <Form>
@@ -141,6 +149,7 @@ const DataAgreement = () => {
           }}
         >
           <Datagrid
+            rowClick="edit"
             bulkActionButtons={false}
             sx={{
               overflow: "auto",
@@ -208,12 +217,12 @@ const DataAgreement = () => {
       {/* Modals */}
 
       {/* Create, Update & Read Data agreement */}
-        <DataAgreementModal
-          open={openDataAgreementModal}
-          setOpen={setOpenDataAgreementModal}
-          mode={dataAgreementMode}
-          successCallback={onDACreate}
-        />
+      <DataAgreementModal
+        open={openDataAgreementModal}
+        setOpen={setOpenDataAgreementModal}
+        mode={dataAgreementMode}
+        successCallback={onRefetch}
+      />
 
       <GlobalDataPolicyConfigModal
         open={openGlobalDataPolicyModal}
@@ -221,14 +230,13 @@ const DataAgreement = () => {
       />
 
       {/* DeleteDataAgreementModal */}
-      <GeneralModal
+      <DeleteModal
         open={openDeleteDataAgreementModal}
         setOpen={setOpenDeleteDataAgreementModal}
         headerText={"Delete Data Agreement:"}
         dataExchange={"Issue Licence"}
-        daId={"964018b7-f978-4a54-b2a9-c49375c35feb"}
         confirmText="DELETE"
-        buttonName={"DELETE"}
+        onRefetch={onRefetch}
         modalDescriptionText={
           <Typography sx={{ wordWrap: "breakWord" }}>
             You are about to delete an existing data agreement. Please type{" "}
@@ -244,7 +252,6 @@ const DataAgreement = () => {
         setOpen={setOpenPublishDataAgreementModal}
         headerText={"Publish Data Agreement:"}
         dataExchange={"Issue Licence"}
-        daId={"964018b7-f978-4a54-b2a9-c49375c35feb"}
         confirmText="PUBLISH"
         modalDescriptionText={
           <Typography sx={{ wordWrap: "breakWord" }}>
