@@ -60,6 +60,7 @@ export const ThirdPartyDataSharing = (props: ThirdPartyDataProps) => {
         variant="outlined"
         fullWidth
         name="Shared3PP"
+        disabled={props.mode === 'Read'}
         onChange={(e: any) => {
           props.onChange(e);
         }}

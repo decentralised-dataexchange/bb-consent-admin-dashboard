@@ -24,11 +24,13 @@ export const Version = () => {
       </Typography>
       <input
         style={{
-          ...inputStyle
+          ...inputStyle,
+          cursor:"not-allowed"
         }}
         type="text"
         {...register('Version', { required: true, value: '1.0.0' })}
         autoComplete="off"
+        disabled
       />
     </>
   );

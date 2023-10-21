@@ -194,7 +194,7 @@ const dataAgreementDataProvider = {
         };
       })
       .catch((error) => {
-        // throw error.response
+        
       });
   },
 };

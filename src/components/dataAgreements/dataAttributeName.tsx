@@ -70,6 +70,8 @@ export const DataAtributeNameController = (
           <Autocomplete
             autoSelect
             disableClearable={true}
+            disabled={props.mode === "Read"}
+            defaultValue={value}
             style={{
               ...inputStyleAttr,
               border: "none",
