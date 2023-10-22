@@ -262,4 +262,35 @@ export const HttpService = {
       config
     );
   },
+  listAllPolicies: async (): Promise<any[]> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient
+      .get(ENDPOINTS.listAllPolicies(), config)
+      .then((res) => {
+        return res.data.policies;
+      });
+  },
+  addPolicies: async (
+    payload: any,
+  ): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.post(ENDPOINTS.addPolicy(), payload, config);
+  },
+  updatePoliciesById: async (
+    payload: any,
+    policyId: string | undefined 
+  ): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.put(
+      ENDPOINTS.updatePolicyById(policyId),
+      payload,
+      config
+    );
+  },
 };
