@@ -1,7 +1,7 @@
 import fakeDataProvider from "ra-data-fakerest";
 import { combineDataProviders } from "react-admin";
 import { HttpService } from "../../service/HTTPService";
-import { paginate } from "../../utils/paginateFunction";
+import { offSet } from "../../utils/paginateFunction";
 
 const fakePersonalDataDataProvider = [
   {
@@ -179,23 +179,20 @@ export const fakeConsentBBDataProvider = fakeDataProvider({
 
 const dataAgreementDataProvider = {
   getList: (resource: any, params: any) => {
-    return HttpService.listDataAgreements()
+    let pageSize = params.pagination.perPage;
+    let pageNumber = params.pagination.page;
+
+    let offsetValue = offSet(pageNumber, pageSize);
+    return HttpService.listDataAgreements(offsetValue, pageSize)
       .then((dataAgreements) => {
-        let pageSize = params.pagination.perPage;
-        let pageNumber = params.pagination.page;
-        const paginateddataAgreements = paginate(
-          dataAgreements.dataAgreements,
-          pageSize,
-          pageNumber
-        );
         return {
-          data: paginateddataAgreements,
-          total: dataAgreements.dataAgreements.length,
+          data: dataAgreements.dataAgreements,
+          total: dataAgreements.pagination.totalItems,
+          hasNextPage: dataAgreements.pagination.hasNext,
+          hasPreviousPage: dataAgreements.pagination.hasPrevious,
         };
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   },
 };
 

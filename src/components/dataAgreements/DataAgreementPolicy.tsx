@@ -139,9 +139,10 @@ const DataAgreementPolicy = (props: Props) => {
                 ...inputDataConfigStyle,
                 cursor: mode === "Read" ? "not-allowed" : "auto",
               }}
-              {...register("DataRetentionPeriod", {
+              {...register("dataRetentionPeriodDays", {
                 required: true,
                 minLength: 1,
+                valueAsNumber: true,
               })}
             />
           </td>

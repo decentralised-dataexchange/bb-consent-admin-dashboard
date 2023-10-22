@@ -8,35 +8,39 @@ export interface createdDataProps {
   Jurisdiction: string;
   IndustryScope: string;
   StorageLocation: string;
-  DataRetentionPeriod: string;
+  DataRetentionPeriodDays: string;
   Restriction: string;
   Shared3PP: boolean;
   DpiaDate: any;
   DpiaSummaryURL: string;
   dataAttributes: any
 }
-// 3rd party sharing value should be added to the payload once added from the backend
-//  value =  createdData.Shared3PP,
+
 export const DataAgreementPayload = (
   createdData: createdDataProps,
   active: boolean,
-  lifecycle: string
+  lifecycle: string,
+  mode: string,
+  selectedDataAgreement?: any
 ): any => {
   return {
     dataAgreement: {
+      id: mode === "Update" ? selectedDataAgreement.id : "",
       version: createdData.Version,
-      controllerId: "string",
+      controllerId: "Update" ? selectedDataAgreement?.controllerId : "string",
       controllerUrl: "string",
       controllerName: "string",
       policy: {
+        id: "Update" ? selectedDataAgreement?.policy?.name : "string",
         name: "string",
-        version: "string",
+        version: "Update" ? selectedDataAgreement?.policy?.version : "string",
         url: createdData.PolicyURL,
         jurisdiction: createdData.Jurisdiction,
         industrySector: createdData.IndustryScope,
-        dataRetentionPeriodDays: parseInt(createdData.DataRetentionPeriod),
+        dataRetentionPeriodDays: createdData.DataRetentionPeriodDays,
         geographicRestriction: createdData.Restriction,
         storageLocation: createdData.StorageLocation,
+        thirdPartyDataSharing: createdData.Shared3PP
       },
       purpose: createdData.Name,
       purposeDescription: createdData.Description,
@@ -45,23 +49,24 @@ export const DataAgreementPayload = (
       dpiaDate: createdData.DpiaDate,
       dpiaSummaryUrl: createdData.DpiaSummaryURL,
       signature: {
-        payload: "string",
-        signature: "string",
-        verificationMethod: "string",
-        verificationPayload: "string",
-        verificationPayloadHash: "string",
-        verificationArtifact: "string",
-        verificationSignedBy: "string",
-        verificationSignedAs: "string",
-        verificationJwsHeader: "string",
-        timestamp: "string",
-        signedWithoutObjectReference: false,
-        objectType: "revision",
-        objectReference: "string",
+        id: "Update" ? selectedDataAgreement?.signature.id : "",
+        payload: "Update" ? selectedDataAgreement?.signature.payload : "string",
+        signature: "Update" ? selectedDataAgreement?.signature?.signature : "string",
+        verificationMethod: "Update" ? selectedDataAgreement?.signature?.verificationMethod : "string",
+        verificationPayload: "Update" ? selectedDataAgreement?.signature?.verificationPayload : "string",
+        verificationPayloadHash: "Update" ? selectedDataAgreement?.signature?.verificationPayloadHash : "string",
+        verificationArtifact: "Update" ? selectedDataAgreement?.signature?.verificationArtifact : "string",
+        verificationSignedBy: "Update" ? selectedDataAgreement?.signature?.verificationSignedBy : "string",
+        verificationSignedAs: "Update" ? selectedDataAgreement?.signature?.verificationSignedAs : "string",
+        verificationJwsHeader: "Update" ? selectedDataAgreement?.signature?.verificationJwsHeader : "string",
+        timestamp: "Update" ? selectedDataAgreement?.signature?.timestamp : "string",
+        signedWithoutObjectReference: "Update" ? selectedDataAgreement?.signature?.signedWithoutObjectReference : false,
+        objectType: "Update" ? selectedDataAgreement?.signature?.objectType : "revision",
+        objectReference: "Update" ? selectedDataAgreement?.signature?.objectReference : "string",
       },
       active: active,
-      forgettable: false,
-      compatibleWithVersionId: "string",
+      forgettable: mode === "Update" ? selectedDataAgreement?.forgettable :false,
+      compatibleWithVersionId: "Update" ? selectedDataAgreement?.forgettable : "string",
       lifecycle: lifecycle,
     },
   };
@@ -97,8 +102,8 @@ export const UpdateDataAttributesPayload = (
         ...CreatedDataAttributes.agreementIds
         , responsePurpose.id
       ],
-      name: CreatedDataAttributes.name,
-      description: CreatedDataAttributes.description,
+      name: CreatedDataAttributes.attributeName,
+      description: CreatedDataAttributes.attributeDescription,
       sensitivity: CreatedDataAttributes.sensitivity,
       category: CreatedDataAttributes.sensitivity
     }

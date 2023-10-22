@@ -170,11 +170,11 @@ export const HttpService = {
       config
     );
   },
-  listDataAgreements: async (): Promise<any> => {
+  listDataAgreements: async (offsetValue:number, pageSize:number): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
-    return httpClient.get(ENDPOINTS.getDataAgreements(), config).then((res) => {
+    return httpClient.get(ENDPOINTS.listDataAgreements(offsetValue, pageSize), config).then((res) => {
       const dataAgreements: DataAgreementsResponse = res.data;
       return convertPurposeForClient(dataAgreements);
     });

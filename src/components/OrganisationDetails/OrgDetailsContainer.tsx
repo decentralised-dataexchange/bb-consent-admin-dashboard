@@ -137,7 +137,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                   {organisationDetails.name}
                 </Typography>
                 <Typography variant="body1" height="23px">
-                  Sector: {organisationDetails.Type?.Type}
+                  Sector: {organisationDetails.sector}
                 </Typography>
                 <Typography variant="body1" height="23px">
                   Location: {organisationDetails.location}

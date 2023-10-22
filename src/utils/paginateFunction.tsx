@@ -1,6 +1,3 @@
-export function paginate<T>(records: T[], pageSize: number, pageNumber: number): T[] {
-    return records.slice(
-      (pageNumber - 1) * pageSize,
-      pageNumber * pageSize
-    );
+export const offSet = (pageNumber: number, pageSize:number) => {
+  return (pageNumber - 1) * pageSize 
 }
