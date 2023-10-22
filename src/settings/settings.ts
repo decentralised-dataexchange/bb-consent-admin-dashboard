@@ -20,6 +20,9 @@ export const ENDPOINTS = {
   deleteDataAgreement: (dataAgreementId: string) => { return `/config/data-agreement/${dataAgreementId}`},
   getDataAgreementByID: (dataAgreementId:string) =>{ return `/config/data-agreement/${dataAgreementId}`},
   getDataAttributesByDataAgreementId: (dataAgreementId: string) => { return `/config/data-agreement/${dataAgreementId}/data-attributes`},
-  updateDataAgreementById: (dataAgreementId: string | undefined)=>{return `/config/data-agreement/${dataAgreementId}`}
+  updateDataAgreementById: (dataAgreementId: string | undefined)=>{return `/config/data-agreement/${dataAgreementId}`},
+  listAllPolicies: () => {return `/config/policies`},
+  addPolicy: () => { return `/config/policy` },
+  updatePolicyById: (policyId: string | undefined) => { return `/config/policy/${policyId}` }
 };
 
