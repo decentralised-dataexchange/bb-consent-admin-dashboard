@@ -9,7 +9,7 @@ export interface DADetails {
     jurisdiction: string;
     industryScope: string;
     storageLocation: string;
-    dataRetentionPeriod: number;
+    dataRetentionPeriodDays: number;
     restriction: string;
     Shared3PP: boolean;
     dpiaDate: string;

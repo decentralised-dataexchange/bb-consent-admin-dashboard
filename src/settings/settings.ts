@@ -12,7 +12,7 @@ export const ENDPOINTS = {
   getCoverImage: () => { return `/onboard/organisation/coverimage`},
   getLogoImage: () => { return `/onboard/organisation/logoimage`},
   updateOrganisationDetails: () => {return `/onboard/organisation`},
-  getDataAgreements: () => { return `/config/data-agreements`},
+  listDataAgreements: (offsetValue:number, pageSize: number) => { return `/config/data-agreements?limit=${pageSize}&offset=${offsetValue}`},
   addDataAgreements: () => { return '/config/data-agreement'},
   listDataAttributes: () => { return '/config/data-agreements/data-attributes'},
   addDataAttributes: () => { return '/config/data-agreements/data-attribute'},

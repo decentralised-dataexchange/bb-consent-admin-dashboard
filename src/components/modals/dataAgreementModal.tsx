@@ -56,7 +56,7 @@ const defaultValue = {
   Jurisdiction: "London, GB",
   IndustryScope: "Retail",
   StorageLocation: "Europe",
-  DataRetentionPeriod: 0,
+  dataRetentionPeriodDays: 0,
   Restriction: "Europe",
   Shared3PP: false,
   DpiaDate: new Date().toISOString().slice(0, 16),
@@ -81,59 +81,62 @@ export default function DataAgreementModal(props: Props) {
 
   const params = useParams();
   const selectedDataAgreementId = params["*"];
+  const [selectedDataAgreement, setSelectedDataAgreement] = useState();
 
   useEffect(() => {
-    if (selectedDataAgreementId){
-    HttpService.getDataAttributesByDataAgreementId(
-      selectedDataAgreementId
-    ).then((response) => {
-      let dataAgreements = response.data.dataAgreement;
-      let dataAttributes = response.data.dataAttributes;
-
-      if (mode !== "Create") {
-        methods.reset({
-          Name: dataAgreements.purpose,
-          Description: dataAgreements.purposeDescription,
-          Version: dataAgreements.version,
-          AttributeType: dataAgreements.methodOfUse,
-          LawfulBasisOfProcessing: dataAgreements.lawfulBasis,
-          PolicyURL: dataAgreements.policy.url,
-          Jurisdiction: dataAgreements.policy.jurisdiction,
-          IndustryScope: dataAgreements.policy.industrySector,
-          StorageLocation: dataAgreements.policy.storageLocation,
-          DataRetentionPeriod: dataAgreements.policy.dataRetentionPeriod,
-          Restriction: dataAgreements.policy.geographicRestriction,
-          Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
-          DpiaDate: dataAgreements.dpiaDate,
-          DpiaSummaryURL: dataAgreements.dpiaSummaryUrl,
-          dataAttributes: dataAttributes.map((attribute: any) => {
-            return {
-              attributeName: attribute.name,
-              attributeDescription: attribute.description,
-            };
-          }),
-        });
-      } else {
-        methods.reset({
-          Name: "",
-          Description: "",
-          Version: "1.0.0",
-          AttributeType: "null",
-          LawfulBasisOfProcessing: "consent",
-          PolicyURL: "https://igrant.io/policy.html",
-          Jurisdiction: "London, GB",
-          IndustryScope: "Retail",
-          StorageLocation: "Europe",
-          DataRetentionPeriod: 0,
-          Restriction: "Europe",
-          Shared3PP: false,
-          DpiaDate: new Date().toISOString().slice(0, 16),
-          DpiaSummaryURL: "https://privacyant.se/dpia_results.html",
-          dataAttributes: [{ attributeName: "", attributeDescription: "" }],
-        });
-      }
-    });
-  }
+    if (selectedDataAgreementId) {
+      HttpService.getDataAttributesByDataAgreementId(
+        selectedDataAgreementId
+      ).then((response) => {
+        let dataAgreements = response.data.dataAgreement;
+        let dataAttributes = response.data.dataAttributes;
+        setSelectedDataAgreement(dataAgreements);
+        if (mode !== "Create") {
+          methods.reset({
+            Name: dataAgreements.purpose,
+            Description: dataAgreements.purposeDescription,
+            Version: dataAgreements.version,
+            AttributeType: dataAgreements.methodOfUse,
+            LawfulBasisOfProcessing: dataAgreements.lawfulBasis,
+            PolicyURL: dataAgreements.policy.url,
+            Jurisdiction: dataAgreements.policy.jurisdiction,
+            IndustryScope: dataAgreements.policy.industrySector,
+            StorageLocation: dataAgreements.policy.storageLocation,
+            dataRetentionPeriodDays: dataAgreements.policy.dataRetentionPeriod,
+            Restriction: dataAgreements.policy.geographicRestriction,
+            Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
+            DpiaDate: dataAgreements.dpiaDate,
+            DpiaSummaryURL: dataAgreements.dpiaSummaryUrl,
+            dataAttributes: dataAttributes.map((attribute: any) => {
+              const { name,description,  ...otherProps } = attribute;
+              return {
+                attributeName: name,
+                attributeDescription: description,
+                ...otherProps
+              };
+            }),
+          });
+        } else {
+          methods.reset({
+            Name: "",
+            Description: "",
+            Version: "1.0.0",
+            AttributeType: "null",
+            LawfulBasisOfProcessing: "consent",
+            PolicyURL: "https://igrant.io/policy.html",
+            Jurisdiction: "London, GB",
+            IndustryScope: "Retail",
+            StorageLocation: "Europe",
+            dataRetentionPeriodDays: 0,
+            Restriction: "Europe",
+            Shared3PP: false,
+            DpiaDate: new Date().toISOString().slice(0, 16),
+            DpiaSummaryURL: "https://privacyant.se/dpia_results.html",
+            dataAttributes: [{ attributeName: "", attributeDescription: "" }],
+          });
+        }
+      });
+    }
   }, [selectedDataAgreementId, open]);
 
   const [active, setActive] = useState(false);
@@ -147,7 +150,48 @@ export default function DataAgreementModal(props: Props) {
   const onSubmit = (createdData: any) => {
     if (mode === "Create") {
       HttpService.addDataAgreements(
-        DataAgreementPayload(createdData, active, lifecycle)
+        DataAgreementPayload(createdData, active, lifecycle, mode)
+      ).then((response) => {
+        let responsePurpose = {
+          id: response.data.dataAgreement.id,
+          purpose: response.data.dataAgreement.purpose,
+        };
+
+        let UpdateDataAttributesValues = createdData?.dataAttributes?.filter(
+          (value: any) => value.id !== undefined
+        );
+        let AddDataAttributesValues = createdData?.dataAttributes.filter(
+          (value: any) => value.id === undefined
+        );
+
+        AddDataAttributesValues.length !== 0 &&
+          AddDataAttributesValues.map((AddDataAttributes: any) => {
+            HttpService.addDataAttributes(
+              AddDataAttributesPayload(AddDataAttributes, responsePurpose)
+            ).then((response) => {});
+          });
+
+        UpdateDataAttributesValues.length !== 0 &&
+          UpdateDataAttributesValues.map((UpdateDataAttribute: any) => {
+            HttpService.updateDataAttributes(
+              UpdateDataAttributesPayload(UpdateDataAttribute, responsePurpose),
+              UpdateDataAttribute.id
+            ).then((response) => {});
+          });
+        successCallback();
+        methods.reset({ ...defaultValue });
+        setOpen(false);
+      });
+    } else if (mode === "Update") {
+      HttpService.updateDataAgreementById(
+        DataAgreementPayload(
+          createdData,
+          active,
+          lifecycle,
+          mode,
+          selectedDataAgreement
+        ),
+        selectedDataAgreementId
       ).then((response) => {
         let responsePurpose = {
           id: response.data.dataAgreement.id,
@@ -199,7 +243,7 @@ export default function DataAgreementModal(props: Props) {
                     </Typography>
                     {mode !== "Create" && (
                       <Typography color="#F3F3F6">
-                        {"964018b7-f978-4a54-b2a9-c49375c35feb"}
+                        {selectedDataAgreementId}
                       </Typography>
                     )}
                   </Box>

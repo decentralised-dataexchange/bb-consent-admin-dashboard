@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  List,
-  Datagrid,
-  TextField,
-  Form,
-  useGetList,
-} from "react-admin";
+import { List, Datagrid, TextField, Form, useGetList } from "react-admin";
 
 import {
   Box,
