@@ -20,5 +20,6 @@ export const ENDPOINTS = {
   deleteDataAgreement: (dataAgreementId: string) => { return `/config/data-agreement/${dataAgreementId}`},
   getDataAgreementByID: (dataAgreementId:string) =>{ return `/config/data-agreement/${dataAgreementId}`},
   getDataAttributesByDataAgreementId: (dataAgreementId: string) => { return `/config/data-agreement/${dataAgreementId}/data-attributes`},
+  updateDataAgreementById: (dataAgreementId: string | undefined)=>{return `/config/data-agreement/${dataAgreementId}`}
 };
 

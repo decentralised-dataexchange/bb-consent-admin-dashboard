@@ -186,7 +186,6 @@ const UserAccess = () => {
         setOpen={setOpenDeleteUserAccessModal}
         headerText={"Delete User Access "}
         confirmText="DELETE"
-        buttonName={"DELETE"}
         modalDescriptionText={
           <Typography sx={{ wordWrap: "breakWord" }}>
             You are about to delete an existing user access. Please type{" "}
