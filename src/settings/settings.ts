@@ -14,15 +14,16 @@ export const ENDPOINTS = {
   updateOrganisationDetails: () => {return `/onboard/organisation`},
   listDataAgreements: (offsetValue:number, pageSize: number) => { return `/config/data-agreements?limit=${pageSize}&offset=${offsetValue}`},
   addDataAgreements: () => { return '/config/data-agreement'},
-  listDataAttributes: () => { return '/config/data-agreements/data-attributes'},
+  listDataAttributes: (offsetValue:number, pageSize:number) => { return `/config/data-agreements/data-attributes?limit=${pageSize}&offset=${offsetValue}`},
   addDataAttributes: () => { return '/config/data-agreements/data-attribute'},
-  updateDataAttributesById: (dataAttributeId: string) => { return `/config/data-agreements/data-attribute/${dataAttributeId}`},
+  updateDataAttributesById: (dataAttributeId: string | undefined) => { return `/config/data-agreements/data-attribute/${dataAttributeId}`},
   deleteDataAgreement: (dataAgreementId: string) => { return `/config/data-agreement/${dataAgreementId}`},
   getDataAgreementByID: (dataAgreementId:string) =>{ return `/config/data-agreement/${dataAgreementId}`},
   getDataAttributesByDataAgreementId: (dataAgreementId: string) => { return `/config/data-agreement/${dataAgreementId}/data-attributes`},
   updateDataAgreementById: (dataAgreementId: string | undefined)=>{return `/config/data-agreement/${dataAgreementId}`},
   listAllPolicies: () => {return `/config/policies`},
   addPolicy: () => { return `/config/policy` },
-  updatePolicyById: (policyId: string | undefined) => { return `/config/policy/${policyId}` }
+  updatePolicyById: (policyId: string | undefined) => { return `/config/policy/${policyId}` },
+  getDataAttributeById: (dataAttributeId: string) =>{ return `/config/data-agreements/data-attribute/${dataAttributeId}`}
 };
 

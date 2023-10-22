@@ -79,7 +79,7 @@ export const AddDataAttributesPayload = (
   return {
     dataAttribute: {
         version: "1.0.0",
-        agreements: [responsePurpose],
+        agreements: [{id:responsePurpose.id, purpose: responsePurpose.purpose}],
         agreementIds: [responsePurpose.id],
         name: CreatedDataAttributes.attributeName,
         description: CreatedDataAttributes.attributeName,
@@ -97,7 +97,7 @@ export const UpdateDataAttributesPayload = (
     dataAttribute: {
       id: CreatedDataAttributes.id,
       version: CreatedDataAttributes.version,
-      agreements: [responsePurpose],
+      agreements: [{id:responsePurpose.id, purpose: responsePurpose.purpose}],
       agreementIds: [
         ...CreatedDataAttributes.agreementIds
         , responsePurpose.id

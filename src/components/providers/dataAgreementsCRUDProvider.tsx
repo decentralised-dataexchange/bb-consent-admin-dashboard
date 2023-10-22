@@ -13,13 +13,13 @@ export const DataAgreementsCRUDProvider: FC<
 > = ({ children }) => {
   // Existing data attributes
   const [existingDataAttributes, setExistingDataAttributes] = useState<
-    DataAttributeInterface[]
+    any
   >([]);
 
   useEffect(() => {
-    HttpService.listDataAttributes()
-      .then((dataAttributes: DataAttributeInterface[]) => {
-        setExistingDataAttributes(dataAttributes);
+    HttpService.listDataAttributes(0 , 100)
+      .then((dataAttributes: any) => {
+        setExistingDataAttributes(dataAttributes.dataAttributes);
       })
       .catch((error: any) => {});
   }, []);

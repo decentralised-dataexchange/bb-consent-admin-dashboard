@@ -81,7 +81,7 @@ export default function DataAgreementModal(props: Props) {
 
   const params = useParams();
   const selectedDataAgreementId = params["*"];
-  const [selectedDataAgreement, setSelectedDataAgreement] = useState();
+  const [selectedDataAgreement, setSelectedDataAgreement] = useState<any>();
 
   useEffect(() => {
     if (selectedDataAgreementId) {
@@ -108,11 +108,11 @@ export default function DataAgreementModal(props: Props) {
             DpiaDate: dataAgreements.dpiaDate,
             DpiaSummaryURL: dataAgreements.dpiaSummaryUrl,
             dataAttributes: dataAttributes.map((attribute: any) => {
-              const { name,description,  ...otherProps } = attribute;
+              const { name, description, ...otherProps } = attribute;
               return {
                 attributeName: name,
                 attributeDescription: description,
-                ...otherProps
+                ...otherProps,
               };
             }),
           });
@@ -239,7 +239,8 @@ export default function DataAgreementModal(props: Props) {
                       {mode === "Create" && "Add Data Agreement"}
                       {mode === "Update" &&
                         "Edit Data Agreement: Issue Licence"}
-                      {mode === "Read" && "View Data Agreement: Issue Licence"}
+                      {mode === "Read" &&
+                        `View Data Agreement: ${selectedDataAgreement?.purpose}`}
                     </Typography>
                     {mode !== "Create" && (
                       <Typography color="#F3F3F6">
