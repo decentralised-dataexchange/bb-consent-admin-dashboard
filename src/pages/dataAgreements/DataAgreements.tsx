@@ -29,7 +29,7 @@ import BreadCrumb from "../../components/Breadcrumbs";
 import GlobalDataPolicyConfigModal from "../../components/modals/globalDataPolicyConfig";
 import GeneralModal from "../../components/modals/generalModal";
 import DataAgreementModal from "../../components/modals/dataAgreementModal";
-import DeleteModal from "../../components/modals/deleteModal";
+import DeleteModal from "../../components/modals/generalModal";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -253,6 +253,7 @@ const DataAgreement = () => {
         headerText={"Publish Data Agreement:"}
         dataExchange={"Issue Licence"}
         confirmText="PUBLISH"
+        onRefetch={onRefetch}
         modalDescriptionText={
           <Typography sx={{ wordWrap: "breakWord" }}>
             You are about to publish a data agreement. Please type{" "}

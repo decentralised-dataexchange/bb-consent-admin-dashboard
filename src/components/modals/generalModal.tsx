@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form, TextInput } from "react-admin";
 import { Dispatch, SetStateAction } from "react";
 
@@ -22,9 +22,9 @@ interface Props {
   setOpen: Dispatch<SetStateAction<boolean>>;
   confirmText: string;
   headerText: string;
-  dataExchange: string;
+  dataExchange?: string;
   modalDescriptionText: any;
-  onRefetch: any;
+  onRefetch?: any;
 }
 
 export default function DeleteModal(props: Props) {
@@ -41,19 +41,47 @@ export default function DeleteModal(props: Props) {
   const [confirmationTextInput, setConfirmationTextInput] = useState("");
   const params = useParams();
   const daId = params["*"];
-
+  const [dataAgreementValue, setDataAgreementValue] = useState<any>();
   const handleCancelConfirmationText = (event: any) => {
     setConfirmationTextInput(event.target.value);
     event.target.value === confirmText ? setIsOk(true) : setIsOk(false);
   };
 
+  useEffect(() => {
+    if (confirmText === "PUBLISH" && daId) {
+      HttpService.getDataAgreementByID(daId).then((response) => {
+        setDataAgreementValue(response.data.dataAgreement);
+      });
+    }
+  }, [daId]);
+
   const onSubmit = () => {
-    HttpService.deleteDataAgreement(daId).then((response) => {
-      onRefetch();
-      setTimeout(()=>{
-        setOpen(false);
-      },1000)
-    });
+    if (isOk === true) {
+      if (confirmText === "DELETE") {
+        HttpService.deleteDataAgreement(daId).then((response) => {
+          onRefetch();
+          setOpen(false);
+        });
+      } else {
+        const { active, lifecycle, controllerUrl, ...otherProps } =
+          dataAgreementValue;
+        const updateDAPayload = {
+          dataAgreement: {
+            active: true,
+            lifecycle: "complete",
+            // dummy value should change once backend is changed
+            controllerUrl: "string",
+            ...otherProps,
+          },
+        };
+        HttpService.updateDataAgreementById(updateDAPayload, daId).then(
+          (response) => {
+            onRefetch();
+            setOpen(false);
+          }
+        );
+      }
+    }
   };
 
   return (

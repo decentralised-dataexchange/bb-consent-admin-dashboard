@@ -108,9 +108,7 @@ const Webhooks = () => {
         setOpen={setOpenDeleteWebhooks}
         headerText={"Delete Personal Data: "}
         dataExchange={"Aadhar name"}
-        daId={"964018b7-f978-4a54-b2a9-c49375c35feb"}
         confirmText="DELETE"
-        buttonName={"DELETE"}
         modalDescriptionText={
           <Typography sx={{ wordWrap: "breakWord" }}>
             You are about to delete an existing personal data. Please type{" "}

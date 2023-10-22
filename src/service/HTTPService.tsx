@@ -249,4 +249,17 @@ export const HttpService = {
       config
     );
   },
+  updateDataAgreementById: async (
+    payload: any,
+    dataAgreementId: string | undefined
+  ): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.put(
+      ENDPOINTS.updateDataAgreementById(dataAgreementId),
+      payload,
+      config
+    );
+  },
 };
