@@ -185,14 +185,14 @@ export const HttpService = {
     };
     return httpClient.post(ENDPOINTS.addDataAgreements(), payload, config);
   },
-  listDataAttributes: async (): Promise<DataAttributeInterface[]> => {
+  listDataAttributes: async (offsetValue:number, pageSize: number): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
     return httpClient
-      .get(ENDPOINTS.listDataAttributes(), config)
+      .get(ENDPOINTS.listDataAttributes(offsetValue, pageSize), config)
       .then((res) => {
-        return res.data.dataAttributes;
+        return res.data;
       });
   },
   addDataAttributes: async (
@@ -205,7 +205,7 @@ export const HttpService = {
   },
   updateDataAttributes: async (
     payload: any,
-    dataAttributeId: string
+    dataAttributeId: string | undefined
   ): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
@@ -290,6 +290,17 @@ export const HttpService = {
     return httpClient.put(
       ENDPOINTS.updatePolicyById(policyId),
       payload,
+      config
+    );
+  },
+  getDataAttributeById:  async (
+    dataAttributeId: any
+  ): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.get(
+      ENDPOINTS.getDataAttributeById(dataAttributeId),
       config
     );
   },

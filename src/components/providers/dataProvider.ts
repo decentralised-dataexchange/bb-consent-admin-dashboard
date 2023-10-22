@@ -196,10 +196,31 @@ const dataAgreementDataProvider = {
   },
 };
 
+const personalDataProvider = {
+  getList: (resource: any, params: any) => {
+    let pageSize = params.pagination.perPage;
+    let pageNumber = params.pagination.page;
+
+    let offsetValue = offSet(pageNumber, pageSize);
+    return HttpService.listDataAttributes(offsetValue, pageSize)
+      .then((dataAttributes) => {
+        return {
+          data: dataAttributes.dataAttributes,
+          total: dataAttributes.pagination.totalItems,
+          hasNextPage: dataAttributes.pagination.hasNext,
+          hasPreviousPage: dataAttributes.pagination.hasPrevious,
+        };
+      })
+      .catch((error) => {});
+  },
+};
+
 export const dataProvider = combineDataProviders((resource): any => {
   switch (resource) {
     case "dataagreement":
       return dataAgreementDataProvider;
+    case "personaldata":
+        return personalDataProvider;
     default:
       return fakeConsentBBDataProvider;
   }

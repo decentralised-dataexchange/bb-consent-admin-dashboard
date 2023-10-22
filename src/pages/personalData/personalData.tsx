@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { List, Datagrid, TextField, Form } from "react-admin";
+import { List, Datagrid, TextField, Form, useGetList } from "react-admin";
 
 import {
   Box,
@@ -36,10 +36,19 @@ const HeaderContainer = styled("div")({
 const PersonalData = () => {
   const [openEditPersonalDataModal, setOpenEditPersonalDataModal] =
     useState(false);
+  const { refetch } = useGetList(`personaldata`);
+
+  const onRefetch = () => {
+    refetch();
+  };
 
   return (
     <Container>
-      <List actions={false} sx={{ width: "100%", overflow: "hidden" }}>
+      <List
+        actions={false}
+        empty={false}
+        sx={{ width: "100%", overflow: "hidden" }}
+      >
         <Form>
           <BreadCrumb Link="Personal Data" />
           <HeaderContainer>
@@ -90,11 +99,9 @@ const PersonalData = () => {
               overflow: "auto",
               width: { xs: "359px", sm: "100%", md: "100%", lg: "100%" },
             }}
+            rowClick="edit"
           >
-            <TextField
-              source="dataAttributeName"
-              label={"Data Attribute Name"}
-            />
+            <TextField source="name" label={"Data Attribute Name"} />
             <TextField source="description" label={"Description"} />
             <TextField source="dataAgreement" label={"Data Agreement"} />
             <Box
@@ -126,8 +133,7 @@ const PersonalData = () => {
         open={openEditPersonalDataModal}
         setOpen={setOpenEditPersonalDataModal}
         headerText={"Edit Personal Data: "}
-        dataExchange={"Aadhar name"}
-        daId={"964018b7-f978-4a54-b2a9-c49375c35feb"}
+        onRefetch={onRefetch}
       />
     </Container>
   );

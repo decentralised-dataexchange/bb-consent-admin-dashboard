@@ -138,16 +138,17 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
   }, [open]);
 
   const onSubmit = (createdData: any) => {
-    console.log("created", createdData);
     const payload = {
       policy: createdData,
     };
 
-    if (listAllPoliciesLength === 0) {
+    if (methods.formState.isValid === true) {
       HttpService.addPolicies(payload).then((response) => {});
     } else {
       HttpService.updatePoliciesById(payload, policyIdForUpdatePolicy).then(
-        () => {}
+        () => { 
+          setOpen(false)
+        }
       );
     }
   };
