@@ -24,6 +24,11 @@ export const ENDPOINTS = {
   listAllPolicies: () => {return `/config/policies`},
   addPolicy: () => { return `/config/policy` },
   updatePolicyById: (policyId: string | undefined) => { return `/config/policy/${policyId}` },
-  getDataAttributeById: (dataAttributeId: string) =>{ return `/config/data-agreements/data-attribute/${dataAttributeId}`}
+  getDataAttributeById: (dataAttributeId: string) =>{ return `/config/data-agreements/data-attribute/${dataAttributeId}`},
+  updateAdminAvatar:() => { return  '/onboard/admin/avatarimage' },
+  getAdminAvatarImage: () => { return '/onboard/admin/avatarimage'},
+  getOrganisationAdminDetails: () => { return '/onboard/admin'},
+  updateOrganisationAdminDetails:()=> {return '/onboard/admin'},
+  resetPassword: () =>{ return '/onboard/password/reset' }
 };
 

@@ -304,4 +304,60 @@ export const HttpService = {
       config
     );
   },
+  updateAdminAvatar:async (formData: any): Promise<any> => {
+    const config: object = {
+      headers: {
+        Authorization: "Bearer " + LocalStorageService.getAccessToken(),
+        "content-type": "multipart/form-data",
+      },
+    };
+    const payload = formData;
+    return httpClient
+      .put(ENDPOINTS.updateAdminAvatar(), payload, config)
+      .then((res) => {
+        return res.data;
+      });
+  },
+  getAdminAvatarImage: async (): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+      responseType: "arraybuffer",
+    };
+    return httpClient.get(ENDPOINTS.getAdminAvatarImage(), config).then((res) => {
+      return imageBlobToBase64(res.data);
+    });
+  },
+  getOrganisationAdminDetails:  async (): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.get(
+      ENDPOINTS.getOrganisationAdminDetails(),
+      config
+    );
+  },
+  updateOrganisationAdminDetails:async (
+    payload: any,
+  ): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.put(
+      ENDPOINTS.updateOrganisationAdminDetails(),
+      payload,
+      config
+    );
+  },
+  resetPassword:async (
+    payload: any,
+  ): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.put(
+      ENDPOINTS.resetPassword(),
+      payload,
+      config
+    );
+  },
 };
