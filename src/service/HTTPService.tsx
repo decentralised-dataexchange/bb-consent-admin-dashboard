@@ -170,14 +170,19 @@ export const HttpService = {
       config
     );
   },
-  listDataAgreements: async (offsetValue:number, pageSize:number): Promise<any> => {
+  listDataAgreements: async (
+    offsetValue: number,
+    pageSize: number
+  ): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
-    return httpClient.get(ENDPOINTS.listDataAgreements(offsetValue, pageSize), config).then((res) => {
-      const dataAgreements: DataAgreementsResponse = res.data;
-      return convertPurposeForClient(dataAgreements);
-    });
+    return httpClient
+      .get(ENDPOINTS.listDataAgreements(offsetValue, pageSize), config)
+      .then((res) => {
+        const dataAgreements: DataAgreementsResponse = res.data;
+        return convertPurposeForClient(dataAgreements);
+      });
   },
   addDataAgreements: async (payload: DataAgreement): Promise<any> => {
     const config: object = {
@@ -185,7 +190,10 @@ export const HttpService = {
     };
     return httpClient.post(ENDPOINTS.addDataAgreements(), payload, config);
   },
-  listDataAttributes: async (offsetValue:number, pageSize: number): Promise<any> => {
+  listDataAttributes: async (
+    offsetValue: number,
+    pageSize: number
+  ): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
@@ -195,9 +203,7 @@ export const HttpService = {
         return res.data;
       });
   },
-  addDataAttributes: async (
-    payload: any,
-  ): Promise<any> => {
+  addDataAttributes: async (payload: any): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
@@ -216,9 +222,7 @@ export const HttpService = {
       config
     );
   },
-  deleteDataAgreement: async (
-    dataAgreementId: any
-  ): Promise<any> => {
+  deleteDataAgreement: async (dataAgreementId: any): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
@@ -227,9 +231,7 @@ export const HttpService = {
       config
     );
   },
-  getDataAgreementByID: async (
-    dataAgreementId: any
-  ): Promise<any> => {
+  getDataAgreementByID: async (dataAgreementId: any): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
@@ -238,7 +240,7 @@ export const HttpService = {
       config
     );
   },
-  getDataAttributesByDataAgreementId:  async (
+  getDataAttributesByDataAgreementId: async (
     dataAgreementId: any
   ): Promise<any> => {
     const config: object = {
@@ -266,15 +268,11 @@ export const HttpService = {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
-    return httpClient
-      .get(ENDPOINTS.listAllPolicies(), config)
-      .then((res) => {
-        return res.data.policies;
-      });
+    return httpClient.get(ENDPOINTS.listAllPolicies(), config).then((res) => {
+      return res.data.policies;
+    });
   },
-  addPolicies: async (
-    payload: any,
-  ): Promise<any> => {
+  addPolicies: async (payload: any): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
@@ -282,7 +280,7 @@ export const HttpService = {
   },
   updatePoliciesById: async (
     payload: any,
-    policyId: string | undefined 
+    policyId: string | undefined
   ): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
@@ -293,9 +291,7 @@ export const HttpService = {
       config
     );
   },
-  getDataAttributeById:  async (
-    dataAttributeId: any
-  ): Promise<any> => {
+  getDataAttributeById: async (dataAttributeId: any): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
@@ -304,6 +300,57 @@ export const HttpService = {
       config
     );
   },
+  addIndividualUsingByCsv: async (formData: any): Promise<any> => {
+    const config: object = {
+      headers: {
+        Authorization: "Bearer " + LocalStorageService.getAccessToken(),
+        "content-type": "multipart/form-data",
+      },
+    };
+    const payload = formData;
+    return httpClient
+      .post(ENDPOINTS.addIndividualUsingByCsv(), payload, config)
+      .then((res) => {
+        return res.data;
+      });
+  },
+  addNewIDP: async (payload: any): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.post(ENDPOINTS.addNewIDP(), payload, config);
+  },
+  listAllIdps : async (): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.get(ENDPOINTS.listAllIdps(), config).then((res) => {
+      return res.data;
+    });
+  },
+  deleteIdpBy:  async (idpId: any): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.delete(
+      ENDPOINTS.deleteIdpBy(idpId),
+      config
+    );
+  },
+  updateIdpByid : async (
+    payload: any,
+    idpId: string
+  ): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.put(
+      ENDPOINTS.updateIdpByid(idpId),
+      payload,
+      config
+    );
+  },
+
   updateAdminAvatar:async (formData: any): Promise<any> => {
     const config: object = {
       headers: {

@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { Box, Typography, Tooltip, Button } from "@mui/material";
+import { Box, Typography, Tooltip } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 // icons
@@ -11,12 +11,13 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import BreadCrumb from "../../components/Breadcrumbs";
 import GeneralModal from "../../components/modals/generalModal";
 import EditUserAccessModal from "../../components/modals/editUserAccessModal";
+import { HttpService } from "../../service/HTTPService";
 
-const Container = styled('div')(({ theme }) => ({
-  margin: '58px 15px 0px 15px',
-  paddingBottom:"50px",
-  [theme.breakpoints.down('sm')]: {
-      margin: '52px 0 10px 0'
+const Container = styled("div")(({ theme }) => ({
+  margin: "58px 15px 0px 15px",
+  paddingBottom: "50px",
+  [theme.breakpoints.down("sm")]: {
+    margin: "52px 0 10px 0",
   },
 }));
 
@@ -25,65 +26,60 @@ const HeaderContainer = styled("div")({
   justifyContent: "space-between",
   alignItems: "center",
   flexWrap: "wrap",
-  marginTop: "15px"
+  marginTop: "15px",
 });
 
 const Item = styled("div")({
   display: "flex",
   alignItems: "center",
   backgroundColor: "#fff",
-  padding: "25px 30px 25px 30px" ,
+  padding: "25px 30px 25px 30px",
   marginTop: "13px",
   justifyContent: "space-between",
-  height: 'auto',
+  height: "auto",
   borderRadius: 3,
   border: "1px solid #E1E1E1",
 });
 
-const buttonStyle = {
+const uploadButtonStyle = {
   borderRadius: 0,
   border: "1px solid #8E8E8E",
   backgroundColor: "#EBEBEB",
   width: "200px",
   height: "25px",
+  cursor: "pointer",
 };
 
 const UserAccess = () => {
-  const [openEditUserAccessModal, setOpenEditUserAccessModal] =
-    useState(false);
+  const [openEditUserAccessModal, setOpenEditUserAccessModal] = useState(false);
   const [openDeleteUserAccessModal, setOpenDeleteUserAccessModal] =
     useState(false);
   const [configured, setConfigured] = useState(false);
-  const [fileCSV, setFileCSV] = useState();
-  const fileReader = new FileReader();
+  const [idpDetails, setIdpDetails] = useState<any>();
+  useEffect(() => {
+    HttpService.listAllIdps().then((response) => {
+      if (response.idps.length !== 0) {
+        setConfigured(true);
+        setIdpDetails(response.idps[0]);
+      }
+    });
+  }, [openDeleteUserAccessModal, openEditUserAccessModal]);
 
-  console.log("fileCSV", fileCSV);
-  const handleChangeCSV = (e: any) => {
-    setFileCSV(e.target.files[0]);
+  const handleCSVFile = async (e: any) => {
+    let file = e.target.files[0];
+    let csv = /text.csv/;
 
-    e.preventDefault();
+    if (file.type.match(csv)) {
+      const formData = new FormData();
+      formData.append("individuals", file);
 
-    //try onsubmit inside onchange itself
-    if (fileCSV) {
-      fileReader.onload = function (event) {
-        // const csvOutput = event.target.result;
-      };
-
-      fileReader.readAsText(fileCSV);
+      HttpService.addIndividualUsingByCsv(formData)
+        .then((res) => {})
+        .catch((error) => {
+          console.log(`Error: ${error}`);
+        });
     }
   };
-
-  // const handleSubmitCSV = (e: any) => {
-  //   e.preventDefault();
-
-  //   if (fileCSV) {
-  //     fileReader.onload = function (event) {
-  //       // const csvOutput = event.target.result;
-  //     };
-
-  //     fileReader.readAsText(fileCSV);
-  //   }
-  // };
 
   return (
     <Container>
@@ -99,7 +95,15 @@ const UserAccess = () => {
             User Access
           </Typography>
           <Tooltip title="Create Data Agreement" placement="top">
-            <AddCircleOutlineOutlinedIcon style={{ cursor: "pointer", marginLeft:"7px" }}  onClick={() => {setOpenEditUserAccessModal(true)}}/>
+            <AddCircleOutlineOutlinedIcon
+              style={{
+                cursor: configured ? "auto" : "pointer",
+                marginLeft: "7px",
+              }}
+              onClick={() => {
+                configured === false && setOpenEditUserAccessModal(true);
+              }}
+            />
           </Tooltip>
         </Box>
       </HeaderContainer>
@@ -156,26 +160,22 @@ const UserAccess = () => {
           Upload existing users via a .csv file using the UPLOAD option.
         </Typography>
         <Box>
-          <label htmlFor="photo">
+          <form>
+            <label className="uptext" htmlFor="uploadCSV">
+              <Box style={uploadButtonStyle}>
+                <Typography style={{ textAlign: "center" }}>UPLOAD</Typography>
+              </Box>
+            </label>
             <input
               accept=".csv*"
-              style={{ display: "none" }}
-              id="photo"
-              name="photo"
-              type={fileCSV === undefined ? "file" : "" }
+              id="uploadCSV"
+              name="uploadCSV"
+              hidden={true}
+              type="file"
               multiple={false}
-              onChange={handleChangeCSV}
+              onChange={handleCSVFile}
             />
-            <Button
-              component="span"
-              variant="contained"
-              // onClick={handleSubmitCSV}
-              disabled={fileCSV === undefined ? false : true }
-              style={{...buttonStyle, color: fileCSV === undefined ? "black" : "#BCC0C4"}}
-            >
-              UPLOAD
-            </Button>
-          </label>
+          </form>
         </Box>
       </Item>
       {/* Modals */}
@@ -186,6 +186,7 @@ const UserAccess = () => {
         setOpen={setOpenDeleteUserAccessModal}
         headerText={"Delete User Access "}
         confirmText="DELETE"
+        userAccessId={idpDetails?.id}
         modalDescriptionText={
           <Typography sx={{ wordWrap: "breakWord" }}>
             You are about to delete an existing user access. Please type{" "}
@@ -199,7 +200,7 @@ const UserAccess = () => {
         open={openEditUserAccessModal}
         setOpen={setOpenEditUserAccessModal}
         headerText={"Access Configuration"}
-        setConfigured={setConfigured}
+        idpDetails={idpDetails}
       />
     </Container>
   );
