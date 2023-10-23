@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
-  Avatar,
   Grid,
   Typography,
   Box,
@@ -10,17 +9,15 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-
 import BreadCrumb from "../../components/Breadcrumbs";
-import OrgLogoImageUpload from "../../components/OrganisationDetails/OrgLogoImageUpload";
+import ManageAdminProfilePicUpload from "../../components/manageAdminProfilePicUpload";
+import { HttpService } from "../../service/HTTPService";
 
-const Container = styled('div')(({ theme }) => ({
-  margin: '58px 15px 0px 15px',
-  paddingBottom:"50px",
-  [theme.breakpoints.down('sm')]: {
-      margin: '52px 0 10px 0'
+const Container = styled("div")(({ theme }) => ({
+  margin: "58px 15px 0px 15px",
+  paddingBottom: "50px",
+  [theme.breakpoints.down("sm")]: {
+    margin: "52px 0 10px 0",
   },
 }));
 
@@ -29,7 +26,7 @@ const HeaderContainer = styled("div")({
   justifyContent: "space-between",
   alignItems: "center",
   flexWrap: "wrap",
-  marginTop: '10px',
+  marginTop: "10px",
 });
 
 const DetailsContainer = styled("div")({
@@ -41,7 +38,7 @@ const DetailsContainer = styled("div")({
 const Item = styled("div")(({ theme }) => ({
   backgroundColor: "#fff",
   padding: 10,
-  paddingLeft:30,
+  paddingLeft: 30,
   height: "215px",
   borderRadius: 2,
   border: "1px solid #CECECE",
@@ -60,15 +57,60 @@ const buttonStyle = {
 
 const ManageAdmin = () => {
   const [editMode, setEditMode] = useState(false);
-  const [passwordEditMode, setPasswordEditMode] = useState(false);
-  const [showPassword, setShowPassword] = useState(true);
-  const ImageBase64 = ""
+  const [adminDetails, setAdminDetails] = useState<any>();
+  const [logoImageBase64, setLogoImageBase64] = useState<any>(null);
+  const [adminName, setAdminName] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+
   const handleEdit = (event: React.MouseEvent<HTMLElement>) => {
     setEditMode(!editMode);
   };
 
-  const handleEditPassword = (event: React.MouseEvent<HTMLElement>) => {
-    setPasswordEditMode(!passwordEditMode);
+  useEffect(() => {
+    HttpService.getOrganisationAdminDetails().then((res) => {
+      setAdminDetails(res.data);
+      HttpService.getAdminAvatarImage().then((imageBase64) => {
+        setLogoImageBase64(imageBase64);
+      });
+    });
+  }, []);
+
+  const onClickSave = () => {
+    if (adminName.length > 2) {
+      const { name, ...otherProps } = adminDetails;
+      let payload = {
+        organisationAdmin: {
+          name: adminName,
+          ...otherProps,
+        },
+      };
+      HttpService.updateOrganisationAdminDetails(payload).then(() => {
+        setEditMode(false);
+      });
+    }
+  };
+
+  const onClickRestPassWord = () => {
+    if (
+      currentPassword.length > 7 &&
+      newPassword.length > 7 &&
+      confirmNewPassword.length > 7 &&
+      newPassword === confirmNewPassword
+    ) {
+      console.log("success");
+      const payload = {
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+      };
+      HttpService.resetPassword(payload)
+      .then(()=>{
+        setCurrentPassword("")
+        setNewPassword("")
+        setConfirmNewPassword("")
+      })
+    }
   };
 
   return (
@@ -103,22 +145,24 @@ const ManageAdmin = () => {
                   xs={12}
                   sx={{ height: "130px" }}
                 >
-                  <Box sx={{width:"100%",height:"100%",display:"flex", justifyContent:{xs:"center", sm:"center", md:"normal", lg:"center"} }}>
-                    <Avatar
-                      src=""
-                      style={{
-                        position: "absolute",
-                        opacity: editMode ? 0.75 : 1,
-                        width: "130px",
-                        height: "130px",
-                        border: "solid white 6px",
-                      }}
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: {
+                        xs: "center",
+                        sm: "center",
+                        md: "normal",
+                        lg: "center",
+                      },
+                    }}
+                  >
+                    <ManageAdminProfilePicUpload
+                      editMode={editMode}
+                      logoImageBase64={logoImageBase64}
+                      setLogoImageBase64={setLogoImageBase64}
                     />
-                    {editMode && (
-                      <Box style={{ position: "relative" }}>
-                        <OrgLogoImageUpload editMode={editMode} logoImageBase64={ImageBase64}  />
-                      </Box>
-                    )}
                   </Box>
                 </Grid>
                 <Grid
@@ -127,7 +171,7 @@ const ManageAdmin = () => {
                   md={4}
                   sm={12}
                   xs={12}
-                  sx={{ display: "grid", alignContent: "center",}}
+                  sx={{ display: "grid", alignContent: "center" }}
                 >
                   <Grid container>
                     <Grid item lg={3} md={6} sm={6} xs={6}>
@@ -139,9 +183,16 @@ const ManageAdmin = () => {
                           variant="standard"
                           placeholder="Name"
                           sx={{ marginTop: -1.5 }}
+                          value={adminName}
+                          onChange={(e) => setAdminName(e.target.value)}
                         />
                       ) : (
-                        <Typography variant="body1" sx={{wordWrap: "break-word"}}>John Doe</Typography>
+                        <Typography
+                          variant="body1"
+                          sx={{ wordWrap: "break-word" }}
+                        >
+                          {adminDetails?.name}
+                        </Typography>
                       )}
                     </Grid>
                   </Grid>
@@ -150,7 +201,12 @@ const ManageAdmin = () => {
                       <Typography variant="body1">Email:</Typography>
                     </Grid>
                     <Grid item lg={9} md={5} sm={5} xs={5}>
-                      <Typography variant="body1" sx={{wordWrap: "break-word"}}>johndoe@gmail.com</Typography>
+                      <Typography
+                        variant="body1"
+                        sx={{ wordWrap: "break-word" }}
+                      >
+                        {adminDetails?.email}
+                      </Typography>
                     </Grid>
                   </Grid>
                   <Grid container>
@@ -158,8 +214,11 @@ const ManageAdmin = () => {
                       <Typography variant="body1">User ID:</Typography>
                     </Grid>
                     <Grid item lg={9} md={5} sm={5} xs={5}>
-                      <Typography variant="body1"  sx={{wordWrap: "break-word"}}>
-                        603e67db69dd720001c74f90
+                      <Typography
+                        variant="body1"
+                        sx={{ wordWrap: "break-word" }}
+                      >
+                        {adminDetails?.id}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -173,22 +232,32 @@ const ManageAdmin = () => {
                     >
                       Cancel
                     </Button>
-                    <Button style={buttonStyle} variant="outlined">
+                    <Button
+                      style={buttonStyle}
+                      variant="outlined"
+                      onClick={onClickSave}
+                    >
                       Save
                     </Button>
                   </Box>
                 ) : (
-                  <Box style={{width: "100%",display:"flex", justifyContent:"right"}}>
-                  <Typography
-                    onClick={handleEdit}
+                  <Box
                     style={{
-                      cursor: "pointer",
-                      color: "grey",
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "right",
                     }}
+                  >
+                    <Typography
+                      onClick={handleEdit}
+                      style={{
+                        cursor: "pointer",
+                        color: "grey",
+                      }}
                     >
-                    Edit
-                  </Typography>
-                    </Box>
+                      Edit
+                    </Typography>
+                  </Box>
                 )}
               </Grid>
             </Item>
@@ -211,26 +280,9 @@ const ManageAdmin = () => {
                   variant="standard"
                   placeholder="Enter Current Password"
                   type="password"
-                  sx={{width:"50%"}}
-
-                  // type={showPassword ? "password" : "text"}
-                  // disabled={passwordEditMode ? false : true}
-                  InputProps={{
-                    // disableUnderline: passwordEditMode ? false : true,
-                    // endAdornment:
-                      // passwordEditMode === true &&
-                      // (showPassword ? (
-                      //   <VisibilityOutlinedIcon
-                      //     style={{ color: "#A1A1A1", cursor: "pointer" }}
-                      //     onClick={() => setShowPassword(!showPassword)}
-                      //   />
-                      // ) : (
-                      //   <VisibilityOffOutlinedIcon
-                      //     style={{ color: "#A1A1A1", cursor: "pointer" }}
-                      //     onClick={() => setShowPassword(!showPassword)}
-                      //   />
-                      // )),
-                  }}
+                  sx={{ width: "50%" }}
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
                 />
               </Box>
               <Box
@@ -246,7 +298,9 @@ const ManageAdmin = () => {
                   variant="standard"
                   placeholder="Enter New Password"
                   type="password"
-                  sx={{width:"50%"}}
+                  sx={{ width: "50%" }}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
                 />
               </Box>
               <Box
@@ -262,37 +316,24 @@ const ManageAdmin = () => {
                   variant="standard"
                   placeholder="Confirm New Password"
                   type="password"
-                  sx={{width:"50%"}}
+                  sx={{ width: "50%" }}
+                  value={confirmNewPassword}
+                  onChange={(e) => setConfirmNewPassword(e.target.value)}
                 />
               </Box>
-              
-              <Box sx={{height:"30px"}}>
-                {/* {passwordEditMode ? (
-                  <Box style={{ textAlign: "right", width: "100%" }}>
-                    <Button
-                      onClick={handleEditPassword}
-                      style={buttonStyle}
-                      variant="outlined"
-                    >
-                      Cancel
-                    </Button>
-                    <Button style={buttonStyle} variant="outlined">
-                      Save
-                    </Button>
-                  </Box>
-                ) : ( */}
-                  <Typography
-                    onClick={handleEditPassword}
-                    style={{
-                      cursor: "pointer",
-                      textAlign: "right",
-                      color: "grey",
-                      width: "100%",
-                    }}
-                  >
-                    Change Password
-                  </Typography>
-                {/* )} */}
+
+              <Box sx={{ height: "30px" }}>
+                <Typography
+                  onClick={onClickRestPassWord}
+                  style={{
+                    cursor: "pointer",
+                    textAlign: "right",
+                    color: "grey",
+                    width: "100%",
+                  }}
+                >
+                  Change Password
+                </Typography>
               </Box>
             </Item>
           </Grid>
