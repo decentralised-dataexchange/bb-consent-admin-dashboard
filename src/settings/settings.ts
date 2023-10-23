@@ -29,6 +29,11 @@ export const ENDPOINTS = {
   getAdminAvatarImage: () => { return '/onboard/admin/avatarimage'},
   getOrganisationAdminDetails: () => { return '/onboard/admin'},
   updateOrganisationAdminDetails:()=> {return '/onboard/admin'},
-  resetPassword: () =>{ return '/onboard/password/reset' }
+  resetPassword: () =>{ return '/onboard/password/reset' },
+  addIndividualUsingByCsv : () => { return '/config/individual/upload'},
+  addNewIDP : () => { return '/config/idp/open-id'},
+  listAllIdps : () => { return '/config/idp/open-ids' },
+  deleteIdpBy: (idpId: string) => { return `/config/idp/open-id/${idpId}` },
+  updateIdpByid : (idpId: string) => { return  `/config/idp/open-id/${idpId}` }
 };
 

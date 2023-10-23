@@ -142,7 +142,9 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
       policy: createdData,
     };
 
-    if (methods.formState.isValid === true) {
+    // if the list is empty create new global data policy
+    // else update the exisiting
+    if (listAllPoliciesLength === 0) {
       HttpService.addPolicies(payload).then((response) => {});
     } else {
       HttpService.updatePoliciesById(payload, policyIdForUpdatePolicy).then(

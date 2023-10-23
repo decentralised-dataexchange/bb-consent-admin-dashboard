@@ -25,6 +25,7 @@ interface Props {
   dataExchange?: string;
   modalDescriptionText: any;
   onRefetch?: any;
+  userAccessId?: string;
 }
 
 export default function DeleteModal(props: Props) {
@@ -36,6 +37,7 @@ export default function DeleteModal(props: Props) {
     dataExchange,
     modalDescriptionText,
     onRefetch,
+    userAccessId,
   } = props;
   const [isOk, setIsOk] = useState(false);
   const [confirmationTextInput, setConfirmationTextInput] = useState("");
@@ -57,12 +59,12 @@ export default function DeleteModal(props: Props) {
 
   const onSubmit = () => {
     if (isOk === true) {
-      if (confirmText === "DELETE") {
+      if (confirmText === "DELETE" && daId) {
         HttpService.deleteDataAgreement(daId).then((response) => {
           onRefetch();
           setOpen(false);
         });
-      } else {
+      } else if (confirmText === "PUBLISH" && daId) {
         const { active, lifecycle, controllerUrl, ...otherProps } =
           dataAgreementValue;
         const updateDAPayload = {
@@ -80,6 +82,10 @@ export default function DeleteModal(props: Props) {
             setOpen(false);
           }
         );
+      } else if (confirmText === "DELETE" && userAccessId) {
+        HttpService.deleteIdpBy(userAccessId).then(() => {
+          setOpen(false);
+        });
       }
     }
   };
