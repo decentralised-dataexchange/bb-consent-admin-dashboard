@@ -34,7 +34,6 @@ export default function DeleteModal(props: Props) {
     setOpen,
     confirmText,
     headerText,
-    dataExchange,
     modalDescriptionText,
     onRefetch,
     userAccessId,
@@ -50,7 +49,7 @@ export default function DeleteModal(props: Props) {
   };
 
   useEffect(() => {
-    if (confirmText === "PUBLISH" && daId) {
+    if (daId) {
       HttpService.getDataAgreementByID(daId).then((response) => {
         setDataAgreementValue(response.data.dataAgreement);
       });
@@ -98,7 +97,7 @@ export default function DeleteModal(props: Props) {
             <HeaderContainer>
               <Box pl={2}>
                 <Typography color="#F3F3F6">
-                  {headerText} {dataExchange}
+                  {headerText} {dataAgreementValue?.purpose}
                 </Typography>
                 <Typography color="#F3F3F6">{daId}</Typography>
               </Box>

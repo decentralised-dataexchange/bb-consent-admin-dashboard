@@ -228,7 +228,6 @@ const DataAgreement = () => {
         open={openDeleteDataAgreementModal}
         setOpen={setOpenDeleteDataAgreementModal}
         headerText={"Delete Data Agreement:"}
-        dataExchange={"Issue Licence"}
         confirmText="DELETE"
         onRefetch={onRefetch}
         modalDescriptionText={
@@ -245,7 +244,6 @@ const DataAgreement = () => {
         open={openPublishDataAgreementModal}
         setOpen={setOpenPublishDataAgreementModal}
         headerText={"Publish Data Agreement:"}
-        dataExchange={"Issue Licence"}
         confirmText="PUBLISH"
         onRefetch={onRefetch}
         modalDescriptionText={
