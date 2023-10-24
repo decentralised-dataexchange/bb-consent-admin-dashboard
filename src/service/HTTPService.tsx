@@ -407,4 +407,18 @@ export const HttpService = {
       config
     );
   },
+  listAllAdminLogs:async (
+    offsetValue: number,
+    pageSize: number
+  ): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient
+      .get(ENDPOINTS.listAllAdminLogs(offsetValue, pageSize), config)
+      .then((res) => {
+        const allLogs: DataAgreementsResponse = res.data;
+        return allLogs;
+      });
+  },
 };
