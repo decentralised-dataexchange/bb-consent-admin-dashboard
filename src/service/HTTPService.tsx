@@ -424,4 +424,30 @@ export const HttpService = {
         return allLogs;
       });
   },
+  listAllApiKeys: async (): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient
+      .get(ENDPOINTS.listAllApiKeys(), config)
+      .then((res) => {
+        const allLogs: DataAgreementsResponse = res.data;
+        return allLogs;
+      });
+  },
+  addNewApiKey:  async (payload: any): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.post(ENDPOINTS.addNewApiKey(), payload, config);
+  },
+  deleteApiKey: async (apiKeyId: any): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.delete(
+      ENDPOINTS.deleteApiKey(apiKeyId),
+      config
+    );
+  },
 };
