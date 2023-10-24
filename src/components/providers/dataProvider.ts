@@ -196,7 +196,7 @@ const dataAgreementDataProvider = {
   },
 };
 
-const personalDataProvider = {
+const personalDataDataProvider = {
   getList: (resource: any, params: any) => {
     let pageSize = params.pagination.perPage;
     let pageNumber = params.pagination.page;
@@ -209,6 +209,25 @@ const personalDataProvider = {
           total: dataAttributes.pagination.totalItems,
           hasNextPage: dataAttributes.pagination.hasNext,
           hasPreviousPage: dataAttributes.pagination.hasPrevious,
+        };
+      })
+      .catch((error) => {});
+  },
+};
+
+const userRecordsDataProvider = {
+  getList: (resource: any, params: any) => {
+    let pageSize = params.pagination.perPage;
+    let pageNumber = params.pagination.page;
+
+    let offsetValue = offSet(pageNumber, pageSize);
+    return HttpService.listAllDataAgreementRecords(offsetValue, pageSize)
+      .then((dataAgreementRecords) => {
+        return {
+          data: dataAgreementRecords.dataAgreementRecords,
+          total: dataAgreementRecords.pagination.totalItems,
+          hasNextPage: dataAgreementRecords.pagination.hasNext,
+          hasPreviousPage: dataAgreementRecords.pagination.hasPrevious,
         };
       })
       .catch((error) => {});
@@ -236,14 +255,18 @@ const viewLogsProvider = {
   },
 };
 
+
+
 export const dataProvider = combineDataProviders((resource): any => {
   switch (resource) {
     case "dataagreement":
       return dataAgreementDataProvider;
     case "personaldata":
-        return personalDataProvider;
+        return personalDataDataProvider;
     case "viewlogs":
         return viewLogsProvider;
+        case "userrecords":
+          return userRecordsDataProvider;
     default:
       return fakeConsentBBDataProvider;
   }

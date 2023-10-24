@@ -320,7 +320,7 @@ export const HttpService = {
     };
     return httpClient.post(ENDPOINTS.addNewIDP(), payload, config);
   },
-  listAllIdps : async (): Promise<any> => {
+  listAllIdps: async (): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
@@ -328,30 +328,20 @@ export const HttpService = {
       return res.data;
     });
   },
-  deleteIdpBy:  async (idpId: any): Promise<any> => {
+  deleteIdpBy: async (idpId: any): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
-    return httpClient.delete(
-      ENDPOINTS.deleteIdpBy(idpId),
-      config
-    );
+    return httpClient.delete(ENDPOINTS.deleteIdpBy(idpId), config);
   },
-  updateIdpByid : async (
-    payload: any,
-    idpId: string
-  ): Promise<any> => {
+  updateIdpByid: async (payload: any, idpId: string): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
-    return httpClient.put(
-      ENDPOINTS.updateIdpByid(idpId),
-      payload,
-      config
-    );
+    return httpClient.put(ENDPOINTS.updateIdpByid(idpId), payload, config);
   },
 
-  updateAdminAvatar:async (formData: any): Promise<any> => {
+  updateAdminAvatar: async (formData: any): Promise<any> => {
     const config: object = {
       headers: {
         Authorization: "Bearer " + LocalStorageService.getAccessToken(),
@@ -370,22 +360,19 @@ export const HttpService = {
       headers: { ...getAuthenticatedHeaders() },
       responseType: "arraybuffer",
     };
-    return httpClient.get(ENDPOINTS.getAdminAvatarImage(), config).then((res) => {
-      return imageBlobToBase64(res.data);
-    });
+    return httpClient
+      .get(ENDPOINTS.getAdminAvatarImage(), config)
+      .then((res) => {
+        return imageBlobToBase64(res.data);
+      });
   },
-  getOrganisationAdminDetails:  async (): Promise<any> => {
+  getOrganisationAdminDetails: async (): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
-    return httpClient.get(
-      ENDPOINTS.getOrganisationAdminDetails(),
-      config
-    );
+    return httpClient.get(ENDPOINTS.getOrganisationAdminDetails(), config);
   },
-  updateOrganisationAdminDetails:async (
-    payload: any,
-  ): Promise<any> => {
+  updateOrganisationAdminDetails: async (payload: any): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
@@ -395,15 +382,31 @@ export const HttpService = {
       config
     );
   },
-  resetPassword:async (
-    payload: any,
+  resetPassword: async (payload: any): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.put(ENDPOINTS.resetPassword(), payload, config);
+  },
+  listAllDataAgreementRecords: async (
+    offsetValue: number,
+    pageSize: number
   ): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
-    return httpClient.put(
-      ENDPOINTS.resetPassword(),
-      payload,
+    return httpClient
+      .get(ENDPOINTS.listAllDataAgreementRecords(offsetValue, pageSize), config)
+      .then((res) => {
+        return res.data;
+      });
+  },
+  getDataAgreementRecordByID : async (recordId: any): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.get(
+      ENDPOINTS.getDataAgreementRecordByID(recordId),
       config
     );
   },

@@ -35,6 +35,8 @@ export const ENDPOINTS = {
   listAllIdps : () => { return '/config/idp/open-ids' },
   deleteIdpBy: (idpId: string) => { return `/config/idp/open-id/${idpId}` },
   updateIdpByid : (idpId: string) => { return  `/config/idp/open-id/${idpId}` },
-  listAllAdminLogs:(offsetValue:number, pageSize:number)=>{ return `/audit/admin/logs?limit=${pageSize}&offset=${offsetValue}`}
+  listAllAdminLogs:(offsetValue:number, pageSize:number)=>{ return `/audit/admin/logs?limit=${pageSize}&offset=${offsetValue}`},
+  listAllDataAgreementRecords: (offsetValue: number, pageSize: number) => { return `/audit/data-agreement-records?limit=${pageSize}&offset=${offsetValue}`},
+  getDataAgreementRecordByID: (dataAgreementRecordId: string | undefined) =>{ return `/audit/data-agreement-record/${dataAgreementRecordId}`}
 };
 
