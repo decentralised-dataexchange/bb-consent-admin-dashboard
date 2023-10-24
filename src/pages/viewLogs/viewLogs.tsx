@@ -80,7 +80,7 @@ const ViewLogs = () => {
         <Box style={{ display: "flex", justifyContent:"center", marginTop:"18px"}}>
           <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" , width:{xs:"359px",sm:"100%",md:"100%", lg:"100%"}}} >
             <TextField source="action" label={"Action"} />
-            <TextField source="category" label={"Category"} />
+            <TextField source="typeStr" label={"Category"} />
             <TextField source="timestamp" label={"Timestamp"} />
           </Datagrid>
         </Box>

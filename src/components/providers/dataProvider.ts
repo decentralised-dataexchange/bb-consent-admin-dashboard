@@ -215,12 +215,35 @@ const personalDataProvider = {
   },
 };
 
+const viewLogsProvider = {
+  getList: (resource: any, params: any) => {
+    let pageSize = params.pagination.perPage;
+    let pageNumber = params.pagination.page;
+
+    let offsetValue = offSet(pageNumber, pageSize);
+    return HttpService.listAllAdminLogs(offsetValue, pageSize)
+      .then((allLogs) => {
+        console.log("all", allLogs)
+
+        return {
+          data: allLogs.logs,
+          total: allLogs.pagination.totalItems,
+          hasNextPage: allLogs.pagination.hasNext,
+          hasPreviousPage: allLogs.pagination.hasPrevious,
+        };
+      })
+      .catch((error) => {});
+  },
+};
+
 export const dataProvider = combineDataProviders((resource): any => {
   switch (resource) {
     case "dataagreement":
       return dataAgreementDataProvider;
     case "personaldata":
         return personalDataProvider;
+    case "viewlogs":
+        return viewLogsProvider;
     default:
       return fakeConsentBBDataProvider;
   }
