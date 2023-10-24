@@ -1,10 +1,8 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-import {
-  Grid,
-  Typography,
-  Box,
-} from "@mui/material";
+import { Grid, Typography, Box, Tooltip } from "@mui/material";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { styled } from "@mui/material/styles";
 
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
@@ -12,12 +10,15 @@ import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 
 import BreadCrumb from "../../components/Breadcrumbs";
+import { HttpService } from "../../service/HTTPService";
+import { DEMO_BASE_URL, STAGING_BASE_URL } from "../../settings/settings";
+import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
 
-const Container = styled('div')(({ theme }) => ({
-  margin: '58px 15px 0px 15px',
-  paddingBottom:"50px",
-  [theme.breakpoints.down('sm')]: {
-      margin: '52px 0 10px 0'
+const Container = styled("div")(({ theme }) => ({
+  margin: "58px 15px 0px 15px",
+  paddingBottom: "50px",
+  [theme.breakpoints.down("sm")]: {
+    margin: "52px 0 10px 0",
   },
 }));
 
@@ -38,14 +39,63 @@ const DetailsContainer = styled("div")({
 const Item = styled("div")(({ theme }) => ({
   backgroundColor: "#fff",
   padding: 10,
-  paddingLeft:20,
+  paddingLeft: 20,
   height: "auto",
   borderRadius: 2,
   border: "1px solid #CECECE",
 }));
 
 const DeveloperAPIs = () => {
+  const { organisationDetails } = useContext(OrganizationDetailsCRUDContext);
   const [showAPI, setShowAPI] = useState(false);
+  const [firstAPIKeyDetailsInListApiKey, setFirstAPIKeyDetailsInListApiKey] =
+    useState<any>();
+  const [showHideButton, setShowHideButton] = useState<boolean>(false);
+  const [apiKeyValue, setApiKeyValue] = useState<any>();
+  let stagingURL =
+    process.env.REACT_APP_ENV === "staging" ? STAGING_BASE_URL : DEMO_BASE_URL;
+
+  useEffect(() => {
+    HttpService.listAllApiKeys().then((res) => {
+      setFirstAPIKeyDetailsInListApiKey(res.apiKeys);
+    });
+  }, []);
+
+  const createNewApiKey = () => {
+    if (firstAPIKeyDetailsInListApiKey?.length === 0) {
+      let payload = {
+        apiKey: {
+          scopes: ["service"],
+        },
+      };
+
+      HttpService.addNewApiKey(payload).then((res) => {
+        setShowAPI(true);
+        setShowHideButton(true);
+        setApiKeyValue(res.data.apiKey.apiKey);
+      });
+    }
+  };
+
+  const deleteApiKey = () => {
+    if (firstAPIKeyDetailsInListApiKey?.length !== 0) {
+      HttpService.deleteApiKey(firstAPIKeyDetailsInListApiKey[0].id).then(
+        () => {}
+      );
+    }
+  };
+
+  const handleCopy = () => {
+    if (showAPI) {
+      navigator.clipboard.writeText(apiKeyValue);
+    }
+  };
+
+  const onChangeShowHideButton = () => {
+    if (showAPI === true) {
+      setShowHideButton(!showHideButton);
+    }
+  };
 
   return (
     <Container>
@@ -72,7 +122,7 @@ const DeveloperAPIs = () => {
                 Organization ID
               </Typography>
               <Typography color="grey" variant="subtitle1">
-                603e683c69dd720001c74f93
+                {organisationDetails.id}
               </Typography>
             </Item>
           </Grid>
@@ -102,23 +152,32 @@ const DeveloperAPIs = () => {
                 Configured base URL
               </Typography>
               <Typography color="grey" variant="subtitle1">
-                staging-consentbb.igrant.io
+                {stagingURL}
               </Typography>
             </Item>
           </Grid>
           <Grid item lg={12} md={12} sm={12} xs={12}>
             <Item>
-              <Typography
-                color="black"
-                variant="subtitle1"
-                fontWeight="bold"
-                mb={0.5}
-              >
-                API Key
-              </Typography>
+              <Box style={{ display: "flex", alignItems: "center" }} mb={0.5}>
+                <Typography color="black" variant="subtitle1" fontWeight="bold">
+                  API Key
+                </Typography>
+                <Tooltip title="Create API Key" placement="top">
+                  <AddCircleOutlineOutlinedIcon
+                    onClick={createNewApiKey}
+                    style={{
+                      cursor:
+                        firstAPIKeyDetailsInListApiKey?.length === 0
+                          ? "pointer"
+                          : "not-allowed",
+                      marginLeft: "7px",
+                    }}
+                  />
+                </Tooltip>
+              </Box>
               <Grid container direction="row">
                 <Grid item lg={10} md={9} sm={8} xs={12}>
-                  {showAPI ? (
+                  {(showAPI === false || showHideButton === false) && (
                     <Typography
                       color="grey"
                       variant="subtitle1"
@@ -126,13 +185,14 @@ const DeveloperAPIs = () => {
                     >
                       **************************************************************************************************************************************************************************
                     </Typography>
-                  ) : (
+                  )}
+                  {showAPI && showHideButton === true && (
                     <Typography
                       color="grey"
                       variant="subtitle1"
                       sx={{ wordBreak: "break-all" }}
                     >
-                      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI2MDNlNjdkYjY5ZGQ3MjAwMDFjNzRmOTAiLCJvcmdpZCI6IiIsImVudiI6IiIsImV4cCI6MTcyNDI0MTM0MH0.1FqFrQm3GArNtV1fagh_2YDNn1J1YQQE04YMNawfXyM
+                      {apiKeyValue}
                     </Typography>
                   )}
                 </Grid>
@@ -140,25 +200,16 @@ const DeveloperAPIs = () => {
                   <Box
                     style={{ display: "flex", justifyContent: "space-around" }}
                   >
-                    {showAPI ? (
+                    {showHideButton === true && (
                       <Box
-                        onClick={() => setShowAPI(!showAPI)}
-                        sx={{ cursor: "pointer", display:"flex", alignItems:"center" }}
+                        onClick={onChangeShowHideButton}
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          cursor: showAPI ? "pointer" : "not-allowed",
+                        }}
                       >
-                        <VisibilityOutlinedIcon style={{marginRight:5}}/>
-                        <Typography
-                          variant="subtitle1"
-                          sx={{ wordBreak: "break-all" }}
-                        >
-                          Show
-                        </Typography>
-                      </Box>
-                    ) : (
-                      <Box
-                        onClick={() => setShowAPI(!showAPI)}
-                        sx={{ cursor: "pointer", display:"flex", alignItems:"center" }}
-                      >
-                        <VisibilityOffOutlinedIcon style={{marginRight:5}}/>
+                        <VisibilityOffOutlinedIcon style={{ marginRight: 5 }} />
                         <Typography
                           variant="subtitle1"
                           sx={{ wordBreak: "break-all" }}
@@ -167,13 +218,60 @@ const DeveloperAPIs = () => {
                         </Typography>
                       </Box>
                     )}
-                    <Box sx={{ cursor: "pointer", display:"flex", alignItems:"center" }}>
-                      <ContentCopyOutlinedIcon style={{marginRight:5}} />
+                    {showHideButton === false && (
+                      <Box
+                        onClick={onChangeShowHideButton}
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          cursor: showAPI ? "pointer" : "not-allowed",
+                        }}
+                      >
+                        <VisibilityOutlinedIcon style={{ marginRight: 5 }} />
+
+                        <Typography
+                          variant="subtitle1"
+                          sx={{ wordBreak: "break-all" }}
+                        >
+                          Show
+                        </Typography>
+                      </Box>
+                    )}
+                    <Box
+                      sx={{
+                        cursor: showAPI ? "pointer" : "not-allowed",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                      onClick={handleCopy}
+                    >
+                      <ContentCopyOutlinedIcon
+                        style={{ marginRight: 5, marginLeft: 5 }}
+                      />
                       <Typography
                         variant="subtitle1"
                         sx={{ wordBreak: "break-all" }}
                       >
                         Copy
+                      </Typography>
+                    </Box>
+                    <Box
+                      onClick={deleteApiKey}
+                      sx={{
+                        cursor:
+                          firstAPIKeyDetailsInListApiKey?.length !== 0
+                            ? "pointer"
+                            : "not-allowed",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <DeleteOutlineOutlinedIcon style={{ marginRight: 5 }} />
+                      <Typography
+                        variant="subtitle1"
+                        sx={{ wordBreak: "break-all" }}
+                      >
+                        Delete
                       </Typography>
                     </Box>
                   </Box>

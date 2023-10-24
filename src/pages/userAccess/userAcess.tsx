@@ -97,7 +97,7 @@ const UserAccess = () => {
           <Tooltip title="Create Data Agreement" placement="top">
             <AddCircleOutlineOutlinedIcon
               style={{
-                cursor: configured ? "auto" : "pointer",
+                cursor: configured ? "not-allowed" : "pointer",
                 marginLeft: "7px",
               }}
               onClick={() => {
