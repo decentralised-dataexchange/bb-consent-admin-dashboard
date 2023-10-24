@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { List, Datagrid, TextField, Form, TextInput } from "react-admin";
 
 import {
@@ -18,7 +18,8 @@ import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import BreadCrumb from "../../components/Breadcrumbs";
 import DataAgreementModal from "../../components/modals/dataAgreementModal";
 import Dropdown from "../../components/dropdowns/dropdown";
-import { DataAgreementsCRUDProvider } from "../../components/providers/dataAgreementsCRUDProvider";
+import { HttpService } from "../../service/HTTPService";
+import { useParams } from "react-router-dom";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -64,14 +65,32 @@ const UserRecords = () => {
     { value: "Vital Interest" },
     { value: "Public Task" },
     { value: "Legitimate Interest" },
-  ]
+  ];
 
   const purposeDropdownvalues = [
     { value: "Market and Campaign	" },
     { value: "Campaign" },
     { value: "Market and Campaign	" },
-  ]
+  ];
 
+  const params = useParams();
+  const selectedDataRecordId = params["*"];
+  const [
+    dataAgreementIdForSelectedRecord,
+    setDataAgreementIdForSelectedRecord,
+  ] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (selectedDataRecordId && openDataAgreementModal === true) {
+      HttpService.getDataAgreementRecordByID(selectedDataRecordId).then(
+        (res) => {
+          setDataAgreementIdForSelectedRecord(
+            res.data.dataAgreementRecord.dataAgreementId
+          );
+        }
+      );
+    }
+  }, [selectedDataRecordId, openDataAgreementModal === true]);
 
   return (
     <Container>
@@ -150,7 +169,10 @@ const UserRecords = () => {
                     control={<Radio color="default" />}
                     label=""
                   />
-                  <Dropdown displayValue={"Filter by Purpose"} dropdownValues={purposeDropdownvalues} />
+                  <Dropdown
+                    displayValue={"Filter by Purpose"}
+                    dropdownValues={purposeDropdownvalues}
+                  />
                 </Box>
                 <Box
                   sx={{
@@ -165,18 +187,37 @@ const UserRecords = () => {
                     control={<Radio color="default" />}
                     label=""
                   />
-                  <Dropdown displayValue={"Filter by Lawful Basis"} dropdownValues={lawfullBasisOfProcessingDropdownvalues}/>
+                  <Dropdown
+                    displayValue={"Filter by Lawful Basis"}
+                    dropdownValues={lawfullBasisOfProcessingDropdownvalues}
+                  />
                 </Box>
               </RadioGroup>
             </FormControl>
           </Item>
         </Form>
-        <Box style={{ display: "flex", justifyContent:"center", marginTop:"18px"}}>
-          <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" , width:{xs:"359px",sm:"100%",md:"100%", lg:"100%"}}} >
-            <TextField source="subscriberID" label={"Subscriber ID"} />
-            <TextField source="purpose" label={"Purpose"} />
-            <TextField source="lawfulBasis" label={"Lawful Basis"} />
-            <TextField source="agreementEvent" label={"Agreement Event"} />
+        <Box
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "18px",
+          }}
+        >
+          <Datagrid
+            rowClick="edit"
+            bulkActionButtons={false}
+            sx={{
+              overflow: "auto",
+              width: { xs: "359px", sm: "100%", md: "100%", lg: "100%" },
+            }}
+          >
+            <TextField source="individualId" label={"Subscriber ID"} />
+            <TextField source="dataAgreement.purpose" label={"Purpose"} />
+            <TextField
+              source="dataAgreement.lawfulBasis"
+              label={"Lawful Basis"}
+            />
+            <TextField source="optIn" label={"Agreement Event"} />
             <TextField source="timestamp" label={"Timestamp"} />
             <Box
               style={{
@@ -201,13 +242,13 @@ const UserRecords = () => {
       {/* Modals */}
 
       {/* Read Data agreement */}
-      <DataAgreementsCRUDProvider>
       <DataAgreementModal
         open={openDataAgreementModal}
         setOpen={setOpenDataAgreementModal}
         mode={"Read"}
+        resourceName="userrecords"
+        dataAgreementIdForSelectedRecord={dataAgreementIdForSelectedRecord}
       />
-      </DataAgreementsCRUDProvider>
     </Container>
   );
 };
