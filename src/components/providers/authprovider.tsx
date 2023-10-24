@@ -15,7 +15,12 @@ export const myAuthProvider = {
       .then((res) => {
         const token = res.data;
         LocalStorageService.updateToken(token);
-        // LocalStorageService.updateUser(res.user);
+        HttpService.getOrganisationAdminDetails().then((res) => {
+          LocalStorageService.updateUser(res.data);
+          HttpService.getAdminAvatarImage().then((imageBase64) => {
+            LocalStorageService.updateProfilePic(imageBase64);
+          });
+        });
         return res.data;
       })
       .catch((error) => {
@@ -37,15 +42,9 @@ export const myAuthProvider = {
   logout: (params: any): Promise<any> => Promise.resolve(),
   getIdentity: (): Promise<any> => {
     try {
-      // const { LastVisit, Name, ImageURL, Email } = LocalStorageService.getUser();
-      // Currently passing empty values for below values, need to update once user data are available
-      const { LastVisit, Name, ImageURL, Email } = {
-        LastVisit: "",
-        Name: "",
-        ImageURL: "",
-        Email: "",
-      };
-      return Promise.resolve({ LastVisit, Name, ImageURL, Email });
+      const { lastVisited, name, email } = LocalStorageService.getUser();
+      const imageUrl = LocalStorageService.getUserProfilePic();
+      return Promise.resolve({ lastVisited, name, email, imageUrl });
     } catch (error) {
       return Promise.reject(error);
     }

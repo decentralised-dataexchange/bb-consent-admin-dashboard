@@ -65,7 +65,7 @@ export const AppBarMenu = (props: Props) => {
         >
           <Avatar
             style={{ width: "70px", height: "70px" }}
-            src={props.image}
+            src={`data:image/jpeg;charset=utf-8;base64,${props.image}`}
             alt="img"
           />
           <Typography

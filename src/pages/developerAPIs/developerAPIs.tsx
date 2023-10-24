@@ -13,6 +13,7 @@ import BreadCrumb from "../../components/Breadcrumbs";
 import { HttpService } from "../../service/HTTPService";
 import { DEMO_BASE_URL, STAGING_BASE_URL } from "../../settings/settings";
 import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
+import { LocalStorageService } from "../../service/localStorageService";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -96,6 +97,8 @@ const DeveloperAPIs = () => {
       setShowHideButton(!showHideButton);
     }
   };
+  const { id } = LocalStorageService.getUser()
+
 
   return (
     <Container>
@@ -137,7 +140,7 @@ const DeveloperAPIs = () => {
                 Your User ID
               </Typography>
               <Typography color="grey" variant="subtitle1">
-                603e683c69dd720001c74f93
+                {id}
               </Typography>
             </Item>
           </Grid>

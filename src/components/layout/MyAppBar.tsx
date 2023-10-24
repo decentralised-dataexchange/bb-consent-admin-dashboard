@@ -42,10 +42,10 @@ export default function MyAppBar() {
             Consent Building Block - Admin Dashboard
           </Typography>
           <AppBarMenu
-            firstName={identity?.Name}
-            lastVisited={identity?.LastVisit}
-            email={identity?.Email}
-            image={identity?.ImageURL}
+            firstName={identity?.name}
+            lastVisited={identity?.lastVisited}
+            email={identity?.email}
+            image={identity?.imageUrl}
           />
         </Toolbar>
       </AppBar>
