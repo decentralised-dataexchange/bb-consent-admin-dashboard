@@ -385,6 +385,7 @@ export default function DataAgreementModal(props: Props) {
 
                       <Typography variant="subtitle1">
                         Data Policy Configurations
+                        <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                       </Typography>
                       <DataAgreementPolicy mode={mode} />
 
