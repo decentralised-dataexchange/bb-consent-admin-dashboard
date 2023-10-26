@@ -42,12 +42,12 @@ enum DataExchangeModes {
 }
 
 enum LawfulBasisOfProcessingEnum {
-  ConsentBasis = "Consent Basis",
-  ContractBasis = "Contract Basis",
-  LegalObligationBasis = "Legal Obligation Basis",
-  VitalInterestBasis = "Vital Interest Basis",
-  PublicTaskBasis = "Public Task Basis",
-  LegitimateInterestBasis = "Legitimate Interest Basis",
+  ConsentBasis = "Consent",
+  ContractBasis = "Contract",
+  LegalObligationBasis = "Legal Obligation",
+  VitalInterestBasis = "Vital Interest",
+  PublicTaskBasis = "Public Task",
+  LegitimateInterestBasis = "Legitimate Interest",
 }
 
 export interface Pagination {
