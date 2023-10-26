@@ -450,4 +450,23 @@ export const HttpService = {
       config
     );
   },
+  getPrivacyBoard:  async (): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.get(
+      ENDPOINTS.getPrivacyBoard(),
+      config
+    );
+  },
+  getStatus: async (): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.get(
+      ENDPOINTS.getStatus(),
+      config
+    );
+  },
+
 };
