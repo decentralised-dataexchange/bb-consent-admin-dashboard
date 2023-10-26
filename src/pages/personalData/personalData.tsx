@@ -1,5 +1,11 @@
-import { useState } from "react";
-import { List, Datagrid, TextField, Form, useGetList } from "react-admin";
+import { useState, useEffect } from "react";
+import {
+  List,
+  Datagrid,
+  TextField,
+  Form,
+  useRefresh,
+} from "react-admin";
 
 import {
   Box,
@@ -16,6 +22,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 import BreadCrumb from "../../components/Breadcrumbs";
 import EditPersonalDataModal from "../../components/modals/editPersonalDataModal";
+import { useFilterStore } from "../../store/store";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -36,10 +43,35 @@ const HeaderContainer = styled("div")({
 const PersonalData = () => {
   const [openEditPersonalDataModal, setOpenEditPersonalDataModal] =
     useState(false);
-  const { refetch } = useGetList(`personaldata`);
+  const [handleChangeTriggered, setHandleChangeTriggered] = useState(false);
+
+  const refresh = useRefresh();
 
   const onRefetch = () => {
-    refetch();
+    refresh();
+  };
+
+  const changefilterDataAttribute = (filterDataAgreement: string) => {
+    useFilterStore.getState().updateFilterDataAttribute(filterDataAgreement);
+  };
+
+  useEffect(() => {
+    refresh();
+  }, [handleChangeTriggered]);
+
+  const handleChange = (e: any) => {
+    setHandleChangeTriggered(!handleChangeTriggered);
+    const { name } = e.target;
+
+    if (name === "data_source") {
+      changefilterDataAttribute("data_source");
+    } else if (name === "data_using_service") {
+      changefilterDataAttribute("data_using_service");
+    } else if (name === "all") {
+      changefilterDataAttribute("all");
+    } else {
+      changefilterDataAttribute("all");
+    }
   };
 
   return (
@@ -58,24 +90,30 @@ const PersonalData = () => {
             <Box>
               <RadioGroup
                 aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="All"
+                // defaultValue="all"
                 name="radio-buttons-group"
                 row
               >
                 <FormControlLabel
-                  value="All"
+                  value="all"
                   control={<Radio color="default" />}
                   label="All"
+                  onClick={handleChange}
+                  name={"all"}
                 />
                 <FormControlLabel
-                  value="dataSource"
+                  value="data_source"
                   control={<Radio color="default" />}
                   label="Data Source"
+                  onClick={handleChange}
+                  name={"data_source"}
                 />
                 <FormControlLabel
-                  value="dataUsingService"
+                  value="data_using_service"
                   control={<Radio color="default" />}
                   label="Data Using Service"
+                  onClick={handleChange}
+                  name={"data_using_service"}
                 />
               </RadioGroup>
             </Box>

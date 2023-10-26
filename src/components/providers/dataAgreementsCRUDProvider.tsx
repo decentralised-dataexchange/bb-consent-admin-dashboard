@@ -17,7 +17,7 @@ export const DataAgreementsCRUDProvider: FC<
   >([]);
 
   useEffect(() => {
-    HttpService.listDataAttributes(0 , 100)
+    HttpService.listDataAttributes(0 , 100, '')
       .then((dataAttributes: any) => {
         setExistingDataAttributes(dataAttributes.dataAttributes);
       })

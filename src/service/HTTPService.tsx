@@ -14,10 +14,6 @@ import {
   convertPurposeForClient,
   DataAgreement,
 } from "../interfaces/DataAgreement";
-import {
-  DataAttributepayloadInterface,
-  DataAttributeInterface,
-} from "../interfaces/DataAttribute";
 
 const httpClient = axios.create({
   baseURL:
@@ -172,13 +168,14 @@ export const HttpService = {
   },
   listDataAgreements: async (
     offsetValue: number,
-    pageSize: number
+    pageSize: number,
+    filter: string
   ): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
     return httpClient
-      .get(ENDPOINTS.listDataAgreements(offsetValue, pageSize), config)
+      .get(ENDPOINTS.listDataAgreements(offsetValue, pageSize, filter), config)
       .then((res) => {
         const dataAgreements: DataAgreementsResponse = res.data;
         return convertPurposeForClient(dataAgreements);
@@ -192,13 +189,14 @@ export const HttpService = {
   },
   listDataAttributes: async (
     offsetValue: number,
-    pageSize: number
+    pageSize: number,
+    filter: string
   ): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
     return httpClient
-      .get(ENDPOINTS.listDataAttributes(offsetValue, pageSize), config)
+      .get(ENDPOINTS.listDataAttributes(offsetValue, pageSize, filter), config)
       .then((res) => {
         return res.data;
       });
@@ -390,18 +388,22 @@ export const HttpService = {
   },
   listAllDataAgreementRecords: async (
     offsetValue: number,
-    pageSize: number
+    pageSize: number,
+    filter: any
   ): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
     return httpClient
-      .get(ENDPOINTS.listAllDataAgreementRecords(offsetValue, pageSize), config)
+      .get(
+        ENDPOINTS.listAllDataAgreementRecords(offsetValue, pageSize, filter),
+        config
+      )
       .then((res) => {
         return res.data;
       });
   },
-  getDataAgreementRecordByID : async (recordId: any): Promise<any> => {
+  getDataAgreementRecordByID: async (recordId: any): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
@@ -410,15 +412,16 @@ export const HttpService = {
       config
     );
   },
-  listAllAdminLogs:async (
+  listAllAdminLogs: async (
     offsetValue: number,
-    pageSize: number
+    pageSize: number,
+    filter: number
   ): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
     return httpClient
-      .get(ENDPOINTS.listAllAdminLogs(offsetValue, pageSize), config)
+      .get(ENDPOINTS.listAllAdminLogs(offsetValue, pageSize, filter), config)
       .then((res) => {
         const allLogs: DataAgreementsResponse = res.data;
         return allLogs;
@@ -428,14 +431,12 @@ export const HttpService = {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
-    return httpClient
-      .get(ENDPOINTS.listAllApiKeys(), config)
-      .then((res) => {
-        const allLogs: DataAgreementsResponse = res.data;
-        return allLogs;
-      });
+    return httpClient.get(ENDPOINTS.listAllApiKeys(), config).then((res) => {
+      const allLogs: DataAgreementsResponse = res.data;
+      return allLogs;
+    });
   },
-  addNewApiKey:  async (payload: any): Promise<any> => {
+  addNewApiKey: async (payload: any): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
@@ -445,28 +446,18 @@ export const HttpService = {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
-    return httpClient.delete(
-      ENDPOINTS.deleteApiKey(apiKeyId),
-      config
-    );
+    return httpClient.delete(ENDPOINTS.deleteApiKey(apiKeyId), config);
   },
-  getPrivacyBoard:  async (): Promise<any> => {
+  getPrivacyBoard: async (): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
-    return httpClient.get(
-      ENDPOINTS.getPrivacyBoard(),
-      config
-    );
+    return httpClient.get(ENDPOINTS.getPrivacyBoard(), config);
   },
   getStatus: async (): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
-    return httpClient.get(
-      ENDPOINTS.getStatus(),
-      config
-    );
+    return httpClient.get(ENDPOINTS.getStatus(), config);
   },
-
 };
