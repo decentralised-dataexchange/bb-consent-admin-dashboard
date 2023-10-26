@@ -3,7 +3,6 @@ import CSS from "csstype";
 import { Box } from "@mui/material";
 
 import { DataAttributeInterface } from "../../interfaces/DataAttribute";
-import { DataAtributeNameController } from "./dataAttributeName";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import BlockOutlinedIcon from "@mui/icons-material/BlockOutlined";
@@ -78,12 +77,23 @@ export const DataAttribute = (props: Props) => {
         <table style={tableAttrAdditionalInfoStyle}>
           <tbody>
             <tr style={{ display: "flex", alignItems: "center" }}>
-              <DataAtributeNameController
-                mode={props.mode}
-                existingDataAttributes={props.existingDataAttributes}
-                index={index}
-                formController={formController}
-              />
+               <input
+                  {...register(`dataAttributes.${props.index}.attributeName`, {
+                    required: true,
+                    minLength: 3,
+                  })}
+                  placeholder="Attribute Name (minimum 3 characters)"
+                  disabled={props.mode === "Read"}
+                  style={{
+                    ...inputStyleAttr,
+                    border: "none",
+                    outline: "none",
+                    width: "100%",
+                    cursor: props.mode === "Read" ? "not-allowed" : "auto",
+                  }}
+                  type="text"
+                  autoComplete="off"
+                />
               <th style={{ marginRight: "14px", marginLeft: "17px" }}>
                 <BlockOutlinedIcon
                   style={{
