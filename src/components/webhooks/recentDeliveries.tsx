@@ -9,45 +9,48 @@ import {
   Typography,
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
+import ClearIcon from '@mui/icons-material/Clear';
 import { FiBox } from "react-icons/fi";
 
-function createData(id: string, timestamp: string) {
-  return { id, timestamp };
-}
-
-const rows = [
-  createData("64fbd2d73eaf080001b587c6", "9 September 2023 at 07:35:11 am"),
-  createData("64fbd2d73eaf080001b587c6", "9 September 2023 at 07:35:11 am"),
-  createData("64fbd2d73eaf080001b587c6", "9 September 2023 at 07:35:11 am"),
-  createData("64fbd2d73eaf080001b587c6", "9 September 2023 at 07:35:11 am"),
-  createData("64fbd2d73eaf080001b587c6", "9 September 2023 at 07:35:11 am"),
-];
-
-const RecentDeliveries = () => {
+const RecentDeliveries = (props: any) => {
+  const { recentDeliveryValues } = props;
   return (
     <Box mt={-3}>
       <Typography variant="h6" fontWeight="bold" mb={1}>
         Recent Deliveries
       </Typography>
-      <TableContainer component={Paper} sx={{display:"flex",justifyContent:"center",boxShadow:"none", }}>
-        <Table aria-label="simple table" sx={{ overflow: "auto",width:{xs:"359px",sm:"100%",md:"100%", lg:"100%"}}}>
+      <TableContainer
+        component={Paper}
+        sx={{ display: "flex", justifyContent: "center", boxShadow: "none" }}
+      >
+        <Table
+          aria-label="simple table"
+          sx={{
+            overflow: "auto",
+            width: { xs: "359px", sm: "100%", md: "100%", lg: "100%" },
+          }}
+        >
           <TableBody>
-            {rows.map((row) => (
+            {recentDeliveryValues.map((row: any) => (
               <TableRow
-                //   key={row.name}
+                key={row.id}
                 sx={{
                   height: 0,
                 }}
               >
                 <TableCell sx={{ width: "10px" }}>
-                  <DoneIcon
-                    color="success"
-                    style={{ height: "15px", width: "15px" }}
-                  />
+                  {row.status === 'completed' ? (
+                    <DoneIcon
+                      color="success"
+                      style={{ height: "15px", width: "15px" }}
+                    />
+                  ) : (
+                    <ClearIcon
+                      color="error"
+                      style={{ height: "15px", width: "15px" }}
+                    />
+                  )}
                 </TableCell>
-                {/* <TableCell sx={{ width: "10px" }}>
-                  <FiBox style={{ color: "grey", height:"15px", width:"15px" }} />
-                </TableCell> */}
                 <TableCell align="left">
                   <Typography
                     sx={{
@@ -71,7 +74,7 @@ const RecentDeliveries = () => {
                 </TableCell>
                 <TableCell align="right">
                   <Typography sx={{ color: "grey", fontSize: "14px" }}>
-                    {row.timestamp}
+                    {new Date(row.timestamp * 1000).toLocaleString()}
                   </Typography>
                 </TableCell>
               </TableRow>

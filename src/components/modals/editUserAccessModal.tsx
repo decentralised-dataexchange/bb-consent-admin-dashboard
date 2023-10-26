@@ -83,7 +83,6 @@ export default function EditUserAccesModal(props: Props) {
       idp: createdData,
     };
 
-    console.log("created data", payload);
     if (idpDetails) {
       HttpService.updateIdpByid(payload, idpDetails.id).then(() => {
         setOpen(false);
