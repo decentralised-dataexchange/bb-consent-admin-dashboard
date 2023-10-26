@@ -274,7 +274,7 @@ export default function EditUserAccesModal(props: Props) {
                     <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                   </Typography>
                   <TextField
-                    sx={{ margin: 0, marginBottom: "10px" }}
+                    sx={{ margin: 0, marginBottom: "100px" }}
                     autoFocus
                     variant="outlined"
                     fullWidth

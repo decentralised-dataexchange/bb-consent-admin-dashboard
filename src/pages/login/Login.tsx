@@ -34,6 +34,7 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [error, setError] = useState("");
+  let version = process.env.REACT_APP_VERSION;
 
   const submit = () => {
     login({ username, password })
@@ -162,7 +163,7 @@ export const Login = () => {
         </Box>
       </Form>
       <FooterContainer>
-        <Typography mb={0.5}>v2023.8.1</Typography>
+        <Typography mb={0.5}>{version}</Typography>
         <Box mb={2} display={"flex"} justifyContent={"center"}>
           <Typography color="grey" variant="subtitle2">
             Powered by{" "}
