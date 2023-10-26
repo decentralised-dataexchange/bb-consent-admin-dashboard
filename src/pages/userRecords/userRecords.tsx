@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { List, Datagrid, TextField, Form, TextInput } from "react-admin";
+import {
+  List,
+  Datagrid,
+  TextField,
+  Form,
+  useRefresh,
+} from "react-admin";
 
 import {
   Box,
@@ -17,9 +23,12 @@ import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 
 import BreadCrumb from "../../components/Breadcrumbs";
 import DataAgreementModal from "../../components/modals/dataAgreementModal";
-import Dropdown from "../../components/dropdowns/dropdown";
 import { HttpService } from "../../service/HTTPService";
 import { useParams } from "react-router-dom";
+import { useFilterStore } from "../../store/store";
+import FilterByPurposeDropdown from "../../components/dropdowns/filterByPurposeDropDown";
+import FilterByLasfulBasisDropdown from "../../components/dropdowns/filterByLawfulBasisDropDown";
+import { SearchByIdRecordsAutoselect } from "../../components/dropdowns/searchByIdRecordsAutoselect";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -56,21 +65,18 @@ const Item = styled("div")(({ theme }) => ({
 
 const UserRecords = () => {
   const [openDataAgreementModal, setOpenDataAgreementModal] = useState(false);
+  const [handleChangeTriggered, setHandleChangeTriggered] = useState(false);
+  const [handleFilterDropDownTriggered, setHandleFilterDropDownTriggered] =
+    useState(false);
+  const [handleSearchTriggered, sethandleSearchTriggered] = useState(false);
 
   const lawfullBasisOfProcessingDropdownvalues = [
-    { value: "Consent" },
-    { value: "Contract" },
-    { value: "Legal Obligation" },
-    { value: "Contract" },
-    { value: "Vital Interest" },
-    { value: "Public Task" },
-    { value: "Legitimate Interest" },
-  ];
-
-  const purposeDropdownvalues = [
-    { value: "Market and Campaign	" },
-    { value: "Campaign" },
-    { value: "Market and Campaign	" },
+    { label: "Consent", value: "consent" },
+    { label: "Legal Obligation", value: "legal_obligation" },
+    { label: "Contract", value: "contract" },
+    { label: "Vital Interest", value: "vital_interest" },
+    { label: "Public Task", value: "public_task" },
+    { label: "Legitimate Interest", value: "legitimate_interest" },
   ];
 
   const params = useParams();
@@ -92,9 +98,68 @@ const UserRecords = () => {
     }
   }, [selectedDataRecordId, openDataAgreementModal === true]);
 
+  const refresh = useRefresh();
+
+  const changefilter = (filterDataAgreement: any) => {
+    useFilterStore.getState().updateFilterUserRecords(filterDataAgreement);
+  };
+
+  const updateDisabledPurposeDropDown = (disabledPurposeDropDown: any) => {
+    useFilterStore
+      .getState()
+      .updateDisabledPurposeDropDown(disabledPurposeDropDown);
+  };
+
+  const updateDisabledLawfulBasisDropDown = (
+    disabledLawfulBasisDropDown: any
+  ) => {
+    useFilterStore
+      .getState()
+      .updateDisabledLawfulBasisDropDown(disabledLawfulBasisDropDown);
+  };
+
+  useEffect(() => {
+    refresh();
+  }, [
+    handleChangeTriggered,
+    handleFilterDropDownTriggered,
+    handleSearchTriggered,
+  ]);
+
+  const handleChange = (e: any) => {
+    setHandleChangeTriggered(!handleChangeTriggered);
+    const { name } = e.target;
+
+    if (name === "dataAgreementId") {
+      updateDisabledPurposeDropDown(false);
+      updateDisabledLawfulBasisDropDown(true);
+    } else if (name === "lawfulBasis") {
+      updateDisabledPurposeDropDown(true);
+      updateDisabledLawfulBasisDropDown(false);
+    } else if (name === "all") {
+      changefilter({
+        filterType: "all",
+        value: "all",
+      });
+      updateDisabledPurposeDropDown(true);
+      updateDisabledLawfulBasisDropDown(true);
+    } else {
+      changefilter({
+        filterType: "all",
+        value: "all",
+      });
+      updateDisabledPurposeDropDown(true);
+      updateDisabledLawfulBasisDropDown(true);
+    }
+  };
+
   return (
     <Container>
-      <List actions={false} sx={{ width: "100%", overflow: "hidden" }}>
+      <List
+        actions={false}
+        empty={false}
+        sx={{ width: "100%", overflow: "hidden" }}
+      >
         <Form>
           <BreadCrumb Link="Manage Users" Link2="User Records" />
           <HeaderContainer>
@@ -113,14 +178,10 @@ const UserRecords = () => {
             <Typography variant="body1">
               Do queries on the data agreement records for audit purpose
             </Typography>
-            <TextInput
-              source="overview"
-              autoFocus
-              variant="outlined"
-              label={false}
-              placeholder="Search by Data Agreement ID, Data Agreement Record ID or Subscriber ID"
-              helperText={false}
-              style={{ width: "40%" }}
+            <SearchByIdRecordsAutoselect
+              changefilter={changefilter}
+              handleSearchTriggered={handleSearchTriggered}
+              sethandleSearchTriggered={sethandleSearchTriggered}
             />
           </Box>
           <Item>
@@ -135,8 +196,8 @@ const UserRecords = () => {
               <RadioGroup
                 row
                 aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-                defaultValue="viewall"
+                name="all"
+                defaultValue="all"
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",
@@ -150,7 +211,9 @@ const UserRecords = () => {
                   }}
                 >
                   <FormControlLabel
-                    value="viewall"
+                    value="all"
+                    name="all"
+                    onClick={handleChange}
                     control={<Radio color="default" />}
                     label=""
                     sx={{ color: "black" }}
@@ -165,13 +228,21 @@ const UserRecords = () => {
                   }}
                 >
                   <FormControlLabel
-                    value="filter1"
+                    value="dataAgreementId"
+                    name="dataAgreementId"
                     control={<Radio color="default" />}
                     label=""
+                    onClick={handleChange}
                   />
-                  <Dropdown
+                  <FilterByPurposeDropdown
                     displayValue={"Filter by Purpose"}
-                    dropdownValues={purposeDropdownvalues}
+                    changefilter={changefilter}
+                    setHandleFilterDropDownTriggered={
+                      setHandleFilterDropDownTriggered
+                    }
+                    handleFilterDropDownTriggered={
+                      handleFilterDropDownTriggered
+                    }
                   />
                 </Box>
                 <Box
@@ -183,13 +254,22 @@ const UserRecords = () => {
                 >
                   {" "}
                   <FormControlLabel
-                    value="filter2"
+                    name={"lawfulBasis"}
+                    value="lawfulBasis"
+                    onClick={handleChange}
                     control={<Radio color="default" />}
                     label=""
                   />
-                  <Dropdown
+                  <FilterByLasfulBasisDropdown
                     displayValue={"Filter by Lawful Basis"}
                     dropdownValues={lawfullBasisOfProcessingDropdownvalues}
+                    changefilter={changefilter}
+                    setHandleFilterDropDownTriggered={
+                      setHandleFilterDropDownTriggered
+                    }
+                    handleFilterDropDownTriggered={
+                      handleFilterDropDownTriggered
+                    }
                   />
                 </Box>
               </RadioGroup>
@@ -211,7 +291,7 @@ const UserRecords = () => {
               width: { xs: "359px", sm: "100%", md: "100%", lg: "100%" },
             }}
           >
-            <TextField source="individualId" label={"Subscriber ID"} />
+            <TextField source="individualId" label={"Individual ID"} />
             <TextField source="dataAgreement.purpose" label={"Purpose"} />
             <TextField
               source="dataAgreement.lawfulBasis"

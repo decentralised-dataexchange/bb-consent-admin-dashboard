@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { List, Datagrid, TextField, Form, useGetList } from "react-admin";
+import { useEffect, useState } from "react";
+import { List, Datagrid, TextField, Form, useRefresh } from "react-admin";
 
 import {
   Box,
@@ -24,6 +24,7 @@ import GlobalDataPolicyConfigModal from "../../components/modals/globalDataPolic
 import GeneralModal from "../../components/modals/generalModal";
 import DataAgreementModal from "../../components/modals/dataAgreementModal";
 import DeleteModal from "../../components/modals/generalModal";
+import { useFilterStore } from "../../store/store";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -57,10 +58,32 @@ const DataAgreement = () => {
     useState(false);
   const [openDataAgreementModal, setOpenDataAgreementModal] = useState(false);
   const [dataAgreementMode, setDataAgreementMode] = useState("");
+  const [handleChangeTriggered, setHandleChangeTriggered] = useState(false);
 
-  const { refetch } = useGetList(`dataagreement`);
+  const refresh = useRefresh();
   const onRefetch = () => {
-    refetch();
+    refresh();
+  };
+
+  const changefilterDataAgreement = (filterDataAgreement: string) => {
+    useFilterStore.getState().updateFilterDataAgreement(filterDataAgreement);
+  };
+
+  useEffect(() => {
+    refresh();
+  }, [handleChangeTriggered]);
+
+  const handleChange = (e: any) => {
+    setHandleChangeTriggered(!handleChangeTriggered);
+    const { name } = e.target;
+
+    if (name === "complete") {
+      changefilterDataAgreement("complete");
+    } else if (name === "all") {
+      changefilterDataAgreement("all");
+    } else {
+      changefilterDataAgreement("all");
+    }
   };
 
   return (
@@ -99,19 +122,23 @@ const DataAgreement = () => {
             <Box>
               <RadioGroup
                 aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="All"
-                name="radio-buttons-group"
+                defaultValue="all"
+                name="all"
                 row
               >
                 <FormControlLabel
-                  value="All"
+                  value="all"
+                  name="all"
                   control={<Radio color="default" />}
                   label="All"
+                  onClick={handleChange}
                 />
                 <FormControlLabel
-                  value="Published"
+                  value="complete"
+                  name="complete"
                   control={<Radio color="default" />}
                   label="Published"
+                  onClick={handleChange}
                 />
               </RadioGroup>
             </Box>
@@ -143,7 +170,7 @@ const DataAgreement = () => {
           }}
         >
           <Datagrid
-            rowClick="edit"
+            rowClick={"edit"}
             bulkActionButtons={false}
             sx={{
               overflow: "auto",

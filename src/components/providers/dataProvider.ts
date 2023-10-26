@@ -2,6 +2,7 @@ import fakeDataProvider from "ra-data-fakerest";
 import { combineDataProviders } from "react-admin";
 import { HttpService } from "../../service/HTTPService";
 import { offSet } from "../../utils/paginateFunction";
+import { useFilterStore } from "../../store/store";
 
 const fakePersonalDataDataProvider = [
   {
@@ -179,11 +180,12 @@ export const fakeConsentBBDataProvider = fakeDataProvider({
 
 const dataAgreementDataProvider = {
   getList: (resource: any, params: any) => {
+    const filter = useFilterStore.getState().filterDataAgreement;
     let pageSize = params.pagination.perPage;
     let pageNumber = params.pagination.page;
 
     let offsetValue = offSet(pageNumber, pageSize);
-    return HttpService.listDataAgreements(offsetValue, pageSize)
+    return HttpService.listDataAgreements(offsetValue, pageSize, filter)
       .then((dataAgreements) => {
         return {
           data: dataAgreements.dataAgreements,
@@ -198,11 +200,12 @@ const dataAgreementDataProvider = {
 
 const personalDataDataProvider = {
   getList: (resource: any, params: any) => {
+    const filter = useFilterStore.getState().filterDataAttribute;
     let pageSize = params.pagination.perPage;
     let pageNumber = params.pagination.page;
 
     let offsetValue = offSet(pageNumber, pageSize);
-    return HttpService.listDataAttributes(offsetValue, pageSize)
+    return HttpService.listDataAttributes(offsetValue, pageSize, filter)
       .then((dataAttributes) => {
         return {
           data: dataAttributes.dataAttributes,
@@ -217,11 +220,17 @@ const personalDataDataProvider = {
 
 const userRecordsDataProvider = {
   getList: (resource: any, params: any) => {
+    const filter = useFilterStore.getState().userRecordsFilter;
+
     let pageSize = params.pagination.perPage;
     let pageNumber = params.pagination.page;
 
     let offsetValue = offSet(pageNumber, pageSize);
-    return HttpService.listAllDataAgreementRecords(offsetValue, pageSize)
+    return HttpService.listAllDataAgreementRecords(
+      offsetValue,
+      pageSize,
+      filter
+    )
       .then((dataAgreementRecords) => {
         return {
           data: dataAgreementRecords.dataAgreementRecords,
@@ -238,12 +247,11 @@ const viewLogsProvider = {
   getList: (resource: any, params: any) => {
     let pageSize = params.pagination.perPage;
     let pageNumber = params.pagination.page;
+    const filter = useFilterStore.getState().filterViewLogs;
 
     let offsetValue = offSet(pageNumber, pageSize);
-    return HttpService.listAllAdminLogs(offsetValue, pageSize)
+    return HttpService.listAllAdminLogs(offsetValue, pageSize, filter)
       .then((allLogs) => {
-        console.log("all", allLogs)
-
         return {
           data: allLogs.logs,
           total: allLogs.pagination.totalItems,
@@ -255,18 +263,16 @@ const viewLogsProvider = {
   },
 };
 
-
-
 export const dataProvider = combineDataProviders((resource): any => {
   switch (resource) {
     case "dataagreement":
       return dataAgreementDataProvider;
     case "personaldata":
-        return personalDataDataProvider;
+      return personalDataDataProvider;
     case "viewlogs":
-        return viewLogsProvider;
-        case "userrecords":
-          return userRecordsDataProvider;
+      return viewLogsProvider;
+    case "userrecords":
+      return userRecordsDataProvider;
     default:
       return fakeConsentBBDataProvider;
   }

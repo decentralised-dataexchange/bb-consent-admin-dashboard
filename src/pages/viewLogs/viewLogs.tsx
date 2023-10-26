@@ -1,10 +1,12 @@
-import { List, Datagrid, TextField, Form } from "react-admin";
+import { List, Datagrid, TextField, Form, useRefresh } from "react-admin";
 
 import { Box, Typography, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 import BreadCrumb from "../../components/Breadcrumbs";
 import Dropdown from "../../components/dropdowns/dropdown";
+import { useEffect, useState } from "react";
+import { useFilterStore } from "../../store/store";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -22,8 +24,8 @@ const DetailsContainer = styled("div")(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  marginTop:"10px",
-  marginBottom:"10px",
+  marginTop: "10px",
+  marginBottom: "10px",
   [theme.breakpoints.down("sm")]: {
     display: "grid",
   },
@@ -45,18 +47,43 @@ const buttonStyle = {
   width: "200px",
 };
 
+const filterDrpodownValues = [
+  { value: "Security" },
+  { value: "API Calls" },
+  { value: "Orgainsation" },
+  { value: "End User" },
+  { value: "Webhooks" },
+];
+
 const ViewLogs = () => {
-  const filterDrpodownValues = [
-    { value: "Security" },
-    { value: "API Calls" },
-    { value: "Orgainsation" },
-    { value: "End User" },
-    { value: "Webhooks" },
-  ]
+  const [selectedFilterValue, setSelectedFilterValue] = useState<any>();
+  const changefilterViewLogs = (filterViewLogs: any) => {
+    useFilterStore.getState().updateFilterViewLogs(filterViewLogs);
+  };
+  const refresh = useRefresh();
+
+  useEffect(() => {
+    console.log("Dispatch", selectedFilterValue);
+    if (selectedFilterValue === "Security") {
+      changefilterViewLogs(1);
+    } else if (selectedFilterValue === "API Calls") {
+      changefilterViewLogs(2);
+    } else if (selectedFilterValue === "Orgainsation") {
+      changefilterViewLogs(3);
+    } else if (selectedFilterValue === "End User") {
+      changefilterViewLogs(4);
+    } else if (selectedFilterValue === "Webhooks") {
+      changefilterViewLogs(5);
+    } else if (selectedFilterValue === "all") {
+      changefilterViewLogs(0);
+    } else 0;
+
+    refresh()
+  }, [selectedFilterValue]);
 
   return (
     <Container>
-      <List actions={false} sx={{ width: "100%", overflow: "hidden" }}>
+      <List actions={false} sx={{ width: "100%", overflow: "hidden" }} empty={false}>
         <Form>
           <BreadCrumb Link="Account" Link2="View Logs" />
           <HeaderContainer>
@@ -73,12 +100,32 @@ const ViewLogs = () => {
               displayValue={"Filter Categories"}
               selectWidth={"400px"}
               dropdownValues={filterDrpodownValues}
+              setSelectedFilterValue={setSelectedFilterValue}
             />
-            <Button style={buttonStyle}>View All</Button>
+            <Button
+              style={buttonStyle}
+              onClick={() => {
+                setSelectedFilterValue("all");
+              }}
+            >
+              View All
+            </Button>
           </DetailsContainer>
         </Form>
-        <Box style={{ display: "flex", justifyContent:"center", marginTop:"18px"}}>
-          <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" , width:{xs:"359px",sm:"100%",md:"100%", lg:"100%"}}} >
+        <Box
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "18px",
+          }}
+        >
+          <Datagrid
+            bulkActionButtons={false}
+            sx={{
+              overflow: "auto",
+              width: { xs: "359px", sm: "100%", md: "100%", lg: "100%" },
+            }}
+          >
             <TextField source="action" label={"Action"} />
             <TextField source="typeStr" label={"Category"} />
             <TextField source="timestamp" label={"Timestamp"} />
@@ -86,7 +133,6 @@ const ViewLogs = () => {
         </Box>
       </List>
 
-      {/* Modals */}
     </Container>
   );
 };

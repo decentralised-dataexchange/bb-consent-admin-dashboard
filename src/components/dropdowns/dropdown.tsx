@@ -1,5 +1,4 @@
-import * as React from "react";
-
+import { useState, useEffect } from "react";
 import {
   FormControl,
   Select,
@@ -14,11 +13,13 @@ interface Props {
   dropdownValues: {
     value: string;
   }[];
+  setSelectedFilterValue?: any;
 }
 
 const Dropdown = (props: Props) => {
-  const { displayValue, selectWidth, dropdownValues } = props;
-  const [subscriptionMethodValue, setSubscriptionMethodValue] = React.useState<
+  const { displayValue, selectWidth, dropdownValues, setSelectedFilterValue } =
+    props;
+  const [subscriptionMethodValue, setSubscriptionMethodValue] = useState<
     string[]
   >([]);
 
@@ -34,8 +35,16 @@ const Dropdown = (props: Props) => {
     );
   };
 
+  useEffect(() => {
+    setSelectedFilterValue(
+      subscriptionMethodValue?.[0] ? subscriptionMethodValue[0] : ""
+    );
+  }, [subscriptionMethodValue]);
+
   return (
-    <FormControl sx={{ width: selectWidth ? {xs:"250px", sm:selectWidth,} : "250px" }}>
+    <FormControl
+      sx={{ width: selectWidth ? { xs: "250px", sm: selectWidth } : "250px" }}
+    >
       <Select
         displayEmpty
         value={subscriptionMethodValue}
