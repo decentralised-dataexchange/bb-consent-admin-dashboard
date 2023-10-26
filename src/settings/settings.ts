@@ -40,6 +40,8 @@ export const ENDPOINTS = {
   getDataAgreementRecordByID: (dataAgreementRecordId: string | undefined) =>{ return `/audit/data-agreement-record/${dataAgreementRecordId}`},
   listAllApiKeys: () => { return `/config/admin/apikeys`},
   addNewApiKey: () =>{ return '/config/admin/apikey'},
-  deleteApiKey: (apiKeyId: string) => { return `/config/admin/apikey/${apiKeyId}`}
+  deleteApiKey: (apiKeyId: string) => { return `/config/admin/apikey/${apiKeyId}`},
+  getPrivacyBoard: () =>{ return 'config/privacy-dashboard'},
+  getStatus:() =>{return '/onboard/status'}
 };
 

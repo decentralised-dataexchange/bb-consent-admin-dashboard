@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Grid, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 import BreadCrumb from "../../components/Breadcrumbs";
 import { Box } from "@mui/system";
 import ConfigurePrivacyboard from "../../components/modals/configurePrivacyboard";
+import { HttpService } from "../../service/HTTPService";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -46,6 +47,17 @@ const ItemGrid = styled("div")({
 
 const Privacyboard = () => {
   const [openEditUserAccessModal, setOpenEditUserAccessModal] = useState(false);
+  const [privacyBoardDetails, setPrivacyBoardDetails] = useState<any>();
+  const [statusData, setStatusData] = useState<any>();
+
+  useEffect(() => {
+    HttpService.getPrivacyBoard().then((res) => {
+      setPrivacyBoardDetails(res.data);
+    });
+    HttpService.getStatus().then((res) => {
+      setStatusData(res.data);
+    });
+  }, []);
 
   return (
     <Container>
@@ -65,11 +77,14 @@ const Privacyboard = () => {
         </Typography>
         <Box sx={{ display: { xs: "grid", sm: "flex" }, alignItems: "center" }}>
           <Typography color="black" variant="subtitle1" fontWeight="bold">
-            CONFIGURED
+            {privacyBoardDetails?.statusStr}
           </Typography>
           <Button
             variant="outlined"
-            onClick={()=>setOpenEditUserAccessModal(true)}
+            onClick={() =>
+              statusData?.applicationMode !== "single-tenant" &&
+              setOpenEditUserAccessModal(true)
+            }
             sx={{
               marginLeft: { sx: 0, md: "20px" },
               border: "1px solid black",
@@ -78,6 +93,10 @@ const Privacyboard = () => {
               fontSize: "16px",
               borderRadius: 0,
               width: "190px",
+              cursor:
+                statusData?.applicationMode === "single-tenant"
+                  ? "not-allowed"
+                  : "pointer",
             }}
           >
             CONFIGURE
@@ -96,7 +115,7 @@ const Privacyboard = () => {
           </Grid>
           <Grid item lg={2} md={3} sm={3} xs={12}>
             <Typography color="grey" variant="subtitle1">
-              2023.8.1
+              {privacyBoardDetails?.hostname ? privacyBoardDetails?.hostname : ""}
             </Typography>
           </Grid>
         </Grid>
@@ -108,7 +127,7 @@ const Privacyboard = () => {
           </Grid>
           <Grid item lg={2} md={3} sm={3} xs={12}>
             <Typography color="grey" variant="subtitle1">
-              https://privacyboard.organisation.com
+              {privacyBoardDetails?.version ? privacyBoardDetails?.version : ""}
             </Typography>
           </Grid>
         </Grid>
