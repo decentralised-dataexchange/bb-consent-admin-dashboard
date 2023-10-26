@@ -141,7 +141,7 @@ const PersonalData = () => {
           >
             <TextField source="name" label={"Data Attribute Name"} />
             <TextField source="description" label={"Description"} />
-            <TextField source="dataAgreement" label={"Data Agreement"} />
+            <TextField source="dataAgreements.[0].purpose" label={"Data Agreement"} />
             <Box
               style={{
                 display: "flex",
