@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   Typography,
   FormControl,
@@ -7,41 +7,58 @@ import {
   Radio,
 } from "@mui/material";
 
-const eventData: any = [
-  { name: "consent.allowed" },
-  { name: "consent.disallowed" },
-  { name: "consent.auto_expiry" },
-  { name: "org.subscribed" },
-  { name: "data.delete.initiated" },
-  { name: "data.delete.cancelled" },
-  { name: "data.update.cancelled" },
-  { name: "org.unsubscribed" },
-  { name: "data.update.initiated" },
-  { name: "data.download.cancelled" },
-];
+interface Props {
+  webhookEventTypes: string[];
+  setEventTypesValid: Dispatch<SetStateAction<boolean>>;
+  setSelectedEventData: Dispatch<SetStateAction<any>>;
+  subscribedEventsFromWebhooksById: any;
+}
 
-const CheckboxTree = () => {
-  const [events, setEvents] = useState(eventData);
-  const [selected, setSelected] = useState(true);
+const CheckboxTree = (props: Props) => {
+  const {
+    webhookEventTypes,
+    setEventTypesValid,
+    setSelectedEventData,
+    subscribedEventsFromWebhooksById,
+  } = props;
+  let eventData = webhookEventTypes.map((str: any) => ({ name: str }));
+  let eventDataForEdit = subscribedEventsFromWebhooksById?.map((str: any) => ({
+    name: str,
+  }));
+
+  console.log("eventDataForEdit", eventDataForEdit)
+  const [events, setEvents] = useState<any>(eventData);
 
   const handleChange = (e: any) => {
     const { name, checked } = e.target;
 
     if (name === "allSelected") {
-      setSelected(false);
-      let tempEvents = events.map((user: any) => {
-        return { ...user, isChecked: checked };
+      let tempEvents = events.map((event: any) => {
+        return { ...event, isChecked: checked };
       });
       setEvents(tempEvents);
+    } else if (name === "selected") {
+      let tempEvents = events.map((event: any) =>
+        event.name === name ? { ...event, isChecked: checked } : event
+      );
+      setEvents(tempEvents);
     } else {
-      setSelected(true);
-
-      let tempEvents = events.map((user: any) =>
-        user.name === name ? { ...user, isChecked: checked } : user
+      let tempEvents = events.map((event: any) =>
+        event.name === name ? { ...event, isChecked: checked } : event
       );
       setEvents(tempEvents);
     }
   };
+
+  useEffect(() => {
+    events.filter((event: any) => event.isChecked === true).length > 0
+      ? setEventTypesValid(true)
+      : setEventTypesValid(false);
+    const selectedArray = events.filter((event: any) => {
+      return event.isChecked === true;
+    });
+    setSelectedEventData(selectedArray);
+  }, [events]);
 
   return (
     <>
@@ -51,7 +68,6 @@ const CheckboxTree = () => {
         </Typography>
         <RadioGroup
           aria-labelledby="demo-radio-buttons-group-label"
-          // defaultValue="selected"
           name="radio-buttons-group"
         >
           <FormControlLabel
@@ -69,7 +85,8 @@ const CheckboxTree = () => {
             }
             label="All User Requests"
             checked={
-             events.filter((event: any) => event?.isChecked !== true).length < 1
+              events?.filter((event: any) => event?.isChecked !== true).length <
+              1
             }
             onChange={handleChange}
           />
@@ -87,22 +104,33 @@ const CheckboxTree = () => {
               />
             }
             label="Selected User Requests"
-            checked={selected === true}
+            checked={
+              events.filter((event: any) => event?.isChecked === true)
+                ?.length !== events.length
+            }
             onChange={handleChange}
           />
         </RadioGroup>
       </FormControl>
-      <form style={{marginLeft:"25px"}}>
+      <form style={{ marginLeft: "25px" }}>
         {events.map((event: any, index: number) => (
           <div key={index}>
             <input
               type="checkbox"
-              style={{height:"13px", width:"13px", marginBottom:"15px"}}
+              style={{ height: "13px", width: "13px", marginBottom: "15px" }}
               name={event.name}
-              checked={event?.isChecked || false}
+              checked={event?.isChecked || false }
               onChange={handleChange}
             />
-            <label style={{fontSize: 16, marginLeft:"3px",fontFamily:"Roboto,Helvetica,Arial,sans-serif"}}>{event.name}</label>
+            <label
+              style={{
+                fontSize: 16,
+                marginLeft: "3px",
+                fontFamily: "Roboto,Helvetica,Arial,sans-serif",
+              }}
+            >
+              {event.name}
+            </label>
           </div>
         ))}
       </form>

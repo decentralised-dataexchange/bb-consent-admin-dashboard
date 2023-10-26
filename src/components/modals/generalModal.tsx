@@ -26,6 +26,7 @@ interface Props {
   modalDescriptionText: any;
   onRefetch?: any;
   userAccessId?: string;
+  resourceName?: string
 }
 
 export default function DeleteModal(props: Props) {
@@ -37,6 +38,7 @@ export default function DeleteModal(props: Props) {
     modalDescriptionText,
     onRefetch,
     userAccessId,
+    resourceName
   } = props;
   const [isOk, setIsOk] = useState(false);
   const [confirmationTextInput, setConfirmationTextInput] = useState("");
@@ -49,7 +51,7 @@ export default function DeleteModal(props: Props) {
   };
 
   useEffect(() => {
-    if (daId) {
+    if (daId && resourceName !== "webhooks") {
       HttpService.getDataAgreementByID(daId).then((response) => {
         setDataAgreementValue(response.data.dataAgreement);
       });
@@ -58,7 +60,7 @@ export default function DeleteModal(props: Props) {
 
   const onSubmit = () => {
     if (isOk === true) {
-      if (confirmText === "DELETE" && daId) {
+      if (confirmText === "DELETE" && daId && resourceName !== "webhooks") {
         HttpService.deleteDataAgreement(daId).then((response) => {
           onRefetch();
           setOpen(false);
@@ -85,6 +87,12 @@ export default function DeleteModal(props: Props) {
         HttpService.deleteIdpBy(userAccessId).then(() => {
           setOpen(false);
         });
+      } else if(confirmText === "DELETE" && daId && resourceName === "webhooks"){
+        HttpService.deleteWebhook(daId)
+        .then(()=>{
+          onRefetch();
+          setOpen(false);
+        })
       }
     }
   };

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { List, Datagrid, TextField, Form, useRecordContext } from "react-admin";
+import { List, Datagrid, TextField, Form,  useRefresh } from "react-admin";
 
 import { Box, Typography, Tooltip } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -13,6 +13,8 @@ import BreadCrumb from "../../components/Breadcrumbs";
 import GeneralModal from "../../components/modals/generalModal";
 import EditWebhooks from "../../components/modals/editwebhooksmodal";
 import RecentDeliveries from "../../components/webhooks/recentDeliveries";
+import { HttpService } from "../../service/HTTPService";
+import { useParams } from "react-router-dom";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -27,18 +29,40 @@ const HeaderContainer = styled("div")({
   justifyContent: "space-between",
   alignItems: "center",
   flexWrap: "wrap",
-  marginTop: '10px',
+  marginTop: "10px",
 });
 
 const Webhooks = () => {
   const [openEditWebhooks, setOpenEditWebhooks] = useState(false);
   const [openDeleteWebhooks, setOpenDeleteWebhooks] = useState(false);
-  const [showRecentDeliveries, setShowRecentDeliveries] = useState(false)
-  const record = useRecordContext();
+  const [showRecentDeliveries, setShowRecentDeliveries] = useState(false);
+  const [recentDeliveryValues, setRecentDeliveryValues] = useState([]);
+
+  const [modeOfPopup, setModeOfPopup] = useState("");
+  const params = useParams();
+  const selectedWebhooksId = params["*"];
+  
+  const refresh = useRefresh();
+   
+  const onRefetch = () => {
+    refresh();
+  };
+
+  const recentDeliveries = () => {
+    setShowRecentDeliveries(!showRecentDeliveries);
+    HttpService.getWebhooksRecentDeliveries(selectedWebhooksId)
+    .then((res)=>{
+      setRecentDeliveryValues(res.data.webhookDeliveries)
+    })
+  };
 
   return (
     <Container>
-      <List actions={false} sx={{ width: "100%", overflow: "hidden" }}>
+      <List
+        empty={false}
+        actions={false}
+        sx={{ width: "100%", overflow: "hidden" }}
+      >
         <Form>
           <BreadCrumb Link="Account" Link2="Webhooks" />
           <HeaderContainer>
@@ -53,7 +77,10 @@ const Webhooks = () => {
               </Typography>
               <Tooltip title="Create Webhooks" placement="top">
                 <AddCircleOutlineOutlinedIcon
-                  onClick={() => setOpenEditWebhooks(true)}
+                  onClick={() => {
+                    setOpenEditWebhooks(true);
+                    setModeOfPopup("Create");
+                  }}
                   style={{ cursor: "pointer", marginLeft: "7px" }}
                 />
               </Tooltip>
@@ -64,10 +91,28 @@ const Webhooks = () => {
             be notified when certain events happen.
           </Typography>
         </Form>
-        <Box style={{ display: "flex", justifyContent:"center", marginTop:"20px"}}>
-          <Datagrid bulkActionButtons={false} sx={{ overflow: "auto" , width:{xs:"359px",sm:"100%",md:"100%", lg:"100%"}}} >
-            <TextField source="callBackURL" label={"Call Back URL"} onClick={()=> setShowRecentDeliveries(!showRecentDeliveries)} sx={{cursor:"pointer"}}/>
-            <TextField source="status" label={"Status"}/>
+        <Box
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "20px",
+          }}
+        >
+          <Datagrid
+            bulkActionButtons={false}
+            rowClick="edit"
+            sx={{
+              overflow: "auto",
+              width: { xs: "359px", sm: "100%", md: "100%", lg: "100%" },
+            }}
+          >
+            <TextField
+              source="payloadUrl"
+              label={"Call Back URL"}
+              onClick={recentDeliveries}
+              sx={{ cursor: "pointer" }}
+            />
+            <TextField source="disabled" label={"Status"} />
             <Box
               style={{
                 display: "flex",
@@ -79,10 +124,11 @@ const Webhooks = () => {
                 <EditOutlinedIcon
                   onClick={() => {
                     setOpenEditWebhooks(true);
+                    setModeOfPopup("Update");
                   }}
                   fontSize="small"
                   color="disabled"
-                  style={{ cursor: "pointer", marginRight:10 }}
+                  style={{ cursor: "pointer", marginRight: 10 }}
                 />
               </Tooltip>
               <Tooltip title="Delete Webhooks" placement="top">
@@ -98,7 +144,7 @@ const Webhooks = () => {
         </Box>
       </List>
 
-      {showRecentDeliveries && <RecentDeliveries />}
+      {showRecentDeliveries && recentDeliveryValues && <RecentDeliveries recentDeliveryValues={recentDeliveryValues} />}
 
       {/* Modals */}
 
@@ -106,9 +152,10 @@ const Webhooks = () => {
       <GeneralModal
         open={openDeleteWebhooks}
         setOpen={setOpenDeleteWebhooks}
-        headerText={"Delete Personal Data: "}
-        dataExchange={"Aadhar name"}
+        headerText={"Delete Webhooks "}
         confirmText="DELETE"
+        resourceName={"webhooks"}
+        onRefetch={onRefetch}
         modalDescriptionText={
           <Typography sx={{ wordWrap: "breakWord" }}>
             You are about to delete an existing personal data. Please type{" "}
@@ -122,6 +169,8 @@ const Webhooks = () => {
         open={openEditWebhooks}
         setOpen={setOpenEditWebhooks}
         headerText={"Webhook Configuration"}
+        mode={modeOfPopup}
+        onRefetch={onRefetch}
       />
     </Container>
   );

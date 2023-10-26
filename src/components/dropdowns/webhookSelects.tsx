@@ -15,16 +15,13 @@ const dropDownStyle = {
   backgroundColor: "transparent",
 };
 
-const WebhookContentTypeDropdown = (props: Props) => {
+const WebhookSelect = (props: Props) => {
   const { filterValues, control, nameOfSelect } = props;
 
   return (
     <Controller
       name={nameOfSelect}
       control={control}
-      rules={{
-        required: true,
-      }}
       render={({ field: { onChange, value } }) => (
         <Select
           onChange={(e: any) => {
@@ -40,8 +37,8 @@ const WebhookContentTypeDropdown = (props: Props) => {
           }}
         >
           {filterValues.map((Type: any) => (
-            <MenuItem key={Type} value={Type}>
-              {Type}
+            <MenuItem key={Type.label} value={Type.value}>
+              {Type.label}
             </MenuItem>
           ))}
         </Select>
@@ -50,4 +47,4 @@ const WebhookContentTypeDropdown = (props: Props) => {
   );
 };
 
-export default WebhookContentTypeDropdown;
+export default WebhookSelect;

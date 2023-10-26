@@ -448,6 +448,78 @@ export const HttpService = {
     };
     return httpClient.delete(ENDPOINTS.deleteApiKey(apiKeyId), config);
   },
+  listWebhookContentTypes: async (): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient
+      .get(ENDPOINTS.listWebhookContentTypes(), config)
+      .then((res) => {
+        const allLogs: DataAgreementsResponse = res.data;
+        return allLogs;
+      });
+  },
+  addWebhooks: async (payload: any): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.post(ENDPOINTS.addWebhooks(), payload, config);
+  },
+  listWebhookEventTypes: async (): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient
+      .get(ENDPOINTS.listWebhookEventTypes(), config)
+      .then((res) => {
+        const allLogs: DataAgreementsResponse = res.data;
+        return allLogs;
+      });
+  },
+  listAllWebhooks: async (
+    offsetValue: number,
+    pageSize: number
+  ): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient
+      .get(ENDPOINTS.listAllWebhooks(offsetValue, pageSize), config)
+      .then((res) => {
+        const allLogs: DataAgreementsResponse = res.data;
+        return allLogs;
+      });
+  },
+  updateWebhookById: async (payload: any, webhookId: string | undefined): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.put(ENDPOINTS.updateWebhookById(webhookId), payload, config);
+  },
+  getWebhookById: async (webhookId: any): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.get(
+      ENDPOINTS.getWebhookById(webhookId),
+      config
+    );
+  },
+  deleteWebhook: async (apiKeyId: any): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.delete(ENDPOINTS.deleteWebhook(apiKeyId), config);
+  },
+  getWebhooksRecentDeliveries: async (webhookId: any): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.get(
+      ENDPOINTS.getWebhooksRecentDeliveries(webhookId),
+      config
+    );
+  },
   getPrivacyBoard: async (): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
