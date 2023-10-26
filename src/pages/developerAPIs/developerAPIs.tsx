@@ -179,7 +179,7 @@ const DeveloperAPIs = () => {
                 </Tooltip>
               </Box>
               <Grid container direction="row">
-                <Grid item lg={10} md={9} sm={8} xs={12}>
+                <Grid item lg={9} md={7} sm={6} xs={12}>
                   {(showAPI === false || showHideButton === false) && (
                     <Typography
                       color="grey"
@@ -199,7 +199,7 @@ const DeveloperAPIs = () => {
                     </Typography>
                   )}
                 </Grid>
-                <Grid item lg={2} md={3} sm={4} xs={12}>
+                <Grid item lg={3} md={5} sm={6} xs={12}>
                   <Box
                     style={{ display: "flex", justifyContent: "space-around" }}
                   >
@@ -248,8 +248,7 @@ const DeveloperAPIs = () => {
                       }}
                       onClick={handleCopy}
                     >
-                      <ContentCopyOutlinedIcon
-                        style={{ marginRight: 5, marginLeft: 5 }}
+                      <ContentCopyOutlinedIcon style={{ marginRight: 5 }}
                       />
                       <Typography
                         variant="subtitle1"
