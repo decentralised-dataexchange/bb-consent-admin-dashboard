@@ -50,10 +50,12 @@ const Webhooks = () => {
 
   const recentDeliveries = () => {
     setShowRecentDeliveries(!showRecentDeliveries);
+    if(selectedWebhooksId){
     HttpService.getWebhooksRecentDeliveries(selectedWebhooksId)
     .then((res)=>{
       setRecentDeliveryValues(res.data.webhookDeliveries)
     })
+  }
   };
 
   return (
