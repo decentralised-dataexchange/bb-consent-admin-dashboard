@@ -20,6 +20,8 @@ const tableCellStyle: CSS.Properties = {
   borderTop: "solid 1px #dee2e6",
   textAlign: "left",
   borderRight: "solid 1px #dee2e6",
+  fontFamily: "Roboto,Helvetica,Arial,sans-serif",
+
 };
 
 const dropDownStyle = {

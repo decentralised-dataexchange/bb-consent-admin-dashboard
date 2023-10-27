@@ -40,6 +40,7 @@ const inputStyleAttr = {
   backgroundColor: "#F7F6F6",
   borderBottomColor: "red", //'#DFE0E1',
   marginRight: "10px",
+  fontFamily: "Roboto,Helvetica,Arial,sans-serif",
 };
 
 // DataAttributeData
