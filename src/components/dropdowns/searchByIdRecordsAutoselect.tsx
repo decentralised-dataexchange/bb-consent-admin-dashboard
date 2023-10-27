@@ -47,7 +47,7 @@ export const SearchByIdRecordsAutoselect = (props: any) => {
       options={recordList.map((option: any) => option.individualId)}
       onChange={(event, value) => {
         changefilter({
-          filterType: "individualId",
+          filterType: "id",
           value: value,
         });
         sethandleSearchTriggered(!handleSearchTriggered);
