@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react";
 
-import {
-  Grid,
-  Typography,
-  Box,
-  Button,
-  TextField,
-} from "@mui/material";
+import { Grid, Typography, Box, Button, TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 import BreadCrumb from "../../components/Breadcrumbs";
 import ManageAdminProfilePicUpload from "../../components/manageAdminProfilePicUpload";
 import { HttpService } from "../../service/HTTPService";
+import { LocalStorageService } from "../../service/localStorageService";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -86,8 +81,10 @@ const ManageAdmin = () => {
           ...otherProps,
         },
       };
-      HttpService.updateOrganisationAdminDetails(payload).then(() => {
+      HttpService.updateOrganisationAdminDetails(payload).then((res) => {
         setEditMode(false);
+        setAdminDetails(res.data.organisationAdmin);
+        LocalStorageService.updateUser(res.data.organisationAdmin);
       });
     }
   };
@@ -104,12 +101,11 @@ const ManageAdmin = () => {
         currentPassword: currentPassword,
         newPassword: newPassword,
       };
-      HttpService.resetPassword(payload)
-      .then(()=>{
-        setCurrentPassword("")
-        setNewPassword("")
-        setConfirmNewPassword("")
-      })
+      HttpService.resetPassword(payload).then(() => {
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmNewPassword("");
+      });
     }
   };
 
@@ -181,6 +177,7 @@ const ManageAdmin = () => {
                       {editMode ? (
                         <TextField
                           variant="standard"
+                          autoComplete="off"
                           placeholder="Name"
                           sx={{ marginTop: -1.5 }}
                           value={adminName}
@@ -272,7 +269,7 @@ const ManageAdmin = () => {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  width: "80%",
+                  width: "100%",
                 }}
               >
                 <Typography variant="body1">Current Password:</Typography>
@@ -280,7 +277,7 @@ const ManageAdmin = () => {
                   variant="standard"
                   placeholder="Enter Current Password"
                   type="password"
-                  sx={{ width: "50%" }}
+                  sx={{ width: "50%", marginRight: "20px" }}
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
                 />
@@ -290,7 +287,7 @@ const ManageAdmin = () => {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  width: "80%",
+                  width: "100%",
                 }}
               >
                 <Typography variant="body1">New Password:</Typography>
@@ -298,7 +295,7 @@ const ManageAdmin = () => {
                   variant="standard"
                   placeholder="Enter New Password"
                   type="password"
-                  sx={{ width: "50%" }}
+                  sx={{ width: "50%", marginRight: "20px" }}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                 />
@@ -308,7 +305,7 @@ const ManageAdmin = () => {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  width: "80%",
+                  width: "100%",
                 }}
               >
                 <Typography variant="body1">Confirm New Password:</Typography>
@@ -316,13 +313,13 @@ const ManageAdmin = () => {
                   variant="standard"
                   placeholder="Confirm New Password"
                   type="password"
-                  sx={{ width: "50%" }}
+                  sx={{ width: "50%", marginRight: "20px" }}
                   value={confirmNewPassword}
                   onChange={(e) => setConfirmNewPassword(e.target.value)}
                 />
               </Box>
 
-              <Box sx={{ height: "30px" }}>
+              <Box sx={{ height: "30px", marginRight: "20px" }}>
                 <Typography
                   onClick={onClickRestPassWord}
                   style={{

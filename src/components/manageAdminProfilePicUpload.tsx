@@ -4,6 +4,7 @@ import DefaultLogo from "../assets/OrganisationDefaultLogo.png";
 
 import { HttpService } from "../service/HTTPService";
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
+import { LocalStorageService } from "../service/localStorageService";
 
 type Props = {
   editMode: boolean;
@@ -40,6 +41,7 @@ const ManageAdminProfilePicUpload = (props: Props) => {
           // Get the newly uploaded image from the server
           HttpService.getAdminAvatarImage().then((imageBase64) => {
             setLogoImageBase64(imageBase64);
+            LocalStorageService.updateProfilePic(imageBase64);
           });
         })
         .catch((error) => {
