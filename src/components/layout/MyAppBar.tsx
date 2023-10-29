@@ -36,8 +36,8 @@ export default function MyAppBar() {
             sx={{
               flexGrow: 1,
               display: { xs: "none", sm: "contents" },
-              fontSize: { sm: 20, md: 24 },
             }}
+            variant="h6"
           >
             Consent Building Block - Admin Dashboard
           </Typography>
