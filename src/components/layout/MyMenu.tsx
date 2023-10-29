@@ -60,18 +60,27 @@ export default function MyMenu({ dense = false }: MenuProps) {
       </SubMenu>
 
       {open ? (
-        <>
+        <Box sx={{
+          marginTop: "auto",
+          paddingBottom: 10,
+          textAlign: "center",
+        }} display={"flex"} flexDirection="column">
           <Typography
-            sx={{
-              marginTop: "auto",
-              paddingBottom: 10,
-              textAlign: "center",
-            }}
+
             variant="caption"
           >
             Version: {version}
           </Typography>
-        </>
+          <Typography color="grey" variant="caption">
+            Powered by{" "}
+
+            <a href="https://igrant.io/" target="blank" style={{
+              textDecoration: "none",
+              color: "#1890ff",
+            }}>iGrant.io</a>
+            , Swedan
+          </Typography>
+        </Box>
 
       ) : null}
     </Menu>
