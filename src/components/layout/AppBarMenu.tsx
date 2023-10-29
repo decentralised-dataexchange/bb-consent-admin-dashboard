@@ -31,6 +31,25 @@ export const AppBarMenu = (props: Props) => {
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
+  const formatISODateToLocalString = (isoDateTime: string) => {
+    const date = new Date(isoDateTime);
+
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    const year = date.getFullYear();
+    const month = months[date.getMonth()];
+    const day = date.getDate();
+    const dayOfWeek = daysOfWeek[date.getDay()];
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12;
+
+    return `${month} ${day}, ${year} ${formattedHours}:${minutes.toString().padStart(2, '0')}${ampm}`;
+  }
+
   return (
     <>
       <IconButton
@@ -69,15 +88,15 @@ export const AppBarMenu = (props: Props) => {
             alt="img"
           />
           <Typography
-            style={{ fontSize: 16, fontWeight: "bold", marginBottom: "4px" }}
+            variant="body2" style={{ fontWeight: "bold", marginBottom: "4px" }}
           >
             {props.firstName}
           </Typography>
-          <Typography style={{ fontSize: 12, marginBottom: "6px" }}>
+          <Typography variant="caption" style={{ marginBottom: "6px" }}>
             {props.email}
           </Typography>
-          <Typography style={{ fontSize: 12, marginBottom: "3px" }}>
-            {props.lastVisited}
+          <Typography variant="caption" style={{ marginBottom: "3px" }}>
+            {formatISODateToLocalString(props.lastVisited)}
           </Typography>
         </Box>
         <Box style={{ color: "black", borderTop: "1px solid #BDBDBD" }}>
