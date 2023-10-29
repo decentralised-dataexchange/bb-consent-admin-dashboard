@@ -69,7 +69,7 @@ export default function MyMenu({ dense = false }: MenuProps) {
 
             variant="caption"
           >
-            Version: {version}
+            {version}
           </Typography>
           <Typography color="grey" variant="caption">
             Powered by{" "}
