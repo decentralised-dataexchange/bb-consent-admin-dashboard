@@ -47,6 +47,7 @@ const buttonStyle = {
   borderRadius: 5,
   border: "1px solid black",
   backgroundColor: "#E5E4E4",
+  boxShadow: "none"
 };
 
 const DataAgreement = () => {

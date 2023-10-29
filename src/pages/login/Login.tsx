@@ -76,11 +76,12 @@ export const Login = () => {
               marginTop: ".5em",
               marginBottom: ".5em",
               display: "flex",
-              justifyContent: "center",
-              fontSize: "20px",
+              justifyContent: "center"
             }}
           >
-            Login to Admin Dashboard
+            <Typography variant="h6">
+              Login to Admin Dashboard
+            </Typography>
           </Box>
           <Box
             style={{
@@ -155,7 +156,7 @@ export const Login = () => {
                     }}
                   />
                 }
-                label="Remember Me"
+                label={<Typography variant="body2">Remember Me</Typography>}
                 style={{ color: "#A1A1A1" }}
               />
             </Box>
@@ -163,23 +164,15 @@ export const Login = () => {
         </Box>
       </Form>
       <FooterContainer>
-        <Typography mb={0.5}>{version}</Typography>
+        <Typography mb={0.5} variant="caption">{version}</Typography>
         <Box mb={2} display={"flex"} justifyContent={"center"}>
-          <Typography color="grey" variant="subtitle2">
+          <Typography color="grey" variant="caption">
             Powered by{" "}
-          </Typography>
-          <Link
-            to="https://igrant.io/"
-            target="blank"
-            style={{
-              textDecoration: "none",
-              color: "#1890ff",
-              fontSize: "14px",
-            }}
-          >
-            &nbsp;iGrant.io
-          </Link>
-          <Typography color="grey" variant="subtitle2">
+          
+          <a href="https://igrant.io/" target="blank" style={{
+            textDecoration: "none",
+            color: "#1890ff",
+          }}>iGrant.io</a>
             , Swedan
           </Typography>
         </Box>

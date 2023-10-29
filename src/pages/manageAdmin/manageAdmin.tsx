@@ -118,7 +118,7 @@ const ManageAdmin = () => {
         </Typography>
       </HeaderContainer>
       <DetailsContainer sx={{ flexGrow: 1 }}>
-        <Typography variant="body1" mt={1.25} mb={1.5}>
+        <Typography variant="body2" mt={1.25} mb={1.5}>
           Manage admin user configurations.
         </Typography>
         <Grid container spacing={2}>
@@ -171,7 +171,7 @@ const ManageAdmin = () => {
                 >
                   <Grid container>
                     <Grid item lg={3} md={6} sm={6} xs={6}>
-                      <Typography variant="body1">Name:</Typography>
+                      <Typography variant="body2">Name:</Typography>
                     </Grid>
                     <Grid item lg={9} md={5} sm={5} xs={5}>
                       {editMode ? (
@@ -185,7 +185,7 @@ const ManageAdmin = () => {
                         />
                       ) : (
                         <Typography
-                          variant="body1"
+                          variant="body2"
                           sx={{ wordWrap: "break-word" }}
                         >
                           {adminDetails?.name}
@@ -195,11 +195,11 @@ const ManageAdmin = () => {
                   </Grid>
                   <Grid container>
                     <Grid item lg={3} md={6} sm={6} xs={6}>
-                      <Typography variant="body1">Email:</Typography>
+                      <Typography variant="body2">Email:</Typography>
                     </Grid>
                     <Grid item lg={9} md={5} sm={5} xs={5}>
                       <Typography
-                        variant="body1"
+                        variant="body2"
                         sx={{ wordWrap: "break-word" }}
                       >
                         {adminDetails?.email}
@@ -208,11 +208,11 @@ const ManageAdmin = () => {
                   </Grid>
                   <Grid container>
                     <Grid item lg={3} md={6} sm={6} xs={6}>
-                      <Typography variant="body1">User ID:</Typography>
+                      <Typography variant="body2">User ID:</Typography>
                     </Grid>
                     <Grid item lg={9} md={5} sm={5} xs={5}>
                       <Typography
-                        variant="body1"
+                        variant="body2"
                         sx={{ wordWrap: "break-word" }}
                       >
                         {adminDetails?.id}
@@ -247,6 +247,7 @@ const ManageAdmin = () => {
                   >
                     <Typography
                       onClick={handleEdit}
+                      variant="body2"
                       style={{
                         cursor: "pointer",
                         color: "grey",
@@ -272,7 +273,7 @@ const ManageAdmin = () => {
                   width: "100%",
                 }}
               >
-                <Typography variant="body1">Current Password:</Typography>
+                <Typography variant="body2">Current Password:</Typography>
                 <TextField
                   variant="standard"
                   placeholder="Enter Current Password"
@@ -290,7 +291,7 @@ const ManageAdmin = () => {
                   width: "100%",
                 }}
               >
-                <Typography variant="body1">New Password:</Typography>
+                <Typography variant="body2">New Password:</Typography>
                 <TextField
                   variant="standard"
                   placeholder="Enter New Password"
@@ -308,7 +309,7 @@ const ManageAdmin = () => {
                   width: "100%",
                 }}
               >
-                <Typography variant="body1">Confirm New Password:</Typography>
+                <Typography variant="body2">Confirm New Password:</Typography>
                 <TextField
                   variant="standard"
                   placeholder="Confirm New Password"
@@ -322,6 +323,7 @@ const ManageAdmin = () => {
               <Box sx={{ height: "30px", marginRight: "20px" }}>
                 <Typography
                   onClick={onClickRestPassWord}
+                  variant="body2"
                   style={{
                     cursor: "pointer",
                     textAlign: "right",

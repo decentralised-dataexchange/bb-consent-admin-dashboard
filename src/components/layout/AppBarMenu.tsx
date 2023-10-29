@@ -92,7 +92,7 @@ export const AppBarMenu = (props: Props) => {
             onClick={() => navigate("/manageadmin")}
           >
             <SettingsOutlinedIcon />
-            <Typography ml={1}>Settings</Typography>
+            <Typography ml={1} variant="body2">Settings</Typography>
           </Box>
           <Box
             style={{
@@ -106,7 +106,7 @@ export const AppBarMenu = (props: Props) => {
             onClick={handleClickLogOut}
           >
             <ExitToAppIcon />
-            <Typography ml={1}>Signout</Typography>
+            <Typography ml={1} variant="body2">Signout</Typography>
           </Box>
         </Box>
       </Menu>

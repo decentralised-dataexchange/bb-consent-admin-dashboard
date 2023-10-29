@@ -97,6 +97,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                 />
                 <Typography
                   color="#9F9F9F"
+                  variant="body2"
                   height="23px"
                   style={{ marginTop: "2px" }}
                 >
@@ -136,13 +137,13 @@ const OrganisationDetailsContainer = (props: Props) => {
                 <Typography variant="h6" fontWeight="bold">
                   {organisationDetails.name}
                 </Typography>
-                <Typography variant="body1" height="23px">
+                <Typography variant="body2" height="23px">
                   Sector: {organisationDetails.sector}
                 </Typography>
-                <Typography variant="body1" height="23px">
+                <Typography variant="body2" height="23px">
                   Location: {organisationDetails.location}
                 </Typography>
-                <Typography variant="body1" height="23px">
+                <Typography variant="body2" height="23px">
                   Policy URL: {organisationDetails.policyUrl}
                 </Typography>
               </>
@@ -200,7 +201,7 @@ const OrganisationDetailsContainer = (props: Props) => {
             />
           ) : (
             <Typography
-              variant="subtitle1"
+              variant="body2"
               align="left"
               style={{ wordWrap: "break-word" }}
             >

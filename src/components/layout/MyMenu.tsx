@@ -1,5 +1,5 @@
 import { Menu, MenuProps } from "react-admin";
-import { Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import { useSidebarState } from "ra-ui-materialui";
 import { useState } from "react";
 
@@ -60,15 +60,19 @@ export default function MyMenu({ dense = false }: MenuProps) {
       </SubMenu>
 
       {open ? (
-        <Typography
-          sx={{
-            marginTop: "auto",
-            paddingBottom: 10,
-            textAlign: "center",
-          }}
-        >
-          Version: {version}
-        </Typography>
+        <>
+          <Typography
+            sx={{
+              marginTop: "auto",
+              paddingBottom: 10,
+              textAlign: "center",
+            }}
+            variant="caption"
+          >
+            Version: {version}
+          </Typography>
+        </>
+
       ) : null}
     </Menu>
   );

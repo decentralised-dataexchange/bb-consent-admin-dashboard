@@ -31,13 +31,13 @@ const DetailsContainer = styled("div")({
 const Item = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  backgroundColor: "#fff",
+  backgroundColor: "#f7f6f6",
   padding: theme.spacing(1),
   justifyContent: "center",
   color: "#0000",
   height: 100,
   borderRadius: 7,
-  border: "1px solid #EEEEEE",
+  border: "1px solid grey",
 }));
 
 const GettingStarted = () => {
@@ -95,7 +95,7 @@ const GettingStarted = () => {
                 sx={{ cursor: "pointer" }}
                 onClick={() => navigate("/dataagreement")}
               >
-                <Typography color="black" variant="h6">
+                <Typography variant="body1" color="grey">
                   Prepare Data Agreements
                 </Typography>
               </Item>
@@ -105,7 +105,7 @@ const GettingStarted = () => {
                 sx={{ cursor: "pointer" }}
                 onClick={() => navigate("/developerapi")}
               >
-                <Typography color="black" variant="h6">
+                <Typography variant="body1" color="grey">
                   Developer APIs
                 </Typography>
               </Item>
@@ -115,7 +115,7 @@ const GettingStarted = () => {
                 sx={{ cursor: "pointer" }}
                 onClick={() => navigate("/manageadmin")}
               >
-                <Typography color="black" variant="h6">
+                <Typography variant="body1" color="grey">
                   Manage Admin Users
                 </Typography>
               </Item>
@@ -128,7 +128,7 @@ const GettingStarted = () => {
                   rel="noreferrer"
                   style={{ textDecoration: "none" }}
                 >
-                  <Typography color="black" variant="h6">
+                  <Typography variant="body1" color="grey">
                     Developer Documentation
                   </Typography>
                 </a>
