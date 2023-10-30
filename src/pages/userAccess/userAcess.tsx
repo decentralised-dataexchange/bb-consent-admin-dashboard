@@ -43,11 +43,10 @@ const Item = styled("div")({
 
 const uploadButtonStyle = {
   borderRadius: 0,
-  border: "1px solid #8E8E8E",
-  backgroundColor: "#EBEBEB",
   width: "200px",
   height: "25px",
   cursor: "pointer",
+  border: '1px solid #DFDFDF'
 };
 
 const UserAccess = () => {
@@ -107,7 +106,7 @@ const UserAccess = () => {
           </Tooltip>
         </Box>
       </HeaderContainer>
-      <Typography variant="body1" mt={1.35}>
+      <Typography variant="body2" mt={1.35}>
         Manage how individual users of your organisation can access the privacy
         board.
       </Typography>
@@ -163,7 +162,18 @@ const UserAccess = () => {
           <form>
             <label className="uptext" htmlFor="uploadCSV">
               <Box style={uploadButtonStyle}>
-                <Typography style={{ textAlign: "center" }}>UPLOAD</Typography>
+                <Typography
+                  sx={{
+                    textAlign: "center",
+                    "&:hover": {
+                      backgroundColor: "black",
+                      color: "white",
+                    },
+                    color: "black",
+                  }}
+                >
+                  UPLOAD
+                </Typography>
               </Box>
             </label>
             <input

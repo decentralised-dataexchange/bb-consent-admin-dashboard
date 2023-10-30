@@ -43,11 +43,9 @@ const HeaderContainer = styled("div")({
 });
 
 const buttonStyle = {
-  color: "black",
-  borderRadius: 5,
-  border: "1px solid black",
-  backgroundColor: "#E5E4E4",
-  boxShadow: "none"
+  height: 35,
+  borderRadius: 1,
+  border: "1px solid #DFDFDF",
 };
 
 const DataAgreement = () => {
@@ -146,7 +144,14 @@ const DataAgreement = () => {
             <Box>
               <Button
                 style={buttonStyle}
-                variant="contained"
+                variant="outlined"
+                sx={{
+                  "&:hover": {
+                    backgroundColor: "black",
+                    color: "white",
+                  },
+                  color: "black",
+                }}
                 onClick={() => setOpenGlobalDataPolicyModal(true)}
               >
                 GLOBAL DATA POLICY
@@ -154,7 +159,7 @@ const DataAgreement = () => {
             </Box>
           </Box>
         </HeaderContainer>
-        <Typography variant="body1" sx={{ marginTop: "10px" }}>
+        <Typography variant="body2" sx={{ marginTop: "10px" }}>
           Manage Data Agreements for your organisation.
         </Typography>
       </Form>

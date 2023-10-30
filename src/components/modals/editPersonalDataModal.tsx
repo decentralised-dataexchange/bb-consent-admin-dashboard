@@ -21,7 +21,7 @@ interface Props {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   headerText: string;
-  onRefetch: any
+  onRefetch: any;
 }
 
 export default function EditPersonalDataModal(props: Props) {
@@ -60,8 +60,8 @@ export default function EditPersonalDataModal(props: Props) {
 
       HttpService.updateDataAttributes(payload, selectedDataAttributeId).then(
         () => {
-          onRefetch()
-          setOpen(false)
+          onRefetch();
+          setOpen(false);
         }
       );
     }
@@ -109,7 +109,14 @@ export default function EditPersonalDataModal(props: Props) {
                 <Button
                   onClick={() => setOpen(false)}
                   style={buttonStyle}
-                  sx={{ marginRight: "10px" }}
+                  sx={{
+                    marginRight: "10px",
+                    color:"black",
+                    "&:hover": {
+                      backgroundColor: "black",
+                      color: "white",
+                    },
+                  }}
                   variant="outlined"
                 >
                   CLOSE
@@ -125,6 +132,11 @@ export default function EditPersonalDataModal(props: Props) {
                       ? "pointer"
                       : "not-allowed",
                     marginRight: "20px",
+                    color: methods.formState.isValid ? "black" : "#6D7676",
+                    "&:hover": {
+                      backgroundColor: "black",
+                      color: "white",
+                    },
                   }}
                   variant="outlined"
                   type="submit"

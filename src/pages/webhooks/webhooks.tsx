@@ -108,7 +108,7 @@ const Webhooks = () => {
               </Tooltip>
             </Box>
           </HeaderContainer>
-          <Typography variant="body1" mt={1.25}>
+          <Typography variant="body2" mt={1.25}>
             Manage webhooks for user events. Webhooks allow external services to
             be notified when certain events happen.
           </Typography>

@@ -118,7 +118,7 @@ const PersonalData = () => {
               </RadioGroup>
             </Box>
           </HeaderContainer>
-          <Typography variant="body1" mt={1.25}>
+          <Typography variant="body2" mt={1.25}>
             Manage the personal data attributes. Personal data attributes can be
             used for Internal purposes, can be exposed as a Data Source or is
             consumed as a Data Using Service

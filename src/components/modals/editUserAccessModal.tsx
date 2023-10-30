@@ -290,7 +290,14 @@ export default function EditUserAccesModal(props: Props) {
                 <Button
                   onClick={() => setOpen(false)}
                   style={buttonStyle}
-                  sx={{ marginRight: "10px" }}
+                  sx={{
+                    marginRight: "10px",
+                    color: "black",
+                    "&:hover": {
+                      backgroundColor: "black",
+                      color: "white",
+                    },
+                  }}
                   variant="outlined"
                 >
                   CLOSE
@@ -308,6 +315,11 @@ export default function EditUserAccesModal(props: Props) {
                       ? "pointer"
                       : "not-allowed",
                     marginRight: "20px",
+                    color: methods.formState.isValid ? "black" : "#6D7676",
+                    "&:hover": {
+                      backgroundColor: "black",
+                      color: "white",
+                    },
                   }}
                 >
                   SAVE{" "}

@@ -43,7 +43,6 @@ const Item = styled("div")(({ theme }) => ({
 }));
 
 const buttonStyle = {
-  color: "black",
   height: 30,
   width: 100,
   borderRadius: 0,
@@ -226,6 +225,13 @@ const ManageAdmin = () => {
                       onClick={handleEdit}
                       style={buttonStyle}
                       variant="outlined"
+                      sx={{
+                        color: "black",
+                        "&:hover": {
+                          backgroundColor: "black",
+                          color: "white",
+                        },
+                      }}
                     >
                       Cancel
                     </Button>
@@ -233,6 +239,13 @@ const ManageAdmin = () => {
                       style={buttonStyle}
                       variant="outlined"
                       onClick={onClickSave}
+                      sx={{
+                        color: "black",
+                        "&:hover": {
+                          backgroundColor: "black",
+                          color: "white",
+                        },
+                      }}
                     >
                       Save
                     </Button>

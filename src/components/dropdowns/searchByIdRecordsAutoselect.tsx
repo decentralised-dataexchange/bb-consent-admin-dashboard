@@ -1,4 +1,5 @@
 import { TextField } from "@mui/material";
+import { fontSize } from "@mui/system";
 
 const inputStyleAttr = {
   color: "#495057",
@@ -19,6 +20,13 @@ export const SearchByIdRecordsAutoselect = (props: any) => {
         ...inputStyleAttr,
       }}
       placeholder="Search by Individual ID, Consent Record ID, Data Agreement ID"
+      // sx={{
+      //   input: {
+      //     "&::placeholder": {
+      //       fontSize: "14px",
+      //     },
+      //   },
+      // }}
       onChange={(event) => {
         changefilter({
           filterType: "id",

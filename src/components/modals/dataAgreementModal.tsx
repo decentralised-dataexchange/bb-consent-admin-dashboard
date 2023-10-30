@@ -385,7 +385,9 @@ export default function DataAgreementModal(props: Props) {
 
                       <Typography variant="subtitle1">
                         Data Policy Configurations
-                        <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
+                        <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>
+                          *
+                        </span>
                       </Typography>
                       <DataAgreementPolicy mode={mode} />
 
@@ -412,6 +414,14 @@ export default function DataAgreementModal(props: Props) {
                         methods.formState.isValid && mode !== "Read"
                           ? "pointer"
                           : "not-allowed",
+                      color:
+                        methods.formState.isValid && mode !== "Read"
+                          ? "black"
+                          : "#6D7676",
+                      "&:hover": {
+                        backgroundColor: "black",
+                        color: "white",
+                      },
                     }}
                     style={
                       methods.formState.isValid && mode !== "Read"
@@ -439,7 +449,15 @@ export default function DataAgreementModal(props: Props) {
                         methods.formState.isValid && mode !== "Read"
                           ? "pointer"
                           : "not-allowed",
+                      color:
+                        methods.formState.isValid && mode !== "Read"
+                          ? "black"
+                          : "#6D7676",
                       marginLeft: "10px",
+                      "&:hover": {
+                        backgroundColor: "black",
+                        color: "white",
+                      },
                     }}
                     onClick={() => {
                       setActive(false);

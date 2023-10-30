@@ -150,8 +150,8 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
       HttpService.addPolicies(payload).then((response) => {});
     } else {
       HttpService.updatePoliciesById(payload, policyIdForUpdatePolicy).then(
-        () => { 
-          setOpen(false)
+        () => {
+          setOpen(false);
         }
       );
     }
@@ -389,7 +389,14 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                 <Button
                   onClick={() => setOpen(false)}
                   style={buttonStyle}
-                  sx={{ marginRight: "10px" }}
+                  sx={{
+                    color:"black",
+                    marginRight: "10px",
+                    "&:hover": {
+                      backgroundColor: "black",
+                      color: "white",
+                    },
+                  }}
                   variant="outlined"
                 >
                   Close
@@ -407,6 +414,11 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                       ? "pointer"
                       : "not-allowed",
                     marginRight: "20px",
+                    color:"black",
+                    "&:hover": {
+                      backgroundColor: "black",
+                      color: "white",
+                    },
                   }}
                 >
                   Save

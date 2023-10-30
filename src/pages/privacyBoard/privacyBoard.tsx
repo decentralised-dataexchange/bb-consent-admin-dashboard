@@ -67,7 +67,7 @@ const Privacyboard = () => {
           Privacy Dashboard
         </Typography>
       </HeaderContainer>
-      <Typography variant="body1" mt={1.25}>
+      <Typography variant="body2" mt={1.25}>
         Deploy and manage privacy dashboard for your organisation towards end users.
       </Typography>
 

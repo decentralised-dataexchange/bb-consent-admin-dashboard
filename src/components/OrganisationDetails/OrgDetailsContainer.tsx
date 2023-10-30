@@ -24,7 +24,6 @@ const editStyleEnable: React.CSSProperties = {
 };
 
 const buttonStyle = {
-  color: "black",
   height: 30,
   width: 100,
   borderRadius: 0,
@@ -161,6 +160,13 @@ const OrganisationDetailsContainer = (props: Props) => {
                 onClick={handleEdit}
                 style={buttonStyle}
                 variant="outlined"
+                sx={{
+                  "&:hover": {
+                    backgroundColor: "black",
+                    color: "white",
+                  },
+                  color:"black"
+                }}
               >
                 Cancel
               </Button>
@@ -168,6 +174,13 @@ const OrganisationDetailsContainer = (props: Props) => {
                 onClick={handleSave}
                 style={buttonStyle}
                 variant="outlined"
+                sx={{
+                  "&:hover": {
+                    backgroundColor: "black",
+                    color: "white",
+                  },
+                  color:"black"
+                }}
               >
                 Save
               </Button>
