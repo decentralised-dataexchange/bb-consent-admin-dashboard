@@ -36,6 +36,9 @@ export const OrganizationDetailsCRUDProvider: FC<
         organisationDetails,
         coverImageBase64,
         logoImageBase64,
+        setOrganisationDetails,
+        setCoverImageBase64,
+        setLogoImageBase64
       }}
     >
       {children}

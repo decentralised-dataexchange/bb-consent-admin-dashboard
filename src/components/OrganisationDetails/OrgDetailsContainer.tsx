@@ -33,10 +33,11 @@ const buttonStyle = {
 
 type Props = {
   editMode: boolean;
-  logoImageBase64: string;
+  logoImageBase64: string | undefined;
   organisationDetails: any;
   handleEdit: () => void;
-  setOganisationDetails: any;
+  setOganisationDetails: React.Dispatch<React.SetStateAction<any>>;
+  setLogoImageBase64: React.Dispatch<React.SetStateAction<any>>;
 };
 
 const OrganisationDetailsContainer = (props: Props) => {
@@ -46,6 +47,7 @@ const OrganisationDetailsContainer = (props: Props) => {
     organisationDetails,
     handleEdit,
     setOganisationDetails,
+    setLogoImageBase64,
   } = props;
   const [organisationName, setOrganisationName] = useState("");
   const [organisationLocation, setOrganisationLocation] = useState("");
@@ -65,7 +67,8 @@ const OrganisationDetailsContainer = (props: Props) => {
           handleEdit();
           setOganisationDetails(organisation);
         });
-      }).catch((error) => console.log(`Error: ${error}`));
+      })
+      .catch((error) => console.log(`Error: ${error}`));
   };
 
   return (
@@ -75,6 +78,7 @@ const OrganisationDetailsContainer = (props: Props) => {
           <OrgLogoImageUpload
             editMode={editMode}
             logoImageBase64={logoImageBase64}
+            setLogoImageBase64={setLogoImageBase64}
           />
         </Grid>
         <Grid item lg={6} md={5} sm={12} xs={12} height={23}>
