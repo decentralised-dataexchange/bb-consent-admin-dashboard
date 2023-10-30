@@ -173,7 +173,7 @@ export const Login = () => {
             textDecoration: "none",
             color: "#1890ff",
           }}>iGrant.io</a>
-            , Swedan
+            , Sweden
           </Typography>
         </Box>
       </FooterContainer>

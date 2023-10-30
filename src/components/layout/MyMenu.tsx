@@ -78,7 +78,7 @@ export default function MyMenu({ dense = false }: MenuProps) {
               textDecoration: "none",
               color: "#1890ff",
             }}>iGrant.io</a>
-            , Swedan
+            , Sweden
           </Typography>
         </Box>
 
