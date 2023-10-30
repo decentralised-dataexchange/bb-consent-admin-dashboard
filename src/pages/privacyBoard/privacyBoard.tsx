@@ -61,7 +61,7 @@ const Privacyboard = () => {
 
   return (
     <Container>
-      <BreadCrumb Link="Privacy Board" />
+      <BreadCrumb Link="Privacy Dashboard" />
       <HeaderContainer>
         <Typography variant="h6" fontWeight="bold">
           Privacy Dashboard
@@ -79,6 +79,7 @@ const Privacyboard = () => {
           <Typography color="black" variant="subtitle1" fontWeight="bold">
             {privacyBoardDetails?.statusStr}
           </Typography>
+          <span style={{ cursor: 'not-allowed' }}>
           <Button
             variant="outlined"
             disabled={statusData?.applicationMode === "single-tenant" ? true : false}
@@ -93,14 +94,11 @@ const Privacyboard = () => {
               fontSize: "16px",
               borderRadius: 0,
               width: "190px",
-              cursor:
-                statusData?.applicationMode === "single-tenant"
-                  ? "not-allowed"
-                  : "pointer",
             }}
           >
             CONFIGURE
           </Button>
+          </span>
         </Box>
       </Item>
       <ItemGrid>
