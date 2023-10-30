@@ -58,7 +58,6 @@ const FooterContainer = styled('div')(({ theme }) => ({
 }));
 
 const buttonStyle = {
-  color: "black",
   height: 30,
   width: 150,
   borderRadius: 0,
@@ -66,7 +65,6 @@ const buttonStyle = {
 }
 
 const disabledButtonstyle = {
-  color: "#6D7676",
   height: 30,
   width: 150,
   borderRadius: 0,

@@ -169,7 +169,7 @@ const UserRecords = () => {
               flexWrap: "wrap",
             }}
           >
-            <Typography variant="body1">
+            <Typography variant="body2">
               Do queries on the consent records for audit purpose
             </Typography>
             <SearchByIdRecordsAutoselect

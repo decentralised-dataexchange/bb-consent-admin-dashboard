@@ -26,7 +26,7 @@ interface Props {
   modalDescriptionText: any;
   onRefetch?: any;
   userAccessId?: string;
-  resourceName?: string
+  resourceName?: string;
 }
 
 export default function DeleteModal(props: Props) {
@@ -38,7 +38,7 @@ export default function DeleteModal(props: Props) {
     modalDescriptionText,
     onRefetch,
     userAccessId,
-    resourceName
+    resourceName,
   } = props;
   const [isOk, setIsOk] = useState(false);
   const [confirmationTextInput, setConfirmationTextInput] = useState("");
@@ -87,12 +87,15 @@ export default function DeleteModal(props: Props) {
         HttpService.deleteIdpBy(userAccessId).then(() => {
           setOpen(false);
         });
-      } else if(confirmText === "DELETE" && daId && resourceName === "webhooks"){
-        HttpService.deleteWebhook(daId)
-        .then(()=>{
+      } else if (
+        confirmText === "DELETE" &&
+        daId &&
+        resourceName === "webhooks"
+      ) {
+        HttpService.deleteWebhook(daId).then(() => {
           onRefetch();
           setOpen(false);
-        })
+        });
       }
     }
   };
@@ -138,7 +141,14 @@ export default function DeleteModal(props: Props) {
                   setIsOk(false);
                 }}
                 style={buttonStyle}
-                sx={{ marginRight: "10px" }}
+                sx={{
+                  marginRight: "10px",
+                  color: "black",
+                  "&:hover": {
+                    backgroundColor: "black",
+                    color: "white",
+                  },
+                }}
                 variant="outlined"
               >
                 CANCEL
@@ -150,6 +160,11 @@ export default function DeleteModal(props: Props) {
                 sx={{
                   marginRight: "20px",
                   cursor: !isOk ? "not-allowed" : "pointer",
+                  color: !isOk ? "#6D7676" :"black",
+                  "&:hover": {
+                    backgroundColor: "black",
+                    color: "white",
+                  },
                 }}
               >
                 {confirmText}

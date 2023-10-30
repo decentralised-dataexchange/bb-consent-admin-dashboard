@@ -40,10 +40,8 @@ const HeaderContainer = styled("div")({
 });
 
 const buttonStyle = {
-  color: "black",
   borderRadius: 0,
   border: "1px solid #DFDFDF",
-  backgroundColor: "transparent",
   width: "200px",
 };
 
@@ -91,7 +89,7 @@ const ViewLogs = () => {
               View Logs
             </Typography>
           </HeaderContainer>
-          <Typography variant="body1" mt={1.25}>
+          <Typography variant="body2" mt={1.25}>
             Provides all logs, can also be filtered against various log
             categories.
           </Typography>
@@ -106,6 +104,13 @@ const ViewLogs = () => {
               style={buttonStyle}
               onClick={() => {
                 setSelectedFilterValue("all");
+              }}
+              sx={{
+                color: "black",
+                "&:hover": {
+                  backgroundColor: "black",
+                  color: "white",
+                },
               }}
             >
               View All

@@ -107,7 +107,7 @@ const DeveloperAPIs = () => {
         </Typography>
       </HeaderContainer>
       <DetailsContainer sx={{ flexGrow: 1 }}>
-        <Typography variant="body1" mt={1.25} mb={1}>
+        <Typography variant="body2" mt={1.25} mb={1}>
           All API requests require you to authenticate using the credentials
           below
         </Typography>

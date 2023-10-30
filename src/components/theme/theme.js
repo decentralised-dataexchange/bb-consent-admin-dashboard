@@ -1,4 +1,4 @@
-import { defaultTheme } from 'react-admin';
+import { defaultTheme } from "react-admin";
 
 export const theme = {
   ...defaultTheme,
@@ -15,35 +15,35 @@ export const theme = {
     MuiMenuItem: {
       styleOverrides: {
         root: {
-          fontSize: '14px', // Change the font size
-          black: 'black',    // Change the text color
+          fontSize: "14px", // Change the font size
+          black: "black", // Change the text color
         },
-      }
+      },
     },
     RaList: {
       styleOverrides: {
         root: {
-          '& .RaList-content': {
+          "& .RaList-content": {
             boxShadow: "none",
           },
-        }
-      }
+        },
+      },
     },
     RaDatagrid: {
       styleOverrides: {
         root: {
           backgroundColor: "#FFFF",
           "& .RaDatagrid-headerCell": {
-            fontWeight: 'bold',
+            fontWeight: "bold",
             backgroundColor: "#E5E4E4",
-            border: '1px solid #D7D6D6',
-            fontSize: "16px"
+            border: "1px solid #D7D6D6",
+            fontSize: "16px",
           },
           "& .RaDatagrid-rowCell	": {
-            border: '1px solid #D7D6D6',
+            border: "1px solid #D7D6D6",
           },
-        }
-      }
+        },
+      },
     },
     MuiTextField: {
       styleOverrides: {
@@ -51,11 +51,16 @@ export const theme = {
           "& .MuiInputBase-root": {
             "&.Mui-focused fieldset": {
               borderColor: "black",
-              borderWidth: "1px"
+              borderWidth: "1px",
+            },
+          },
+          input: {
+            "&::placeholder": {
+              fontSize: "14px",
             }
           }
         }
       }
-    },
-  },
-}
+    }
+  }
+};

@@ -20,7 +20,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
 import WebhookSelect from "../dropdowns/webhookSelects";
 import { useParams } from "react-router-dom";
-import { Http } from "@mui/icons-material";
 
 interface Props {
   open: boolean;
@@ -202,7 +201,14 @@ export default function EditWebooks(props: Props) {
                 <Button
                   onClick={() => setOpen(false)}
                   style={buttonStyle}
-                  sx={{ marginRight: "10px" }}
+                  sx={{
+                    marginRight: "10px",
+                    color: "black",
+                    "&:hover": {
+                      backgroundColor: "black",
+                      color: "white",
+                    },
+                  }}
                   variant="outlined"
                 >
                   CLOSE
@@ -220,6 +226,11 @@ export default function EditWebooks(props: Props) {
                         ? "pointer"
                         : "not-allowed",
                     marginRight: "20px",
+                    color: methods.formState.isValid && eventTypesValid === true ? "black" : "#6D7676",
+                    "&:hover": {
+                      backgroundColor: "black",
+                      color: "white",
+                    },
                   }}
                   type="submit"
                 >
