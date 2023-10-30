@@ -64,11 +64,11 @@ const Privacyboard = () => {
       <BreadCrumb Link="Privacy Board" />
       <HeaderContainer>
         <Typography variant="h6" fontWeight="bold">
-          Privacy Board
+          Privacy Dashboard
         </Typography>
       </HeaderContainer>
       <Typography variant="body1" mt={1.25}>
-        Deploy and manage privacy board for your organisation towards end users.
+        Deploy and manage privacy dashboard for your organisation towards end users.
       </Typography>
 
       <Item>
@@ -81,8 +81,8 @@ const Privacyboard = () => {
           </Typography>
           <Button
             variant="outlined"
+            disabled={statusData?.applicationMode === "single-tenant" ? true : false}
             onClick={() =>
-              statusData?.applicationMode !== "single-tenant" &&
               setOpenEditUserAccessModal(true)
             }
             sx={{
