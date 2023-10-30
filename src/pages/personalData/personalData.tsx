@@ -90,7 +90,7 @@ const PersonalData = () => {
             <Box>
               <RadioGroup
                 aria-labelledby="demo-radio-buttons-group-label"
-                // defaultValue="all"
+                defaultValue="all"
                 name="radio-buttons-group"
                 row
               >
