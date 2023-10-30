@@ -40,9 +40,18 @@ export const AppBarMenu = (props: Props) => {
         onClick={handleMenu}
         sx={{ marginLeft: "auto" }}
       >
-        <AccountCircle style={{ height: 60, width: 60 }} />
+        {props.image ? (
+          <Avatar
+            style={{ width: "50px", height: "50px" }}
+            src={`data:image/jpeg;charset=utf-8;base64,${props.image}`}
+            alt="img"
+          />
+        ) : (
+          <AccountCircle style={{ height: 60, width: 60 }} />
+        )}
       </IconButton>
       <Menu
+        sx={{ mt: "65px" }}
         id="menu-appbar"
         anchorOrigin={{
           vertical: "top",
@@ -60,7 +69,7 @@ export const AppBarMenu = (props: Props) => {
           style={{
             display: "grid",
             justifyItems: "center",
-            width: 200,
+            minWidth: 220,
             padding: 10,
           }}
         >
@@ -79,7 +88,7 @@ export const AppBarMenu = (props: Props) => {
             {props.email}
           </Typography>
           <Typography variant="caption" style={{ marginBottom: "3px" }}>
-            {formatISODateToLocalString(props.lastVisited)}
+            Last visit: {formatISODateToLocalString(props.lastVisited)}
           </Typography>
         </Box>
         <Box style={{ color: "black", borderTop: "1px solid #BDBDBD" }}>
