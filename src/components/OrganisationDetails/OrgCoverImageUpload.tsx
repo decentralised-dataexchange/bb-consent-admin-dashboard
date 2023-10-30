@@ -65,7 +65,7 @@ const OrgCoverImageUpload = (props: Props) => {
         height="100%"
         width="100%"
         alt="Banner"
-        fit="fill"
+        fit="cover"
         style={{ opacity: editMode ? 0.25 : 1, transitionDuration: "0ms" }}
         src={
           coverImageBase64
