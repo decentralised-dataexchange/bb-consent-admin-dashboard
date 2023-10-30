@@ -3,6 +3,7 @@ import DefaultBanner from "../../assets/OrganisationDefaultBanner.jpg";
 import { HttpService } from "../../service/HTTPService";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import Image from "mui-image";
 
 const BannerContainer = styled("div")({
   height: 300,
@@ -60,17 +61,19 @@ const OrgCoverImageUpload = (props: Props) => {
 
   return (
     <BannerContainer>
-      <Box
-        style={{ height: "100%", width: "100%" }}
-        component="img"
+      <Image
+        height="100%"
+        width="100%"
         alt="Banner"
+        fit="cover"
+        style={{ opacity: editMode ? 0.25 : 1, transitionDuration: "0ms" }}
         src={
           coverImageBase64
             ? `data:image/jpeg;charset=utf-8;base64,${coverImageBase64}`
             : DefaultBanner
         }
-        sx={{ opacity: editMode ? 0.25 : 1 }}
       />
+
       {editMode && (
         <Box style={{ position: "absolute", right: 20, top: 10 }}>
           <div>
