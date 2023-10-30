@@ -16,7 +16,7 @@ export const theme = {
       styleOverrides: {
         root: {
           fontSize: '14px', // Change the font size
-          color: 'blue',    // Change the text color
+          black: 'black',    // Change the text color
         },
       }
     },

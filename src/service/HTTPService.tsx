@@ -14,7 +14,7 @@ import {
   convertPurposeForClient,
   DataAgreement,
 } from "../interfaces/DataAgreement";
-
+import { convertConsentRecordsForClient } from "../components/userRecordsAction";
 const httpClient = axios.create({
   baseURL:
     process.env.REACT_APP_ENV === "staging" ? STAGING_BASE_URL : DEMO_BASE_URL,
@@ -400,7 +400,7 @@ export const HttpService = {
         config
       )
       .then((res) => {
-        return res.data;
+        return convertConsentRecordsForClient(res.data);
       });
   },
   getDataAgreementRecordByID: async (recordId: any): Promise<any> => {

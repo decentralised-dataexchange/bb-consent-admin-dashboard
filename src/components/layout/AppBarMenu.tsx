@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLogout } from "react-admin";
 import { useNavigate } from "react-router-dom";
 import { LocalStorageService } from "../../service/localStorageService";
-
+import { formatISODateToLocalString } from "../../utils/formatISODateToLocalString";
 import { Box, Menu, Avatar, Typography, IconButton } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
@@ -31,24 +31,6 @@ export const AppBarMenu = (props: Props) => {
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-
-  const formatISODateToLocalString = (isoDateTime: string) => {
-    const date = new Date(isoDateTime);
-
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-    const year = date.getFullYear();
-    const month = months[date.getMonth()];
-    const day = date.getDate();
-    const dayOfWeek = daysOfWeek[date.getDay()];
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const formattedHours = hours % 12 || 12;
-
-    return `${month} ${day}, ${year} ${formattedHours}:${minutes.toString().padStart(2, '0')}${ampm}`;
-  }
 
   return (
     <>
@@ -88,7 +70,8 @@ export const AppBarMenu = (props: Props) => {
             alt="img"
           />
           <Typography
-            variant="body2" style={{ fontWeight: "bold", marginBottom: "4px" }}
+            variant="body2"
+            style={{ fontWeight: "bold", marginBottom: "4px" }}
           >
             {props.firstName}
           </Typography>
@@ -111,7 +94,9 @@ export const AppBarMenu = (props: Props) => {
             onClick={() => navigate("/manageadmin")}
           >
             <SettingsOutlinedIcon />
-            <Typography ml={1} variant="body2">Settings</Typography>
+            <Typography ml={1} variant="body2">
+              Settings
+            </Typography>
           </Box>
           <Box
             style={{
@@ -125,7 +110,9 @@ export const AppBarMenu = (props: Props) => {
             onClick={handleClickLogOut}
           >
             <ExitToAppIcon />
-            <Typography ml={1} variant="body2">Signout</Typography>
+            <Typography ml={1} variant="body2">
+              Signout
+            </Typography>
           </Box>
         </Box>
       </Menu>

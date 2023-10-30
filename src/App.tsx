@@ -34,7 +34,7 @@ function App() {
       <Resource name='dataagreement' options={{ label: 'Data Agreements' }} list={DataAgreements} icon={InsertDriveFileOutlinedIcon}  />
       <Resource name='personaldata' options={{ label: 'Personal Data' }} list={PersonalData} icon={InsertChartOutlinedOutlinedIcon}/>
       <Resource name='configuration' options={{ label: 'Configuration' }} list={UserAccess}/>
-      <Resource name='userrecords' options={{ label: 'User Records'}} list={UserRecords} />
+      <Resource name='consentrecords' options={{ label: 'Consent Records'}} list={UserRecords} />
       <Resource name='privacydashboard' options={{ label: 'Privacy Dashboard' }} list={Privacyboard} icon={HealthAndSafetyOutlinedIcon} />
       <Resource name='manageadmin' options={{ label: 'Manage Admin' }} list={ManageAdmin} />
       <Resource name='developerapi' options={{ label: 'Developer APIs' }} list={DeveloperAPIs} />

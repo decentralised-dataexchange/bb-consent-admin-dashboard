@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  List,
-  Datagrid,
-  TextField,
-  Form,
-  useRefresh,
-} from "react-admin";
+import { List, Datagrid, TextField, Form, useRefresh } from "react-admin";
 
 import {
   Box,
@@ -27,7 +21,7 @@ import { HttpService } from "../../service/HTTPService";
 import { useParams } from "react-router-dom";
 import { useFilterStore } from "../../store/store";
 import FilterByPurposeDropdown from "../../components/dropdowns/filterByPurposeDropDown";
-import FilterByLasfulBasisDropdown from "../../components/dropdowns/filterByLawfulBasisDropDown";
+import FilterByLawfulBasisDropdown from "../../components/dropdowns/filterByLawfulBasisDropDown";
 import { SearchByIdRecordsAutoselect } from "../../components/dropdowns/searchByIdRecordsAutoselect";
 
 const Container = styled("div")(({ theme }) => ({
@@ -161,10 +155,10 @@ const UserRecords = () => {
         sx={{ width: "100%", overflow: "hidden" }}
       >
         <Form>
-          <BreadCrumb Link="Manage Users" Link2="User Records" />
+          <BreadCrumb Link="Manage Users" Link2="Consent Records" />
           <HeaderContainer>
             <Typography variant="h6" fontWeight="bold">
-              User Records
+              Consent Records
             </Typography>
           </HeaderContainer>
           <Box
@@ -176,7 +170,7 @@ const UserRecords = () => {
             }}
           >
             <Typography variant="body1">
-              Do queries on the data agreement records for audit purpose
+              Do queries on the consent records for audit purpose
             </Typography>
             <SearchByIdRecordsAutoselect
               changefilter={changefilter}
@@ -260,7 +254,7 @@ const UserRecords = () => {
                     control={<Radio color="default" />}
                     label=""
                   />
-                  <FilterByLasfulBasisDropdown
+                  <FilterByLawfulBasisDropdown
                     displayValue={"Filter by Lawful Basis"}
                     dropdownValues={lawfullBasisOfProcessingDropdownvalues}
                     changefilter={changefilter}
@@ -291,6 +285,7 @@ const UserRecords = () => {
               width: { xs: "359px", sm: "100%", md: "100%", lg: "100%" },
             }}
           >
+            <TextField source="id" label={"Consent Record ID"} />
             <TextField source="individualId" label={"Individual ID"} />
             <TextField source="dataAgreement.purpose" label={"Purpose"} />
             <TextField
