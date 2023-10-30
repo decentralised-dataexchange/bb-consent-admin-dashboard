@@ -45,7 +45,7 @@ export default function MyMenu({ dense = false }: MenuProps) {
         <Menu.Item to="/configuration" primaryText="Configuration" />
         <Menu.Item to="/userrecords" primaryText="User Records" />
       </SubMenu>
-      <Menu.ResourceItem name="privacyboard" />
+      <Menu.ResourceItem name="privacydashboard" />
       <SubMenu
         handleToggle={() => handleToggle("account")}
         isOpen={state.account}
