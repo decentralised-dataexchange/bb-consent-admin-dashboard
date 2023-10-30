@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { List, Datagrid, TextField, Form,  useRefresh } from "react-admin";
+import {
+  List,
+  Datagrid,
+  TextField,
+  Form,
+  useRefresh,
+  BooleanField,
+  useRecordContext,
+} from "react-admin";
 
 import { Box, Typography, Tooltip } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -41,21 +49,33 @@ const Webhooks = () => {
   const [modeOfPopup, setModeOfPopup] = useState("");
   const params = useParams();
   const selectedWebhooksId = params["*"];
-  
   const refresh = useRefresh();
-   
+
   const onRefetch = () => {
     refresh();
   };
 
   const recentDeliveries = () => {
     setShowRecentDeliveries(!showRecentDeliveries);
-    if(selectedWebhooksId){
-    HttpService.getWebhooksRecentDeliveries(selectedWebhooksId)
-    .then((res)=>{
-      setRecentDeliveryValues(res.data.webhookDeliveries)
-    })
-  }
+    if (selectedWebhooksId) {
+      HttpService.getWebhooksRecentDeliveries(selectedWebhooksId).then(
+        (res) => {
+          setRecentDeliveryValues(res.data.webhookDeliveries);
+        }
+      );
+    }
+  };
+
+  const ColoredField = (props: any) => {
+    const record = useRecordContext(props);
+    if (!record || !props.source) {
+      return null;
+    }
+    return record[props.source] === true ? (
+      <BooleanField {...props} sx={{ color: "green" }} />
+    ) : (
+      <BooleanField {...props} sx={{ color: "red" }} />
+    );
   };
 
   return (
@@ -110,11 +130,17 @@ const Webhooks = () => {
           >
             <TextField
               source="payloadUrl"
-              label={"Call Back URL"}
+              label={"Webhook URL"}
               onClick={recentDeliveries}
               sx={{ cursor: "pointer" }}
             />
-            <TextField source="disabled" label={"Status"} />
+            <ColoredField
+              source="disabled"
+              label={"Status"}
+              textAlign={"center"}
+              options={{ style: "currency", currency: "USD" }}
+            />
+
             <Box
               style={{
                 display: "flex",
@@ -146,7 +172,9 @@ const Webhooks = () => {
         </Box>
       </List>
 
-      {showRecentDeliveries && recentDeliveryValues && <RecentDeliveries recentDeliveryValues={recentDeliveryValues} />}
+      {showRecentDeliveries && recentDeliveryValues && (
+        <RecentDeliveries recentDeliveryValues={recentDeliveryValues} />
+      )}
 
       {/* Modals */}
 
