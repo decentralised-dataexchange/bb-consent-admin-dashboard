@@ -11,7 +11,6 @@ import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 
 import BreadCrumb from "../../components/Breadcrumbs";
 import { HttpService } from "../../service/HTTPService";
-import { DEMO_BASE_URL, STAGING_BASE_URL } from "../../settings/settings";
 import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
 import { LocalStorageService } from "../../service/localStorageService";
 
@@ -53,8 +52,7 @@ const DeveloperAPIs = () => {
     useState<any>();
   const [showHideButton, setShowHideButton] = useState<boolean>(false);
   const [apiKeyValue, setApiKeyValue] = useState<any>();
-  let stagingURL =
-    process.env.REACT_APP_ENV === "staging" ? STAGING_BASE_URL : DEMO_BASE_URL;
+  let stagingURL = process.env.REACT_APP_API_BASE_URL
 
   useEffect(() => {
     HttpService.listAllApiKeys().then((res) => {
