@@ -115,7 +115,7 @@ export const dataProvider = combineDataProviders((resource): any => {
       return personalDataDataProvider;
     case "viewlogs":
       return viewLogsProvider;
-    case "userrecords":
+    case "consentrecords":
       return userRecordsDataProvider;
     case "webhooks":
       return webhooksProvider;

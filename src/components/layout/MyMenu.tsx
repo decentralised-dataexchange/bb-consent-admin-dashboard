@@ -43,7 +43,7 @@ export default function MyMenu({ dense = false }: MenuProps) {
         dense={!dense}
       >
         <Menu.Item to="/configuration" primaryText="Configuration" />
-        <Menu.Item to="/userrecords" primaryText="User Records" />
+        <Menu.Item to="/consentrecords" primaryText="Consent Records" />
       </SubMenu>
       <Menu.ResourceItem name="privacydashboard" />
       <SubMenu

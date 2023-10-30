@@ -53,7 +53,7 @@ const FilterByPurposeDropdown = (props: Props) => {
           value.purpose === (selectedValue?.[0] && selectedValue[0])
       );
       changefilter({
-        filterType: "dataAgreementId",
+        filterType: "id",
         value: selectedAgreement?.[0] && selectedAgreement[0].id,
       });
     }

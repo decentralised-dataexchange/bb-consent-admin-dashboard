@@ -17,7 +17,7 @@ interface Props {
   handleFilterDropDownTriggered: any;
 }
 
-const FilterByLasfulBasisDropdown = (props: Props) => {
+const FilterByLawfulBasisDropdown = (props: Props) => {
   const {
     displayValue,
     selectWidth,
@@ -82,4 +82,4 @@ const FilterByLasfulBasisDropdown = (props: Props) => {
   );
 };
 
-export default FilterByLasfulBasisDropdown;
+export default FilterByLawfulBasisDropdown;
