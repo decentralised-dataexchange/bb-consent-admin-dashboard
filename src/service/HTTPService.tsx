@@ -15,6 +15,7 @@ import {
   DataAgreement,
 } from "../interfaces/DataAgreement";
 import { convertConsentRecordsForClient } from "../components/userRecordsAction";
+import { convertViewLogsForClient } from "./adapter";
 const httpClient = axios.create({
   baseURL:
     process.env.REACT_APP_ENV === "staging" ? STAGING_BASE_URL : DEMO_BASE_URL,
@@ -424,7 +425,7 @@ export const HttpService = {
       .get(ENDPOINTS.listAllAdminLogs(offsetValue, pageSize, filter), config)
       .then((res) => {
         const allLogs: DataAgreementsResponse = res.data;
-        return allLogs;
+        return convertViewLogsForClient(allLogs);
       });
   },
   listAllApiKeys: async (): Promise<any> => {
