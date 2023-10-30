@@ -3,19 +3,15 @@ import LogoCammera from "../../assets/camera_photo2.png";
 import DefaultLogo from "../../assets/OrganisationDefaultLogo.png";
 
 import { HttpService } from "../../service/HTTPService";
-import { useState, useEffect } from "react";
 
 type Props = {
   editMode: boolean;
-  logoImageBase64: string;
+  logoImageBase64: string | undefined;
+  setLogoImageBase64: React.Dispatch<React.SetStateAction<any>>
 };
 
 const OrgLogoImageUpload = (props: Props) => {
-  const [logoImageBase64, setLogoImageBase64] = useState<any>(null);
-
-  useEffect(() => {
-    setLogoImageBase64(props.logoImageBase64);
-  }, [props.logoImageBase64]);
+  const {editMode, logoImageBase64, setLogoImageBase64 } = props
 
   const myFile: { file: string; imagePreviewUrl: any } = {
     file: "",
@@ -62,7 +58,7 @@ const OrgLogoImageUpload = (props: Props) => {
         alt="logo"
         style={{
           position: "absolute",
-          opacity: props.editMode ? 0.75 : 1,
+          opacity: editMode ? 0.75 : 1,
           marginLeft: 50,
           marginTop: "-100px",
           width: "200px",
@@ -70,7 +66,7 @@ const OrgLogoImageUpload = (props: Props) => {
           border: "solid white 6px",
         }}
       />
-      {props.editMode && (
+      {editMode && (
         <Box
           style={{
             position: "relative",

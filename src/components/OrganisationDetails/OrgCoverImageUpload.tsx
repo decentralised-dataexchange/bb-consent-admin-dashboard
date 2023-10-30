@@ -1,7 +1,6 @@
 import BannerCamera from "../../assets/camera_photo1.png";
 import DefaultBanner from "../../assets/OrganisationDefaultBanner.jpg";
 import { HttpService } from "../../service/HTTPService";
-import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -18,15 +17,12 @@ const BannerContainer = styled("div")({
 
 type Props = {
   editMode: boolean;
-  coverImageBase64: string;
+  coverImageBase64: string | undefined;
+  setCoverImageBase64: React.Dispatch<React.SetStateAction<any>>;
 };
 
 const OrgCoverImageUpload = (props: Props) => {
-  const [coverImageBase64, setCoverImageBase64] = useState<any>(null);
-
-  useEffect(() => {
-    setCoverImageBase64(props.coverImageBase64);
-  }, [props.coverImageBase64]);
+  const { editMode, coverImageBase64, setCoverImageBase64 } = props;
 
   const myFile: { file: string; imagePreviewUrl: any } = {
     file: "",
@@ -73,9 +69,9 @@ const OrgCoverImageUpload = (props: Props) => {
             ? `data:image/jpeg;charset=utf-8;base64,${coverImageBase64}`
             : DefaultBanner
         }
-        sx={{ opacity: props.editMode ? 0.25 : 1 }}
+        sx={{ opacity: editMode ? 0.25 : 1 }}
       />
-      {props.editMode && (
+      {editMode && (
         <Box style={{ position: "absolute", right: 20, top: 10 }}>
           <div>
             <form>

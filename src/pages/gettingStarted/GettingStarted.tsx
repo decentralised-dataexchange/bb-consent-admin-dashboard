@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import { Form } from "react-admin";
 import { Grid, Typography } from "@mui/material";
@@ -9,8 +9,8 @@ import { useNavigate } from "react-router-dom";
 import BreadCrumb from "../../components/Breadcrumbs";
 import OrgCoverImageUpload from "../../components/OrganisationDetails/OrgCoverImageUpload";
 
-import { HttpService } from "../../service/HTTPService";
 import OrganisationDetailsContainer from "../../components/OrganisationDetails/OrgDetailsContainer";
+import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -43,30 +43,15 @@ const Item = styled("div")(({ theme }) => ({
 const GettingStarted = () => {
   const navigate = useNavigate();
   const [editMode, setEditMode] = useState(false);
-  const [coverImageBase64, setCoverImageBase64] = useState<any>(null);
-  const [logoImageBase64, setLogoImageBase64] = useState<any>(null);
-  const [organisationDetails, setOganisationDetails] = useState<{
-    [key: string]: any;
-  }>({});
-
-  useEffect(() => {
-    HttpService.getOrganisationDetails()
-      .then((organisation) => {
-        setOganisationDetails(organisation);
-
-        HttpService.getCoverImage().then(
-          (coverImage) => {
-            setCoverImageBase64(coverImage);
-          }
-        );
-        HttpService.getLogoImage().then((logoImage) => {
-          setLogoImageBase64(logoImage);
-        });
-      })
-      .catch((error) => {
-         console.log(error);
-      });
-  }, []);
+ 
+  const {
+    organisationDetails,
+    logoImageBase64,
+    coverImageBase64,
+    setOrganisationDetails,
+    setCoverImageBase64,
+    setLogoImageBase64,
+  } = useContext(OrganizationDetailsCRUDContext);
 
   const handleEdit = () => {
     setEditMode(!editMode);
@@ -79,13 +64,15 @@ const GettingStarted = () => {
         <OrgCoverImageUpload
           editMode={editMode}
           coverImageBase64={coverImageBase64}
+          setCoverImageBase64={setCoverImageBase64}
         />
         <OrganisationDetailsContainer
           editMode={editMode}
           logoImageBase64={logoImageBase64}
           organisationDetails={organisationDetails}
           handleEdit={handleEdit}
-          setOganisationDetails={setOganisationDetails}
+          setOganisationDetails={setOrganisationDetails}
+          setLogoImageBase64={setLogoImageBase64}
         />
 
         <DetailsContainer sx={{ flexGrow: 1 }}>
