@@ -1,10 +1,5 @@
 import axios from "axios";
-import {
-  ENDPOINTS,
-  STAGING_BASE_URL,
-  DEMO_BASE_URL,
-  CLIENTID,
-} from "../settings/settings";
+import { ENDPOINTS } from "../settings/settings";
 import { LocalStorageService } from "./localStorageService";
 import { Organization } from "../interfaces/Organisation";
 import { imageBlobToBase64 } from "../utils/imageUtils";
@@ -18,7 +13,7 @@ import { convertConsentRecordsForClient } from "../components/userRecordsAction"
 import { convertViewLogsForClient } from "./adapter";
 const httpClient = axios.create({
   baseURL:
-    process.env.REACT_APP_ENV === "staging" ? STAGING_BASE_URL : DEMO_BASE_URL,
+    process.env.REACT_APP_API_BASE_URL
 });
 
 const getAuthenticatedHeaders = () => {
@@ -81,7 +76,7 @@ export const HttpService = {
   //   };
   //   const refresh_token = LocalStorageService.getRefreshToken();
   //   const payload: object = {
-  //     clientid: CLIENTID,
+  //     clientid: process.env.REACT_APP_CLIENT_ID,
   //     refreshtoken: refresh_token,
   //   };
   //   return httpClient.post(ENDPOINTS.logout(), payload, config);
@@ -92,7 +87,7 @@ export const HttpService = {
     };
     // const refresh_token = LocalStorageService.getRefreshToken()
     const payload: object = {
-      clientId: CLIENTID,
+      clientId: process.env.REACT_APP_CLIENT_ID,
       refreshToken: refresh_token,
     };
     return httpClient.post(ENDPOINTS.refreshToken(), payload, config);
