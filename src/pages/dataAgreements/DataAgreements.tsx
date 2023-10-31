@@ -128,15 +128,15 @@ const DataAgreement = () => {
                 <FormControlLabel
                   value="all"
                   name="all"
-                  control={<Radio color="default" />}
-                  label="All"
+                  control={<Radio color="default" size="small" />}
+                  label={<Typography variant="body2" >All</Typography>}
                   onClick={handleChange}
                 />
                 <FormControlLabel
                   value="complete"
                   name="complete"
-                  control={<Radio color="default" />}
-                  label="Published"
+                  control={<Radio color="default" size="small"/>}
+                  label={<Typography variant="body2" >Published</Typography>}
                   onClick={handleChange}
                 />
               </RadioGroup>

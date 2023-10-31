@@ -96,24 +96,24 @@ const PersonalData = () => {
               >
                 <FormControlLabel
                   value="all"
-                  control={<Radio color="default" />}
-                  label="All"
                   onClick={handleChange}
                   name={"all"}
+                  control={<Radio color="default" size="small" />}
+                  label={<Typography variant="body2" >All</Typography>}
                 />
                 <FormControlLabel
                   value="data_source"
-                  control={<Radio color="default" />}
-                  label="Data Source"
                   onClick={handleChange}
                   name={"data_source"}
+                  control={<Radio color="default" size="small" />}
+                  label={<Typography variant="body2" >Data Source</Typography>}
                 />
                 <FormControlLabel
                   value="data_using_service"
-                  control={<Radio color="default" />}
-                  label="Data Using Service"
                   onClick={handleChange}
                   name={"data_using_service"}
+                  control={<Radio color="default" size="small" />}
+                  label={<Typography variant="body2" >Data Using Service</Typography>}
                 />
               </RadioGroup>
             </Box>

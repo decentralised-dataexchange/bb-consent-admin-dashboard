@@ -179,7 +179,7 @@ const UserRecords = () => {
             />
           </Box>
           <Item>
-            <Typography color="grey" variant="subtitle1">
+            <Typography color="grey" variant="body2">
               Filter query
             </Typography>
             <FormControl
@@ -208,11 +208,11 @@ const UserRecords = () => {
                     value="all"
                     name="all"
                     onClick={handleChange}
-                    control={<Radio color="default" />}
+                    control={<Radio color="default" size="small" />}
                     label=""
                     sx={{ color: "black" }}
                   />
-                  <Typography sx={{ color: "black" }}>View All</Typography>
+                  <Typography sx={{ color: "black" }} variant="body2">View All</Typography>
                 </Box>
                 <Box
                   sx={{
@@ -224,7 +224,7 @@ const UserRecords = () => {
                   <FormControlLabel
                     value="dataAgreementId"
                     name="dataAgreementId"
-                    control={<Radio color="default" />}
+                    control={<Radio color="default" size="small" />}
                     label=""
                     onClick={handleChange}
                   />
@@ -251,7 +251,7 @@ const UserRecords = () => {
                     name={"lawfulBasis"}
                     value="lawfulBasis"
                     onClick={handleChange}
-                    control={<Radio color="default" />}
+                    control={<Radio color="default" size="small" />}
                     label=""
                   />
                   <FilterByLawfulBasisDropdown
