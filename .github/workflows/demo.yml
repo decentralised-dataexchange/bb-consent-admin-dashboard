@@ -23,6 +23,10 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
 
+      - name: Extract tag from version
+        id: extract_tag
+        run: echo ::set-output name=TAG::$(echo ${{ steps.get_version.outputs.VERSION }} | sed 's/refs\/tags\///')
+
       # Setup gcloud CLI
       - uses: google-github-actions/setup-gcloud@v0
         with:
@@ -44,6 +48,9 @@ jobs:
 
       - name: Update REACT_APP_API_BASE_URL in .env using sed
         run: sed -i 's~^REACT_APP_API_BASE_URL = "https://staging-consent-bb-api\.igrant\.io/v2"$~REACT_APP_API_BASE_URL = "https://demo-consent-bb-api.igrant.io/v2"~' .env
+
+      - name: Update REACT_APP_VERSION in .env using sed
+        run: sed -i "s~^REACT_APP_VERSION=\".*\"$~REACT_APP_VERSION=\"${{ steps.extract_tag.outputs.TAG }}\"~" .env
 
       # Build docker image, publish docker image to gcp container registry, deploy to production
       - name: Build docker image, publish docker image to gcp container registry, deploy to production
