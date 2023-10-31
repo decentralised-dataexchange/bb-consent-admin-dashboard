@@ -28,6 +28,19 @@ The key deliverables of the project are as given. The table summarises the relea
 | D3.1.1     | November 15th | Developer documentation |
 | D3.1.2     | November 15th | Test protocol           |
 
+## Instructions to run
+
+Follow the steps below to get the admin dashboard up and running locally.
+
+1. Clone this repository to your local server using `git clone`.
+2. Check out the latest release or any available release you wish to run.
+3. Modify the `.env` file in the root folder to point to your server instance.
+4. Execute `make setup`. This establishes the necessary dependencies and configurations for running the admin dashboard instance.
+5. Execute `make build`. The compiles and assembles source code into executable files or libraries, following the instructions specified in the Makefile of the admin dashboard instance.
+6. Execute `make run`.  This executes a predefined set of instructions in the  Makefile to launch or run the compiled admin dashboard server instance.
+
+The consent BB admin dashboard can now be accessed at [https://dashboard.bb-consent.dev](https://dashboard.bb-consent.dev) If you have security issues with your browser, you must establish a self-signed certificate.
+
 ## Other resources
 
 * Wiki - https://github.com/decentralised-dataexchange/consent-dev-docs/wiki
