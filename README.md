@@ -34,7 +34,7 @@ Follow the steps below to get the admin dashboard up and running locally.
 
 1. Clone this repository to your local server using `git clone`.
 2. Check out the latest release or any available release you wish to run.
-3. Modify the `.env` file in the root folder to point to your server instance.
+3. Modify the `.env` file in the root folder to point to Consent BB API server instance.
 4. Execute `make setup`. This establishes the necessary dependencies and configurations for running the admin dashboard instance.
 5. Execute `make build`. The compiles and assembles source code into executable files or libraries, following the instructions specified in the Makefile of the admin dashboard instance.
 6. Execute `make run`.  This executes a predefined set of instructions in the  Makefile to launch or run the compiled admin dashboard server instance.
