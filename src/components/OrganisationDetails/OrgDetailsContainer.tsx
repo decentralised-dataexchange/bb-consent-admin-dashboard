@@ -88,6 +88,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                   autoFocus
                   source="organisationname"
                   value={organisationName}
+                  defaultValue={organisationDetails.name}
                   onChange={(e) => setOrganisationName(e.target.value)}
                   variant="standard"
                   label={false}
@@ -111,6 +112,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                   source="location"
                   variant="standard"
                   label={false}
+                  defaultValue={organisationDetails.location}
                   value={organisationLocation}
                   onChange={(e) => setOrganisationLocation(e.target.value)}
                   placeholder="Location"
@@ -128,6 +130,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                   value={organisationPolicyURL}
                   onChange={(e) => setOrganisationPolicyURL(e.target.value)}
                   placeholder="Policy URL"
+                  defaultValue={organisationDetails.policyUrl}
                   fullWidth
                   style={{ ...editStyleEnable, marginTop: "-4px" }}
                   InputProps={{
@@ -208,6 +211,7 @@ const OrganisationDetailsContainer = (props: Props) => {
               value={organisationOverView}
               onChange={(e) => setOrganisationOverView(e.target.value)}
               multiline={true}
+              defaultValue={organisationDetails.description}
               label={false}
               placeholder="Description of organisation with character limit of 500 characters"
               fullWidth

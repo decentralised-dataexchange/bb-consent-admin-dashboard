@@ -19,7 +19,7 @@ const tableAttrAdditionalInfoStyle = {
   width: "100%",
   maxWidth: "100%",
   marginBottom: "0rem",
-  backgroundColor: "#F7F6F6",
+  backgroundColor: "#FFFF",
 };
 
 const tableAttrAdditionalInfoColumn: CSS.Properties = {
@@ -37,7 +37,7 @@ const inputStyleAttr = {
   borderRadius: 0,
   fontSize: "14px",
   borderBottomWidth: 1.2,
-  backgroundColor: "#F7F6F6",
+  backgroundColor: "#FFFF",
   borderBottomColor: "red", //'#DFE0E1',
   marginRight: "10px",
   fontFamily: "Roboto,Helvetica,Arial,sans-serif",

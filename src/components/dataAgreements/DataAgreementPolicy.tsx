@@ -18,7 +18,7 @@ const inputDataConfigStyle = {
   outline: "none",
   fontSize: "14px",
   width: "100%",
-  backgroundColor: "#F7F6F6",
+  backgroundColor: "#FFFF",
   fontFamily: "Roboto,Helvetica,Arial,sans-serif",
 };
 
@@ -118,6 +118,7 @@ const DataAgreementPolicy = (props: Props) => {
               type="text"
               style={{
                 ...inputDataConfigStyle,
+                cursor: mode === "Read" ? "not-allowed" : "auto",
               }}
               {...register("StorageLocation", {
                 required: true,
