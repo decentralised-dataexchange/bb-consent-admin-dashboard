@@ -125,7 +125,7 @@ const Webhooks = () => {
             rowClick="edit"
             sx={{
               overflow: "auto",
-              width: { xs: "359px", sm: "100%", md: "100%", lg: "100%" },
+              width:"100%"
             }}
           >
             <TextField
