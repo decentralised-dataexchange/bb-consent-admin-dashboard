@@ -37,7 +37,7 @@ export const theme = {
             fontWeight: "bold",
             backgroundColor: "#E5E4E4",
             border: "1px solid #D7D6D6",
-            fontSize: "16px",
+            fontSize: "14px",
           },
           "& .RaDatagrid-rowCell	": {
             border: "1px solid #D7D6D6",

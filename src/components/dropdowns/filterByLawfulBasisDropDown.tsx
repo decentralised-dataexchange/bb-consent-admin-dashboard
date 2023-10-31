@@ -65,7 +65,7 @@ const FilterByLawfulBasisDropdown = (props: Props) => {
         input={<OutlinedInput />}
         renderValue={(selected) => {
           if (selected.length === 0) {
-            return <em>{displayValue}</em>;
+            return <em style={{fontSize:"14px"}}>{displayValue}</em>;
           }
 
           return selected.join(", ");

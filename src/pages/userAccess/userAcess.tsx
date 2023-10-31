@@ -115,10 +115,10 @@ const UserAccess = () => {
         {configured ? (
           <>
             <Box style={{ display: "flex" }}>
-              <Typography color="black" variant="subtitle1">
+              <Typography color="black" variant="body2">
                 Authentication mechanism:
               </Typography>
-              <Typography color="black" variant="subtitle1" ml={1}>
+              <Typography color="black" variant="body2" ml={1}>
                 Open-ID Connect
               </Typography>
             </Box>
@@ -145,17 +145,17 @@ const UserAccess = () => {
           </>
         ) : (
           <Box style={{ display: "flex" }}>
-            <Typography color="black" variant="subtitle1">
+            <Typography color="black" variant="body2">
               Authentication mechanism:
             </Typography>
-            <Typography color="grey" variant="subtitle1" ml={1}>
+            <Typography color="grey" variant="body2" ml={1}>
               {"<Not configured. Choose + to configure>"}
             </Typography>
           </Box>
         )}
       </Item>
       <Item>
-        <Typography color="black" variant="subtitle1">
+        <Typography color="black" variant="body2">
           Upload existing users via a .csv file using the UPLOAD option.
         </Typography>
         <Box>

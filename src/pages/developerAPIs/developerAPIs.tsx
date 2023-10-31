@@ -122,7 +122,7 @@ const DeveloperAPIs = () => {
               >
                 Organization ID
               </Typography>
-              <Typography color="grey" variant="subtitle1">
+              <Typography color="grey" variant="body2">
                 {organisationDetails.id}
               </Typography>
             </Item>
@@ -137,7 +137,7 @@ const DeveloperAPIs = () => {
               >
                 Your User ID
               </Typography>
-              <Typography color="grey" variant="subtitle1">
+              <Typography color="grey" variant="body2">
                 {id}
               </Typography>
             </Item>
@@ -152,7 +152,7 @@ const DeveloperAPIs = () => {
               >
                 Configured base URL
               </Typography>
-              <Typography color="grey" variant="subtitle1">
+              <Typography color="grey" variant="body2">
                 {stagingURL}
               </Typography>
             </Item>
@@ -181,7 +181,7 @@ const DeveloperAPIs = () => {
                   {(showAPI === false || showHideButton === false) && (
                     <Typography
                       color="grey"
-                      variant="subtitle1"
+                      variant="body2"
                       sx={{ wordBreak: "break-all" }}
                     >
                       **************************************************************************************************************************************************************************
@@ -190,7 +190,7 @@ const DeveloperAPIs = () => {
                   {showAPI && showHideButton === true && (
                     <Typography
                       color="grey"
-                      variant="subtitle1"
+                      variant="body2"
                       sx={{ wordBreak: "break-all" }}
                     >
                       {apiKeyValue}
@@ -212,7 +212,7 @@ const DeveloperAPIs = () => {
                       >
                         <VisibilityOffOutlinedIcon style={{ marginRight: 5 }} />
                         <Typography
-                          variant="subtitle1"
+                          variant="body2"
                           sx={{ wordBreak: "break-all" }}
                         >
                           Hide
@@ -231,7 +231,7 @@ const DeveloperAPIs = () => {
                         <VisibilityOutlinedIcon style={{ marginRight: 5 }} />
 
                         <Typography
-                          variant="subtitle1"
+                          variant="body2"
                           sx={{ wordBreak: "break-all" }}
                         >
                           Show
@@ -249,7 +249,7 @@ const DeveloperAPIs = () => {
                       <ContentCopyOutlinedIcon style={{ marginRight: 5 }}
                       />
                       <Typography
-                        variant="subtitle1"
+                        variant="body2"
                         sx={{ wordBreak: "break-all" }}
                       >
                         Copy
@@ -268,7 +268,7 @@ const DeveloperAPIs = () => {
                     >
                       <DeleteOutlineOutlinedIcon style={{ marginRight: 5 }} />
                       <Typography
-                        variant="subtitle1"
+                        variant="body2"
                         sx={{ wordBreak: "break-all" }}
                       >
                         Delete

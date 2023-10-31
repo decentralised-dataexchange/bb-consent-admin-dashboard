@@ -107,24 +107,24 @@ const Privacyboard = () => {
         </Typography>
         <Grid container mt={1.5}>
           <Grid item lg={3} md={3} sm={3} xs={12}>
-            <Typography color="black" variant="subtitle1">
+            <Typography color="black" variant="body2">
               Deployed version:
             </Typography>
           </Grid>
           <Grid item lg={2} md={3} sm={3} xs={12}>
-            <Typography color="grey" variant="subtitle1">
+            <Typography color="grey" variant="body2">
               {privacyBoardDetails?.hostname ? privacyBoardDetails?.hostname : ""}
             </Typography>
           </Grid>
         </Grid>
         <Grid container>
           <Grid item lg={3} md={3} sm={3} xs={12}>
-            <Typography color="black" variant="subtitle1">
+            <Typography color="black" variant="body2">
               Deployed Domain Address:
             </Typography>
           </Grid>
           <Grid item lg={2} md={3} sm={3} xs={12}>
-            <Typography color="grey" variant="subtitle1">
+            <Typography color="grey" variant="body2">
               {privacyBoardDetails?.version ? privacyBoardDetails?.version : ""}
             </Typography>
           </Grid>
