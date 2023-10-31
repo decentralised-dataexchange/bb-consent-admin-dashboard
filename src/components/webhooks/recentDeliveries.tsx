@@ -27,7 +27,7 @@ const RecentDeliveries = (props: any) => {
           aria-label="simple table"
           sx={{
             overflow: "auto",
-            width: { xs: "359px", sm: "100%", md: "100%", lg: "100%" },
+            width: "100%" 
           }}
         >
           <TableBody>
