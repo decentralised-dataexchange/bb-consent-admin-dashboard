@@ -16,7 +16,7 @@ const inputDataConfigStyle = {
   outline: "none",
   fontSize: "14px",
   width: "100%",
-  backgroundColor: "#F7F6F6",
+  backgroundColor: "#FFFF",
   fontFamily: "Roboto,Helvetica,Arial,sans-serif",
 };
 

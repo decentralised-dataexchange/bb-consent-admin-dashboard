@@ -30,7 +30,7 @@ const dropDownStyle = {
   width: "100%",
   height: "35px",
   color: "#495057",
-  backgroundColor: "#F7F6F6",
+  backgroundColor: "#FFFF",
 };
 
 const disabledDropDownStyle = {

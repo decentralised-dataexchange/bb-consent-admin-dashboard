@@ -17,7 +17,7 @@ const dropDownStyle = {
   border: "1px solid lightgray",
   outline: "none",
   fontSize: "14px",
-  backgroundColor: "#F7F6F6",
+  backgroundColor: "#FFFF",
   height: "38px",
   borderRadius: "5px",
   cursor: "pointer",

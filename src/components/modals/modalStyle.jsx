@@ -2,7 +2,7 @@ import { styled } from '@mui/material/styles';
 
 const Container = styled('div')(({ theme }) => ({
   height: '100vh',
-  backgroundColor: "#F7F6F6",
+  backgroundColor: "#FFFF",
   marginTop: 0,
   width: '480px',
   [theme.breakpoints.down('md')]: {
@@ -35,7 +35,7 @@ const BannerContainer = styled('div')(({ theme }) => ({
 const DetailsContainer = styled('div')(({ theme }) => ({
   width: '480px',
   borderRadius: 2,
-  backgroundColor: "#F7F6F6",
+  backgroundColor: "#FFFF",
   [theme.breakpoints.down('md')]: {
     width: '370px',
   },

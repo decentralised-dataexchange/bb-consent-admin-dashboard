@@ -9,7 +9,7 @@ const inputStyle = {
   color: "#495057",
   borderWidth: 0,
   borderRadius: 0,
-  backgroundColor: "#F7F6F6",
+  backgroundColor: "#FFFF",
   borderBottom: "2px solid #DFE0E1",
 };
 
