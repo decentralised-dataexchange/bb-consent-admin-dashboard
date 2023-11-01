@@ -57,9 +57,6 @@ export const ENDPOINTS = {
   getDataAgreementByID: (dataAgreementId: string) => {
     return `/config/data-agreement/${dataAgreementId}`;
   },
-  getDataAttributesByDataAgreementId: (dataAgreementId: string) => {
-    return `/config/data-agreement/${dataAgreementId}/data-attributes`;
-  },
   updateDataAgreementById: (dataAgreementId: string | undefined) => {
     return `/config/data-agreement/${dataAgreementId}`;
   },
@@ -71,9 +68,6 @@ export const ENDPOINTS = {
   },
   updatePolicyById: (policyId: string | undefined) => {
     return `/config/policy/${policyId}`;
-  },
-  getDataAttributeById: (dataAttributeId: string) => {
-    return `/config/data-agreements/data-attribute/${dataAttributeId}`;
   },
   updateAdminAvatar: () => {
     return "/onboard/admin/avatarimage";
@@ -115,12 +109,12 @@ export const ENDPOINTS = {
     pageSize: number,
     filter: any
   ) => {
-    return `/audit/data-agreement-records?limit=${pageSize}&offset=${offsetValue}${
+    return `/audit/consent-records?limit=${pageSize}&offset=${offsetValue}${
       filter.filterType !== "all" ? `&${filter.filterType}=${filter.value}` : ""
     }`;
   },
   getDataAgreementRecordByID: (dataAgreementRecordId: string | undefined) => {
-    return `/audit/data-agreement-record/${dataAgreementRecordId}`;
+    return `/audit/consent-record/${dataAgreementRecordId}`;
   },
   listAllApiKeys: () => {
     return `/config/admin/apikeys`;

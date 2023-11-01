@@ -38,17 +38,20 @@ export default function EditPersonalDataModal(props: Props) {
 
   useEffect(() => {
     if (selectedDataAttributeId) {
-      HttpService.getDataAttributeById(selectedDataAttributeId).then(
-        (response) => {
-          let dataAttributes = response.data.dataAttribute;
-          setSelectedDataAttribute(dataAttributes);
-          const { description, ...otherprops } = dataAttributes;
-          methods.reset({
-            description: description,
-            ...otherprops,
-          });
-        }
-      );
+      HttpService.listDataAttributes(0, 100, "all").then((response) => {
+        let dataAttribute = response.dataAttributes.filter(
+          (dataAttribute: any) => {
+            return dataAttribute.id === selectedDataAttributeId;
+          }
+        );
+        setSelectedDataAttribute(dataAttribute[0]);
+        const { description, name,dataAgreement, ...otherprops } = dataAttribute[0];
+        methods.reset({
+          description: description,
+          name: name,
+          ...otherprops,
+        });
+      });
     }
   }, [selectedDataAttributeId, open]);
 
@@ -88,7 +91,22 @@ export default function EditPersonalDataModal(props: Props) {
               </HeaderContainer>
               <DetailsContainer>
                 <Box p={1.5}>
-                  <Typography variant="subtitle1" mb={0}>
+                <Typography variant="subtitle1" mb={0}>
+                    Attribute Name
+                    <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
+                  </Typography>
+                  <TextField
+                    sx={{ margin: 0 }}
+                    autoFocus
+                    variant="standard"
+                    fullWidth
+                    placeholder="Please type atleast 3 characters..."
+                    {...register("name", {
+                      required: true,
+                      minLength: 3,
+                    })}
+                  />
+                  <Typography variant="subtitle1" mb={0} mt={2}>
                     Attribute Description
                     <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                   </Typography>
@@ -111,7 +129,7 @@ export default function EditPersonalDataModal(props: Props) {
                   style={buttonStyle}
                   sx={{
                     marginRight: "10px",
-                    color:"black",
+                    color: "black",
                     "&:hover": {
                       backgroundColor: "black",
                       color: "white",
