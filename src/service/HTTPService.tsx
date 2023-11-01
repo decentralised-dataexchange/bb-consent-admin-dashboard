@@ -12,8 +12,7 @@ import {
 import { convertConsentRecordsForClient } from "../components/userRecordsAction";
 import { convertViewLogsForClient } from "./adapter";
 const httpClient = axios.create({
-  baseURL:
-    process.env.REACT_APP_API_BASE_URL
+  baseURL: process.env.REACT_APP_API_BASE_URL,
 });
 
 const getAuthenticatedHeaders = () => {
@@ -403,14 +402,19 @@ export const HttpService = {
         return convertViewLogsForClient(allLogs);
       });
   },
-  listAllApiKeys: async (): Promise<any> => {
+  listAllApiKeys: async (
+    offsetValue: number,
+    pageSize: number
+  ): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
-    return httpClient.get(ENDPOINTS.listAllApiKeys(), config).then((res) => {
-      const allLogs: DataAgreementsResponse = res.data;
-      return allLogs;
-    });
+    return httpClient
+      .get(ENDPOINTS.listAllApiKeys(offsetValue, pageSize), config)
+      .then((res) => {
+        const allLogs: DataAgreementsResponse = res.data;
+        return allLogs;
+      });
   },
   addNewApiKey: async (payload: any): Promise<any> => {
     const config: object = {
@@ -466,20 +470,24 @@ export const HttpService = {
         return allLogs;
       });
   },
-  updateWebhookById: async (payload: any, webhookId: string | undefined): Promise<any> => {
+  updateWebhookById: async (
+    payload: any,
+    webhookId: string | undefined
+  ): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
-    return httpClient.put(ENDPOINTS.updateWebhookById(webhookId), payload, config);
+    return httpClient.put(
+      ENDPOINTS.updateWebhookById(webhookId),
+      payload,
+      config
+    );
   },
   getWebhookById: async (webhookId: any): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
-    return httpClient.get(
-      ENDPOINTS.getWebhookById(webhookId),
-      config
-    );
+    return httpClient.get(ENDPOINTS.getWebhookById(webhookId), config);
   },
   deleteWebhook: async (apiKeyId: any): Promise<any> => {
     const config: object = {

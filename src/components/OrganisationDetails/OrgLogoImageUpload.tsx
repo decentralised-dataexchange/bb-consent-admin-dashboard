@@ -70,8 +70,8 @@ const OrgLogoImageUpload = (props: Props) => {
         <Box
           style={{
             position: "relative",
-            top: "-75px",
-            marginLeft: "75px",
+            top: "-90px",
+            marginLeft: "60px",
           }}
         >
           <div>

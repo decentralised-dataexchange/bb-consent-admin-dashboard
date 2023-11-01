@@ -289,6 +289,9 @@ const ManageAdmin = () => {
                 <Typography variant="body2">Current Password:</Typography>
                 <TextField
                   variant="standard"
+                  inputProps={{
+                    autoComplete: "new-password",
+                  }}
                   placeholder="Enter Current Password"
                   type="password"
                   sx={{ width: "50%", marginRight: "20px" }}
