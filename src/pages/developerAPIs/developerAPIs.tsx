@@ -1,13 +1,17 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
-import { Grid, Typography, Box, Tooltip } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  Box,
+  Tooltip,
+  Alert,
+  Button,
+  Snackbar,
+} from "@mui/material";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { styled } from "@mui/material/styles";
-
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 
 import BreadCrumb from "../../components/Breadcrumbs";
 import { HttpService } from "../../service/HTTPService";
@@ -55,93 +59,36 @@ const Item = styled("div")(({ theme }) => ({
 const DeveloperAPIs = () => {
   const { organisationDetails } = useContext(OrganizationDetailsCRUDContext);
   const [showAPI, setShowAPI] = useState(false);
-  const [firstAPIKeyDetailsInListApiKey, setFirstAPIKeyDetailsInListApiKey] =
-    useState<any>();
-  const [showHideButton, setShowHideButton] = useState<boolean>(false);
   const [apiKeyValue, setApiKeyValue] = useState<any>();
+  const { id } = LocalStorageService.getUser();
   let stagingURL = process.env.REACT_APP_API_BASE_URL;
+
   const refresh = useRefresh();
 
-  useEffect(() => {
-    HttpService.listAllApiKeys(0, 100).then((res) => {
-      setFirstAPIKeyDetailsInListApiKey(res.apiKeys);
-    });
-  }, []);
-
   const createNewApiKey = () => {
-    if (firstAPIKeyDetailsInListApiKey?.length === 0) {
-      let payload = {
-        apiKey: {
-          scopes: ["service"],
-        },
-      };
+    let payload = {
+      apiKey: {
+        scopes: ["Service"],
+      },
+    };
 
-      HttpService.addNewApiKey(payload).then((res) => {
-        setShowAPI(true);
-        setShowHideButton(true);
-        setApiKeyValue(res.data.apiKey.apiKey);
-        refresh();
-      });
-    }
+    HttpService.addNewApiKey(payload).then((res) => {
+      setShowAPI(true);
+      setApiKeyValue(res.data.apiKey.apiKey);
+      refresh();
+    });
   };
 
-  const deleteApiKey = () => {
-    if (firstAPIKeyDetailsInListApiKey?.length !== 0) {
-      HttpService.deleteApiKey(firstAPIKeyDetailsInListApiKey[0].id).then(
-        () => {
-          refresh();
-        }
-      );
-    }
+  const deleteApiKey = (id: string) => {
+    HttpService.deleteApiKey(id).then(() => {
+      refresh();
+    });
   };
 
   const handleCopy = () => {
     if (showAPI) {
       navigator.clipboard.writeText(apiKeyValue);
     }
-  };
-
-  const onChangeShowHideButton = () => {
-    if (showAPI === true) {
-      setShowHideButton(!showHideButton);
-    }
-  };
-  const { id } = LocalStorageService.getUser();
-
-  const APIKeyField = (props: any) => {
-    const record = useRecordContext(props);
-    if (!record || !props.source) {
-      return null;
-    }
-    return record[props.source] && showAPI && showHideButton === true ? (
-      <TextField {...props} sx={{ wordBreak: "break-all" }} />
-    ) : (
-      <Typography sx={{ wordBreak: "break-all" }}>
-        ****************************************************************************************************************************************************************************************************************************************************************************************************************************************************
-      </Typography>
-    );
-  };
-
-  const CopyButtonField = (props: any) => {
-    const record = useRecordContext(props);
-    if (!record || !props.source) {
-      return null;
-    }
-    return (
-      record[props.source] && (
-        <Box
-          sx={{
-            cursor: showAPI ? "pointer" : "not-allowed",
-            display: "flex",
-            alignItems: "center",
-          }}
-          onClick={handleCopy}
-        >
-          <ContentCopyOutlinedIcon style={{ marginRight: 5 }} />
-          <Typography variant="body2">Copy</Typography>
-        </Box>
-      )
-    );
   };
 
   const DeleteButtonField = (props: any) => {
@@ -152,52 +99,46 @@ const DeveloperAPIs = () => {
     return (
       record[props.source] && (
         <Box
-          onClick={deleteApiKey}
+          onClick={() => deleteApiKey(record[props.source])}
           sx={{
-            cursor:
-              firstAPIKeyDetailsInListApiKey?.length !== 0
-                ? "pointer"
-                : "not-allowed",
-            display: "flex",
-            alignItems: "center",
+            cursor: "pointer",
           }}
         >
-          <DeleteOutlineOutlinedIcon style={{ marginRight: 5 }} />
-          <Typography variant="body2">Delete</Typography>
+          <DeleteOutlineOutlinedIcon color="disabled" />
         </Box>
       )
     );
   };
 
-  const ShowKeyButtonField = (props: any) => {
+  const ExpiryField = (props: any) => {
     const record = useRecordContext(props);
     if (!record || !props.source) {
       return null;
     }
-    return record[props.source] && showHideButton === true ? (
-      <Box
-        onClick={onChangeShowHideButton}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          cursor: showAPI ? "pointer" : "not-allowed",
-        }}
-      >
-        <VisibilityOffOutlinedIcon style={{ marginRight: 5 }} />
-        <Typography variant="body2">Hide</Typography>
-      </Box>
-    ) : (
-      <Box
-        onClick={onChangeShowHideButton}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          cursor: showAPI ? "pointer" : "not-allowed",
-        }}
-      >
-        <VisibilityOutlinedIcon style={{ marginRight: 5 }} />
+    return (
+      record[props.source] && (
+        <Typography>{record[props.source]} days</Typography>
+      )
+    );
+  };
 
-        <Typography variant="body2">Show</Typography>
+  const ScopeField = (props: any) => {
+    const record = useRecordContext(props);
+    if (!record || !props.source) {
+      return null;
+    }
+    let scopes = record[props.source];
+    return (
+      <Box style={{ display: "flex" }}>
+        {scopes.map((scope: any, i: number) => {
+          if (i + 1 === scopes.length) {
+            return <Typography>{scope} </Typography>;
+          } else {
+            return (
+              <Typography style={{ marginRight: 7 }}>{scope}, </Typography>
+            );
+          }
+        })}
       </Box>
     );
   };
@@ -205,6 +146,25 @@ const DeveloperAPIs = () => {
   return (
     <Container>
       <BreadCrumb Link="Account" Link2="Developer APIs" />
+      <Snackbar
+        open={showAPI}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        style={{ top: 100 }}
+      >
+        <Alert
+          icon={<></>}
+          sx={{ width: "100%", background: "#F7F6F6", color: "black" }}
+          action={
+            <Button color="inherit" size="small" onClick={handleCopy}>
+              COPY
+            </Button>
+          }
+        >
+          Here is your new key. Copy it now! This is the only time we will show
+          it you.
+        </Alert>
+      </Snackbar>
+
       <HeaderContainer>
         <Typography variant="h6" fontWeight="bold">
           Developer APIs and Credentials
@@ -270,10 +230,7 @@ const DeveloperAPIs = () => {
                 <AddCircleOutlineOutlinedIcon
                   onClick={createNewApiKey}
                   style={{
-                    cursor:
-                      firstAPIKeyDetailsInListApiKey?.length === 0
-                        ? "pointer"
-                        : "not-allowed",
+                    cursor: "pointer",
                     marginLeft: "7px",
                   }}
                 />
@@ -298,21 +255,27 @@ const DeveloperAPIs = () => {
                     width: "100%",
                   }}
                 >
-                  <APIKeyField source="apiKey" label={"API Key"} />
-                  <ShowKeyButtonField
-                    source="apiKey"
-                    label={"Show / Hide"}
-                    textAlign={"center"}
+                  <TextField
+                    source="id"
+                    label={"API Key ID"}
+                    sortable={false}
                   />
-                  <CopyButtonField
-                    source="apiKey"
-                    label={"Copy"}
-                    textAlign={"center"}
+                  <ScopeField
+                    source="scopes"
+                    label={"Scope"}
+                    sortable={false}
                   />
+                  <ExpiryField
+                    source="expiryInDays"
+                    label={"Expiry"}
+                    sortable={false}
+                  />
+
                   <DeleteButtonField
-                    source="apiKey"
-                    label={"Delete"}
+                    source="id"
+                    label={""}
                     textAlign={"center"}
+                    sortable={false}
                   />
                 </Datagrid>
               </Box>
