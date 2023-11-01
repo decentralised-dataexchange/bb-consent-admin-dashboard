@@ -12,6 +12,7 @@ import BreadCrumb from "../../components/Breadcrumbs";
 import GeneralModal from "../../components/modals/generalModal";
 import EditUserAccessModal from "../../components/modals/editUserAccessModal";
 import { HttpService } from "../../service/HTTPService";
+import { display } from "@mui/system";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -42,11 +43,13 @@ const Item = styled("div")({
 });
 
 const uploadButtonStyle = {
-  borderRadius: 0,
-  width: "200px",
-  height: "25px",
   cursor: "pointer",
-  border: '1px solid #DFDFDF'
+  border: "1px solid #DFDFDF",
+  height: 35,
+  borderRadius: 1,
+  width: "auto",
+  paddingLeft: "50px",
+  paddingRight: "50px",
 };
 
 const UserAccess = () => {
@@ -161,19 +164,20 @@ const UserAccess = () => {
         <Box>
           <form>
             <label className="uptext" htmlFor="uploadCSV">
-              <Box style={uploadButtonStyle}>
-                <Typography
-                  sx={{
-                    textAlign: "center",
-                    "&:hover": {
-                      backgroundColor: "black",
-                      color: "white",
-                    },
-                    color: "black",
-                  }}
-                >
-                  UPLOAD
-                </Typography>
+              <Box
+                style={uploadButtonStyle}
+                sx={{
+                  textAlign: "center",
+                  "&:hover": {
+                    backgroundColor: "black",
+                    color: "white",
+                  },
+                  color: "black",
+                  display:"flex",
+                  alignItems:"center"
+                }}
+              >
+                <Typography variant="body2">UPLOAD</Typography>
               </Box>
             </label>
             <input

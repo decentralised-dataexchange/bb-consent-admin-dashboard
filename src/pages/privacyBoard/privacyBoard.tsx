@@ -68,7 +68,8 @@ const Privacyboard = () => {
         </Typography>
       </HeaderContainer>
       <Typography variant="body2" mt={1.25}>
-        Deploy and manage privacy dashboard for your organisation towards end users.
+        Deploy and manage privacy dashboard for your organisation towards end
+        users.
       </Typography>
 
       <Item>
@@ -79,25 +80,26 @@ const Privacyboard = () => {
           <Typography color="black" variant="subtitle1" fontWeight="bold">
             {privacyBoardDetails?.statusStr}
           </Typography>
-          <span style={{ cursor: 'not-allowed' }}>
-          <Button
-            variant="outlined"
-            disabled={statusData?.applicationMode === "single-tenant" ? true : false}
-            onClick={() =>
-              setOpenEditUserAccessModal(true)
-            }
-            sx={{
-              marginLeft: { sx: 0, md: "20px" },
-              border: "1px solid black",
-              color: "black",
-              background: "white",
-              fontSize: "16px",
-              borderRadius: 0,
-              width: "190px",
-            }}
-          >
-            CONFIGURE
-          </Button>
+          <span style={{ cursor: "not-allowed" }}>
+            <Button
+              variant="outlined"
+              disabled={
+                statusData?.applicationMode === "single-tenant" ? true : false
+              }
+              onClick={() => setOpenEditUserAccessModal(true)}
+              sx={{
+                marginLeft: { sx: 0, md: "20px" },
+                height: 35,
+                borderRadius: 1,
+                border: "1px solid #DFDFDF",
+                width: "auto",
+                paddingLeft: "50px",
+                paddingRight: "50px",
+                color:"black"
+              }}
+            >
+              CONFIGURE
+            </Button>
           </span>
         </Box>
       </Item>
@@ -113,7 +115,9 @@ const Privacyboard = () => {
           </Grid>
           <Grid item lg={2} md={3} sm={3} xs={12}>
             <Typography color="grey" variant="body2">
-              {privacyBoardDetails?.hostname ? privacyBoardDetails?.hostname : ""}
+              {privacyBoardDetails?.hostname
+                ? privacyBoardDetails?.hostname
+                : ""}
             </Typography>
           </Grid>
         </Grid>
