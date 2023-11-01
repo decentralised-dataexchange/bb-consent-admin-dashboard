@@ -96,6 +96,7 @@ export default function EditPersonalDataModal(props: Props) {
                     <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                   </Typography>
                   <TextField
+                    autoComplete="off"
                     sx={{ margin: 0 }}
                     autoFocus
                     variant="standard"
@@ -111,6 +112,7 @@ export default function EditPersonalDataModal(props: Props) {
                     <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                   </Typography>
                   <TextField
+                    autoComplete="off"
                     sx={{ margin: 0 }}
                     autoFocus
                     variant="standard"

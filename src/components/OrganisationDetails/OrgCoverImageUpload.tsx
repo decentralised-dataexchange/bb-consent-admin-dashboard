@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles";
 import Image from "mui-image";
 
 const BannerContainer = styled("div")({
-  height: 300,
+  height: 200,
   width: "100%",
   borderRadius: 2,
   backgroundColor: "#E6E6E6",

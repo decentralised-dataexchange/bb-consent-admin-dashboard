@@ -44,7 +44,8 @@ interface Props {
   resourceName?: string;
   consentRecordIdForSelectedRecord?: string | undefined;
 }
-const defaultValue = {
+
+let defaultValue = {
   Name: "",
   Description: "",
   Version: "1.0.0",
@@ -71,6 +72,19 @@ export default function DataAgreementModal(props: Props) {
     resourceName,
     consentRecordIdForSelectedRecord,
   } = props;
+
+  const [policyDetailsForInitialValue, setPolicyDetailsForInitialValue] =
+    useState<any>();
+  const params = useParams();
+  const selectedDataAgreementId = params["*"];
+  const [selectedDataAgreement, setSelectedDataAgreement] = useState<any>();
+
+  useEffect(() => {
+    HttpService.listAllPolicies().then((response) => {
+      setPolicyDetailsForInitialValue(response[0]);
+    });
+  }, [selectedDataAgreementId, open]);
+
   const methods = useForm({
     mode: "onChange",
     defaultValues: {
@@ -84,23 +98,79 @@ export default function DataAgreementModal(props: Props) {
     name: "dataAttributes",
   });
 
-  const params = useParams();
-  const selectedDataAgreementId = params["*"];
-  const [selectedDataAgreement, setSelectedDataAgreement] = useState<any>();
-
   useEffect(() => {
     if (selectedDataAgreementId && resourceName !== "userrecords") {
-      HttpService.getDataAgreementByID(
-        selectedDataAgreementId
-      ).then((response) => {
-        let dataAgreements = response.data.dataAgreement;
-        let dataAttributes = response.data.dataAgreement.dataAttributes;
-        setSelectedDataAgreement(dataAgreements);
-        if (mode !== "Create") {
+      HttpService.getDataAgreementByID(selectedDataAgreementId).then(
+        (response) => {
+          let dataAgreements = response.data.dataAgreement;
+          let dataAttributes = response.data.dataAgreement.dataAttributes;
+          setSelectedDataAgreement(dataAgreements);
+          if (mode !== "Create") {
+            methods.reset({
+              Name: dataAgreements.purpose,
+              Description: dataAgreements.purposeDescription,
+              Version:
+                dataAgreements.version === ""
+                  ? "1.0.0"
+                  : dataAgreements.version,
+              AttributeType: dataAgreements.methodOfUse,
+              LawfulBasisOfProcessing: dataAgreements.lawfulBasis,
+              PolicyURL: dataAgreements.policy.url,
+              Jurisdiction: dataAgreements.policy.jurisdiction,
+              IndustryScope: dataAgreements.policy.industrySector,
+              StorageLocation: dataAgreements.policy.storageLocation,
+              dataRetentionPeriodDays:
+                dataAgreements.policy.dataRetentionPeriodDays,
+              Restriction: dataAgreements.policy.geographicRestriction,
+              Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
+              DpiaDate: dataAgreements.dpiaDate,
+              DpiaSummaryURL: dataAgreements.dpiaSummaryUrl,
+              dataAttributes: dataAttributes?.map((attribute: any) => {
+                const { name, description, ...otherProps } = attribute;
+                return {
+                  attributeName: name,
+                  attributeDescription: description,
+                  ...otherProps,
+                };
+              }),
+            });
+          } else {
+            methods.reset({
+              Name: "",
+              Description: "",
+              Version: "1.0.0",
+              AttributeType: "null",
+              LawfulBasisOfProcessing: "consent",
+              PolicyURL: policyDetailsForInitialValue?.url,
+              Jurisdiction: policyDetailsForInitialValue?.jurisdiction,
+              IndustryScope: policyDetailsForInitialValue?.industrySector,
+              StorageLocation: policyDetailsForInitialValue?.storageLocation,
+              dataRetentionPeriodDays:
+                policyDetailsForInitialValue?.dataRetentionPeriodDays,
+              Restriction: policyDetailsForInitialValue?.geographicRestriction,
+              Shared3PP: policyDetailsForInitialValue?.thirdPartyDataSharing,
+              DpiaDate: new Date().toISOString().slice(0, 16),
+              DpiaSummaryURL: "https://privacyant.se/dpia_results.html",
+              dataAttributes: [{ attributeName: "", attributeDescription: "" }],
+            });
+          }
+        }
+      );
+    }
+  }, [selectedDataAgreementId, open]);
+
+  // This is useEffect is called when resource is user records
+  useEffect(() => {
+    if (consentRecordIdForSelectedRecord && resourceName === "userrecords") {
+      HttpService.getDataAgreementByID(consentRecordIdForSelectedRecord).then(
+        (response) => {
+          let dataAgreements = response.data.dataAgreement;
+          let dataAttributes = response.data.dataAgreement.dataAttributes;
+          setSelectedDataAgreement(dataAgreements);
           methods.reset({
             Name: dataAgreements.purpose,
             Description: dataAgreements.purposeDescription,
-            Version: dataAgreements.version === "" ? "1.0.0" : dataAgreements.version,
+            Version: dataAgreements.version,
             AttributeType: dataAgreements.methodOfUse,
             LawfulBasisOfProcessing: dataAgreements.lawfulBasis,
             PolicyURL: dataAgreements.policy.url,
@@ -112,7 +182,7 @@ export default function DataAgreementModal(props: Props) {
             Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
             DpiaDate: dataAgreements.dpiaDate,
             DpiaSummaryURL: dataAgreements.dpiaSummaryUrl,
-            dataAttributes: dataAttributes?.map((attribute: any) => {
+            dataAttributes: dataAttributes.map((attribute: any) => {
               const { name, description, ...otherProps } = attribute;
               return {
                 attributeName: name,
@@ -121,63 +191,8 @@ export default function DataAgreementModal(props: Props) {
               };
             }),
           });
-        } else {
-          methods.reset({
-            Name: "",
-            Description: "",
-            Version: "1.0.0",
-            AttributeType: "null",
-            LawfulBasisOfProcessing: "consent",
-            PolicyURL: "https://igrant.io/policy.html",
-            Jurisdiction: "London, GB",
-            IndustryScope: "Retail",
-            StorageLocation: "Europe",
-            dataRetentionPeriodDays: 0,
-            Restriction: "Europe",
-            Shared3PP: false,
-            DpiaDate: new Date().toISOString().slice(0, 16),
-            DpiaSummaryURL: "https://privacyant.se/dpia_results.html",
-            dataAttributes: [{ attributeName: "", attributeDescription: "" }],
-          });
         }
-      });
-    }
-  }, [selectedDataAgreementId, open]);
-
-  // This is useEffect is called when resource is user records
-  useEffect(() => {
-    if (consentRecordIdForSelectedRecord && resourceName === "userrecords") {
-      HttpService.getDataAgreementByID(
-        consentRecordIdForSelectedRecord
-      ).then((response) => {
-        let dataAgreements = response.data.dataAgreement;
-        let dataAttributes = response.data.dataAgreement.dataAttributes;
-        setSelectedDataAgreement(dataAgreements);
-        methods.reset({
-          Name: dataAgreements.purpose,
-          Description: dataAgreements.purposeDescription,
-          Version: dataAgreements.version,
-          AttributeType: dataAgreements.methodOfUse,
-          LawfulBasisOfProcessing: dataAgreements.lawfulBasis,
-          PolicyURL: dataAgreements.policy.url,
-          Jurisdiction: dataAgreements.policy.jurisdiction,
-          IndustryScope: dataAgreements.policy.industrySector,
-          StorageLocation: dataAgreements.policy.storageLocation,
-          dataRetentionPeriodDays: dataAgreements.policy.dataRetentionPeriod,
-          Restriction: dataAgreements.policy.geographicRestriction,
-          Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
-          DpiaDate: dataAgreements.dpiaDate,
-          DpiaSummaryURL: dataAgreements.dpiaSummaryUrl,
-          dataAttributes: dataAttributes.map((attribute: any) => {
-            const { name, description, ...otherProps } = attribute;
-            return {
-              attributeName: name,
-              attributeDescription: description,
-              ...otherProps,
-            };
-          }),
-        });
-      });
+      );
     }
   }, [consentRecordIdForSelectedRecord, open]);
 

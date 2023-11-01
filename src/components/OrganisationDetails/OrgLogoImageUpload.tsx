@@ -61,8 +61,8 @@ const OrgLogoImageUpload = (props: Props) => {
           opacity: editMode ? 0.75 : 1,
           marginLeft: 50,
           marginTop: "-100px",
-          width: "200px",
-          height: "200px",
+          width: "170px",
+          height: "170px",
           border: "solid white 6px",
         }}
       />
