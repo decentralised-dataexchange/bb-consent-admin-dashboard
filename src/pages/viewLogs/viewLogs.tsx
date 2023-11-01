@@ -40,9 +40,12 @@ const HeaderContainer = styled("div")({
 });
 
 const buttonStyle = {
-  borderRadius: 0,
+  height: 35,
+  borderRadius: 1,
   border: "1px solid #DFDFDF",
-  width: "200px",
+  width: 'auto',
+  paddingLeft: "50px",
+  paddingRight: "50px",
 };
 
 const filterDrpodownValues = [

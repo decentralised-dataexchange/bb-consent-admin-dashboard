@@ -46,6 +46,9 @@ const buttonStyle = {
   height: 35,
   borderRadius: 1,
   border: "1px solid #DFDFDF",
+  width: 'auto',
+  paddingLeft: "50px",
+  paddingRight: "50px",
 };
 
 const DataAgreement = () => {
