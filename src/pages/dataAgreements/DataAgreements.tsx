@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { List, Datagrid, TextField, Form, useRefresh } from "react-admin";
+import {
+  List,
+  Datagrid,
+  TextField,
+  Form,
+  useRefresh,
+  useRecordContext,
+} from "react-admin";
 
 import {
   Box,
@@ -46,7 +53,7 @@ const buttonStyle = {
   height: 35,
   borderRadius: 1,
   border: "1px solid #DFDFDF",
-  width: 'auto',
+  width: "auto",
   paddingLeft: "50px",
   paddingRight: "50px",
 };
@@ -86,6 +93,87 @@ const DataAgreement = () => {
     } else {
       changefilterDataAgreement("all");
     }
+  };
+
+  const ColoredField = (props: any) => {
+    const record = useRecordContext(props);
+    if (!record || !props.source) {
+      return null;
+    }
+    return record.active === true ? (
+      <TextField {...props} sx={{ color: "black" }} />
+    ) : (
+      <TextField {...props} sx={{ color: "#FF0C10" }} />
+    );
+  };
+
+  const IconsFIeld = (props: any) => {
+    const record = useRecordContext(props);
+    if (!record || !props.source) {
+      return null;
+    }
+    return (
+      record[props.source] && (
+        <Box display={"flex"} justifyContent={"space-around"}>
+          <Tooltip
+            title={
+              record.active === true
+                ? "Data Agreement Is Published"
+                : "Publish Data Agreement"
+            }
+            placement="top"
+          >
+            <UploadOutlinedIcon
+              onClick={() =>
+                record.active === false &&
+                setOpenPublishDataAgreementModal(true)
+              }
+              fontSize="small"
+              style={{
+                cursor: record.active === true ? "not-allowed" : "pointer",
+                color: record.active === true ? "#B9B9B9" : "#FF0C10",
+              }}
+            />
+          </Tooltip>
+          <Tooltip title="View Data Agreement" placement="top">
+            <RemoveRedEyeOutlinedIcon
+              onClick={() => {
+                setOpenDataAgreementModal(true);
+                setDataAgreementMode("Read");
+              }}
+              fontSize="small"
+              style={{
+                cursor: "pointer",
+                color: record.active === true ? "#B9B9B9" : "#FF0C10",
+              }}
+            />
+          </Tooltip>
+          <Tooltip title="Edit Data Agreement" placement="top">
+            <EditOutlinedIcon
+              onClick={() => {
+                setOpenDataAgreementModal(true);
+                setDataAgreementMode("Update");
+              }}
+              fontSize="small"
+              style={{
+                cursor: "pointer",
+                color: record.active === true ? "#B9B9B9" : "#FF0C10",
+              }}
+            />
+          </Tooltip>
+          <Tooltip title="Delete Data Agreement" placement="top">
+            <DeleteOutlineOutlinedIcon
+              onClick={() => setOpenDeleteDataAgreementModal(true)}
+              fontSize="small"
+              style={{
+                cursor: "pointer",
+                color: record.active === true ? "#B9B9B9" : "#FF0C10",
+              }}
+            />
+          </Tooltip>
+        </Box>
+      )
+    );
   };
 
   return (
@@ -132,14 +220,14 @@ const DataAgreement = () => {
                   value="all"
                   name="all"
                   control={<Radio color="default" size="small" />}
-                  label={<Typography variant="body2" >All</Typography>}
+                  label={<Typography variant="body2">All</Typography>}
                   onClick={handleChange}
                 />
                 <FormControlLabel
                   value="complete"
                   name="complete"
-                  control={<Radio color="default" size="small"/>}
-                  label={<Typography variant="body2" >Published</Typography>}
+                  control={<Radio color="default" size="small" />}
+                  label={<Typography variant="body2">Published</Typography>}
                   onClick={handleChange}
                 />
               </RadioGroup>
@@ -183,64 +271,31 @@ const DataAgreement = () => {
             bulkActionButtons={false}
             sx={{
               overflow: "auto",
-              width:"100%"
+              width: "100%",
             }}
           >
-            <TextField source="purpose" label={"Usage Purpose"} />
-            <TextField source="version" label={"Version"} />
-            <TextField source="methodOfUse" label={"Data Exchange"} />
-            <TextField source="lifecycle" label={"Status"} />
-            <TextField
+            <ColoredField
+              source="purpose"
+              label={"Usage Purpose"}
+              sortable={false}
+            />
+            <ColoredField source="version" label={"Version"} sortable={false} />
+            <ColoredField
+              source="methodOfUse"
+              label={"Data Exchange"}
+              sortable={false}
+            />
+            <ColoredField
+              source="lifecycle"
+              label={"Status"}
+              sortable={false}
+            />
+            <ColoredField
               source="lawfulBasis"
               label={"Lawful Basis Of Processing"}
+              sortable={false}
             />
-            <Box
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-around",
-                width: "100%",
-              }}
-            >
-              <Tooltip title="Publish Data Agreement" placement="top">
-                <UploadOutlinedIcon
-                  onClick={() => setOpenPublishDataAgreementModal(true)}
-                  fontSize="small"
-                  color="disabled"
-                  style={{ cursor: "pointer" }}
-                />
-              </Tooltip>
-              <Tooltip title="View Data Agreement" placement="top">
-                <RemoveRedEyeOutlinedIcon
-                  onClick={() => {
-                    setOpenDataAgreementModal(true);
-                    setDataAgreementMode("Read");
-                  }}
-                  fontSize="small"
-                  color="disabled"
-                  style={{ cursor: "pointer" }}
-                />
-              </Tooltip>
-              <Tooltip title="Edit Data Agreement" placement="top">
-                <EditOutlinedIcon
-                  onClick={() => {
-                    setOpenDataAgreementModal(true);
-                    setDataAgreementMode("Update");
-                  }}
-                  fontSize="small"
-                  color="disabled"
-                  style={{ cursor: "pointer" }}
-                />
-              </Tooltip>
-              <Tooltip title="Delete Data Agreement" placement="top">
-                <DeleteOutlineOutlinedIcon
-                  onClick={() => setOpenDeleteDataAgreementModal(true)}
-                  fontSize="small"
-                  color="disabled"
-                  style={{ cursor: "pointer" }}
-                />
-              </Tooltip>
-            </Box>
+            <IconsFIeld source="purpose" label={""} sortable={false} />
           </Datagrid>
         </Box>
       </List>
