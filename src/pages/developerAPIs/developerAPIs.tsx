@@ -13,6 +13,13 @@ import BreadCrumb from "../../components/Breadcrumbs";
 import { HttpService } from "../../service/HTTPService";
 import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
 import { LocalStorageService } from "../../service/localStorageService";
+import {
+  Datagrid,
+  List,
+  TextField,
+  useRecordContext,
+  useRefresh,
+} from "react-admin";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -52,10 +59,11 @@ const DeveloperAPIs = () => {
     useState<any>();
   const [showHideButton, setShowHideButton] = useState<boolean>(false);
   const [apiKeyValue, setApiKeyValue] = useState<any>();
-  let stagingURL = process.env.REACT_APP_API_BASE_URL
+  let stagingURL = process.env.REACT_APP_API_BASE_URL;
+  const refresh = useRefresh();
 
   useEffect(() => {
-    HttpService.listAllApiKeys().then((res) => {
+    HttpService.listAllApiKeys(0, 100).then((res) => {
       setFirstAPIKeyDetailsInListApiKey(res.apiKeys);
     });
   }, []);
@@ -72,6 +80,7 @@ const DeveloperAPIs = () => {
         setShowAPI(true);
         setShowHideButton(true);
         setApiKeyValue(res.data.apiKey.apiKey);
+        refresh();
       });
     }
   };
@@ -79,7 +88,9 @@ const DeveloperAPIs = () => {
   const deleteApiKey = () => {
     if (firstAPIKeyDetailsInListApiKey?.length !== 0) {
       HttpService.deleteApiKey(firstAPIKeyDetailsInListApiKey[0].id).then(
-        () => {}
+        () => {
+          refresh();
+        }
       );
     }
   };
@@ -95,8 +106,101 @@ const DeveloperAPIs = () => {
       setShowHideButton(!showHideButton);
     }
   };
-  const { id } = LocalStorageService.getUser()
+  const { id } = LocalStorageService.getUser();
 
+  const APIKeyField = (props: any) => {
+    const record = useRecordContext(props);
+    if (!record || !props.source) {
+      return null;
+    }
+    return record[props.source] && showAPI && showHideButton === true ? (
+      <TextField {...props} sx={{ wordBreak: "break-all" }} />
+    ) : (
+      <Typography sx={{ wordBreak: "break-all" }}>
+        ****************************************************************************************************************************************************************************************************************************************************************************************************************************************************
+      </Typography>
+    );
+  };
+
+  const CopyButtonField = (props: any) => {
+    const record = useRecordContext(props);
+    if (!record || !props.source) {
+      return null;
+    }
+    return (
+      record[props.source] && (
+        <Box
+          sx={{
+            cursor: showAPI ? "pointer" : "not-allowed",
+            display: "flex",
+            alignItems: "center",
+          }}
+          onClick={handleCopy}
+        >
+          <ContentCopyOutlinedIcon style={{ marginRight: 5 }} />
+          <Typography variant="body2">Copy</Typography>
+        </Box>
+      )
+    );
+  };
+
+  const DeleteButtonField = (props: any) => {
+    const record = useRecordContext(props);
+    if (!record || !props.source) {
+      return null;
+    }
+    return (
+      record[props.source] && (
+        <Box
+          onClick={deleteApiKey}
+          sx={{
+            cursor:
+              firstAPIKeyDetailsInListApiKey?.length !== 0
+                ? "pointer"
+                : "not-allowed",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <DeleteOutlineOutlinedIcon style={{ marginRight: 5 }} />
+          <Typography variant="body2">Delete</Typography>
+        </Box>
+      )
+    );
+  };
+
+  const ShowKeyButtonField = (props: any) => {
+    const record = useRecordContext(props);
+    if (!record || !props.source) {
+      return null;
+    }
+    return record[props.source] && showHideButton === true ? (
+      <Box
+        onClick={onChangeShowHideButton}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          cursor: showAPI ? "pointer" : "not-allowed",
+        }}
+      >
+        <VisibilityOffOutlinedIcon style={{ marginRight: 5 }} />
+        <Typography variant="body2">Hide</Typography>
+      </Box>
+    ) : (
+      <Box
+        onClick={onChangeShowHideButton}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          cursor: showAPI ? "pointer" : "not-allowed",
+        }}
+      >
+        <VisibilityOutlinedIcon style={{ marginRight: 5 }} />
+
+        <Typography variant="body2">Show</Typography>
+      </Box>
+    );
+  };
 
   return (
     <Container>
@@ -158,126 +262,61 @@ const DeveloperAPIs = () => {
             </Item>
           </Grid>
           <Grid item lg={12} md={12} sm={12} xs={12}>
-            <Item>
-              <Box style={{ display: "flex", alignItems: "center" }} mb={0.5}>
-                <Typography color="black" variant="subtitle1" fontWeight="bold">
-                  API Key
-                </Typography>
-                <Tooltip title="Create API Key" placement="top">
-                  <AddCircleOutlineOutlinedIcon
-                    onClick={createNewApiKey}
-                    style={{
-                      cursor:
-                        firstAPIKeyDetailsInListApiKey?.length === 0
-                          ? "pointer"
-                          : "not-allowed",
-                      marginLeft: "7px",
-                    }}
+            <Box style={{ display: "flex", alignItems: "center" }} mt={1}>
+              <Typography color="black" variant="subtitle1" fontWeight="bold">
+                API Key
+              </Typography>
+              <Tooltip title="Create API Key" placement="top">
+                <AddCircleOutlineOutlinedIcon
+                  onClick={createNewApiKey}
+                  style={{
+                    cursor:
+                      firstAPIKeyDetailsInListApiKey?.length === 0
+                        ? "pointer"
+                        : "not-allowed",
+                    marginLeft: "7px",
+                  }}
+                />
+              </Tooltip>
+            </Box>
+            <List
+              actions={false}
+              sx={{ width: "100%", overflow: "hidden" }}
+              empty={false}
+            >
+              <Box
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "20px",
+                }}
+              >
+                <Datagrid
+                  bulkActionButtons={false}
+                  sx={{
+                    overflow: "auto",
+                    width: "100%",
+                  }}
+                >
+                  <APIKeyField source="apiKey" label={"API Key"} />
+                  <ShowKeyButtonField
+                    source="apiKey"
+                    label={"Show / Hide"}
+                    textAlign={"center"}
                   />
-                </Tooltip>
+                  <CopyButtonField
+                    source="apiKey"
+                    label={"Copy"}
+                    textAlign={"center"}
+                  />
+                  <DeleteButtonField
+                    source="apiKey"
+                    label={"Delete"}
+                    textAlign={"center"}
+                  />
+                </Datagrid>
               </Box>
-              <Grid container direction="row">
-                <Grid item lg={9} md={7} sm={6} xs={12}>
-                  {(showAPI === false || showHideButton === false) && (
-                    <Typography
-                      color="grey"
-                      variant="body2"
-                      sx={{ wordBreak: "break-all" }}
-                    >
-                      **************************************************************************************************************************************************************************
-                    </Typography>
-                  )}
-                  {showAPI && showHideButton === true && (
-                    <Typography
-                      color="grey"
-                      variant="body2"
-                      sx={{ wordBreak: "break-all" }}
-                    >
-                      {apiKeyValue}
-                    </Typography>
-                  )}
-                </Grid>
-                <Grid item lg={3} md={5} sm={6} xs={12}>
-                  <Box
-                    style={{ display: "flex", justifyContent: "space-around" }}
-                  >
-                    {showHideButton === true && (
-                      <Box
-                        onClick={onChangeShowHideButton}
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          cursor: showAPI ? "pointer" : "not-allowed",
-                        }}
-                      >
-                        <VisibilityOffOutlinedIcon style={{ marginRight: 5 }} />
-                        <Typography
-                          variant="body2"
-                          sx={{ wordBreak: "break-all" }}
-                        >
-                          Hide
-                        </Typography>
-                      </Box>
-                    )}
-                    {showHideButton === false && (
-                      <Box
-                        onClick={onChangeShowHideButton}
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          cursor: showAPI ? "pointer" : "not-allowed",
-                        }}
-                      >
-                        <VisibilityOutlinedIcon style={{ marginRight: 5 }} />
-
-                        <Typography
-                          variant="body2"
-                          sx={{ wordBreak: "break-all" }}
-                        >
-                          Show
-                        </Typography>
-                      </Box>
-                    )}
-                    <Box
-                      sx={{
-                        cursor: showAPI ? "pointer" : "not-allowed",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      onClick={handleCopy}
-                    >
-                      <ContentCopyOutlinedIcon style={{ marginRight: 5 }}
-                      />
-                      <Typography
-                        variant="body2"
-                        sx={{ wordBreak: "break-all" }}
-                      >
-                        Copy
-                      </Typography>
-                    </Box>
-                    <Box
-                      onClick={deleteApiKey}
-                      sx={{
-                        cursor:
-                          firstAPIKeyDetailsInListApiKey?.length !== 0
-                            ? "pointer"
-                            : "not-allowed",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <DeleteOutlineOutlinedIcon style={{ marginRight: 5 }} />
-                      <Typography
-                        variant="body2"
-                        sx={{ wordBreak: "break-all" }}
-                      >
-                        Delete
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Grid>
-              </Grid>
-            </Item>
+            </List>
           </Grid>
         </Grid>
       </DetailsContainer>

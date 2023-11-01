@@ -116,8 +116,8 @@ export const ENDPOINTS = {
   getDataAgreementRecordByID: (dataAgreementRecordId: string | undefined) => {
     return `/audit/consent-record/${dataAgreementRecordId}`;
   },
-  listAllApiKeys: () => {
-    return `/config/admin/apikeys`;
+  listAllApiKeys: (offsetValue: number, pageSize: number) => {
+    return `/config/admin/apikeys?limit=${pageSize}&offset=${offsetValue}`;
   },
   addNewApiKey: () => {
     return "/config/admin/apikey";

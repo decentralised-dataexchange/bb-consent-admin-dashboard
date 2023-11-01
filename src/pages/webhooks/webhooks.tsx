@@ -138,7 +138,6 @@ const Webhooks = () => {
               source="disabled"
               label={"Status"}
               textAlign={"center"}
-              options={{ style: "currency", currency: "USD" }}
             />
 
             <Box

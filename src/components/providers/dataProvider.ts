@@ -88,6 +88,25 @@ const viewLogsProvider = {
   },
 };
 
+const developerAPIProvider = {
+  getList: (resource: any, params: any) => {
+    let pageSize = params.pagination.perPage;
+    let pageNumber = params.pagination.page;
+
+    let offsetValue = offSet(pageNumber, pageSize);
+    return HttpService.listAllApiKeys(offsetValue, pageSize)
+      .then((apis) => {
+        return {
+          data: apis.apiKeys,
+          total: apis.pagination.totalItems,
+          hasNextPage: apis.pagination.hasNext,
+          hasPreviousPage: apis.pagination.hasPrevious,
+        };
+      })
+      .catch((error) => {});
+  },
+};
+
 const webhooksProvider = {
   getList: (resource: any, params: any) => {
     let pageSize = params.pagination.perPage;
@@ -117,6 +136,8 @@ export const dataProvider = combineDataProviders((resource): any => {
       return viewLogsProvider;
     case "consentrecords":
       return userRecordsDataProvider;
+    case "developerapi":
+      return developerAPIProvider;
     case "webhooks":
       return webhooksProvider;
   }
