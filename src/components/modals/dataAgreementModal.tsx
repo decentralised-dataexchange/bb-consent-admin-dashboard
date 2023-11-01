@@ -25,11 +25,7 @@ import {
   buttonStyle,
   disabledButtonstyle,
 } from "./modalStyle";
-import {
-  AddDataAttributesPayload,
-  DataAgreementPayload,
-  UpdateDataAttributesPayload,
-} from "../dataAgreements/DataAgreementActions";
+import { DataAgreementPayload } from "../dataAgreements/DataAgreementActions";
 import { HttpService } from "../../service/HTTPService";
 import { Purpose } from "../dataAgreements/Purpose";
 import { Version } from "../dataAgreements/Version";
@@ -46,7 +42,7 @@ interface Props {
   mode: string;
   successCallback?: any;
   resourceName?: string;
-  dataAgreementIdForSelectedRecord?: string | undefined;
+  consentRecordIdForSelectedRecord?: string | undefined;
 }
 const defaultValue = {
   Name: "",
@@ -73,7 +69,7 @@ export default function DataAgreementModal(props: Props) {
     mode,
     successCallback,
     resourceName,
-    dataAgreementIdForSelectedRecord,
+    consentRecordIdForSelectedRecord,
   } = props;
   const methods = useForm({
     mode: "onChange",
@@ -94,17 +90,17 @@ export default function DataAgreementModal(props: Props) {
 
   useEffect(() => {
     if (selectedDataAgreementId && resourceName !== "userrecords") {
-      HttpService.getDataAttributesByDataAgreementId(
+      HttpService.getDataAgreementByID(
         selectedDataAgreementId
       ).then((response) => {
         let dataAgreements = response.data.dataAgreement;
-        let dataAttributes = response.data.dataAttributes;
+        let dataAttributes = response.data.dataAgreement.dataAttributes;
         setSelectedDataAgreement(dataAgreements);
         if (mode !== "Create") {
           methods.reset({
             Name: dataAgreements.purpose,
             Description: dataAgreements.purposeDescription,
-            Version: dataAgreements.version,
+            Version: dataAgreements.version === "" ? "1.0.0" : dataAgreements.version,
             AttributeType: dataAgreements.methodOfUse,
             LawfulBasisOfProcessing: dataAgreements.lawfulBasis,
             PolicyURL: dataAgreements.policy.url,
@@ -116,7 +112,7 @@ export default function DataAgreementModal(props: Props) {
             Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
             DpiaDate: dataAgreements.dpiaDate,
             DpiaSummaryURL: dataAgreements.dpiaSummaryUrl,
-            dataAttributes: dataAttributes.map((attribute: any) => {
+            dataAttributes: dataAttributes?.map((attribute: any) => {
               const { name, description, ...otherProps } = attribute;
               return {
                 attributeName: name,
@@ -150,12 +146,12 @@ export default function DataAgreementModal(props: Props) {
 
   // This is useEffect is called when resource is user records
   useEffect(() => {
-    if (dataAgreementIdForSelectedRecord && resourceName === "userrecords") {
-      HttpService.getDataAttributesByDataAgreementId(
-        dataAgreementIdForSelectedRecord
+    if (consentRecordIdForSelectedRecord && resourceName === "userrecords") {
+      HttpService.getDataAgreementByID(
+        consentRecordIdForSelectedRecord
       ).then((response) => {
         let dataAgreements = response.data.dataAgreement;
-        let dataAttributes = response.data.dataAttributes;
+        let dataAttributes = response.data.dataAgreement.dataAttributes;
         setSelectedDataAgreement(dataAgreements);
         methods.reset({
           Name: dataAgreements.purpose,
@@ -183,7 +179,7 @@ export default function DataAgreementModal(props: Props) {
         });
       });
     }
-  }, [dataAgreementIdForSelectedRecord, open]);
+  }, [consentRecordIdForSelectedRecord, open]);
 
   const [active, setActive] = useState(false);
   const [lifecycle, setLifecycle] = useState("draft");
@@ -198,32 +194,6 @@ export default function DataAgreementModal(props: Props) {
       HttpService.addDataAgreements(
         DataAgreementPayload(createdData, active, lifecycle, mode)
       ).then((response) => {
-        let responsePurpose = {
-          id: response.data.dataAgreement.id,
-          purpose: response.data.dataAgreement.purpose,
-        };
-
-        let UpdateDataAttributesValues = createdData?.dataAttributes?.filter(
-          (value: any) => value.id !== undefined
-        );
-        let AddDataAttributesValues = createdData?.dataAttributes.filter(
-          (value: any) => value.id === undefined
-        );
-
-        AddDataAttributesValues.length !== 0 &&
-          AddDataAttributesValues.map((AddDataAttributes: any) => {
-            HttpService.addDataAttributes(
-              AddDataAttributesPayload(AddDataAttributes, responsePurpose)
-            ).then((response) => {});
-          });
-
-        UpdateDataAttributesValues.length !== 0 &&
-          UpdateDataAttributesValues.map((UpdateDataAttribute: any) => {
-            HttpService.updateDataAttributes(
-              UpdateDataAttributesPayload(UpdateDataAttribute, responsePurpose),
-              UpdateDataAttribute.id
-            ).then((response) => {});
-          });
         successCallback();
         methods.reset({ ...defaultValue });
         setOpen(false);
@@ -239,32 +209,6 @@ export default function DataAgreementModal(props: Props) {
         ),
         selectedDataAgreementId
       ).then((response) => {
-        let responsePurpose = {
-          id: response.data.dataAgreement.id,
-          purpose: response.data.dataAgreement.purpose,
-        };
-
-        let UpdateDataAttributesValues = createdData?.dataAttributes?.filter(
-          (value: any) => value.id !== undefined
-        );
-        let AddDataAttributesValues = createdData?.dataAttributes.filter(
-          (value: any) => value.id === undefined
-        );
-
-        AddDataAttributesValues.length !== 0 &&
-          AddDataAttributesValues.map((AddDataAttributes: any) => {
-            HttpService.addDataAttributes(
-              AddDataAttributesPayload(AddDataAttributes, responsePurpose)
-            ).then((response) => {});
-          });
-
-        UpdateDataAttributesValues.length !== 0 &&
-          UpdateDataAttributesValues.map((UpdateDataAttribute: any) => {
-            HttpService.updateDataAttributes(
-              UpdateDataAttributesPayload(UpdateDataAttribute, responsePurpose),
-              UpdateDataAttribute.id
-            ).then((response) => {});
-          });
         successCallback();
         methods.reset({ ...defaultValue });
         setOpen(false);
@@ -291,7 +235,7 @@ export default function DataAgreementModal(props: Props) {
                     {mode !== "Create" && (
                       <Typography color="#F3F3F6">
                         {resourceName === "userrecords"
-                          ? dataAgreementIdForSelectedRecord
+                          ? consentRecordIdForSelectedRecord
                           : selectedDataAgreementId}
                       </Typography>
                     )}

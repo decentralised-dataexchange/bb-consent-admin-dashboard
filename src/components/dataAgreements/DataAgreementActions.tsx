@@ -13,7 +13,7 @@ export interface createdDataProps {
   Shared3PP: boolean;
   DpiaDate: any;
   DpiaSummaryURL: string;
-  dataAttributes: any
+  dataAttributes: any;
 }
 
 export const DataAgreementPayload = (
@@ -40,7 +40,7 @@ export const DataAgreementPayload = (
         dataRetentionPeriodDays: createdData.DataRetentionPeriodDays,
         geographicRestriction: createdData.Restriction,
         storageLocation: createdData.StorageLocation,
-        thirdPartyDataSharing: createdData.Shared3PP
+        thirdPartyDataSharing: createdData.Shared3PP,
       },
       purpose: createdData.Name,
       purposeDescription: createdData.Description,
@@ -51,61 +51,59 @@ export const DataAgreementPayload = (
       signature: {
         id: "Update" ? selectedDataAgreement?.signature.id : "",
         payload: "Update" ? selectedDataAgreement?.signature.payload : "string",
-        signature: "Update" ? selectedDataAgreement?.signature?.signature : "string",
-        verificationMethod: "Update" ? selectedDataAgreement?.signature?.verificationMethod : "string",
-        verificationPayload: "Update" ? selectedDataAgreement?.signature?.verificationPayload : "string",
-        verificationPayloadHash: "Update" ? selectedDataAgreement?.signature?.verificationPayloadHash : "string",
-        verificationArtifact: "Update" ? selectedDataAgreement?.signature?.verificationArtifact : "string",
-        verificationSignedBy: "Update" ? selectedDataAgreement?.signature?.verificationSignedBy : "string",
-        verificationSignedAs: "Update" ? selectedDataAgreement?.signature?.verificationSignedAs : "string",
-        verificationJwsHeader: "Update" ? selectedDataAgreement?.signature?.verificationJwsHeader : "string",
-        timestamp: "Update" ? selectedDataAgreement?.signature?.timestamp : "string",
-        signedWithoutObjectReference: "Update" ? selectedDataAgreement?.signature?.signedWithoutObjectReference : false,
-        objectType: "Update" ? selectedDataAgreement?.signature?.objectType : "revision",
-        objectReference: "Update" ? selectedDataAgreement?.signature?.objectReference : "string",
+        signature: "Update"
+          ? selectedDataAgreement?.signature?.signature
+          : "string",
+        verificationMethod: "Update"
+          ? selectedDataAgreement?.signature?.verificationMethod
+          : "string",
+        verificationPayload: "Update"
+          ? selectedDataAgreement?.signature?.verificationPayload
+          : "string",
+        verificationPayloadHash: "Update"
+          ? selectedDataAgreement?.signature?.verificationPayloadHash
+          : "string",
+        verificationArtifact: "Update"
+          ? selectedDataAgreement?.signature?.verificationArtifact
+          : "string",
+        verificationSignedBy: "Update"
+          ? selectedDataAgreement?.signature?.verificationSignedBy
+          : "string",
+        verificationSignedAs: "Update"
+          ? selectedDataAgreement?.signature?.verificationSignedAs
+          : "string",
+        verificationJwsHeader: "Update"
+          ? selectedDataAgreement?.signature?.verificationJwsHeader
+          : "string",
+        timestamp: "Update"
+          ? selectedDataAgreement?.signature?.timestamp
+          : "string",
+        signedWithoutObjectReference: "Update"
+          ? selectedDataAgreement?.signature?.signedWithoutObjectReference
+          : false,
+        objectType: "Update"
+          ? selectedDataAgreement?.signature?.objectType
+          : "revision",
+        objectReference: "Update"
+          ? selectedDataAgreement?.signature?.objectReference
+          : "string",
       },
       active: active,
-      forgettable: mode === "Update" ? selectedDataAgreement?.forgettable :false,
-      compatibleWithVersionId: "Update" ? selectedDataAgreement?.forgettable : "string",
+      forgettable:
+        mode === "Update" ? selectedDataAgreement?.forgettable : false,
+      compatibleWithVersionId: "Update"
+        ? selectedDataAgreement?.forgettable
+        : "string",
       lifecycle: lifecycle,
+      dataAttributes: createdData?.dataAttributes?.map((dataAttributes: any) => {
+        return {
+          id: mode === "Update" ? dataAttributes.id : "",
+          name: dataAttributes.attributeName,
+          description: dataAttributes.attributeDescription,
+          sensitivity: mode === "Update" ? dataAttributes.sensitivity : false,
+          category: mode === "Update" ? dataAttributes.category : "string",
+        };
+      }),
     },
   };
-};
-
-export const AddDataAttributesPayload = (
-  CreatedDataAttributes: any,
-  responsePurpose:  {id: string, purpose: string}
-) => {
-  return {
-    dataAttribute: {
-        version: "1.0.0",
-        agreements: [{id:responsePurpose.id, purpose: responsePurpose.purpose}],
-        agreementIds: [responsePurpose.id],
-        name: CreatedDataAttributes.attributeName,
-        description: CreatedDataAttributes.attributeName,
-        sensitivity: false,
-        category: "string",
-    }
-  };
-};
-
-export const UpdateDataAttributesPayload = (
-  CreatedDataAttributes: any,
-  responsePurpose: {id: string, purpose: string}
-) => {
-  return {
-    dataAttribute: {
-      id: CreatedDataAttributes.id,
-      version: CreatedDataAttributes.version,
-      agreements: [{id:responsePurpose.id, purpose: responsePurpose.purpose}],
-      agreementIds: [
-        ...CreatedDataAttributes.agreementIds
-        , responsePurpose.id
-      ],
-      name: CreatedDataAttributes.attributeName,
-      description: CreatedDataAttributes.attributeDescription,
-      sensitivity: CreatedDataAttributes.sensitivity,
-      category: CreatedDataAttributes.sensitivity
-    }
-  }
 };

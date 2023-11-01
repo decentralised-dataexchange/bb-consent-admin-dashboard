@@ -234,17 +234,6 @@ export const HttpService = {
       config
     );
   },
-  getDataAttributesByDataAgreementId: async (
-    dataAgreementId: any
-  ): Promise<any> => {
-    const config: object = {
-      headers: { ...getAuthenticatedHeaders() },
-    };
-    return httpClient.get(
-      ENDPOINTS.getDataAttributesByDataAgreementId(dataAgreementId),
-      config
-    );
-  },
   updateDataAgreementById: async (
     payload: any,
     dataAgreementId: string | undefined
@@ -282,15 +271,6 @@ export const HttpService = {
     return httpClient.put(
       ENDPOINTS.updatePolicyById(policyId),
       payload,
-      config
-    );
-  },
-  getDataAttributeById: async (dataAttributeId: any): Promise<any> => {
-    const config: object = {
-      headers: { ...getAuthenticatedHeaders() },
-    };
-    return httpClient.get(
-      ENDPOINTS.getDataAttributeById(dataAttributeId),
       config
     );
   },

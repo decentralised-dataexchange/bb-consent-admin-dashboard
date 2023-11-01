@@ -58,7 +58,7 @@ const userRecordsDataProvider = {
     )
       .then((dataAgreementRecords) => {
         return {
-          data: dataAgreementRecords.dataAgreementRecords,
+          data: dataAgreementRecords.consentRecords,
           total: dataAgreementRecords.pagination.totalItems,
           hasNextPage: dataAgreementRecords.pagination.hasNext,
           hasPreviousPage: dataAgreementRecords.pagination.hasPrevious,

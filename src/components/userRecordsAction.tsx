@@ -10,7 +10,7 @@ export const getOptinValues = (optIn: boolean) => {
 
 export const convertConsentRecordsForClient = (consentRecords: any) => {
   const consentRecordsConvertedDataForClientPurpose =
-    consentRecords.dataAgreementRecords.map((consentRecords: any) => {
+    consentRecords.consentRecords.map((consentRecords: any) => {
       const { optIn, timestamp, ...otherProps } = consentRecords;
       return {
         optIn: getOptinValues(optIn),
@@ -19,7 +19,7 @@ export const convertConsentRecordsForClient = (consentRecords: any) => {
       };
     });
   const convertedConsentRecords = {
-    dataAgreementRecords: consentRecordsConvertedDataForClientPurpose,
+    consentRecords: consentRecordsConvertedDataForClientPurpose,
     pagination: consentRecords.pagination,
   };
 

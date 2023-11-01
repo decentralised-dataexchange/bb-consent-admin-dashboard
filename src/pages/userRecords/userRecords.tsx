@@ -76,17 +76,35 @@ const UserRecords = () => {
   const params = useParams();
   const selectedDataRecordId = params["*"];
   const [
-    dataAgreementIdForSelectedRecord,
-    setDataAgreementIdForSelectedRecord,
+    consentRecordIdForSelectedRecord,
+    setConsentRecordIdForSelectedRecord,
   ] = useState<string | undefined>();
+  const [
+    dataAgrreementIdForSelectedRecord,
+    setDataAgrreementIdForSelectedRecord,
+  ] = useState<string | undefined>();
+  const [listDataAgreements, setListDataAgreements] = useState<any>();
+  const [checkDataAgreementIsnotDeleted, setCheckDataAgreementIsnotDeleted] =
+    useState(false);
 
   useEffect(() => {
+    HttpService.listDataAgreements(0, 100, "").then((res) => {
+      setListDataAgreements(res.dataAgreements);
+    });
+
     if (selectedDataRecordId && openDataAgreementModal === true) {
       HttpService.getDataAgreementRecordByID(selectedDataRecordId).then(
         (res) => {
-          setDataAgreementIdForSelectedRecord(
-            res.data.dataAgreementRecord.dataAgreementId
+          setDataAgrreementIdForSelectedRecord(res.data.consentRecord.id);
+          let checkDataAgreementIsnotDeleted: any = listDataAgreements.filter(
+            (agreements: any) => {
+              agreements.id === dataAgrreementIdForSelectedRecord;
+            }
           );
+          checkDataAgreementIsnotDeleted.length !== 0 &&
+            setConsentRecordIdForSelectedRecord(res.data.consentRecord.id);
+          checkDataAgreementIsnotDeleted.length === 0 ?
+            setCheckDataAgreementIsnotDeleted(false) :  setCheckDataAgreementIsnotDeleted(true)
         }
       );
     }
@@ -212,7 +230,9 @@ const UserRecords = () => {
                     label=""
                     sx={{ color: "black" }}
                   />
-                  <Typography sx={{ color: "black" }} variant="body2">View All</Typography>
+                  <Typography sx={{ color: "black" }} variant="body2">
+                    View All
+                  </Typography>
                 </Box>
                 <Box
                   sx={{
@@ -282,7 +302,7 @@ const UserRecords = () => {
             bulkActionButtons={false}
             sx={{
               overflow: "auto",
-              width: "100%"
+              width: "100%",
             }}
           >
             <TextField source="id" label={"Consent Record ID"} />
@@ -317,13 +337,14 @@ const UserRecords = () => {
       {/* Modals */}
 
       {/* Read Data agreement */}
+{checkDataAgreementIsnotDeleted &&
       <DataAgreementModal
         open={openDataAgreementModal}
         setOpen={setOpenDataAgreementModal}
         mode={"Read"}
         resourceName="userrecords"
-        dataAgreementIdForSelectedRecord={dataAgreementIdForSelectedRecord}
-      />
+        consentRecordIdForSelectedRecord={consentRecordIdForSelectedRecord}
+      />}
     </Container>
   );
 };

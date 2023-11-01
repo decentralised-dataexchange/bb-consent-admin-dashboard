@@ -1,11 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  List,
-  Datagrid,
-  TextField,
-  Form,
-  useRefresh,
-} from "react-admin";
+import { List, Datagrid, TextField, Form, useRefresh } from "react-admin";
 
 import {
   Box,
@@ -99,21 +93,23 @@ const PersonalData = () => {
                   onClick={handleChange}
                   name={"all"}
                   control={<Radio color="default" size="small" />}
-                  label={<Typography variant="body2" >All</Typography>}
+                  label={<Typography variant="body2">All</Typography>}
                 />
                 <FormControlLabel
                   value="data_source"
                   onClick={handleChange}
                   name={"data_source"}
                   control={<Radio color="default" size="small" />}
-                  label={<Typography variant="body2" >Data Source</Typography>}
+                  label={<Typography variant="body2">Data Source</Typography>}
                 />
                 <FormControlLabel
                   value="data_using_service"
                   onClick={handleChange}
                   name={"data_using_service"}
                   control={<Radio color="default" size="small" />}
-                  label={<Typography variant="body2" >Data Using Service</Typography>}
+                  label={
+                    <Typography variant="body2">Data Using Service</Typography>
+                  }
                 />
               </RadioGroup>
             </Box>
@@ -135,13 +131,16 @@ const PersonalData = () => {
             bulkActionButtons={false}
             sx={{
               overflow: "auto",
-              width: "100%"
+              width: "100%",
             }}
             rowClick="edit"
           >
             <TextField source="name" label={"Data Attribute Name"} />
             <TextField source="description" label={"Description"} />
-            <TextField source="dataAgreements.[0].purpose" label={"Data Agreement"} />
+            <TextField
+              source="dataAgreement.purpose"
+              label={"Data Agreement"}
+            />
             <Box
               style={{
                 display: "flex",
