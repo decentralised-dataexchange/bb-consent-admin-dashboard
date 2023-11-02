@@ -78,6 +78,17 @@ const geographicRestrictions = [
   },
 ];
 
+const thirdPartyDataSharingOptions = [
+  {
+    value: "false",
+    label: "False",
+  },
+  {
+    value: "true",
+    label: "True",
+  },
+];
+
 const orgTypes = [
   {
     value: "Retail",
@@ -140,8 +151,13 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
   }, [open]);
 
   const onSubmit = (createdData: any) => {
+    const { thirdPartyDataSharing, ...otherProps } = createdData;
     const payload = {
-      policy: createdData,
+      policy: {
+        thirdPartyDataSharing:
+          createdData.thirdPartyDataSharing === "false" ? false : true,
+        ...otherProps,
+      },
     };
 
     // if the list is empty create new global data policy
@@ -323,6 +339,24 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
 
                         <tr>
                           <th style={tableCellStyle} scope="row">
+                            Storage Location
+                          </th>
+
+                          <td style={tableCellStyle}>
+                            <input
+                              autoComplete="off"
+                              type="text"
+                              style={inputDataConfigStyle}
+                              {...register("storageLocation", {
+                                required: true,
+                                minLength: 1,
+                              })}
+                            />
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <th style={tableCellStyle} scope="row">
                             Data retention period in year(s)
                           </th>
 
@@ -380,6 +414,46 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                             />
                           </td>
                         </tr>
+
+                        <tr>
+                          <th style={tableCellStyle}>
+                            Third party data sharing
+                          </th>
+
+                          <td style={{ ...tableCellStyle, borderRight: 0 }}>
+                            <Controller
+                              name="thirdPartyDataSharing"
+                              control={control}
+                              rules={{
+                                required: true,
+                              }}
+                              render={({ field: { onChange, value } }) => (
+                                <Select
+                                  onChange={(e: any) => {
+                                    onChange(e);
+                                  }}
+                                  variant="outlined"
+                                  fullWidth
+                                  defaultValue={value}
+                                  name="thirdPartyDataSharing"
+                                  style={{
+                                    ...dropDownStyle,
+                                    width: "250px",
+                                    height: "32px",
+                                  }}
+                                >
+                                  {thirdPartyDataSharingOptions.map(
+                                    (Type: any, i: number) => (
+                                      <MenuItem key={i} value={Type.value}>
+                                        {Type.label}
+                                      </MenuItem>
+                                    )
+                                  )}
+                                </Select>
+                              )}
+                            />
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
                   </Box>
@@ -390,7 +464,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                   onClick={() => setOpen(false)}
                   style={buttonStyle}
                   sx={{
-                    color:"black",
+                    color: "black",
                     marginRight: "10px",
                     "&:hover": {
                       backgroundColor: "black",
@@ -414,7 +488,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                       ? "pointer"
                       : "not-allowed",
                     marginRight: "20px",
-                    color:"black",
+                    color: "black",
                     "&:hover": {
                       backgroundColor: "black",
                       color: "white",
