@@ -337,14 +337,15 @@ const UserRecords = () => {
       {/* Modals */}
 
       {/* Read Data agreement */}
-{checkDataAgreementIsnotDeleted &&
+{/* {checkDataAgreementIsnotDeleted && */}
       <DataAgreementModal
         open={openDataAgreementModal}
         setOpen={setOpenDataAgreementModal}
         mode={"Read"}
         resourceName="userrecords"
         consentRecordIdForSelectedRecord={consentRecordIdForSelectedRecord}
-      />}
+      />
+      {/* } */}
     </Container>
   );
 };
