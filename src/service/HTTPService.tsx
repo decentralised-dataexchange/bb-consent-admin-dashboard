@@ -9,7 +9,7 @@ import {
   convertPurposeForClient,
   DataAgreement,
 } from "../interfaces/DataAgreement";
-import { convertConsentRecordsForClient } from "../components/userRecordsAction";
+import { convertConsentRecordsForClient } from "./adapter";
 import { convertViewLogsForClient } from "./adapter";
 const httpClient = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL,
