@@ -97,7 +97,7 @@ export default function EditUserAccesModal(props: Props) {
   return (
     <React.Fragment>
       <Drawer anchor="right" open={open}>
-        <Container>
+        <Container style={{ paddingBottom: "40px", height:"auto"}}>
           <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
               <HeaderContainer>
@@ -109,7 +109,7 @@ export default function EditUserAccesModal(props: Props) {
                   sx={{ paddingRight: 2, cursor: "pointer", color: "#F3F3F6" }}
                 />
               </HeaderContainer>
-              <DetailsContainer>
+              <DetailsContainer style={{ height:"auto", marginBottom: "30px"}}>
                 <Box p={1.5}>
                   <Typography variant="subtitle1" mb={0}>
                     Authentication Protocol
@@ -274,7 +274,6 @@ export default function EditUserAccesModal(props: Props) {
                     <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                   </Typography>
                   <TextField
-                    sx={{ margin: 0, marginBottom: "100px" }}
                     autoFocus
                     variant="outlined"
                     fullWidth
