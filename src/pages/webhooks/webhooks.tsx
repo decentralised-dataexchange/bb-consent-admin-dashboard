@@ -187,7 +187,7 @@ const Webhooks = () => {
         onRefetch={onRefetch}
         modalDescriptionText={
           <Typography sx={{ wordWrap: "breakWord" }}>
-            You are about to delete an existing personal data. Please type{" "}
+            You are about to delete an existing webhook data. Please type{" "}
             <span style={{ fontWeight: "bold" }}>DELETE</span> to confirm and
             click DELETE. This action is not reversible.
           </Typography>

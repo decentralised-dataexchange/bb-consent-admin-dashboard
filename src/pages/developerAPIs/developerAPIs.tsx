@@ -12,6 +12,7 @@ import {
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { styled } from "@mui/material/styles";
+import GeneralModal from "../../components/modals/generalModal";
 
 import BreadCrumb from "../../components/Breadcrumbs";
 import { HttpService } from "../../service/HTTPService";
@@ -62,8 +63,14 @@ const DeveloperAPIs = () => {
   const [apiKeyValue, setApiKeyValue] = useState<any>();
   const { id } = LocalStorageService.getUser();
   let stagingURL = process.env.REACT_APP_API_BASE_URL;
+  const [openDeleteApiKey, setOpenDeleteApiKey] = useState(false);
+  const [developerApiDeleteID, setDeveloperApiDeleteID] = useState<any>();
+
 
   const refresh = useRefresh();
+  const onRefetch = () => {
+    refresh();
+  };
 
   const createNewApiKey = () => {
     let payload = {
@@ -75,12 +82,6 @@ const DeveloperAPIs = () => {
     HttpService.addNewApiKey(payload).then((res) => {
       setShowAPI(true);
       setApiKeyValue(res.data.apiKey.apiKey);
-      refresh();
-    });
-  };
-
-  const deleteApiKey = (id: string) => {
-    HttpService.deleteApiKey(id).then(() => {
       refresh();
     });
   };
@@ -99,7 +100,7 @@ const DeveloperAPIs = () => {
     return (
       record[props.source] && (
         <Box
-          onClick={() => deleteApiKey(record[props.source])}
+          onClick={() => {setOpenDeleteApiKey(true); setDeveloperApiDeleteID(record.id)}}
           sx={{
             cursor: "pointer",
           }}
@@ -283,6 +284,25 @@ const DeveloperAPIs = () => {
           </Grid>
         </Grid>
       </DetailsContainer>
+
+      {/* DeletePersonalModal */}
+      <GeneralModal
+        open={openDeleteApiKey}
+        setOpen={setOpenDeleteApiKey}
+        headerText={"Delete API Key "}
+        confirmText="DELETE"
+        resourceName={"developerapi"}
+        developerApiDeleteID={developerApiDeleteID}
+        onRefetch={onRefetch}
+        modalDescriptionText={
+          <Typography sx={{ wordWrap: "breakWord" }}>
+            You are about to delete an existing api key. Please type{" "}
+            <span style={{ fontWeight: "bold" }}>DELETE</span> to confirm and
+            click DELETE. This action is not reversible.
+          </Typography>
+        }
+      />
+
     </Container>
   );
 };

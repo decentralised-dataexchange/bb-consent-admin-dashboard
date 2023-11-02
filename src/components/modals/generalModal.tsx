@@ -27,6 +27,7 @@ interface Props {
   onRefetch?: any;
   userAccessId?: string;
   resourceName?: string;
+  developerApiDeleteID?:string
 }
 
 export default function DeleteModal(props: Props) {
@@ -39,6 +40,7 @@ export default function DeleteModal(props: Props) {
     onRefetch,
     userAccessId,
     resourceName,
+    developerApiDeleteID
   } = props;
   const [isOk, setIsOk] = useState(false);
   const [confirmationTextInput, setConfirmationTextInput] = useState("");
@@ -87,6 +89,11 @@ export default function DeleteModal(props: Props) {
         HttpService.deleteIdpBy(userAccessId).then(() => {
           setOpen(false);
         });
+      } else if (confirmText === "DELETE" && resourceName === "developerapi") {
+        HttpService.deleteApiKey(developerApiDeleteID).then(() => {
+          onRefetch();
+          setOpen(false);
+        });
       } else if (
         confirmText === "DELETE" &&
         daId &&
@@ -110,7 +117,7 @@ export default function DeleteModal(props: Props) {
                 <Typography color="#F3F3F6">
                   {headerText} {dataAgreementValue?.purpose}
                 </Typography>
-                <Typography color="#F3F3F6">{daId}</Typography>
+                <Typography color="#F3F3F6">{resourceName=== "developerapi" ? developerApiDeleteID : daId}</Typography>
               </Box>
               <CloseIcon
                 onClick={() => {
@@ -160,7 +167,7 @@ export default function DeleteModal(props: Props) {
                 sx={{
                   marginRight: "20px",
                   cursor: !isOk ? "not-allowed" : "pointer",
-                  color: !isOk ? "#6D7676" :"black",
+                  color: !isOk ? "#6D7676" : "black",
                   "&:hover": {
                     backgroundColor: "black",
                     color: "white",
