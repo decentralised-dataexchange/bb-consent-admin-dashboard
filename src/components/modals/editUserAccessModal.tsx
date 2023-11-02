@@ -97,7 +97,7 @@ export default function EditUserAccesModal(props: Props) {
   return (
     <React.Fragment>
       <Drawer anchor="right" open={open}>
-        <Container style={{ paddingBottom: "40px", height:"auto"}}>
+        <Container>
           <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
               <HeaderContainer>
@@ -109,7 +109,7 @@ export default function EditUserAccesModal(props: Props) {
                   sx={{ paddingRight: 2, cursor: "pointer", color: "#F3F3F6" }}
                 />
               </HeaderContainer>
-              <DetailsContainer style={{ height:"auto", marginBottom: "30px"}}>
+              <DetailsContainer>
                 <Box p={1.5}>
                   <Typography variant="subtitle1" mb={0}>
                     Authentication Protocol
@@ -163,7 +163,6 @@ export default function EditUserAccesModal(props: Props) {
                   </Typography>
                   <TextField
                     sx={{ margin: 0, marginBottom: "10px" }}
-                    autoFocus
                     variant="outlined"
                     fullWidth
                     placeholder="Token URL"
@@ -179,7 +178,6 @@ export default function EditUserAccesModal(props: Props) {
                   </Typography>
                   <TextField
                     sx={{ margin: 0, marginBottom: "10px" }}
-                    autoFocus
                     variant="outlined"
                     fullWidth
                     placeholder="Logout URL"
@@ -195,7 +193,6 @@ export default function EditUserAccesModal(props: Props) {
                   </Typography>
                   <TextField
                     sx={{ margin: 0, marginBottom: "10px" }}
-                    autoFocus
                     variant="outlined"
                     fullWidth
                     placeholder="Issue URL"
@@ -211,7 +208,6 @@ export default function EditUserAccesModal(props: Props) {
                   </Typography>
                   <TextField
                     sx={{ margin: 0, marginBottom: "10px" }}
-                    autoFocus
                     variant="outlined"
                     fullWidth
                     placeholder="User Info URL"
@@ -227,7 +223,6 @@ export default function EditUserAccesModal(props: Props) {
                   </Typography>
                   <TextField
                     sx={{ margin: 0, marginBottom: "10px" }}
-                    autoFocus
                     variant="outlined"
                     fullWidth
                     placeholder="JWKS URL"
@@ -243,7 +238,6 @@ export default function EditUserAccesModal(props: Props) {
                   </Typography>
                   <TextField
                     sx={{ margin: 0, marginBottom: "10px" }}
-                    autoFocus
                     variant="outlined"
                     fullWidth
                     placeholder="Client ID URL"
@@ -259,7 +253,6 @@ export default function EditUserAccesModal(props: Props) {
                   </Typography>
                   <TextField
                     sx={{ margin: 0, marginBottom: "10px" }}
-                    autoFocus
                     variant="outlined"
                     fullWidth
                     placeholder="Client Secret URL"
@@ -274,9 +267,9 @@ export default function EditUserAccesModal(props: Props) {
                     <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                   </Typography>
                   <TextField
-                    autoFocus
                     variant="outlined"
                     fullWidth
+                    style={{ marginBottom: "60px" }}
                     placeholder="Default Scopes"
                     {...register("defaultScope", {
                       required: true,
