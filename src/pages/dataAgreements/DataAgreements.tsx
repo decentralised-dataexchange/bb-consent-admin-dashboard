@@ -32,6 +32,7 @@ import GeneralModal from "../../components/modals/generalModal";
 import DataAgreementModal from "../../components/modals/dataAgreementModal";
 import DeleteModal from "../../components/modals/generalModal";
 import { useFilterStore } from "../../store/store";
+import { HttpService } from "../../service/HTTPService";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -68,6 +69,14 @@ const DataAgreement = () => {
   const [openDataAgreementModal, setOpenDataAgreementModal] = useState(false);
   const [dataAgreementMode, setDataAgreementMode] = useState("");
   const [handleChangeTriggered, setHandleChangeTriggered] = useState(false);
+  const [policyDetailsForInitialValue, setPolicyDetailsForInitialValue] =
+    useState<any>();
+
+  useEffect(() => {
+    HttpService.listAllPolicies().then((response) => {
+      setPolicyDetailsForInitialValue(response[0]);
+    });
+  }, [openDataAgreementModal]);
 
   const refresh = useRefresh();
   const onRefetch = () => {
@@ -307,6 +316,7 @@ const DataAgreement = () => {
         setOpen={setOpenDataAgreementModal}
         mode={dataAgreementMode}
         successCallback={onRefetch}
+        policyDetailsForInitialValue={policyDetailsForInitialValue}
       />
 
       <GlobalDataPolicyConfigModal

@@ -181,7 +181,7 @@ const UserAccess = () => {
               </Box>
             </label>
             <input
-              accept=".csv*"
+              accept=".csv"
               id="uploadCSV"
               name="uploadCSV"
               hidden={true}

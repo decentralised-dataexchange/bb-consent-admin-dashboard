@@ -43,6 +43,7 @@ interface Props {
   successCallback?: any;
   resourceName?: string;
   consentRecordIdForSelectedRecord?: string | undefined;
+  policyDetailsForInitialValue?:any
 }
 
 let defaultValue = {
@@ -71,19 +72,12 @@ export default function DataAgreementModal(props: Props) {
     successCallback,
     resourceName,
     consentRecordIdForSelectedRecord,
+    policyDetailsForInitialValue
   } = props;
 
-  const [policyDetailsForInitialValue, setPolicyDetailsForInitialValue] =
-    useState<any>();
   const params = useParams();
   const selectedDataAgreementId = params["*"];
   const [selectedDataAgreement, setSelectedDataAgreement] = useState<any>();
-
-  useEffect(() => {
-    HttpService.listAllPolicies().then((response) => {
-      setPolicyDetailsForInitialValue(response[0]);
-    });
-  }, [selectedDataAgreementId, open]);
 
   const methods = useForm({
     mode: "onChange",
