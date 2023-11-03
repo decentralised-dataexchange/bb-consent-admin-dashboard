@@ -49,7 +49,7 @@ interface Props {
 let defaultValue = {
   Name: "",
   Description: "",
-  Version: "1.0.0",
+  Version: "0.0.0",
   AttributeType: "null",
   LawfulBasisOfProcessing: "consent",
   PolicyURL: "https://igrant.io/policy.html",
@@ -98,7 +98,7 @@ export default function DataAgreementModal(props: Props) {
       methods.reset({
         Name: "",
         Description: "",
-        Version: "1.0.0",
+        Version: "0.0.0",
         AttributeType: "null",
         LawfulBasisOfProcessing: "consent",
         PolicyURL: policyDetailsForInitialValue?.url,
@@ -131,7 +131,7 @@ export default function DataAgreementModal(props: Props) {
               Description: dataAgreements.purposeDescription,
               Version:
                 dataAgreements.version === ""
-                  ? "1.0.0"
+                  ? "0.0.0"
                   : dataAgreements.version,
               AttributeType: dataAgreements.methodOfUse,
               LawfulBasisOfProcessing: dataAgreements.lawfulBasis,
@@ -174,6 +174,7 @@ export default function DataAgreementModal(props: Props) {
       ).then((response) => {
         let dataAgreements = response.dataAgreements[0];
         let dataAttributes = response.dataAgreements[0].dataAttributes;
+
         setDataAgreementIdForUserRecordes(dataAgreements.id);
         setSelectedDataAgreement(dataAgreements);
         methods.reset({
@@ -242,7 +243,6 @@ export default function DataAgreementModal(props: Props) {
   return (
     <>
       <Drawer anchor="right" open={open}>
-        <DataAgreementsCRUDProvider>
           <Container>
             <FormProvider {...methods}>
               <form onSubmit={methods.handleSubmit(onSubmit)}>
@@ -331,7 +331,8 @@ export default function DataAgreementModal(props: Props) {
                         mode={props.mode}
                       />
 
-                      <Typography
+                      {/* Required for future purpose in enterprise dashboard */}
+                      {/* <Typography
                         style={{
                           fontSize: "14px",
                           textDecoration: "underline",
@@ -341,7 +342,7 @@ export default function DataAgreementModal(props: Props) {
                         }}
                       >
                         (Choose existing schemas)
-                      </Typography>
+                      </Typography> */}
 
                       <PurposeDescription open={props.open} mode={props.mode} />
 
@@ -443,7 +444,6 @@ export default function DataAgreementModal(props: Props) {
               mode={mode}
             />
           </Container>
-        </DataAgreementsCRUDProvider>
       </Drawer>
     </>
   );

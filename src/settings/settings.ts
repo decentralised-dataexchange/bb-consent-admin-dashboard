@@ -32,7 +32,7 @@ export const ENDPOINTS = {
   ) => {
     return `/config/data-agreements?limit=${pageSize}&offset=${offsetValue}${
       filter === "complete" ? "&lifecycle=complete" : ""
-    }${revisionId !== "" && `&revisionId=${revisionId}`}`
+    }${revisionId !== "" ? `&revisionId=${revisionId}` : ""}`
   },
   addDataAgreements: () => {
     return "/config/data-agreement";

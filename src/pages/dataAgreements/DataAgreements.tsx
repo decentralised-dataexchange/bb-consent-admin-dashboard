@@ -33,6 +33,11 @@ import DataAgreementModal from "../../components/modals/dataAgreementModal";
 import DeleteModal from "../../components/modals/generalModal";
 import { useFilterStore } from "../../store/store";
 import { HttpService } from "../../service/HTTPService";
+import {
+  getMethodOfUse,
+  getLawfulBasisOfProcessing,
+  getPublishValues,
+} from "../../interfaces/DataAgreement";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -113,6 +118,51 @@ const DataAgreement = () => {
       <TextField {...props} sx={{ color: "black" }} />
     ) : (
       <TextField {...props} sx={{ color: "#FF0C10" }} />
+    );
+  };
+
+  const DataExchangeField = (props: any) => {
+    const record = useRecordContext(props);
+    if (!record || !props.source) {
+      return null;
+    }
+    return (
+      <Typography
+        variant="body2"
+        sx={{ color: record.active === true ? "black" : "#FF0C10" }}
+      >
+        {getMethodOfUse(record[props.source])}
+      </Typography>
+    );
+  };
+
+  const PublishStatusField = (props: any) => {
+    const record = useRecordContext(props);
+    if (!record || !props.source) {
+      return null;
+    }
+    return (
+      <Typography
+        variant="body2"
+        sx={{ color: record.active === true ? "black" : "#FF0C10" }}
+      >
+        {getPublishValues(record[props.source])}
+      </Typography>
+    );
+  };
+
+  const LawfulBasisField = (props: any) => {
+    const record = useRecordContext(props);
+    if (!record || !props.source) {
+      return null;
+    }
+    return (
+      <Typography
+        variant="body2"
+        sx={{ color: record.active === true ? "black" : "#FF0C10" }}
+      >
+        {getLawfulBasisOfProcessing(record[props.source])}
+      </Typography>
     );
   };
 
@@ -289,17 +339,17 @@ const DataAgreement = () => {
               sortable={false}
             />
             <ColoredField source="version" label={"Version"} sortable={false} />
-            <ColoredField
+            <DataExchangeField
               source="methodOfUse"
               label={"Data Exchange"}
               sortable={false}
             />
-            <ColoredField
+            <PublishStatusField
               source="lifecycle"
               label={"Status"}
               sortable={false}
             />
-            <ColoredField
+            <LawfulBasisField
               source="lawfulBasis"
               label={"Lawful Basis Of Processing"}
               sortable={false}

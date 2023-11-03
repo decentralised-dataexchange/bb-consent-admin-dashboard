@@ -97,23 +97,3 @@ export const getPublishValues = (lifecycle: string) => {
     return PublishFlagEnum.Published;
   }
 };
-
-export const convertPurposeForClient = (dataAgreements: any) => {
-  const dataAgreementConvertedDataForClientPurpose =
-    dataAgreements.dataAgreements.map((dataAgreement: any) => {
-      const { methodOfUse, lifecycle, lawfulBasis, ...otherProps } =
-        dataAgreement;
-      return {
-        methodOfUse: getMethodOfUse(methodOfUse),
-        lawfulBasis: getLawfulBasisOfProcessing(lawfulBasis),
-        lifecycle: getPublishValues(lifecycle),
-        ...otherProps,
-      };
-    });
-  const convertedDataAgreements = {
-    dataAgreements: dataAgreementConvertedDataForClientPurpose,
-    pagination: dataAgreements.pagination,
-  };
-
-  return convertedDataAgreements;
-};

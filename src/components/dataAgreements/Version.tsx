@@ -28,7 +28,7 @@ export const Version = () => {
           cursor:"not-allowed"
         }}
         type="text"
-        {...register('Version', { required: true, value: '1.0.0' })}
+        {...register('Version', { required: true, value: '0.0.0' })}
         autoComplete="off"
         disabled
       />
