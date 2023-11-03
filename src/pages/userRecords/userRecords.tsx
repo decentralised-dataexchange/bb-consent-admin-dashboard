@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { List, Datagrid, TextField, Form, useRefresh } from "react-admin";
+import {
+  List,
+  Datagrid,
+  TextField,
+  Form,
+  useRefresh,
+  useRecordContext,
+} from "react-admin";
 
 import {
   Box,
@@ -17,12 +24,10 @@ import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 
 import BreadCrumb from "../../components/Breadcrumbs";
 import DataAgreementModal from "../../components/modals/dataAgreementModal";
-import { HttpService } from "../../service/HTTPService";
-import { useParams } from "react-router-dom";
 import { useFilterStore } from "../../store/store";
 import FilterByPurposeDropdown from "../../components/dropdowns/filterByPurposeDropDown";
 import FilterByLawfulBasisDropdown from "../../components/dropdowns/filterByLawfulBasisDropDown";
-import { SearchByIdRecordsAutoselect } from "../../components/dropdowns/searchByIdRecordsAutoselect";
+import { SearchByIdRecords } from "../../components/dropdowns/searchByIdRecordsAutoselect";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -73,25 +78,10 @@ const UserRecords = () => {
     { label: "Legitimate Interest", value: "legitimate_interest" },
   ];
 
-  const params = useParams();
-  const selectedDataRecordId = params["*"];
-
   const [
     dataAgrreementRevisionIdForSelectedRecord,
     setDataAgrreementRevisionIdForSelectedRecord,
   ] = useState<string | undefined>();
-
-  useEffect(() => {
-    if (selectedDataRecordId && openDataAgreementModal === true) {
-      HttpService.getDataAgreementRecordByID(selectedDataRecordId).then(
-        (res) => {
-          setDataAgrreementRevisionIdForSelectedRecord(
-            res.data.consentRecord.dataAgreementRevisionId
-          );
-        }
-      );
-    }
-  }, [selectedDataRecordId, openDataAgreementModal === true]);
 
   const refresh = useRefresh();
 
@@ -148,6 +138,39 @@ const UserRecords = () => {
     }
   };
 
+  const IconsFIeld = (props: any) => {
+    const record = useRecordContext(props);
+    if (!record || !props.source) {
+      return null;
+    }
+    return (
+      record[props.source] && (
+        <Box
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-around",
+            width: "100%",
+          }}
+        >
+          <Tooltip title="View Data Agreement" placement="top">
+            <RemoveRedEyeOutlinedIcon
+              onClick={() => {
+                setOpenDataAgreementModal(true);
+                setDataAgrreementRevisionIdForSelectedRecord(
+                  record.dataAgreementRevisionId
+                );
+              }}
+              fontSize="small"
+              color="disabled"
+              style={{ cursor: "pointer" }}
+            />
+          </Tooltip>
+        </Box>
+      )
+    );
+  };
+
   return (
     <Container>
       <List
@@ -173,7 +196,7 @@ const UserRecords = () => {
             <Typography variant="body2">
               Do queries on the consent records for audit purpose
             </Typography>
-            <SearchByIdRecordsAutoselect
+            <SearchByIdRecords
               changefilter={changefilter}
               handleSearchTriggered={handleSearchTriggered}
               sethandleSearchTriggered={sethandleSearchTriggered}
@@ -281,39 +304,23 @@ const UserRecords = () => {
           }}
         >
           <Datagrid
-            rowClick="edit"
             bulkActionButtons={false}
             sx={{
               overflow: "auto",
               width: "100%",
             }}
           >
-            <TextField source="id" label={"Consent Record ID"} />
-            <TextField source="individualId" label={"Individual ID"} />
-            <TextField source="dataAgreement.purpose" label={"Purpose"} />
+            <TextField source="id" label={"Consent Record ID"} sortable={false} />
+            <TextField source="individualId" label={"Individual ID"} sortable={false}  />
+            <TextField source="dataAgreement.purpose" label={"Purpose"} sortable={false}  />
             <TextField
               source="dataAgreement.lawfulBasis"
               label={"Lawful Basis"}
+              sortable={false} 
             />
-            <TextField source="optIn" label={"Agreement Event"} />
-            <TextField source="timestamp" label={"Timestamp"} />
-            <Box
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-around",
-                width: "100%",
-              }}
-            >
-              <Tooltip title="View Data Agreement" placement="top">
-                <RemoveRedEyeOutlinedIcon
-                  onClick={() => setOpenDataAgreementModal(true)}
-                  fontSize="small"
-                  color="disabled"
-                  style={{ cursor: "pointer" }}
-                />
-              </Tooltip>
-            </Box>
+            <TextField source="optIn" label={"Agreement Event"} sortable={false} />
+            <TextField source="timestamp" label={"Timestamp"} sortable={false}  />
+            <IconsFIeld source="id" label={""} sortable={false} />
           </Datagrid>
         </Box>
       </List>

@@ -30,9 +30,10 @@ const FilterByPurposeDropdown = (props: Props) => {
   const [dropdownValues, setDropdownValues] = useState<any>();
   const disabledDropdown = useFilterStore.getState().disabledPurposeDropDown;
 
+
   useEffect(() => {
     HttpService.listDataAgreements(0, 100, "", "").then((res) => {
-      setDropdownValues(res.dataAgreements);
+      setDropdownValues(res.dataAgreements.filter((dataAgreement: any)=>{return dataAgreement.active === true}));
     });
   }, []);
 
@@ -46,6 +47,12 @@ const FilterByPurposeDropdown = (props: Props) => {
     );
   };
 
+  useEffect(()=>{
+    if(disabledDropdown === true){
+      setSelectedValue([])
+    }
+  },[disabledDropdown])
+
   useEffect(() => {
     if (disabledDropdown === false) {
       let selectedAgreement = dropdownValues?.filter(
@@ -56,7 +63,7 @@ const FilterByPurposeDropdown = (props: Props) => {
         filterType: "id",
         value: selectedAgreement?.[0] && selectedAgreement[0].id,
       });
-    }
+    } 
     setHandleFilterDropDownTriggered(!handleFilterDropDownTriggered);
   }, [selectedValue]);
 

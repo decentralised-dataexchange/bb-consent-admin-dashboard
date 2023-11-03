@@ -6,7 +6,7 @@ import { imageBlobToBase64 } from "../utils/imageUtils";
 import { UpdateOrganisationReq } from "../interfaces/UpdateOrganisation";
 import {
   DataAgreementsResponse,
-  convertPurposeForClient,
+  // convertPurposeForClient,
   DataAgreement,
 } from "../interfaces/DataAgreement";
 import { convertConsentRecordsForClient } from "./adapter";
@@ -174,7 +174,7 @@ export const HttpService = {
       .get(ENDPOINTS.listDataAgreements(offsetValue, pageSize, filter, revisionId), config)
       .then((res) => {
         const dataAgreements: DataAgreementsResponse = res.data;
-        return convertPurposeForClient(dataAgreements);
+        return dataAgreements
       });
   },
   addDataAgreements: async (payload: DataAgreement): Promise<any> => {

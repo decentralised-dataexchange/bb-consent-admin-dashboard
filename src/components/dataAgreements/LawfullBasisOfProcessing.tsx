@@ -51,7 +51,7 @@ export const LawfullBasisMethods = (props: LawfullBasisProps) => {
         }}
         variant="outlined"
         disabled={props.mode === "Read"}
-        defaultValue={props.value}
+        value={props.value}
         fullWidth
         name="LawfulBasisOfProcessing"
         style={

@@ -48,7 +48,7 @@ export const DataExchangeMode = (props: DataExchangeModeProps) => {
         }}
         variant="outlined"
         fullWidth
-        defaultValue={props.value}
+        value={props.value}
         name="AttributeType"
         disabled={props.mode === "Read"}
         style={

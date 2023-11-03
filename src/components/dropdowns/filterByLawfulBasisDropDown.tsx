@@ -40,6 +40,12 @@ const FilterByLawfulBasisDropdown = (props: Props) => {
     );
   };
 
+  useEffect(()=>{
+    if(disabledDropdown === true){
+      setSelectedValue([])
+    }
+  },[disabledDropdown])
+
   useEffect(() => {
     if (disabledDropdown === false) {
       let selectedBasis = dropdownValues?.filter(

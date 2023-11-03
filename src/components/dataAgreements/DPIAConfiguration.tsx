@@ -53,7 +53,6 @@ const DPIAConfigurations = (props: Props) => {
                 cursor: mode === "Read" ? "not-allowed" : "auto",
               }}
               type="datetime-local"
-              defaultValue={new Date().toISOString().slice(0, 16)}
               {...register("DpiaDate", {
                 required: true,
                 minLength: 1
@@ -76,7 +75,6 @@ const DPIAConfigurations = (props: Props) => {
                 ...inputDataConfigStyle,
                 cursor: mode === "Read" ? "not-allowed" : "auto",
               }}
-              defaultValue={"https://privacyant.se/dpia_results.html"}
               {...register("DpiaSummaryURL", {
                 required: true,
                 minLength: 1
