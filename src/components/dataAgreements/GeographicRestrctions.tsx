@@ -63,8 +63,8 @@ export const GeographicRestrictions = (props: GeographicRestrictionsProps) => {
         onChange={(e: any) => {
           props.onChange(e);
         }}
-        name="restriction"
-        defaultValue={"Europe"}
+        name="Restriction"
+        defaultValue={props.value}
         disabled={props.mode === "Read"}
         style={props.mode === "Read" ? disabledDropDownStyle : dropDownStyle}
       >

@@ -144,7 +144,6 @@ const DataAgreementPolicy = (props: Props) => {
               }}
               {...register("dataRetentionPeriodDays", {
                 required: true,
-                minLength: 1,
                 valueAsNumber: true,
               })}
             />

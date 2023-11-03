@@ -8,7 +8,7 @@ export interface createdDataProps {
   Jurisdiction: string;
   IndustryScope: string;
   StorageLocation: string;
-  DataRetentionPeriodDays: string;
+  dataRetentionPeriodDays: string;
   Restriction: string;
   Shared3PP: boolean;
   DpiaDate: any;
@@ -37,7 +37,7 @@ export const DataAgreementPayload = (
         url: createdData.PolicyURL,
         jurisdiction: createdData.Jurisdiction,
         industrySector: createdData.IndustryScope,
-        dataRetentionPeriodDays: createdData.DataRetentionPeriodDays,
+        dataRetentionPeriodDays: createdData.dataRetentionPeriodDays,
         geographicRestriction: createdData.Restriction,
         storageLocation: createdData.StorageLocation,
         thirdPartyDataSharing: createdData.Shared3PP,
