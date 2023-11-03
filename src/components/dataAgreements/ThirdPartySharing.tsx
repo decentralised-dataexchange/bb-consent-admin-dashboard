@@ -65,7 +65,7 @@ export const ThirdPartyDataSharing = (props: ThirdPartyDataProps) => {
         onChange={(e: any) => {
           props.onChange(e);
         }}
-        defaultValue={false}
+        defaultValue={props.value}
         style={props.mode === "Read" ? disabledDropDownStyle : dropDownStyle}
       >
         {thirdPartyDataSharingOptions.map((modes: any) => (

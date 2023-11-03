@@ -53,7 +53,7 @@ export const LawfullBasisMethods = (props: LawfullBasisProps) => {
         disabled={props.mode === "Read"}
         defaultValue={props.value}
         fullWidth
-        name="lawfulBasisOfProcessing"
+        name="LawfulBasisOfProcessing"
         style={
           props.mode === "Read"
             ? {

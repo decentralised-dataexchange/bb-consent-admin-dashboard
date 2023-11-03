@@ -14,7 +14,6 @@ interface DataExchangeModeFormControlProps {
 }
 
 interface DataExchangeModeProps {
-  open: boolean;
   mode: string;
   onChange: (e: React.SyntheticEvent) => void;
   value: any;
@@ -50,7 +49,7 @@ export const DataExchangeMode = (props: DataExchangeModeProps) => {
         variant="outlined"
         fullWidth
         defaultValue={props.value}
-        name="methodOfUse"
+        name="AttributeType"
         disabled={props.mode === "Read"}
         style={
           props.mode === "Read"
@@ -103,7 +102,6 @@ export const DataExchangeModeFormControl = (
               <DataExchangeMode
                 onChange={onChange}
                 value={value}
-                open={props.open}
                 mode={props.mode}
               />
             )}

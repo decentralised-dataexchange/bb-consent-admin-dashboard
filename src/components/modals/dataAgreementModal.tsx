@@ -94,7 +94,32 @@ export default function DataAgreementModal(props: Props) {
   });
 
   useEffect(() => {
-    if (selectedDataAgreementId && resourceName !== "userrecords") {
+    if (mode === "Create") {
+      methods.reset({
+        Name: "",
+        Description: "",
+        Version: "1.0.0",
+        AttributeType: "null",
+        LawfulBasisOfProcessing: "consent",
+        PolicyURL: policyDetailsForInitialValue?.url,
+        Jurisdiction: policyDetailsForInitialValue?.jurisdiction,
+        IndustryScope: policyDetailsForInitialValue?.industrySector,
+        StorageLocation: policyDetailsForInitialValue?.storageLocation,
+        dataRetentionPeriodDays:
+          policyDetailsForInitialValue?.dataRetentionPeriodDays,
+        Restriction: policyDetailsForInitialValue?.geographicRestriction,
+        Shared3PP: policyDetailsForInitialValue?.thirdPartyDataSharing,
+        DpiaDate: new Date().toISOString().slice(0, 16),
+        DpiaSummaryURL: "https://privacyant.se/dpia_results.html",
+        dataAttributes: [{ attributeName: "", attributeDescription: "" }],
+      });
+    }
+
+    if (
+      selectedDataAgreementId &&
+      resourceName !== "userrecords" &&
+      mode !== "Create"
+    ) {
       HttpService.getDataAgreementByID(selectedDataAgreementId).then(
         (response) => {
           let dataAgreements = response.data.dataAgreement;
@@ -129,30 +154,11 @@ export default function DataAgreementModal(props: Props) {
                 };
               }),
             });
-          } else {
-            methods.reset({
-              Name: "",
-              Description: "",
-              Version: "1.0.0",
-              AttributeType: "null",
-              LawfulBasisOfProcessing: "consent",
-              PolicyURL: policyDetailsForInitialValue?.url,
-              Jurisdiction: policyDetailsForInitialValue?.jurisdiction,
-              IndustryScope: policyDetailsForInitialValue?.industrySector,
-              StorageLocation: policyDetailsForInitialValue?.storageLocation,
-              dataRetentionPeriodDays:
-                policyDetailsForInitialValue?.dataRetentionPeriodDays,
-              Restriction: policyDetailsForInitialValue?.geographicRestriction,
-              Shared3PP: policyDetailsForInitialValue?.thirdPartyDataSharing,
-              DpiaDate: new Date().toISOString().slice(0, 16),
-              DpiaSummaryURL: "https://privacyant.se/dpia_results.html",
-              dataAttributes: [{ attributeName: "", attributeDescription: "" }],
-            });
           }
         }
       );
     }
-  }, [selectedDataAgreementId, open]);
+  }, [selectedDataAgreementId, open, mode]);
 
   // This is useEffect is called when resource is user records
   useEffect(() => {
@@ -180,7 +186,7 @@ export default function DataAgreementModal(props: Props) {
           Jurisdiction: dataAgreements.policy.jurisdiction,
           IndustryScope: dataAgreements.policy.industrySector,
           StorageLocation: dataAgreements.policy.storageLocation,
-          dataRetentionPeriodDays: dataAgreements.policy.dataRetentionPeriod,
+          dataRetentionPeriodDays: dataAgreements.policy.dataRetentionPeriodDays,
           Restriction: dataAgreements.policy.geographicRestriction,
           Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
           DpiaDate: dataAgreements.dpiaDate,
@@ -210,7 +216,7 @@ export default function DataAgreementModal(props: Props) {
     if (mode === "Create") {
       HttpService.addDataAgreements(
         DataAgreementPayload(createdData, active, lifecycle, mode)
-      ).then((response) => {
+      ).then(() => {
         successCallback();
         methods.reset({ ...defaultValue });
         setOpen(false);
