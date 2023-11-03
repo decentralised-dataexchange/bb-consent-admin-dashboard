@@ -42,8 +42,8 @@ interface Props {
   mode: string;
   successCallback?: any;
   resourceName?: string;
-  consentRecordIdForSelectedRecord?: string | undefined;
-  policyDetailsForInitialValue?:any
+  dataAgrreementRevisionIdForSelectedRecord?: string | undefined;
+  policyDetailsForInitialValue?: any;
 }
 
 let defaultValue = {
@@ -71,14 +71,15 @@ export default function DataAgreementModal(props: Props) {
     mode,
     successCallback,
     resourceName,
-    consentRecordIdForSelectedRecord,
-    policyDetailsForInitialValue
+    dataAgrreementRevisionIdForSelectedRecord,
+    policyDetailsForInitialValue,
   } = props;
 
   const params = useParams();
   const selectedDataAgreementId = params["*"];
   const [selectedDataAgreement, setSelectedDataAgreement] = useState<any>();
-
+  const [dataAgreementIdForUserRecordes, setDataAgreementIdForUserRecordes] =
+    useState("");
   const methods = useForm({
     mode: "onChange",
     defaultValues: {
@@ -155,40 +156,47 @@ export default function DataAgreementModal(props: Props) {
 
   // This is useEffect is called when resource is user records
   useEffect(() => {
-    if (consentRecordIdForSelectedRecord && resourceName === "userrecords") {
-      HttpService.getDataAgreementByID(consentRecordIdForSelectedRecord).then(
-        (response) => {
-          let dataAgreements = response.data.dataAgreement;
-          let dataAttributes = response.data.dataAgreement.dataAttributes;
-          setSelectedDataAgreement(dataAgreements);
-          methods.reset({
-            Name: dataAgreements.purpose,
-            Description: dataAgreements.purposeDescription,
-            Version: dataAgreements.version,
-            AttributeType: dataAgreements.methodOfUse,
-            LawfulBasisOfProcessing: dataAgreements.lawfulBasis,
-            PolicyURL: dataAgreements.policy.url,
-            Jurisdiction: dataAgreements.policy.jurisdiction,
-            IndustryScope: dataAgreements.policy.industrySector,
-            StorageLocation: dataAgreements.policy.storageLocation,
-            dataRetentionPeriodDays: dataAgreements.policy.dataRetentionPeriod,
-            Restriction: dataAgreements.policy.geographicRestriction,
-            Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
-            DpiaDate: dataAgreements.dpiaDate,
-            DpiaSummaryURL: dataAgreements.dpiaSummaryUrl,
-            dataAttributes: dataAttributes.map((attribute: any) => {
-              const { name, description, ...otherProps } = attribute;
-              return {
-                attributeName: name,
-                attributeDescription: description,
-                ...otherProps,
-              };
-            }),
-          });
-        }
-      );
+    if (
+      dataAgrreementRevisionIdForSelectedRecord &&
+      resourceName === "userrecords"
+    ) {
+      HttpService.listDataAgreements(
+        0,
+        10,
+        "",
+        dataAgrreementRevisionIdForSelectedRecord
+      ).then((response) => {
+        let dataAgreements = response.dataAgreements[0];
+        let dataAttributes = response.dataAgreements[0].dataAttributes;
+        setDataAgreementIdForUserRecordes(dataAgreements.id);
+        setSelectedDataAgreement(dataAgreements);
+        methods.reset({
+          Name: dataAgreements.purpose,
+          Description: dataAgreements.purposeDescription,
+          Version: dataAgreements.version,
+          AttributeType: dataAgreements.methodOfUse,
+          LawfulBasisOfProcessing: dataAgreements.lawfulBasis,
+          PolicyURL: dataAgreements.policy.url,
+          Jurisdiction: dataAgreements.policy.jurisdiction,
+          IndustryScope: dataAgreements.policy.industrySector,
+          StorageLocation: dataAgreements.policy.storageLocation,
+          dataRetentionPeriodDays: dataAgreements.policy.dataRetentionPeriod,
+          Restriction: dataAgreements.policy.geographicRestriction,
+          Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
+          DpiaDate: dataAgreements.dpiaDate,
+          DpiaSummaryURL: dataAgreements.dpiaSummaryUrl,
+          dataAttributes: dataAttributes.map((attribute: any) => {
+            const { name, description, ...otherProps } = attribute;
+            return {
+              attributeName: name,
+              attributeDescription: description,
+              ...otherProps,
+            };
+          }),
+        });
+      });
     }
-  }, [consentRecordIdForSelectedRecord, open]);
+  }, [dataAgrreementRevisionIdForSelectedRecord, open]);
 
   const [active, setActive] = useState(false);
   const [lifecycle, setLifecycle] = useState("draft");
@@ -244,7 +252,7 @@ export default function DataAgreementModal(props: Props) {
                     {mode !== "Create" && (
                       <Typography color="#F3F3F6">
                         {resourceName === "userrecords"
-                          ? consentRecordIdForSelectedRecord
+                          ? dataAgreementIdForUserRecordes
                           : selectedDataAgreementId}
                       </Typography>
                     )}

@@ -75,36 +75,19 @@ const UserRecords = () => {
 
   const params = useParams();
   const selectedDataRecordId = params["*"];
+
   const [
-    consentRecordIdForSelectedRecord,
-    setConsentRecordIdForSelectedRecord,
+    dataAgrreementRevisionIdForSelectedRecord,
+    setDataAgrreementRevisionIdForSelectedRecord,
   ] = useState<string | undefined>();
-  const [
-    dataAgrreementIdForSelectedRecord,
-    setDataAgrreementIdForSelectedRecord,
-  ] = useState<string | undefined>();
-  const [listDataAgreements, setListDataAgreements] = useState<any>();
-  const [checkDataAgreementIsnotDeleted, setCheckDataAgreementIsnotDeleted] =
-    useState(false);
 
   useEffect(() => {
-    HttpService.listDataAgreements(0, 100, "").then((res) => {
-      setListDataAgreements(res.dataAgreements);
-    });
-
     if (selectedDataRecordId && openDataAgreementModal === true) {
       HttpService.getDataAgreementRecordByID(selectedDataRecordId).then(
         (res) => {
-          setDataAgrreementIdForSelectedRecord(res.data.consentRecord.id);
-          let checkDataAgreementIsnotDeleted: any = listDataAgreements.filter(
-            (agreements: any) => {
-              agreements.id === dataAgrreementIdForSelectedRecord;
-            }
+          setDataAgrreementRevisionIdForSelectedRecord(
+            res.data.consentRecord.dataAgreementRevisionId
           );
-          checkDataAgreementIsnotDeleted.length !== 0 &&
-            setConsentRecordIdForSelectedRecord(res.data.consentRecord.id);
-          checkDataAgreementIsnotDeleted.length === 0 ?
-            setCheckDataAgreementIsnotDeleted(false) :  setCheckDataAgreementIsnotDeleted(true)
         }
       );
     }
@@ -337,15 +320,15 @@ const UserRecords = () => {
       {/* Modals */}
 
       {/* Read Data agreement */}
-{/* {checkDataAgreementIsnotDeleted && */}
       <DataAgreementModal
         open={openDataAgreementModal}
         setOpen={setOpenDataAgreementModal}
         mode={"Read"}
         resourceName="userrecords"
-        consentRecordIdForSelectedRecord={consentRecordIdForSelectedRecord}
+        dataAgrreementRevisionIdForSelectedRecord={
+          dataAgrreementRevisionIdForSelectedRecord
+        }
       />
-      {/* } */}
     </Container>
   );
 };

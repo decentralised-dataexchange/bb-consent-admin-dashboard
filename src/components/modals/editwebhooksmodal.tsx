@@ -87,7 +87,6 @@ export default function EditWebooks(props: Props) {
   }, [open, selectedWebhooksId]);
 
   const onSubmit = (createdData: any) => {
-    console.log("created", createdData);
     if (methods.formState.isValid && eventTypesValid === true) {
       const payload = {
         webhook: {
@@ -97,7 +96,6 @@ export default function EditWebooks(props: Props) {
           }),
         },
       };
-      console.log("paylo", payload);
 
       if (mode === "Update") {
         HttpService.updateWebhookById(payload, selectedWebhooksId).then(() => {

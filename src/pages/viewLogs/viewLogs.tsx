@@ -64,7 +64,6 @@ const ViewLogs = () => {
   const refresh = useRefresh();
 
   useEffect(() => {
-    console.log("Dispatch", selectedFilterValue);
     if (selectedFilterValue === "Security") {
       changefilterViewLogs(1);
     } else if (selectedFilterValue === "API Calls") {

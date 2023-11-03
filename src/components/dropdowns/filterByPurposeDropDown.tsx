@@ -31,7 +31,7 @@ const FilterByPurposeDropdown = (props: Props) => {
   const disabledDropdown = useFilterStore.getState().disabledPurposeDropDown;
 
   useEffect(() => {
-    HttpService.listDataAgreements(0, 100, "").then((res) => {
+    HttpService.listDataAgreements(0, 100, "", "").then((res) => {
       setDropdownValues(res.dataAgreements);
     });
   }, []);
