@@ -10,7 +10,7 @@ const dataAgreementDataProvider = {
     let pageNumber = params.pagination.page;
 
     let offsetValue = offSet(pageNumber, pageSize);
-    return HttpService.listDataAgreements(offsetValue, pageSize, filter)
+    return HttpService.listDataAgreements(offsetValue, pageSize, filter, "")
       .then((dataAgreements) => {
         return {
           data: dataAgreements.dataAgreements,

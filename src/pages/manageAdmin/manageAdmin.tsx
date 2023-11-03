@@ -95,7 +95,6 @@ const ManageAdmin = () => {
       confirmNewPassword.length > 7 &&
       newPassword === confirmNewPassword
     ) {
-      console.log("success");
       const payload = {
         currentPassword: currentPassword,
         newPassword: newPassword,

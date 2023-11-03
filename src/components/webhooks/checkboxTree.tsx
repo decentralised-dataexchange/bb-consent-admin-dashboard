@@ -26,7 +26,6 @@ const CheckboxTree = (props: Props) => {
     name: str,
   }));
 
-  console.log("eventDataForEdit", eventDataForEdit)
   const [events, setEvents] = useState<any>(eventData);
 
   const handleChange = (e: any) => {

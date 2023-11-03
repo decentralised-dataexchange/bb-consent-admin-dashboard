@@ -164,13 +164,14 @@ export const HttpService = {
   listDataAgreements: async (
     offsetValue: number,
     pageSize: number,
-    filter: string
+    filter: string,
+    revisionId: string | undefined
   ): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
     return httpClient
-      .get(ENDPOINTS.listDataAgreements(offsetValue, pageSize, filter), config)
+      .get(ENDPOINTS.listDataAgreements(offsetValue, pageSize, filter, revisionId), config)
       .then((res) => {
         const dataAgreements: DataAgreementsResponse = res.data;
         return convertPurposeForClient(dataAgreements);
