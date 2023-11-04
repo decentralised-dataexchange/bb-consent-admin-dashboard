@@ -80,35 +80,12 @@ const geographicRestrictions = [
 
 const thirdPartyDataSharingOptions = [
   {
-    value: "false",
+    value: false,
     label: "False",
   },
   {
-    value: "true",
+    value: true,
     label: "True",
-  },
-];
-
-const orgTypes = [
-  {
-    value: "Retail",
-    label: "Retail",
-  },
-  {
-    value: "Government",
-    label: "Government",
-  },
-  {
-    value: "Finance",
-    label: "Finance",
-  },
-  {
-    value: "Healthcare",
-    label: "Healthcare",
-  },
-  {
-    value: "Automotive",
-    label: "Automotive",
   },
 ];
 
@@ -138,7 +115,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
       dataRetentionPeriodDays: 0,
       geographicRestriction: "Europe",
       storageLocation: "Europe",
-      thirdPartyDataSharing: "false",
+      thirdPartyDataSharing: false,
     };
 
     HttpService.listAllPolicies().then((response) => {
@@ -151,13 +128,8 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
   }, [open]);
 
   const onSubmit = (createdData: any) => {
-    const { thirdPartyDataSharing, ...otherProps } = createdData;
     const payload = {
-      policy: {
-        thirdPartyDataSharing:
-          createdData.thirdPartyDataSharing === "false" ? false : true,
-        ...otherProps,
-      },
+      policy: createdData,
     };
 
     // if the list is empty create new global data policy
@@ -190,7 +162,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
               </HeaderContainer>
               <BannerContainer>
                 <Box
-                  style={{ height: "200px", width: "100%" }}
+                  style={{ height: "150px", width: "100%" }}
                   component="img"
                   alt="Banner"
                   src={
@@ -210,9 +182,9 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                   style={{
                     position: "absolute",
                     marginLeft: 50,
-                    marginTop: "-75px",
-                    width: "130px",
-                    height: "130px",
+                    marginTop: "-65px",
+                    width: "110px",
+                    height: "110px",
                     border: "solid white 6px",
                   }}
                 />
@@ -222,7 +194,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                   <Typography variant="h6" fontWeight="bold">
                     {organisationDetails.name}
                   </Typography>
-                  <Typography color="#9F9F9F" mt={1}>
+                  <Typography color="#9F9F9F">
                     {organisationDetails.location}
                   </Typography>
                   <Typography variant="subtitle1" mt={2}>
@@ -231,6 +203,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                   <Typography
                     color="#9F9F9F"
                     mt={1}
+                    variant="body2"
                     sx={{ wordWrap: "breakWord" }}
                   >
                     {organisationDetails.description}
@@ -302,37 +275,18 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                               fontSize: 12,
                             }}
                           >
-                            <Controller
-                              name="industrySector"
-                              control={control}
-                              rules={{
+                            <input
+                              autoComplete="off"
+                              type="text"
+                              disabled
+                              {...register("industrySector", {
                                 required: true,
+                                minLength: 1,
+                              })}
+                              style={{
+                                ...inputDataConfigStyle,
+                                cursor:"not-allowed"
                               }}
-                              render={({ field: { onChange, value } }) => (
-                                <Select
-                                  onChange={(e: any) => {
-                                    onChange(e);
-                                  }}
-                                  variant="outlined"
-                                  fullWidth
-                                  defaultValue={value ? value : ""}
-                                  name="industrySector"
-                                  style={{
-                                    ...dropDownStyle,
-                                    width: "250px",
-                                    height: "32px",
-                                  }}
-                                >
-                                  {orgTypes.map((Type) => (
-                                    <MenuItem
-                                      key={Type?.label}
-                                      value={Type.value}
-                                    >
-                                      {Type.label}
-                                    </MenuItem>
-                                  ))}
-                                </Select>
-                              )}
                             />
                           </td>
                         </tr>
@@ -393,7 +347,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                                   }}
                                   variant="outlined"
                                   fullWidth
-                                  defaultValue={value ? value : ""}
+                                  defaultValue={value}
                                   name="geographicRestriction"
                                   style={{
                                     ...dropDownStyle,
@@ -424,9 +378,6 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                             <Controller
                               name="thirdPartyDataSharing"
                               control={control}
-                              rules={{
-                                required: true,
-                              }}
                               render={({ field: { onChange, value } }) => (
                                 <Select
                                   onChange={(e: any) => {

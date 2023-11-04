@@ -22,7 +22,7 @@ const HeaderContainer = styled('div')({
 })
 
 const BannerContainer = styled('div')(({ theme }) => ({
-  height: 200,
+  height: 150,
   width: '100%',
   backgroundColor: "#E6E6E6",
   marginTop: '0px',
