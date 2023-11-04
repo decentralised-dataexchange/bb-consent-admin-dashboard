@@ -125,7 +125,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
       defaultValues = response[0] ? response[0] : defaultValues;
       reset({ ...defaultValues });
     });
-  }, [open]);
+  }, [open, policyIdForUpdatePolicy]);
 
   const onSubmit = (createdData: any) => {
     const payload = {
@@ -351,7 +351,6 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                                   name="geographicRestriction"
                                   style={{
                                     ...dropDownStyle,
-                                    width: "250px",
                                     height: "32px",
                                   }}
                                 >
@@ -389,7 +388,6 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                                   name="thirdPartyDataSharing"
                                   style={{
                                     ...dropDownStyle,
-                                    width: "250px",
                                     height: "32px",
                                   }}
                                 >

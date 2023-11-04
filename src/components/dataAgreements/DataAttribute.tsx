@@ -95,15 +95,15 @@ export const DataAttribute = (props: Props) => {
                   type="text"
                   autoComplete="off"
                 />
-              <th style={{ marginRight: "14px", marginLeft: "17px" }}>
+              {/* Required For Future Purpose */}
+              {/* <th style={{ marginRight: "14px", marginLeft: "17px" }}>
                 <BlockOutlinedIcon
                   style={{
                     cursor: "not-allowed",
                   }}
                   cursor={"pointer"}
                 />
-              </th>
-
+              </th> */}
               <th>
                 <DeleteOutlineOutlinedIcon
                   style={{
