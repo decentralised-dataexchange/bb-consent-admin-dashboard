@@ -130,6 +130,7 @@ const Webhooks = () => {
           >
             <TextField
               source="payloadUrl"
+              sortable={false}
               label={"Webhook URL"}
               onClick={recentDeliveries}
               sx={{ cursor: "pointer" }}
@@ -138,6 +139,7 @@ const Webhooks = () => {
               source="disabled"
               label={"Status"}
               textAlign={"center"}
+              sortable={false}
             />
 
             <Box
