@@ -74,6 +74,7 @@ const DataAgreement = () => {
   const [openDataAgreementModal, setOpenDataAgreementModal] = useState(false);
   const [dataAgreementMode, setDataAgreementMode] = useState("");
   const [handleChangeTriggered, setHandleChangeTriggered] = useState(false);
+  const [selectededDataAgreementFromDataAgreement, setSelectededDataAgreementFromDataAgreement] = useState<any>();
 
   const refresh = useRefresh();
   const onRefetch = () => {
@@ -191,6 +192,7 @@ const DataAgreement = () => {
               onClick={() => {
                 setOpenDataAgreementModal(true);
                 setDataAgreementMode("Read");
+                setSelectededDataAgreementFromDataAgreement(record)
               }}
               fontSize="small"
               style={{
@@ -204,6 +206,7 @@ const DataAgreement = () => {
               onClick={() => {
                 setOpenDataAgreementModal(true);
                 setDataAgreementMode("Update");
+                setSelectededDataAgreementFromDataAgreement(record)
               }}
               fontSize="small"
               style={{
@@ -358,6 +361,7 @@ const DataAgreement = () => {
         setOpen={setOpenDataAgreementModal}
         mode={dataAgreementMode}
         successCallback={onRefetch}
+        selectededDataAgreementFromDataAgreement={selectededDataAgreementFromDataAgreement}
       />
 
       <GlobalDataPolicyConfigModal

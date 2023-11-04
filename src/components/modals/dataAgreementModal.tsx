@@ -31,7 +31,6 @@ import { Purpose } from "../dataAgreements/Purpose";
 import { Version } from "../dataAgreements/Version";
 import { DataExchangeModeFormControl } from "../dataAgreements/DataExchangeMode";
 import { PurposeDescription } from "../dataAgreements/PurposeDescription";
-import { DataAgreementsCRUDProvider } from "../providers/dataAgreementsCRUDProvider";
 import { LawfullBasisOfProcessingFormControll } from "../dataAgreements/LawfullBasisOfProcessing";
 import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
 import { useParams } from "react-router-dom";
@@ -42,6 +41,7 @@ interface Props {
   mode: string;
   successCallback?: any;
   resourceName?: string;
+  selectededDataAgreementFromDataAgreement?: any;
   dataAgrreementRevisionIdForSelectedRecord?: string | undefined;
 }
 
@@ -70,6 +70,7 @@ export default function DataAgreementModal(props: Props) {
     mode,
     successCallback,
     resourceName,
+    selectededDataAgreementFromDataAgreement,
     dataAgrreementRevisionIdForSelectedRecord,
   } = props;
 
@@ -98,6 +99,9 @@ export default function DataAgreementModal(props: Props) {
   const { fields, remove, append } = useFieldArray({
     control,
     name: "dataAttributes",
+    rules: {
+      required: true,
+    },
   });
 
   useEffect(() => {
@@ -123,49 +127,49 @@ export default function DataAgreementModal(props: Props) {
     }
 
     if (
-      selectedDataAgreementId &&
+      selectededDataAgreementFromDataAgreement &&
       resourceName !== "userrecords" &&
       mode !== "Create"
     ) {
-      HttpService.getDataAgreementByID(selectedDataAgreementId).then(
-        (response) => {
-          let dataAgreements = response.data.dataAgreement;
-          let dataAttributes = response.data.dataAgreement.dataAttributes;
-          setSelectedDataAgreement(dataAgreements);
-          if (mode !== "Create") {
-            methods.reset({
-              Name: dataAgreements.purpose,
-              Description: dataAgreements.purposeDescription,
-              Version:
-                dataAgreements.version === ""
-                  ? "0.0.0"
-                  : dataAgreements.version,
-              AttributeType: dataAgreements.methodOfUse,
-              LawfulBasisOfProcessing: dataAgreements.lawfulBasis,
-              PolicyURL: dataAgreements.policy.url,
-              Jurisdiction: dataAgreements.policy.jurisdiction,
-              IndustryScope: dataAgreements.policy.industrySector,
-              StorageLocation: dataAgreements.policy.storageLocation,
-              dataRetentionPeriodDays:
-                dataAgreements.policy.dataRetentionPeriodDays,
-              Restriction: dataAgreements.policy.geographicRestriction,
-              Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
-              DpiaDate: dataAgreements.dpiaDate,
-              DpiaSummaryURL: dataAgreements.dpiaSummaryUrl,
-              dataAttributes: dataAttributes?.map((attribute: any) => {
-                const { name, description, ...otherProps } = attribute;
-                return {
-                  attributeName: name,
-                  attributeDescription: description,
-                  ...otherProps,
-                };
-              }),
-            });
-          }
-        }
-      );
+      let dataAgreements = selectededDataAgreementFromDataAgreement;
+      let dataAttributes =
+        selectededDataAgreementFromDataAgreement.dataAttributes;
+      setSelectedDataAgreement(dataAgreements);
+      if (mode !== "Create") {
+        methods.reset({
+          Name: dataAgreements.purpose,
+          Description: dataAgreements.purposeDescription,
+          Version:
+            dataAgreements.version === "" ? "0.0.0" : dataAgreements.version,
+          AttributeType: dataAgreements.methodOfUse,
+          LawfulBasisOfProcessing: dataAgreements.lawfulBasis,
+          PolicyURL: dataAgreements.policy.url,
+          Jurisdiction: dataAgreements.policy.jurisdiction,
+          IndustryScope: dataAgreements.policy.industrySector,
+          StorageLocation: dataAgreements.policy.storageLocation,
+          dataRetentionPeriodDays:
+            dataAgreements.policy.dataRetentionPeriodDays,
+          Restriction: dataAgreements.policy.geographicRestriction,
+          Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
+          DpiaDate: dataAgreements.dpiaDate,
+          DpiaSummaryURL: dataAgreements.dpiaSummaryUrl,
+          dataAttributes: dataAttributes?.map((attribute: any) => {
+            const { name, description, ...otherProps } = attribute;
+            return {
+              attributeName: name,
+              attributeDescription: description,
+              ...otherProps,
+            };
+          }),
+        });
+      }
     }
-  }, [selectedDataAgreementId, open, mode, policyDetailsForInitialValue]);
+  }, [
+    selectededDataAgreementFromDataAgreement,
+    open,
+    mode,
+    policyDetailsForInitialValue,
+  ]);
 
   // This is useEffect is called when resource is user records
   useEffect(() => {

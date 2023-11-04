@@ -5,7 +5,7 @@ const inputStyle = {
   width: "100%",
   border: "1",
   outline: "none",
-  fontSize: "16px",
+  fontSize: "14px",
   color: "#495057",
   borderWidth: 0,
   borderRadius: 0,
