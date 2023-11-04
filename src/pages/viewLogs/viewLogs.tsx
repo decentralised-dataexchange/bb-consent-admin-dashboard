@@ -133,9 +133,9 @@ const ViewLogs = () => {
               width: "100%"
             }}
           >
-            <TextField source="action" label={"Action"} />
-            <TextField source="typeStr" label={"Category"} />
-            <TextField source="timestamp" label={"Timestamp"} />
+            <TextField source="action" label={"Action"} sortable={false}/>
+            <TextField source="typeStr" label={"Category"} sortable={false} />
+            <TextField source="timestamp" label={"Timestamp"} sortable={false} />
           </Datagrid>
         </Box>
       </List>

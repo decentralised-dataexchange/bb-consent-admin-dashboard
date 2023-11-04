@@ -135,11 +135,12 @@ const PersonalData = () => {
             }}
             rowClick="edit"
           >
-            <TextField source="name" label={"Data Attribute Name"} />
-            <TextField source="description" label={"Description"} />
+            <TextField source="name" label={"Data Attribute Name"} sortable={false} />
+            <TextField source="description" label={"Description"} sortable={false} />
             <TextField
               source="dataAgreement.purpose"
               label={"Data Agreement"}
+              sortable={false}
             />
             <Box
               style={{
