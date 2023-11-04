@@ -118,7 +118,7 @@ const DeveloperAPIs = () => {
     }
     return (
       record[props.source] && (
-        <Typography>{record[props.source]} days</Typography>
+        <Typography variant="body2">{record[props.source]} days</Typography>
       )
     );
   };
@@ -133,10 +133,10 @@ const DeveloperAPIs = () => {
       <Box style={{ display: "flex" }}>
         {scopes.map((scope: any, i: number) => {
           if (i + 1 === scopes.length) {
-            return <Typography>{scope} </Typography>;
+            return <Typography variant="body2">{scope} </Typography>;
           } else {
             return (
-              <Typography style={{ marginRight: 7 }}>{scope}, </Typography>
+              <Typography variant="body2" style={{ marginRight: 7 }}>{scope}, </Typography>
             );
           }
         })}

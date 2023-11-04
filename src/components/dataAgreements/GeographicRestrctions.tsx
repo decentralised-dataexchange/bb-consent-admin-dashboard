@@ -64,7 +64,7 @@ export const GeographicRestrictions = (props: GeographicRestrictionsProps) => {
           props.onChange(e);
         }}
         name="Restriction"
-        defaultValue={props.value}
+        value={props.value}
         disabled={props.mode === "Read"}
         style={props.mode === "Read" ? disabledDropDownStyle : dropDownStyle}
       >
@@ -91,7 +91,6 @@ export const GeographicRestrictionsFormControl = (
         <Controller
           name="Restriction"
           control={control}
-          defaultValue={"Europe"}
           rules={{
             required: true,
           }}

@@ -43,7 +43,6 @@ interface Props {
   successCallback?: any;
   resourceName?: string;
   dataAgrreementRevisionIdForSelectedRecord?: string | undefined;
-  policyDetailsForInitialValue?: any;
 }
 
 let defaultValue = {
@@ -72,7 +71,6 @@ export default function DataAgreementModal(props: Props) {
     successCallback,
     resourceName,
     dataAgrreementRevisionIdForSelectedRecord,
-    policyDetailsForInitialValue,
   } = props;
 
   const params = useParams();
@@ -80,6 +78,15 @@ export default function DataAgreementModal(props: Props) {
   const [selectedDataAgreement, setSelectedDataAgreement] = useState<any>();
   const [dataAgreementIdForUserRecordes, setDataAgreementIdForUserRecordes] =
     useState("");
+  const [policyDetailsForInitialValue, setPolicyDetailsForInitialValue] =
+    useState<any>();
+
+  useEffect(() => {
+    HttpService.listAllPolicies().then((response) => {
+      setPolicyDetailsForInitialValue(response[0]);
+    });
+  }, [open]);
+
   const methods = useForm({
     mode: "onChange",
     defaultValues: {
@@ -158,7 +165,7 @@ export default function DataAgreementModal(props: Props) {
         }
       );
     }
-  }, [selectedDataAgreementId, open, mode]);
+  }, [selectedDataAgreementId, open, mode, policyDetailsForInitialValue]);
 
   // This is useEffect is called when resource is user records
   useEffect(() => {
@@ -187,7 +194,8 @@ export default function DataAgreementModal(props: Props) {
           Jurisdiction: dataAgreements.policy.jurisdiction,
           IndustryScope: dataAgreements.policy.industrySector,
           StorageLocation: dataAgreements.policy.storageLocation,
-          dataRetentionPeriodDays: dataAgreements.policy.dataRetentionPeriodDays,
+          dataRetentionPeriodDays:
+            dataAgreements.policy.dataRetentionPeriodDays,
           Restriction: dataAgreements.policy.geographicRestriction,
           Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
           DpiaDate: dataAgreements.dpiaDate,
@@ -243,96 +251,96 @@ export default function DataAgreementModal(props: Props) {
   return (
     <>
       <Drawer anchor="right" open={open}>
-          <Container>
-            <FormProvider {...methods}>
-              <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <HeaderContainer>
-                  <Box pl={2}>
+        <Container>
+          <FormProvider {...methods}>
+            <form onSubmit={methods.handleSubmit(onSubmit)}>
+              <HeaderContainer>
+                <Box pl={2}>
+                  <Typography color="#F3F3F6">
+                    {mode === "Create" && "Add Data Agreement"}
+                    {mode === "Update" &&
+                      `Edit Data Agreement:  ${selectedDataAgreement?.purpose}`}
+                    {mode === "Read" &&
+                      `View Data Agreement: ${selectedDataAgreement?.purpose}`}
+                  </Typography>
+                  {mode !== "Create" && (
                     <Typography color="#F3F3F6">
-                      {mode === "Create" && "Add Data Agreement"}
-                      {mode === "Update" &&
-                        `Edit Data Agreement:  ${selectedDataAgreement?.purpose}`}
-                      {mode === "Read" &&
-                        `View Data Agreement: ${selectedDataAgreement?.purpose}`}
+                      {resourceName === "userrecords"
+                        ? dataAgreementIdForUserRecordes
+                        : selectedDataAgreementId}
                     </Typography>
-                    {mode !== "Create" && (
-                      <Typography color="#F3F3F6">
-                        {resourceName === "userrecords"
-                          ? dataAgreementIdForUserRecordes
-                          : selectedDataAgreementId}
-                      </Typography>
-                    )}
-                  </Box>
-                  <CloseIcon
-                    onClick={() => {
-                      setOpen(false);
-                      methods.reset({ ...defaultValue });
-                    }}
-                    sx={{
-                      paddingRight: 2,
-                      cursor: "pointer",
-                      color: "#F3F3F6",
-                    }}
-                  />
-                </HeaderContainer>
-                <BannerContainer>
-                  <Box
-                    style={{ height: "200px", width: "100%" }}
-                    component="img"
-                    alt="Banner"
-                    src={
-                      coverImageBase64
-                        ? `data:image/jpeg;charset=utf-8;base64,${coverImageBase64}`
-                        : DefaultBanner
-                    }
-                  />
-                </BannerContainer>
-                <Box sx={{ marginBottom: "60px" }}>
-                  <Avatar
-                    src={
-                      logoImageBase64
-                        ? `data:image/jpeg;charset=utf-8;base64,${logoImageBase64}`
-                        : DefaultLogo
-                    }
-                    style={{
-                      position: "absolute",
-                      marginLeft: 50,
-                      marginTop: "-75px",
-                      width: "130px",
-                      height: "130px",
-                      border: "solid white 6px",
-                    }}
-                  />
+                  )}
                 </Box>
-                <DetailsContainer>
-                  <Box p={1.5}>
-                    <Typography variant="h6" fontWeight="bold">
-                      {organisationDetails.Name}
-                    </Typography>
-                    <Typography variant="subtitle1" mt={3}>
-                      Overview
-                    </Typography>
-                    <Typography
-                      variant="subtitle2"
-                      color="#9F9F9F"
-                      mt={1}
-                      sx={{ wordWrap: "breakWord" }}
-                    >
-                      {organisationDetails.Description}
-                    </Typography>
+                <CloseIcon
+                  onClick={() => {
+                    setOpen(false);
+                    methods.reset({ ...defaultValue });
+                  }}
+                  sx={{
+                    paddingRight: 2,
+                    cursor: "pointer",
+                    color: "#F3F3F6",
+                  }}
+                />
+              </HeaderContainer>
+              <BannerContainer>
+                <Box
+                  style={{ height: "150px", width: "100%" }}
+                  component="img"
+                  alt="Banner"
+                  src={
+                    coverImageBase64
+                      ? `data:image/jpeg;charset=utf-8;base64,${coverImageBase64}`
+                      : DefaultBanner
+                  }
+                />
+              </BannerContainer>
+              <Box sx={{ marginBottom: "60px" }}>
+                <Avatar
+                  src={
+                    logoImageBase64
+                      ? `data:image/jpeg;charset=utf-8;base64,${logoImageBase64}`
+                      : DefaultLogo
+                  }
+                  style={{
+                    position: "absolute",
+                    marginLeft: 50,
+                    marginTop: "-65px",
+                    width: "110px",
+                    height: "110px",
+                    border: "solid white 6px",
+                  }}
+                />
+              </Box>
+              <DetailsContainer>
+                <Box p={1.5}>
+                  <Typography variant="h6" fontWeight="bold">
+                    {organisationDetails.name}
+                  </Typography>
+                  <Typography variant="subtitle1" mt={3}>
+                    Overview
+                  </Typography>
+                  <Typography
+                    variant="subtitle2"
+                    color="#9F9F9F"
+                    mt={1}
+                    sx={{ wordWrap: "breakWord" }}
+                  >
+                    {organisationDetails.description}
+                  </Typography>
 
-                    <Box mt={2}>
-                      <Purpose open={props.open} mode={props.mode} />
+                  <Box mt={2}>
+                    <Purpose open={props.open} mode={props.mode} />
 
-                      <Version />
+                    <Version />
 
-                      <DataExchangeModeFormControl
-                        open={props.open}
-                        mode={props.mode}
-                      />
+                    <DataExchangeModeFormControl
+                      open={props.open}
+                      mode={props.mode}
+                    />
 
-                      {/* Required for future purpose in enterprise dashboard */}
-                      {/* <Typography
+                    {/* Required for future purpose in enterprise dashboard */}
+                    {/* <Typography
                         style={{
                           fontSize: "14px",
                           textDecoration: "underline",
@@ -344,106 +352,104 @@ export default function DataAgreementModal(props: Props) {
                         (Choose existing schemas)
                       </Typography> */}
 
-                      <PurposeDescription open={props.open} mode={props.mode} />
+                    <PurposeDescription open={props.open} mode={props.mode} />
 
-                      <LawfullBasisOfProcessingFormControll
-                        open={props.open}
-                        mode={props.mode}
-                      />
-
-                      <Typography variant="subtitle1">
-                        Data Policy Configurations
-                        <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>
-                          *
-                        </span>
-                      </Typography>
-                      <DataAgreementPolicy mode={mode} />
-
-                      <Typography variant="subtitle1">
-                        DPIA Configurations
-                      </Typography>
-                      <DPIAConfigurations mode={mode} />
-                    </Box>
-
-                    <DataAgreementPersonalDataTable
-                      mode={mode}
-                      append={append}
-                      fields={fields}
-                      remove={remove}
-                      formController={control}
+                    <LawfullBasisOfProcessingFormControll
+                      open={props.open}
+                      mode={props.mode}
                     />
-                  </Box>
-                </DetailsContainer>
-                <FooterContainer>
-                  <Button
-                    variant="outlined"
-                    sx={{
-                      cursor:
-                        methods.formState.isValid && mode !== "Read"
-                          ? "pointer"
-                          : "not-allowed",
-                      color:
-                        methods.formState.isValid && mode !== "Read"
-                          ? "black"
-                          : "#6D7676",
-                      "&:hover": {
-                        backgroundColor: "black",
-                        color: "white",
-                      },
-                    }}
-                    style={
-                      methods.formState.isValid && mode !== "Read"
-                        ? buttonStyle
-                        : disabledButtonstyle
-                    }
-                    type="submit"
-                    onClick={() => {
-                      setActive(true);
-                      setLifecycle("complete");
-                    }}
-                  >
-                    PUBLISH
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    type="submit"
-                    style={
-                      methods.formState.isValid && mode !== "Read"
-                        ? buttonStyle
-                        : disabledButtonstyle
-                    }
-                    sx={{
-                      cursor:
-                        methods.formState.isValid && mode !== "Read"
-                          ? "pointer"
-                          : "not-allowed",
-                      color:
-                        methods.formState.isValid && mode !== "Read"
-                          ? "black"
-                          : "#6D7676",
-                      marginLeft: "10px",
-                      "&:hover": {
-                        backgroundColor: "black",
-                        color: "white",
-                      },
-                    }}
-                    onClick={() => {
-                      setActive(false);
-                      setLifecycle("draft");
-                    }}
-                  >
-                    SAVE
-                  </Button>
-                </FooterContainer>
-              </form>
-            </FormProvider>
 
-            <DataSchemaModal
-              open={openExistingSchemaModal}
-              setOpen={setOpenExistingSchemaModal}
-              mode={mode}
-            />
-          </Container>
+                    <Typography variant="subtitle1">
+                      Data Policy Configurations
+                      <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
+                    </Typography>
+                    <DataAgreementPolicy mode={mode} />
+
+                    <Typography variant="subtitle1">
+                      DPIA Configurations
+                    </Typography>
+                    <DPIAConfigurations mode={mode} />
+                  </Box>
+
+                  <DataAgreementPersonalDataTable
+                    mode={mode}
+                    append={append}
+                    fields={fields}
+                    remove={remove}
+                    formController={control}
+                  />
+                </Box>
+              </DetailsContainer>
+              <FooterContainer>
+                <Button
+                  variant="outlined"
+                  sx={{
+                    cursor:
+                      methods.formState.isValid && mode !== "Read"
+                        ? "pointer"
+                        : "not-allowed",
+                    color:
+                      methods.formState.isValid && mode !== "Read"
+                        ? "black"
+                        : "#6D7676",
+                    "&:hover": {
+                      backgroundColor: "black",
+                      color: "white",
+                    },
+                  }}
+                  style={
+                    methods.formState.isValid && mode !== "Read"
+                      ? buttonStyle
+                      : disabledButtonstyle
+                  }
+                  type="submit"
+                  onClick={() => {
+                    setActive(true);
+                    setLifecycle("complete");
+                  }}
+                >
+                  PUBLISH
+                </Button>
+                <Button
+                  variant="outlined"
+                  type="submit"
+                  style={
+                    methods.formState.isValid && mode !== "Read"
+                      ? buttonStyle
+                      : disabledButtonstyle
+                  }
+                  sx={{
+                    cursor:
+                      methods.formState.isValid && mode !== "Read"
+                        ? "pointer"
+                        : "not-allowed",
+                    color:
+                      methods.formState.isValid && mode !== "Read"
+                        ? "black"
+                        : "#6D7676",
+                    marginLeft: "10px",
+                    "&:hover": {
+                      backgroundColor: "black",
+                      color: "white",
+                    },
+                  }}
+                  onClick={() => {
+                    setActive(false);
+                    setLifecycle("draft");
+                  }}
+                >
+                  SAVE
+                </Button>
+              </FooterContainer>
+            </form>
+          </FormProvider>
+
+          <DataSchemaModal
+            open={openExistingSchemaModal}
+            setOpen={setOpenExistingSchemaModal}
+            mode={mode}
+          />
+        </Container>
       </Drawer>
     </>
   );

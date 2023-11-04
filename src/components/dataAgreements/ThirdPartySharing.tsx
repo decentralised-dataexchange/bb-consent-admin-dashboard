@@ -65,7 +65,7 @@ export const ThirdPartyDataSharing = (props: ThirdPartyDataProps) => {
         onChange={(e: any) => {
           props.onChange(e);
         }}
-        defaultValue={props.value}
+        value={props.value}
         style={props.mode === "Read" ? disabledDropDownStyle : dropDownStyle}
       >
         {thirdPartyDataSharingOptions.map((modes: any) => (
@@ -91,7 +91,6 @@ export const ThirdPartyDataSharingFormControl = (
         <Controller
           name="Shared3PP"
           control={control}
-          defaultValue={false}
           rules={{
             required: false,
           }}

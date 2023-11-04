@@ -74,14 +74,6 @@ const DataAgreement = () => {
   const [openDataAgreementModal, setOpenDataAgreementModal] = useState(false);
   const [dataAgreementMode, setDataAgreementMode] = useState("");
   const [handleChangeTriggered, setHandleChangeTriggered] = useState(false);
-  const [policyDetailsForInitialValue, setPolicyDetailsForInitialValue] =
-    useState<any>();
-
-  useEffect(() => {
-    HttpService.listAllPolicies().then((response) => {
-      setPolicyDetailsForInitialValue(response[0]);
-    });
-  }, [openDataAgreementModal]);
 
   const refresh = useRefresh();
   const onRefetch = () => {
@@ -366,7 +358,6 @@ const DataAgreement = () => {
         setOpen={setOpenDataAgreementModal}
         mode={dataAgreementMode}
         successCallback={onRefetch}
-        policyDetailsForInitialValue={policyDetailsForInitialValue}
       />
 
       <GlobalDataPolicyConfigModal
