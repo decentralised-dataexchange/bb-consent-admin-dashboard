@@ -24,8 +24,8 @@ export const myAuthProvider = {
         return res.data;
       })
       .catch((error) => {
-        throw error.response.data.error_description
-          ? error.response.data.error_description
+        throw error.response.data.errorDescription
+          ? error.response.data.errorDescription
           : error.response.data.Message;
       });
   },

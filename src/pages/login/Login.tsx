@@ -38,11 +38,24 @@ export const Login = () => {
 
   const submit = () => {
     login({ username, password })
-      .then((res) => {
-      })
+      .then((res) => {})
       .catch((error) => {
-        setError(error);
-        setOpenSnackBar(true);
+        if (error === "password: non zero value required") {
+          setError("Password: Value required");
+          setOpenSnackBar(true);
+        } else if (error === "Username: non zero value required") {
+          setError("username: Value required");
+          setOpenSnackBar(true);
+        } else if (
+          error ===
+          "password: non zero value required;username: non zero value required"
+        ) {
+          setError("Password & User ID: Value required");
+          setOpenSnackBar(true);
+        } else {
+          setError(error);
+          setOpenSnackBar(true);
+        }
       });
   };
 
@@ -76,12 +89,10 @@ export const Login = () => {
               marginTop: ".5em",
               marginBottom: ".5em",
               display: "flex",
-              justifyContent: "center"
+              justifyContent: "center",
             }}
           >
-            <Typography variant="h6">
-              Login to Admin Dashboard
-            </Typography>
+            <Typography variant="h6">Login to Admin Dashboard</Typography>
           </Box>
           <Box
             style={{
@@ -164,15 +175,22 @@ export const Login = () => {
         </Box>
       </Form>
       <FooterContainer>
-        <Typography mb={0.5} variant="caption">{version}</Typography>
+        <Typography mb={0.5} variant="caption">
+          {version}
+        </Typography>
         <Box mb={2} display={"flex"} justifyContent={"center"}>
           <Typography color="grey" variant="caption">
             Powered by{" "}
-          
-          <a href="https://igrant.io/" target="blank" style={{
-            textDecoration: "none",
-            color: "#1890ff",
-          }}>iGrant.io</a>
+            <a
+              href="https://igrant.io/"
+              target="blank"
+              style={{
+                textDecoration: "none",
+                color: "#1890ff",
+              }}
+            >
+              iGrant.io
+            </a>
             , Sweden
           </Typography>
         </Box>
