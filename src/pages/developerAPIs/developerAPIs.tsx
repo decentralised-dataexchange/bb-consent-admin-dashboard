@@ -15,7 +15,6 @@ import { styled } from "@mui/material/styles";
 import GeneralModal from "../../components/modals/generalModal";
 
 import BreadCrumb from "../../components/Breadcrumbs";
-import { HttpService } from "../../service/HTTPService";
 import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
 import { LocalStorageService } from "../../service/localStorageService";
 import {
@@ -25,6 +24,7 @@ import {
   useRecordContext,
   useRefresh,
 } from "react-admin";
+import CreateApiKeyModal from "../../components/modals/createApiKeyModal";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -58,6 +58,7 @@ const Item = styled("div")(({ theme }) => ({
 }));
 
 const DeveloperAPIs = () => {
+  const [openEditPersonalDataModal, setOpenEditPersonalDataModal] = useState(false);
   const { organisationDetails } = useContext(OrganizationDetailsCRUDContext);
   const [showAPI, setShowAPI] = useState(false);
   const [apiKeyValue, setApiKeyValue] = useState<any>();
@@ -66,24 +67,9 @@ const DeveloperAPIs = () => {
   const [openDeleteApiKey, setOpenDeleteApiKey] = useState(false);
   const [developerApiDeleteID, setDeveloperApiDeleteID] = useState<any>();
 
-
   const refresh = useRefresh();
   const onRefetch = () => {
     refresh();
-  };
-
-  const createNewApiKey = () => {
-    let payload = {
-      apiKey: {
-        scopes: ["Service"],
-      },
-    };
-
-    HttpService.addNewApiKey(payload).then((res) => {
-      setShowAPI(true);
-      setApiKeyValue(res.data.apiKey.apiKey);
-      refresh();
-    });
   };
 
   const handleCopy = () => {
@@ -100,7 +86,10 @@ const DeveloperAPIs = () => {
     return (
       record[props.source] && (
         <Box
-          onClick={() => {setOpenDeleteApiKey(true); setDeveloperApiDeleteID(record.id)}}
+          onClick={() => {
+            setOpenDeleteApiKey(true);
+            setDeveloperApiDeleteID(record.id);
+          }}
           sx={{
             cursor: "pointer",
           }}
@@ -136,7 +125,9 @@ const DeveloperAPIs = () => {
             return <Typography variant="body2">{scope} </Typography>;
           } else {
             return (
-              <Typography variant="body2" style={{ marginRight: 7 }}>{scope}, </Typography>
+              <Typography variant="body2" style={{ marginRight: 7 }}>
+                {scope},{" "}
+              </Typography>
             );
           }
         })}
@@ -154,9 +145,9 @@ const DeveloperAPIs = () => {
       >
         <Alert
           icon={<></>}
-          sx={{ width: "100%", background: "#F7F6F6", color: "black" }}
+          sx={{ width: "100%", background: "#E5E4E4", color: "black" }}
           action={
-            <Button color="inherit" size="small" onClick={handleCopy}>
+            <Button color="inherit" size="small" style={{fontWeight:"bold"}} onClick={handleCopy}>
               COPY
             </Button>
           }
@@ -229,7 +220,7 @@ const DeveloperAPIs = () => {
               </Typography>
               <Tooltip title="Create API Key" placement="top">
                 <AddCircleOutlineOutlinedIcon
-                  onClick={createNewApiKey}
+                  onClick={()=>setOpenEditPersonalDataModal(true)}
                   style={{
                     cursor: "pointer",
                     marginLeft: "7px",
@@ -285,7 +276,7 @@ const DeveloperAPIs = () => {
         </Grid>
       </DetailsContainer>
 
-      {/* DeletePersonalModal */}
+      {/* Modals */}
       <GeneralModal
         open={openDeleteApiKey}
         setOpen={setOpenDeleteApiKey}
@@ -302,7 +293,14 @@ const DeveloperAPIs = () => {
           </Typography>
         }
       />
-
+      <CreateApiKeyModal
+        open={openEditPersonalDataModal}
+        setOpen={setOpenEditPersonalDataModal}
+        headerText={"Create API Key"}
+        onRefetch={onRefetch}
+        setApiKeyValue={setApiKeyValue}
+        setShowAPI={setShowAPI}
+      />
     </Container>
   );
 };
