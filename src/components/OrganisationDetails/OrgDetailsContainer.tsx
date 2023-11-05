@@ -94,21 +94,24 @@ const OrganisationDetailsContainer = (props: Props) => {
                   label={false}
                   placeholder="Organisation Name"
                   fullWidth
-                  style={{ ...editStyleEnable, marginTop: "3px" }}
+                  style={{
+                    ...editStyleEnable,
+                    marginTop: "0.9px",
+                  }}
                   InputProps={{
                     disableUnderline: true,
+                    style: { fontSize: 20, fontWeight:"bold"},
                   }}
                 />
                 <Typography
                   color="#9F9F9F"
                   variant="body2"
                   height="23px"
-                  style={{ marginTop: "2px" }}
+                  style={{ marginTop: "3.9px" }}
                 >
-                  Sector
+                  Sector: {organisationDetails.sector}
                 </Typography>
                 <TextInput
-                  autoFocus
                   source="location"
                   variant="standard"
                   label={false}
@@ -120,10 +123,10 @@ const OrganisationDetailsContainer = (props: Props) => {
                   style={{ ...editStyleEnable, marginTop: "-1px" }}
                   InputProps={{
                     disableUnderline: true,
+                    style: { fontSize: 14 },
                   }}
                 />
                 <TextInput
-                  autoFocus
                   source="policyurl"
                   variant="standard"
                   label={false}
@@ -135,6 +138,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                   style={{ ...editStyleEnable, marginTop: "-4px" }}
                   InputProps={{
                     disableUnderline: true,
+                    style: { fontSize: 14 },
                   }}
                 />
               </>
@@ -147,11 +151,11 @@ const OrganisationDetailsContainer = (props: Props) => {
                   Sector: {organisationDetails.sector}
                 </Typography>
                 <Typography variant="body2" height="23px">
-                  Location: {organisationDetails.location}
+                   {organisationDetails.location}
                 </Typography>
                 <Typography variant="body2" height="23px">
-                  Policy URL: {organisationDetails.policyUrl}
-                </Typography>
+                   {organisationDetails.policyUrl}
+                </Typography> 
               </>
             )}
           </Box>
@@ -168,7 +172,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                     backgroundColor: "black",
                     color: "white",
                   },
-                  color:"black"
+                  color: "black",
                 }}
               >
                 Cancel
@@ -182,7 +186,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                     backgroundColor: "black",
                     color: "white",
                   },
-                  color:"black"
+                  color: "black",
                 }}
               >
                 Save
@@ -206,7 +210,6 @@ const OrganisationDetailsContainer = (props: Props) => {
           {editMode ? (
             <TextInput
               source="overview"
-              autoFocus
               variant="standard"
               value={organisationOverView}
               onChange={(e) => setOrganisationOverView(e.target.value)}
@@ -215,9 +218,10 @@ const OrganisationDetailsContainer = (props: Props) => {
               label={false}
               placeholder="Description of organisation with character limit of 500 characters"
               fullWidth
-              style={{ marginTop: "1px" }}
+              style={{ marginTop: "-0.9px" }}
               InputProps={{
                 disableUnderline: true,
+                style: { fontSize: 14 },
               }}
             />
           ) : (

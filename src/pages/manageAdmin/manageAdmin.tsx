@@ -8,6 +8,7 @@ import ManageAdminProfilePicUpload from "../../components/manageAdminProfilePicU
 import { HttpService } from "../../service/HTTPService";
 import { LocalStorageService } from "../../service/localStorageService";
 import SnackbarComponent from "../../components/notification";
+import { TextInput } from "react-admin";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -179,7 +180,7 @@ const ManageAdmin = () => {
                   xs={12}
                   sx={{ display: "grid", alignContent: "center" }}
                 >
-                  <Grid container>
+                  <Grid container height={"20px"}>
                     <Grid item lg={3} md={6} sm={6} xs={6}>
                       <Typography variant="body2">Name:</Typography>
                     </Grid>
@@ -189,9 +190,14 @@ const ManageAdmin = () => {
                           variant="standard"
                           autoComplete="off"
                           placeholder="Name"
-                          sx={{ marginTop: -1.5 }}
+                          sx={{ marginTop: 0 }}
                           value={adminName}
+                          defaultValue={adminDetails?.name}
                           onChange={(e) => setAdminName(e.target.value)}
+                          InputProps={{
+                            disableUnderline: true,
+                            style: { fontSize: 14 },
+                          }}
                         />
                       ) : (
                         <Typography
@@ -203,7 +209,7 @@ const ManageAdmin = () => {
                       )}
                     </Grid>
                   </Grid>
-                  <Grid container>
+                  <Grid container height={"20px"}>
                     <Grid item lg={3} md={6} sm={6} xs={6}>
                       <Typography variant="body2">Email:</Typography>
                     </Grid>
@@ -216,7 +222,7 @@ const ManageAdmin = () => {
                       </Typography>
                     </Grid>
                   </Grid>
-                  <Grid container>
+                  <Grid container height={"20px"}>
                     <Grid item lg={3} md={6} sm={6} xs={6}>
                       <Typography variant="body2">User ID:</Typography>
                     </Grid>
