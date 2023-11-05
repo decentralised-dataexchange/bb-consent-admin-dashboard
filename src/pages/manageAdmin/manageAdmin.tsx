@@ -7,6 +7,7 @@ import BreadCrumb from "../../components/Breadcrumbs";
 import ManageAdminProfilePicUpload from "../../components/manageAdminProfilePicUpload";
 import { HttpService } from "../../service/HTTPService";
 import { LocalStorageService } from "../../service/localStorageService";
+import SnackbarComponent from "../../components/notification";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -57,6 +58,8 @@ const ManageAdmin = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const [error, setError] = useState("");
 
   const handleEdit = (event: React.MouseEvent<HTMLElement>) => {
     setEditMode(!editMode);
@@ -89,7 +92,10 @@ const ManageAdmin = () => {
   };
 
   const onClickRestPassWord = () => {
-    if (
+    if (newPassword !== confirmNewPassword) {
+      setError("New password and confirm new password should be same");
+      setOpenSnackBar(true);
+    } else if (
       currentPassword.length > 7 &&
       newPassword.length > 7 &&
       confirmNewPassword.length > 7 &&
@@ -110,6 +116,12 @@ const ManageAdmin = () => {
   return (
     <Container>
       <BreadCrumb Link="Account" Link2="Manage Admin" />
+      <SnackbarComponent
+        open={openSnackBar}
+        setOpen={setOpenSnackBar}
+        message={error}
+        topStyle={100}
+      />
       <HeaderContainer>
         <Typography variant="h6" fontWeight="bold">
           Admin User
