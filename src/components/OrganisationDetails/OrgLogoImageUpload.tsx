@@ -57,9 +57,8 @@ const OrgLogoImageUpload = (props: Props) => {
         }
         alt="logo"
         style={{
-          position: "absolute",
+          // position: "absolute",
           opacity: editMode ? 0.75 : 1,
-          marginLeft: 50,
           marginTop: "-100px",
           width: "170px",
           height: "170px",
@@ -70,8 +69,8 @@ const OrgLogoImageUpload = (props: Props) => {
         <Box
           style={{
             position: "relative",
-            top: "-90px",
-            marginLeft: "60px",
+            top: "-160px",
+            marginLeft: "10px",
           }}
         >
           <div>

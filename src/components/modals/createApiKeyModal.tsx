@@ -53,29 +53,31 @@ export default function CreateApiKeyModal(props: Props) {
   });
 
   const onSubmit = (createdData: any) => {
-    let scope = Object.keys(createdData.scopes).map((key) => ({
-      key: key,
-      value: createdData.scopes[key],
-    }));
+    if (formState.isValid && checkScopeIsSelected) {
+      let scope = Object.keys(createdData.scopes).map((key) => ({
+        key: key,
+        value: createdData.scopes[key],
+      }));
 
-    let selectedScopes = scope
-      .filter((scope) => scope.value === true)
-      .map((scope) => scope.key);
+      let selectedScopes = scope
+        .filter((scope) => scope.value === true)
+        .map((scope) => scope.key);
 
-    let payload = {
-      apiKey: {
-        scopes: selectedScopes,
-        expiryInDays: createdData.expiryInDays,
-      },
-    };
+      let payload = {
+        apiKey: {
+          scopes: selectedScopes,
+          expiryInDays: createdData.expiryInDays,
+        },
+      };
 
-    HttpService.addNewApiKey(payload).then((res) => {
-      setShowAPI(true);
-      setApiKeyValue(res.data.apiKey.apiKey);
-      onRefetch();
-      reset();
-      setOpen(false);
-    });
+      HttpService.addNewApiKey(payload).then((res) => {
+        setShowAPI(true);
+        setApiKeyValue(res.data.apiKey.apiKey);
+        onRefetch();
+        reset();
+        setOpen(false);
+      });
+    }
   };
 
   return (

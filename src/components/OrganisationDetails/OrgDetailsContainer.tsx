@@ -72,16 +72,35 @@ const OrganisationDetailsContainer = (props: Props) => {
 
   return (
     <DetailsContainer sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2}>
-        <Grid item lg={3} md={4} sm={12} xs={12} style={{ height: "90px" }}>
+      <Grid
+        sx={{
+          display: { xs: "grid", sm: "flex" },
+          justifyContent: "space-between",
+          paddingLeft: { xs: "0", sm: "50px" },
+        }}
+      >
+        <Grid
+          sx={{
+            height: { xs: "auto", sm: "90px" },
+            display: { xs: "grid", sm: "flex" },
+            width: "auto",
+          }}
+        >
           <OrgLogoImageUpload
             editMode={editMode}
             logoImageBase64={logoImageBase64}
             setLogoImageBase64={setLogoImageBase64}
           />
-        </Grid>
-        <Grid item lg={6} md={5} sm={12} xs={12} height={23}>
-          <Box sx={{ position: "relative", display: "inline-block" }}>
+
+          <Box
+            sx={{
+              marginLeft: { xs: "0", sm: "30px" },
+              marginTop:
+                editMode === true
+                  ? { xs: "-150px", sm: "0px" }
+                  : { xs: "9px", sm: "0px" },
+            }}
+          >
             {editMode ? (
               <>
                 <TextInput
@@ -100,7 +119,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                   }}
                   InputProps={{
                     disableUnderline: true,
-                    style: { fontSize: 20, fontWeight:"bold"},
+                    style: { fontSize: 20, fontWeight: "bold" },
                   }}
                 />
                 <Typography
@@ -151,18 +170,23 @@ const OrganisationDetailsContainer = (props: Props) => {
                   Sector: {organisationDetails.sector}
                 </Typography>
                 <Typography variant="body2" height="23px">
-                   {organisationDetails.location}
+                  {organisationDetails.location}
                 </Typography>
                 <Typography variant="body2" height="23px">
-                   {organisationDetails.policyUrl}
-                </Typography> 
+                  {organisationDetails.policyUrl}
+                </Typography>
               </>
             )}
           </Box>
         </Grid>
-        <Grid item lg={3} md={3} sm={12} xs={12}>
+        <Grid>
           {editMode ? (
-            <Box style={{ textAlign: "right" }}>
+            <Box
+              sx={{
+                textAlign: { xs: "left", sm: "right" },
+                marginTop: { xs: "-40px", sm: "0px" },
+              }}
+            >
               <Button
                 onClick={handleEdit}
                 style={buttonStyle}
@@ -195,14 +219,22 @@ const OrganisationDetailsContainer = (props: Props) => {
           ) : (
             <Typography
               onClick={handleEdit}
-              style={{ cursor: "pointer", textAlign: "right" }}
+              sx={{
+                cursor: "pointer",
+                textAlign: { xs: "left", sm: "right" },
+                marginTop: { xs: "14px", sm: "0px" },
+              }}
             >
               Edit
             </Typography>
           )}
         </Grid>
       </Grid>
-      <Grid sx={{ marginTop: 7 }}>
+      <Grid
+        sx={{
+          marginTop: editMode === true ? { xs: 0.8, sm: 7 } : { xs: 2, sm: 7 },
+        }}
+      >
         <Typography variant="h6" fontWeight="bold">
           Overview
         </Typography>
