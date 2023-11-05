@@ -378,7 +378,7 @@ const DataAgreement = () => {
         onRefetch={onRefetch}
         modalDescriptionText={
           <Typography sx={{ wordWrap: "breakWord" }}>
-            You are about to delete an existing data agreement. Please type{" "}
+            You are about to delete an existing data agreement and ALL its revisions. Please type{" "}
             <span style={{ fontWeight: "bold" }}>DELETE</span> to confirm and
             click DELETE. This action is not reversible.
           </Typography>

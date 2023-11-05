@@ -29,7 +29,9 @@ export default function MyMenu({ dense = false }: MenuProps) {
         position: "fixed",
         height: "100vh",
         backgroundColor: "#F7F6F6",
-        paddingTop: "54px",
+        paddingTop: "48px",
+        top: { xs: 0, sm: 54 },
+        bottom: 0,
       }}
     >
       <Menu.ResourceItem name="start" />
@@ -60,28 +62,31 @@ export default function MyMenu({ dense = false }: MenuProps) {
       </SubMenu>
 
       {open ? (
-        <Box sx={{
-          marginTop: "auto",
-          paddingBottom: 10,
-          textAlign: "center",
-        }} display={"flex"} flexDirection="column">
-          <Typography
-
-            variant="caption"
-          >
-            {version}
-          </Typography>
+        <Box
+          sx={{
+            marginTop: "auto",
+            paddingBottom: 10,
+            textAlign: "center",
+          }}
+          display={"flex"}
+          flexDirection="column"
+        >
+          <Typography variant="caption">{version}</Typography>
           <Typography color="grey" variant="caption">
             Powered by{" "}
-
-            <a href="https://igrant.io/" target="blank" style={{
-              textDecoration: "none",
-              color: "#1890ff",
-            }}>iGrant.io</a>
+            <a
+              href="https://igrant.io/"
+              target="blank"
+              style={{
+                textDecoration: "none",
+                color: "#1890ff",
+              }}
+            >
+              iGrant.io
+            </a>
             , Sweden
           </Typography>
         </Box>
-
       ) : null}
     </Menu>
   );
