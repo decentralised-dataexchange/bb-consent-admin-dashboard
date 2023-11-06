@@ -48,7 +48,7 @@ interface Props {
 let defaultValue = {
   Name: "",
   Description: "",
-  Version: "0.0.0",
+  Version: "1.0.0",
   AttributeType: "null",
   LawfulBasisOfProcessing: "consent",
   PolicyURL: "https://igrant.io/policy.html",
@@ -109,7 +109,7 @@ export default function DataAgreementModal(props: Props) {
       methods.reset({
         Name: "",
         Description: "",
-        Version: "0.0.0",
+        Version: "1.0.0",
         AttributeType: "null",
         LawfulBasisOfProcessing: "consent",
         PolicyURL: policyDetailsForInitialValue?.url,
@@ -217,15 +217,45 @@ export default function DataAgreementModal(props: Props) {
     }
   }, [dataAgrreementRevisionIdForSelectedRecord, open]);
 
-  const [active, setActive] = useState(false);
-  const [lifecycle, setLifecycle] = useState("draft");
-
   const [openExistingSchemaModal, setOpenExistingSchemaModal] = useState(false);
 
   const { organisationDetails, logoImageBase64, coverImageBase64 }: any =
     useContext(OrganizationDetailsCRUDContext);
 
-  const onSubmit = (createdData: any) => {
+  const onPublish = (createdData: any) => {
+    let active = true;
+    let lifecycle = "complete";
+
+    if (mode === "Create") {
+      HttpService.addDataAgreements(
+        DataAgreementPayload(createdData, active, lifecycle, mode)
+      ).then(() => {
+        successCallback();
+        methods.reset({ ...defaultValue });
+        setOpen(false);
+      });
+    } else if (mode === "Update") {
+      HttpService.updateDataAgreementById(
+        DataAgreementPayload(
+          createdData,
+          active,
+          lifecycle,
+          mode,
+          selectedDataAgreement
+        ),
+        selectedDataAgreementId
+      ).then((response) => {
+        successCallback();
+        methods.reset({ ...defaultValue });
+        setOpen(false);
+      });
+    } else return {};
+  };
+
+  const onSave = (createdData: any) => {
+    let active = false;
+    let lifecycle = "draft";
+
     if (mode === "Create") {
       HttpService.addDataAgreements(
         DataAgreementPayload(createdData, active, lifecycle, mode)
@@ -257,7 +287,7 @@ export default function DataAgreementModal(props: Props) {
       <Drawer anchor="right" open={open}>
         <Container>
           <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(onSubmit)}>
+            <form>
               <HeaderContainer>
                 <Box pl={2}>
                   <Typography color="#F3F3F6">
@@ -387,7 +417,6 @@ export default function DataAgreementModal(props: Props) {
               <FooterContainer style={{ flexDirection: "row-reverse" }}>
                 <Button
                   variant="outlined"
-                  type="submit"
                   style={
                     methods.formState.isValid && mode !== "Read"
                       ? buttonStyle
@@ -409,10 +438,7 @@ export default function DataAgreementModal(props: Props) {
                       color: "white",
                     },
                   }}
-                  onClick={() => {
-                    setActive(false);
-                    setLifecycle("draft");
-                  }}
+                  onClick={methods.handleSubmit(onSave)}
                 >
                   SAVE
                 </Button>
@@ -437,11 +463,7 @@ export default function DataAgreementModal(props: Props) {
                       ? buttonStyle
                       : disabledButtonstyle
                   }
-                  type="submit"
-                  onClick={() => {
-                    setActive(true);
-                    setLifecycle("complete");
-                  }}
+                  onClick={methods.handleSubmit(onPublish)}
                 >
                   PUBLISH
                 </Button>

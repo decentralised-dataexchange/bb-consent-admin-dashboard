@@ -20,7 +20,6 @@ export const Version = () => {
     <>
       <Typography mt={1.3} mb={1.3} variant="subtitle1">
         Version
-        <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
       </Typography>
       <input
         style={{
