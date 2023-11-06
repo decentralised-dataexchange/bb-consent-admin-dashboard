@@ -384,7 +384,38 @@ export default function DataAgreementModal(props: Props) {
                   />
                 </Box>
               </DetailsContainer>
-              <FooterContainer>
+              <FooterContainer style={{ flexDirection: "row-reverse" }}>
+                <Button
+                  variant="outlined"
+                  type="submit"
+                  style={
+                    methods.formState.isValid && mode !== "Read"
+                      ? buttonStyle
+                      : disabledButtonstyle
+                  }
+                  sx={{
+                    cursor:
+                      methods.formState.isValid && mode !== "Read"
+                        ? "pointer"
+                        : "not-allowed",
+                    color:
+                      methods.formState.isValid && mode !== "Read"
+                        ? "black"
+                        : "#6D7676",
+                    marginRight: "10px",
+                    marginLeft: "10px",
+                    "&:hover": {
+                      backgroundColor: "black",
+                      color: "white",
+                    },
+                  }}
+                  onClick={() => {
+                    setActive(false);
+                    setLifecycle("draft");
+                  }}
+                >
+                  SAVE
+                </Button>
                 <Button
                   variant="outlined"
                   sx={{
@@ -413,36 +444,6 @@ export default function DataAgreementModal(props: Props) {
                   }}
                 >
                   PUBLISH
-                </Button>
-                <Button
-                  variant="outlined"
-                  type="submit"
-                  style={
-                    methods.formState.isValid && mode !== "Read"
-                      ? buttonStyle
-                      : disabledButtonstyle
-                  }
-                  sx={{
-                    cursor:
-                      methods.formState.isValid && mode !== "Read"
-                        ? "pointer"
-                        : "not-allowed",
-                    color:
-                      methods.formState.isValid && mode !== "Read"
-                        ? "black"
-                        : "#6D7676",
-                    marginLeft: "10px",
-                    "&:hover": {
-                      backgroundColor: "black",
-                      color: "white",
-                    },
-                  }}
-                  onClick={() => {
-                    setActive(false);
-                    setLifecycle("draft");
-                  }}
-                >
-                  SAVE
                 </Button>
               </FooterContainer>
             </form>
