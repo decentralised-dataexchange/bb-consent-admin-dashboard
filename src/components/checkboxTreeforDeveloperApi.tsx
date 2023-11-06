@@ -25,10 +25,10 @@ const CheckboxTreeForAPIKey = (props: Props) => {
 
   const handleCheckboxChange = (fieldName: string) => {
     if (
-      fieldName === "scopes.config" ||
-      fieldName === "scopes.audit" ||
-      fieldName === "scopes.service" ||
-      fieldName === "scopes.onboard"
+      fieldName === "scopes.Config" ||
+      fieldName === "scopes.Audit" ||
+      fieldName === "scopes.Service" ||
+      fieldName === "scopes.Onboard"
     ) {
       const allChecked = scopes.every((scope) => getValues(`scopes.${scope}`));
       const anyChecked = scopes.some((scope) => getValues(`scopes.${scope}`));
