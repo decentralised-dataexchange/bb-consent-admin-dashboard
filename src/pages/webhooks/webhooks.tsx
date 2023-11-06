@@ -45,7 +45,7 @@ const Webhooks = () => {
   const [openDeleteWebhooks, setOpenDeleteWebhooks] = useState(false);
   const [showRecentDeliveries, setShowRecentDeliveries] = useState(false);
   const [recentDeliveryValues, setRecentDeliveryValues] = useState([]);
-
+  const [selectedWebhookDetails, setSelectedWebhookDetails] = useState<any>();
   const [modeOfPopup, setModeOfPopup] = useState("");
   const params = useParams();
   const selectedWebhooksId = params["*"];
@@ -75,6 +75,48 @@ const Webhooks = () => {
       <BooleanField {...props} sx={{ color: "green" }} />
     ) : (
       <BooleanField {...props} sx={{ color: "red" }} />
+    );
+  };
+
+  const IconField = (props: any) => {
+    const record = useRecordContext(props);
+    if (!record || !props.source) {
+      return null;
+    }
+    return (
+      record[props.source] && (
+        <Box
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Tooltip title="Edit Webhooks" placement="top">
+            <EditOutlinedIcon
+              onClick={() => {
+                setOpenEditWebhooks(true);
+                setModeOfPopup("Update");
+                setSelectedWebhookDetails(record);
+              }}
+              fontSize="small"
+              color="disabled"
+              style={{ cursor: "pointer", marginRight: 10 }}
+            />
+          </Tooltip>
+          <Tooltip title="Delete Webhooks" placement="top">
+            <DeleteOutlineOutlinedIcon
+              onClick={() => {
+                setOpenDeleteWebhooks(true);
+                setSelectedWebhookDetails(record);
+              }}
+              fontSize="small"
+              color="disabled"
+              style={{ cursor: "pointer" }}
+            />
+          </Tooltip>
+        </Box>
+      )
     );
   };
 
@@ -125,7 +167,7 @@ const Webhooks = () => {
             rowClick="edit"
             sx={{
               overflow: "auto",
-              width:"100%"
+              width: "100%",
             }}
           >
             <TextField
@@ -141,34 +183,12 @@ const Webhooks = () => {
               textAlign={"center"}
               sortable={false}
             />
-
-            <Box
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Tooltip title="Edit Webhooks" placement="top">
-                <EditOutlinedIcon
-                  onClick={() => {
-                    setOpenEditWebhooks(true);
-                    setModeOfPopup("Update");
-                  }}
-                  fontSize="small"
-                  color="disabled"
-                  style={{ cursor: "pointer", marginRight: 10 }}
-                />
-              </Tooltip>
-              <Tooltip title="Delete Webhooks" placement="top">
-                <DeleteOutlineOutlinedIcon
-                  onClick={() => setOpenDeleteWebhooks(true)}
-                  fontSize="small"
-                  color="disabled"
-                  style={{ cursor: "pointer" }}
-                />
-              </Tooltip>
-            </Box>
+            <IconField
+              source="id"
+              label={""}
+              textAlign={"center"}
+              sortable={false}
+            />
           </Datagrid>
         </Box>
       </List>
@@ -186,6 +206,7 @@ const Webhooks = () => {
         headerText={"Delete Webhooks "}
         confirmText="DELETE"
         resourceName={"webhooks"}
+        selectedWebhookDetails={selectedWebhookDetails}
         onRefetch={onRefetch}
         modalDescriptionText={
           <Typography sx={{ wordWrap: "breakWord" }}>
