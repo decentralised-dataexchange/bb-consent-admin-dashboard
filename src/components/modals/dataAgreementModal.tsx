@@ -33,7 +33,6 @@ import { DataExchangeModeFormControl } from "../dataAgreements/DataExchangeMode"
 import { PurposeDescription } from "../dataAgreements/PurposeDescription";
 import { LawfullBasisOfProcessingFormControll } from "../dataAgreements/LawfullBasisOfProcessing";
 import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
-import { useParams } from "react-router-dom";
 
 interface Props {
   open: boolean;
@@ -74,8 +73,6 @@ export default function DataAgreementModal(props: Props) {
     dataAgrreementRevisionIdForSelectedRecord,
   } = props;
 
-  const params = useParams();
-  const selectedDataAgreementId = params["*"];
   const [selectedDataAgreement, setSelectedDataAgreement] = useState<any>();
   const [dataAgreementIdForUserRecordes, setDataAgreementIdForUserRecordes] =
     useState("");
@@ -243,7 +240,7 @@ export default function DataAgreementModal(props: Props) {
           mode,
           selectedDataAgreement
         ),
-        selectedDataAgreementId
+        selectedDataAgreement?.id
       ).then((response) => {
         successCallback();
         methods.reset({ ...defaultValue });
@@ -273,7 +270,7 @@ export default function DataAgreementModal(props: Props) {
           mode,
           selectedDataAgreement
         ),
-        selectedDataAgreementId
+        selectedDataAgreement?.id
       ).then((response) => {
         successCallback();
         methods.reset({ ...defaultValue });
@@ -301,7 +298,7 @@ export default function DataAgreementModal(props: Props) {
                     <Typography color="#F3F3F6">
                       {resourceName === "userrecords"
                         ? dataAgreementIdForUserRecordes
-                        : selectedDataAgreementId}
+                        : selectedDataAgreement?.id}
                     </Typography>
                   )}
                 </Box>

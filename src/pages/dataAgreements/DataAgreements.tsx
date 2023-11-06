@@ -74,7 +74,10 @@ const DataAgreement = () => {
   const [openDataAgreementModal, setOpenDataAgreementModal] = useState(false);
   const [dataAgreementMode, setDataAgreementMode] = useState("");
   const [handleChangeTriggered, setHandleChangeTriggered] = useState(false);
-  const [selectededDataAgreementFromDataAgreement, setSelectededDataAgreementFromDataAgreement] = useState<any>();
+  const [
+    selectededDataAgreementFromDataAgreement,
+    setSelectededDataAgreementFromDataAgreement,
+  ] = useState<any>();
 
   const refresh = useRefresh();
   const onRefetch = () => {
@@ -176,10 +179,11 @@ const DataAgreement = () => {
             placement="top"
           >
             <UploadOutlinedIcon
-              onClick={() =>
+              onClick={() =>{
                 record.active === false &&
-                setOpenPublishDataAgreementModal(true)
-              }
+                setOpenPublishDataAgreementModal(true);
+                setSelectededDataAgreementFromDataAgreement(record)
+              }}
               fontSize="small"
               style={{
                 cursor: record.active === true ? "not-allowed" : "pointer",
@@ -192,7 +196,7 @@ const DataAgreement = () => {
               onClick={() => {
                 setOpenDataAgreementModal(true);
                 setDataAgreementMode("Read");
-                setSelectededDataAgreementFromDataAgreement(record)
+                setSelectededDataAgreementFromDataAgreement(record);
               }}
               fontSize="small"
               style={{
@@ -206,7 +210,7 @@ const DataAgreement = () => {
               onClick={() => {
                 setOpenDataAgreementModal(true);
                 setDataAgreementMode("Update");
-                setSelectededDataAgreementFromDataAgreement(record)
+                setSelectededDataAgreementFromDataAgreement(record);
               }}
               fontSize="small"
               style={{
@@ -217,7 +221,10 @@ const DataAgreement = () => {
           </Tooltip>
           <Tooltip title="Delete Data Agreement" placement="top">
             <DeleteOutlineOutlinedIcon
-              onClick={() => setOpenDeleteDataAgreementModal(true)}
+              onClick={() => {
+                setOpenDeleteDataAgreementModal(true);
+                setSelectededDataAgreementFromDataAgreement(record);
+              }}
               fontSize="small"
               style={{
                 cursor: "pointer",
@@ -321,7 +328,6 @@ const DataAgreement = () => {
           }}
         >
           <Datagrid
-            rowClick={"edit"}
             bulkActionButtons={false}
             sx={{
               overflow: "auto",
@@ -361,7 +367,9 @@ const DataAgreement = () => {
         setOpen={setOpenDataAgreementModal}
         mode={dataAgreementMode}
         successCallback={onRefetch}
-        selectededDataAgreementFromDataAgreement={selectededDataAgreementFromDataAgreement}
+        selectededDataAgreementFromDataAgreement={
+          selectededDataAgreementFromDataAgreement
+        }
       />
 
       <GlobalDataPolicyConfigModal
@@ -375,10 +383,15 @@ const DataAgreement = () => {
         setOpen={setOpenDeleteDataAgreementModal}
         headerText={"Delete Data Agreement:"}
         confirmText="DELETE"
+        resourceName="dataagreements"
         onRefetch={onRefetch}
+        selectededDataAgreementFromDataAgreement={
+          selectededDataAgreementFromDataAgreement
+        }
         modalDescriptionText={
           <Typography sx={{ wordWrap: "breakWord" }}>
-            You are about to delete an existing data agreement and ALL its revisions. Please type{" "}
+            You are about to delete an existing data agreement and ALL its
+            revisions. Please type{" "}
             <span style={{ fontWeight: "bold" }}>DELETE</span> to confirm and
             click DELETE. This action is not reversible.
           </Typography>
@@ -392,6 +405,10 @@ const DataAgreement = () => {
         headerText={"Publish Data Agreement:"}
         confirmText="PUBLISH"
         onRefetch={onRefetch}
+        resourceName="dataagreements"
+        selectededDataAgreementFromDataAgreement={
+          selectededDataAgreementFromDataAgreement
+        }
         modalDescriptionText={
           <Typography sx={{ wordWrap: "breakWord" }}>
             You are about to publish a data agreement. Please type{" "}

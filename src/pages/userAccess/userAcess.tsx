@@ -200,6 +200,7 @@ const UserAccess = () => {
         setOpen={setOpenDeleteUserAccessModal}
         headerText={"Delete User Access "}
         confirmText="DELETE"
+        resourceName={"configuration"}
         userAccessId={idpDetails?.id}
         modalDescriptionText={
           <Typography sx={{ wordWrap: "breakWord" }}>

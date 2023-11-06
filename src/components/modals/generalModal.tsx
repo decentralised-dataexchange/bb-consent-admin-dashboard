@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Form, TextInput } from "react-admin";
 import { Dispatch, SetStateAction } from "react";
 
@@ -14,7 +14,6 @@ import {
   buttonStyle,
   disabledButtonstyle,
 } from "./modalStyle";
-import { useParams } from "react-router-dom";
 import { HttpService } from "../../service/HTTPService";
 
 interface Props {
@@ -22,12 +21,13 @@ interface Props {
   setOpen: Dispatch<SetStateAction<boolean>>;
   confirmText: string;
   headerText: string;
-  dataExchange?: string;
   modalDescriptionText: any;
   onRefetch?: any;
   userAccessId?: string;
-  resourceName?: string;
+  resourceName: string;
   developerApiDeleteID?:string
+  selectededDataAgreementFromDataAgreement?: any
+  selectedWebhookDetails?: any
 }
 
 export default function DeleteModal(props: Props) {
@@ -40,36 +40,29 @@ export default function DeleteModal(props: Props) {
     onRefetch,
     userAccessId,
     resourceName,
-    developerApiDeleteID
+    developerApiDeleteID,
+    selectededDataAgreementFromDataAgreement,
+    selectedWebhookDetails
   } = props;
   const [isOk, setIsOk] = useState(false);
   const [confirmationTextInput, setConfirmationTextInput] = useState("");
-  const params = useParams();
-  const daId = params["*"];
-  const [dataAgreementValue, setDataAgreementValue] = useState<any>();
+
   const handleCancelConfirmationText = (event: any) => {
     setConfirmationTextInput(event.target.value);
     event.target.value === confirmText ? setIsOk(true) : setIsOk(false);
   };
 
-  useEffect(() => {
-    if (daId && resourceName !== "webhooks") {
-      HttpService.getDataAgreementByID(daId).then((response) => {
-        setDataAgreementValue(response.data.dataAgreement);
-      });
-    }
-  }, [daId]);
-
   const onSubmit = () => {
     if (isOk === true) {
-      if (confirmText === "DELETE" && daId && resourceName !== "webhooks") {
-        HttpService.deleteDataAgreement(daId).then((response) => {
+      if (confirmText === "DELETE" && resourceName === "dataagreements") {
+        HttpService.deleteDataAgreement(selectededDataAgreementFromDataAgreement.id).then((response) => {
           onRefetch();
           setOpen(false);
         });
-      } else if (confirmText === "PUBLISH" && daId) {
+      } else if (confirmText === "PUBLISH" && resourceName === "dataagreements") {
+        console.log("selectededDataAgreementFromDataAgreement", selectededDataAgreementFromDataAgreement)
         const { active, lifecycle, controllerUrl, ...otherProps } =
-          dataAgreementValue;
+        selectededDataAgreementFromDataAgreement;
         const updateDAPayload = {
           dataAgreement: {
             active: true,
@@ -79,7 +72,7 @@ export default function DeleteModal(props: Props) {
             ...otherProps,
           },
         };
-        HttpService.updateDataAgreementById(updateDAPayload, daId).then(
+        HttpService.updateDataAgreementById(updateDAPayload, selectededDataAgreementFromDataAgreement.id).then(
           (response) => {
             onRefetch();
             setOpen(false);
@@ -96,10 +89,9 @@ export default function DeleteModal(props: Props) {
         });
       } else if (
         confirmText === "DELETE" &&
-        daId &&
         resourceName === "webhooks"
       ) {
-        HttpService.deleteWebhook(daId).then(() => {
+        HttpService.deleteWebhook(selectedWebhookDetails.id).then(() => {
           onRefetch();
           setOpen(false);
         });
@@ -115,9 +107,12 @@ export default function DeleteModal(props: Props) {
             <HeaderContainer>
               <Box pl={2}>
                 <Typography color="#F3F3F6">
-                  {headerText} {dataAgreementValue?.purpose}
+                  {headerText} {selectededDataAgreementFromDataAgreement?.purpose}
                 </Typography>
-                <Typography color="#F3F3F6">{resourceName=== "developerapi" ? developerApiDeleteID : daId}</Typography>
+                <Typography color="#F3F3F6">{resourceName=== "developerapi" && developerApiDeleteID}</Typography>
+                <Typography color="#F3F3F6">{resourceName=== "dataagreements" && selectededDataAgreementFromDataAgreement?.id}</Typography>
+                <Typography color="#F3F3F6">{resourceName=== "webhooks" && selectedWebhookDetails?.id}</Typography>
+
               </Box>
               <CloseIcon
                 onClick={() => {
