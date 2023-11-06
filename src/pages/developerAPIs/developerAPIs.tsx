@@ -13,7 +13,7 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { styled } from "@mui/material/styles";
 import GeneralModal from "../../components/modals/generalModal";
-
+import CloseIcon from "@mui/icons-material/Close";
 import BreadCrumb from "../../components/Breadcrumbs";
 import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
 import { LocalStorageService } from "../../service/localStorageService";
@@ -58,7 +58,8 @@ const Item = styled("div")(({ theme }) => ({
 }));
 
 const DeveloperAPIs = () => {
-  const [openEditPersonalDataModal, setOpenEditPersonalDataModal] = useState(false);
+  const [openEditPersonalDataModal, setOpenEditPersonalDataModal] =
+    useState(false);
   const { organisationDetails } = useContext(OrganizationDetailsCRUDContext);
   const [showAPI, setShowAPI] = useState(false);
   const [apiKeyValue, setApiKeyValue] = useState<any>();
@@ -145,11 +146,32 @@ const DeveloperAPIs = () => {
       >
         <Alert
           icon={<></>}
-          sx={{ width: "100%", background: "#E5E4E4", color: "black" }}
+          sx={{
+            width: "100%",
+            background: "#E5E4E4",
+            color: "black",
+            display: "flex",
+            alignItems: "center",
+          }}
+          onClose={() => setShowAPI(false)}
           action={
-            <Button color="inherit" size="small" style={{fontWeight:"bold"}} onClick={handleCopy}>
-              COPY
-            </Button>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Button
+                color="inherit"
+                size="small"
+                style={{ fontWeight: "bold" }}
+                onClick={handleCopy}
+              >
+                COPY
+              </Button>
+              <Button
+                color="inherit"
+                style={{ fontWeight: "bold", cursor: "pointer" }}
+                onClick={() => setShowAPI(false)}
+              >
+                <CloseIcon />
+              </Button>
+            </Box>
           }
         >
           Here is your new key. Copy it now! This is the only time we will show
@@ -220,7 +242,10 @@ const DeveloperAPIs = () => {
               </Typography>
               <Tooltip title="Create API Key" placement="top">
                 <AddCircleOutlineOutlinedIcon
-                  onClick={()=>setOpenEditPersonalDataModal(true)}
+                  onClick={() => {
+                    setOpenEditPersonalDataModal(true);
+                    setShowAPI(false);
+                  }}
                   style={{
                     cursor: "pointer",
                     marginLeft: "7px",
