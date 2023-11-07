@@ -60,7 +60,6 @@ export default function DeleteModal(props: Props) {
           setOpen(false);
         });
       } else if (confirmText === "PUBLISH" && resourceName === "dataagreements") {
-        console.log("selectededDataAgreementFromDataAgreement", selectededDataAgreementFromDataAgreement)
         const { active, lifecycle, controllerUrl, ...otherProps } =
         selectededDataAgreementFromDataAgreement;
         const updateDAPayload = {
