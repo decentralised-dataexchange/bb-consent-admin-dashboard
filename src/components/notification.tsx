@@ -6,11 +6,12 @@ type Props = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   message: string;
-  topStyle?: number
+  topStyle?: number;
+  successMessage?: string;
 };
 
 export default function SnackbarComponent(props: Props) {
-  const { open, setOpen, message, topStyle } = props;
+  const { open, setOpen, message, topStyle, successMessage } = props;
 
   const handleClose = () => {
     setOpen(false);
@@ -22,10 +23,14 @@ export default function SnackbarComponent(props: Props) {
       autoHideDuration={6000}
       onClose={handleClose}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      style={{ top: topStyle ? topStyle : 30}}
+      style={{ top: topStyle ? topStyle : 30 }}
     >
-      <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-        {message}
+      <Alert
+        onClose={handleClose}
+        severity={successMessage ? "success" : "error"}
+        sx={{ width: "100%" }}
+      >
+        {successMessage ? successMessage : message}
       </Alert>
     </Snackbar>
   );
