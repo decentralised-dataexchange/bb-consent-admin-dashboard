@@ -113,8 +113,9 @@ export default function DataAgreementModal(props: Props) {
         Jurisdiction: policyDetailsForInitialValue?.jurisdiction,
         IndustryScope: policyDetailsForInitialValue?.industrySector,
         StorageLocation: policyDetailsForInitialValue?.storageLocation,
-        dataRetentionPeriodDays:
-          policyDetailsForInitialValue?.dataRetentionPeriodDays,
+        dataRetentionPeriodDays: Math.floor(
+          policyDetailsForInitialValue?.dataRetentionPeriodDays / 365
+        ),
         Restriction: policyDetailsForInitialValue?.geographicRestriction,
         Shared3PP: policyDetailsForInitialValue?.thirdPartyDataSharing,
         DpiaDate: new Date().toISOString().slice(0, 16),
@@ -144,8 +145,10 @@ export default function DataAgreementModal(props: Props) {
           Jurisdiction: dataAgreements.policy.jurisdiction,
           IndustryScope: dataAgreements.policy.industrySector,
           StorageLocation: dataAgreements.policy.storageLocation,
-          dataRetentionPeriodDays:
-            dataAgreements.policy.dataRetentionPeriodDays,
+          dataRetentionPeriodDays: Math.floor(
+            dataAgreements.policy.dataRetentionPeriodDays / 365
+          ),
+
           Restriction: dataAgreements.policy.geographicRestriction,
           Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
           DpiaDate: dataAgreements.dpiaDate,
@@ -368,6 +371,9 @@ export default function DataAgreementModal(props: Props) {
                     <DataExchangeModeFormControl
                       open={props.open}
                       mode={props.mode}
+                      selectededDataAgreementFromDataAgreement={
+                        selectededDataAgreementFromDataAgreement
+                      }
                     />
 
                     {/* Required for future purpose in enterprise dashboard */}
@@ -411,7 +417,12 @@ export default function DataAgreementModal(props: Props) {
                   />
                 </Box>
               </DetailsContainer>
-              <FooterContainer style={{ flexDirection: "row-reverse" }}>
+              <FooterContainer
+                style={{
+                  flexDirection: "row-reverse",
+                  justifyContent: "space-between",
+                }}
+              >
                 <Button
                   variant="outlined"
                   style={
@@ -428,8 +439,7 @@ export default function DataAgreementModal(props: Props) {
                       methods.formState.isValid && mode !== "Read"
                         ? "black"
                         : "#6D7676",
-                    marginRight: "10px",
-                    marginLeft: "10px",
+                    marginRight: "15px",
                     "&:hover": {
                       backgroundColor: "black",
                       color: "white",
@@ -454,6 +464,7 @@ export default function DataAgreementModal(props: Props) {
                       backgroundColor: "black",
                       color: "white",
                     },
+                    marginLeft: "15px",
                   }}
                   style={
                     methods.formState.isValid && mode !== "Read"

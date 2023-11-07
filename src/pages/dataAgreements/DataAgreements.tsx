@@ -271,6 +271,7 @@ const DataAgreement = () => {
                 onClick={() => {
                   setOpenDataAgreementModal(true);
                   setDataAgreementMode("Create");
+                  setSelectededDataAgreementFromDataAgreement({})
                 }}
                 style={{ cursor: "pointer", marginLeft: "5px" }}
               />
