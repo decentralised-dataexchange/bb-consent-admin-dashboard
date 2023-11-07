@@ -61,6 +61,7 @@ const ManageAdmin = () => {
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleEdit = (event: React.MouseEvent<HTMLElement>) => {
     setEditMode(!editMode);
@@ -76,11 +77,10 @@ const ManageAdmin = () => {
   }, []);
 
   const onClickSave = () => {
-    if (adminName.length > 2) {
       const { name, ...otherProps } = adminDetails;
       let payload = {
         organisationAdmin: {
-          name: adminName,
+          name: adminName ? adminName : adminDetails.name,
           ...otherProps,
         },
       };
@@ -89,10 +89,12 @@ const ManageAdmin = () => {
         setAdminDetails(res.data.organisationAdmin);
         LocalStorageService.updateUser(res.data.organisationAdmin);
       });
-    }
+  
   };
 
   const onClickRestPassWord = () => {
+    setSuccess("")
+    setError("")
     if (newPassword !== confirmNewPassword) {
       setError("New password and confirm new password should be same");
       setOpenSnackBar(true);
@@ -110,7 +112,15 @@ const ManageAdmin = () => {
         setCurrentPassword("");
         setNewPassword("");
         setConfirmNewPassword("");
-      });
+
+        setSuccess("Password Changed");
+        setOpenSnackBar(true);
+      }).catch((error)=>{
+        console.log("error", error.message)
+        setError(error.message);
+        setOpenSnackBar(true);
+
+      })
     }
   };
 
@@ -122,6 +132,7 @@ const ManageAdmin = () => {
         setOpen={setOpenSnackBar}
         message={error}
         topStyle={100}
+        successMessage={success}
       />
       <HeaderContainer>
         <Typography variant="h6" fontWeight="bold">
