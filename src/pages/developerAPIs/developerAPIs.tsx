@@ -25,6 +25,7 @@ import {
   useRefresh,
 } from "react-admin";
 import CreateApiKeyModal from "../../components/modals/createApiKeyModal";
+import { capitalizeFirstLetter } from "../../utils/capitaliseFIrstLetter";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -113,6 +114,9 @@ const DeveloperAPIs = () => {
     );
   };
 
+
+
+
   const ScopeField = (props: any) => {
     const record = useRecordContext(props);
     if (!record || !props.source) {
@@ -123,11 +127,11 @@ const DeveloperAPIs = () => {
       <Box style={{ display: "flex" }}>
         {scopes.map((scope: any, i: number) => {
           if (i + 1 === scopes.length) {
-            return <Typography variant="body2">{scope} </Typography>;
+            return <Typography variant="body2">{capitalizeFirstLetter(scope)} </Typography>;
           } else {
             return (
               <Typography variant="body2" style={{ marginRight: 7 }}>
-                {scope},{" "}
+                {capitalizeFirstLetter(scope)},{" "}
               </Typography>
             );
           }

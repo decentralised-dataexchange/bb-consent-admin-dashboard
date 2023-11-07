@@ -61,7 +61,10 @@ export default function CreateApiKeyModal(props: Props) {
 
       let selectedScopes = scope
         .filter((scope) => scope.value === true)
-        .map((scope) => scope.key);
+        .map((scope) => scope.key)
+        .map((scope) => {
+          return scope.toLowerCase();
+        });
 
       let payload = {
         apiKey: {
