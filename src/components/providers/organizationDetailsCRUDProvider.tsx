@@ -20,9 +20,11 @@ export const OrganizationDetailsCRUDProvider: FC<
 
         HttpService.getCoverImage().then((coverImage) => {
           setCoverImageBase64(coverImage);
+          localStorage.setItem('cachedCoverImage', coverImage)
         });
         HttpService.getLogoImage().then((logoImage) => {
           setLogoImageBase64(logoImage);
+          localStorage.setItem('cachedLogoImage', logoImage)
         });
       })
       .catch((error) => {
