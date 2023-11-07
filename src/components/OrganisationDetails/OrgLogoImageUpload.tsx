@@ -11,7 +11,8 @@ type Props = {
 };
 
 const OrgLogoImageUpload = (props: Props) => {
-  const {editMode, logoImageBase64, setLogoImageBase64 } = props
+  const {editMode, setLogoImageBase64 } = props
+  let logoImageBase64 = localStorage.getItem('cachedLogoImage')
 
   const myFile: { file: string; imagePreviewUrl: any } = {
     file: "",
@@ -39,6 +40,7 @@ const OrgLogoImageUpload = (props: Props) => {
           // Get the newly uploaded image from the server
           HttpService.getLogoImage().then((imageBase64) => {
             setLogoImageBase64(imageBase64);
+            localStorage.setItem('cachedLogoImage', imageBase64)
           });
         })
         .catch((error) => {
