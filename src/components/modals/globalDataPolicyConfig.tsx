@@ -67,17 +67,6 @@ interface Props {
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const geographicRestrictions = [
-  {
-    value: "Europe",
-    label: "Europe",
-  },
-  {
-    value: "Not restricted",
-    label: "Not restricted",
-  },
-];
-
 const thirdPartyDataSharingOptions = [
   {
     value: false,
@@ -89,6 +78,18 @@ const thirdPartyDataSharingOptions = [
   },
 ];
 
+let defaultValues = {
+  name: "string",
+  version: "string",
+  url: "https://abc.org/policy.html",
+  jurisdiction: "London, GB",
+  industrySector: "Retail",
+  dataRetentionPeriodDays: 0,
+  geographicRestriction: "Europe",
+  storageLocation: "Europe",
+  thirdPartyDataSharing: false,
+};
+
 export default function GlobalDataPolicyConfigModal(props: Props) {
   const { open, setOpen } = props;
 
@@ -98,38 +99,40 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
   const [policyIdForUpdatePolicy, setPolicyIdForUpdatePolicy] =
     useState<string>();
   const [listAllPoliciesLength, setListAllPoliciesLength] = useState<number>();
+  const [listAllPoliciesDetails, setListAllPoliciesDetails] = useState<any>();
 
   const methods = useForm({
     mode: "onChange",
+    defaultValues: {...defaultValues}
   });
 
   const { control, register, reset } = methods;
 
   useEffect(() => {
-    let defaultValues = {
-      name: "string",
-      version: "string",
-      url: "https://abc.org/policy.html",
-      jurisdiction: "London, GB",
-      industrySector: "Retail",
-      dataRetentionPeriodDays: 0,
-      geographicRestriction: "Europe",
-      storageLocation: "Europe",
-      thirdPartyDataSharing: false,
-    };
-
     HttpService.listAllPolicies().then((response) => {
       setListAllPoliciesLength(response.length);
       setPolicyIdForUpdatePolicy(response[0]?.id);
-      // default values for hook form
-      defaultValues = response[0] ? response[0] : defaultValues;
-      reset({ ...defaultValues });
+      setListAllPoliciesDetails(response[0] && response[0]);
     });
   }, [open, policyIdForUpdatePolicy]);
 
+  useEffect(() => {
+    if (listAllPoliciesDetails) {
+      const { dataRetentionPeriodDays, ...otherprops } = listAllPoliciesDetails;
+      reset({
+        ...otherprops,
+        dataRetentionPeriodDays: Math.floor(dataRetentionPeriodDays / 365),
+      });
+    }
+  }, [listAllPoliciesDetails]);
+
   const onSubmit = (createdData: any) => {
+    const { dataRetentionPeriodDays, ...otherprops } = createdData;
     const payload = {
-      policy: createdData,
+      policy: {
+        ...otherprops,
+        dataRetentionPeriodDays: dataRetentionPeriodDays * 365,
+      },
     };
 
     // if the list is empty create new global data policy
@@ -285,7 +288,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                               })}
                               style={{
                                 ...inputDataConfigStyle,
-                                cursor:"not-allowed"
+                                cursor: "not-allowed",
                               }}
                             />
                           </td>
@@ -334,36 +337,16 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                           <th style={tableCellStyle}>Geographic restriction</th>
 
                           <td style={{ ...tableCellStyle, borderRight: 0 }}>
-                            <Controller
-                              name="geographicRestriction"
-                              control={control}
-                              rules={{
-                                required: true,
+                            <input
+                              autoComplete="off"
+                              style={{
+                                ...inputDataConfigStyle,
+                                height: "25px",
                               }}
-                              render={({ field: { onChange, value } }) => (
-                                <Select
-                                  onChange={(e: any) => {
-                                    onChange(e);
-                                  }}
-                                  variant="outlined"
-                                  fullWidth
-                                  defaultValue={value}
-                                  name="geographicRestriction"
-                                  style={{
-                                    ...dropDownStyle,
-                                    height: "32px",
-                                  }}
-                                >
-                                  {geographicRestrictions.map((Type) => (
-                                    <MenuItem
-                                      key={Type?.label}
-                                      value={Type.value}
-                                    >
-                                      {Type.label}
-                                    </MenuItem>
-                                  ))}
-                                </Select>
-                              )}
+                              {...register("geographicRestriction", {
+                                required: true,
+                                minLength: 1,
+                              })}
                             />
                           </td>
                         </tr>
@@ -378,27 +361,30 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                               name="thirdPartyDataSharing"
                               control={control}
                               render={({ field: { onChange, value } }) => (
-                                <Select
-                                  onChange={(e: any) => {
-                                    onChange(e);
-                                  }}
-                                  variant="outlined"
-                                  fullWidth
-                                  defaultValue={value}
-                                  name="thirdPartyDataSharing"
-                                  style={{
-                                    ...dropDownStyle,
-                                    height: "32px",
-                                  }}
-                                >
-                                  {thirdPartyDataSharingOptions.map(
-                                    (Type: any, i: number) => (
-                                      <MenuItem key={i} value={Type.value}>
-                                        {Type.label}
-                                      </MenuItem>
-                                    )
-                                  )}
-                                </Select>
+                                <>
+                                  {console.log("value,", value)}
+                                  <Select
+                                    onChange={(e: any) => {
+                                      onChange(e);
+                                    }}
+                                    variant="outlined"
+                                    fullWidth
+                                    value={value ? value : false}
+                                    name="thirdPartyDataSharing"
+                                    style={{
+                                      ...dropDownStyle,
+                                      height: "32px",
+                                    }}
+                                  >
+                                    {thirdPartyDataSharingOptions.map(
+                                      (Type: any, i: number) => (
+                                        <MenuItem key={i} value={Type.value}>
+                                          {Type.label}
+                                        </MenuItem>
+                                      )
+                                    )}
+                                  </Select>
+                                </>
                               )}
                             />
                           </td>

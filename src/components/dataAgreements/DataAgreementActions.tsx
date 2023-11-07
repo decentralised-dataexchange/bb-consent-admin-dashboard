@@ -1,3 +1,5 @@
+import { convertYearsToDays } from "../../utils/convertYearsToDays";
+
 export interface createdDataProps {
   Name: string;
   Version: string;
@@ -8,13 +10,15 @@ export interface createdDataProps {
   Jurisdiction: string;
   IndustryScope: string;
   StorageLocation: string;
-  dataRetentionPeriodDays: string;
+  dataRetentionPeriodDays: number;
   Restriction: string;
   Shared3PP: boolean;
   DpiaDate: any;
   DpiaSummaryURL: string;
   dataAttributes: any;
 }
+
+
 
 export const DataAgreementPayload = (
   createdData: createdDataProps,
@@ -37,7 +41,9 @@ export const DataAgreementPayload = (
         url: createdData.PolicyURL,
         jurisdiction: createdData.Jurisdiction,
         industrySector: createdData.IndustryScope,
-        dataRetentionPeriodDays: createdData.dataRetentionPeriodDays,
+        dataRetentionPeriodDays: convertYearsToDays(
+          createdData.dataRetentionPeriodDays
+        ),
         geographicRestriction: createdData.Restriction,
         storageLocation: createdData.StorageLocation,
         thirdPartyDataSharing: createdData.Shared3PP,
@@ -95,15 +101,17 @@ export const DataAgreementPayload = (
         ? selectedDataAgreement?.forgettable
         : "string",
       lifecycle: lifecycle,
-      dataAttributes: createdData?.dataAttributes?.map((dataAttributes: any) => {
-        return {
-          id: mode === "Update" ? dataAttributes.id : "",
-          name: dataAttributes.attributeName,
-          description: dataAttributes.attributeDescription,
-          sensitivity: mode === "Update" ? dataAttributes.sensitivity : false,
-          category: mode === "Update" ? dataAttributes.category : "string",
-        };
-      }),
+      dataAttributes: createdData?.dataAttributes?.map(
+        (dataAttributes: any) => {
+          return {
+            id: mode === "Update" ? dataAttributes.id : "",
+            name: dataAttributes.attributeName,
+            description: dataAttributes.attributeDescription,
+            sensitivity: mode === "Update" ? dataAttributes.sensitivity : false,
+            category: mode === "Update" ? dataAttributes.category : "string",
+          };
+        }
+      ),
     },
   };
 };

@@ -11,12 +11,14 @@ const dataExchangeModes = [
 interface DataExchangeModeFormControlProps {
   open: boolean;
   mode: string;
+  selectededDataAgreementFromDataAgreement: any;
 }
 
 interface DataExchangeModeProps {
   mode: string;
   onChange: (e: React.SyntheticEvent) => void;
   value: any;
+  selectededDataAgreementFromDataAgreement: any;
 }
 
 const dropDownStyle = {
@@ -50,7 +52,10 @@ export const DataExchangeMode = (props: DataExchangeModeProps) => {
         fullWidth
         value={props.value}
         name="AttributeType"
-        disabled={props.mode === "Read"}
+        disabled={
+          props.mode === "Read" ||
+          props?.selectededDataAgreementFromDataAgreement?.active === true
+        }
         style={
           props.mode === "Read"
             ? {
@@ -103,6 +108,9 @@ export const DataExchangeModeFormControl = (
                 onChange={onChange}
                 value={value}
                 mode={props.mode}
+                selectededDataAgreementFromDataAgreement={
+                  props?.selectededDataAgreementFromDataAgreement
+                }
               />
             )}
           />

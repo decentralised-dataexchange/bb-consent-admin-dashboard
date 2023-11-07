@@ -1,6 +1,5 @@
 import CSS from "csstype";
 import { useFormContext } from "react-hook-form";
-import { GeographicRestrictionsFormControl } from "./GeographicRestrctions";
 import { ThirdPartyDataSharingFormControl } from "./ThirdPartySharing";
 
 const tableCellStyle: CSS.Properties = {
@@ -151,7 +150,24 @@ const DataAgreementPolicy = (props: Props) => {
         </tr>
 
         <tr>
-          <GeographicRestrictionsFormControl mode={mode} />
+          <th style={tableCellStyle} scope="row">
+            Geographic restriction
+          </th>
+
+          <td style={{ ...tableCellStyle, borderRight: 0 }}>
+            <input
+              autoComplete="off"
+              type="text"
+              style={{
+                ...inputDataConfigStyle,
+                cursor: mode === "Read" ? "not-allowed" : "auto",
+              }}
+              {...register("Restriction", {
+                required: true,
+                minLength: 1,
+              })}
+            />
+          </td>
         </tr>
 
         <tr>

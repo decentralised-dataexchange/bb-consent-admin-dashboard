@@ -54,8 +54,7 @@ const DPIAConfigurations = (props: Props) => {
               }}
               type="datetime-local"
               {...register("DpiaDate", {
-                required: true,
-                minLength: 1
+                required: false,
             })}
             />
           </td>
@@ -76,8 +75,7 @@ const DPIAConfigurations = (props: Props) => {
                 cursor: mode === "Read" ? "not-allowed" : "auto",
               }}
               {...register("DpiaSummaryURL", {
-                required: true,
-                minLength: 1
+                required: false,
             })}
             />
           </td>
