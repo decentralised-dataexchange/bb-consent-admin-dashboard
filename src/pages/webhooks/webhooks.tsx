@@ -16,6 +16,8 @@ import { styled } from "@mui/material/styles";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import CloseIcon from "@mui/icons-material/Close";
+import DoneIcon from "@mui/icons-material/Done";
 
 import BreadCrumb from "../../components/Breadcrumbs";
 import GeneralModal from "../../components/modals/generalModal";
@@ -45,24 +47,28 @@ const Webhooks = () => {
   const [openDeleteWebhooks, setOpenDeleteWebhooks] = useState(false);
   const [showRecentDeliveries, setShowRecentDeliveries] = useState(false);
   const [recentDeliveryValues, setRecentDeliveryValues] = useState([]);
-  const [selectedWebhookDetails, setSelectedWebhookDetails] = useState<any>();
+  const [webhookDetailsForUpdate, setWebhookDetailsForUpdate] = useState<any>();
   const [modeOfPopup, setModeOfPopup] = useState("");
-  const params = useParams();
-  const selectedWebhooksId = params["*"];
+  const [lastSelectedRecentDeliveryID, setLastSelectedRecentDeliveryID] =
+    useState();
   const refresh = useRefresh();
 
   const onRefetch = () => {
     refresh();
   };
 
-  const recentDeliveries = () => {
-    setShowRecentDeliveries(!showRecentDeliveries);
-    if (selectedWebhooksId) {
-      HttpService.getWebhooksRecentDeliveries(selectedWebhooksId).then(
-        (res) => {
+  const recentDeliveries = (recordid: any) => {
+    if (recordid) {
+      if (recordid === lastSelectedRecentDeliveryID) {
+        setShowRecentDeliveries(!showRecentDeliveries);
+      } else {
+        setLastSelectedRecentDeliveryID(recordid);
+
+        HttpService.getWebhooksRecentDeliveries(recordid).then((res) => {
           setRecentDeliveryValues(res.data.webhookDeliveries);
-        }
-      );
+          setShowRecentDeliveries(true);
+        });
+      }
     }
   };
 
@@ -72,13 +78,31 @@ const Webhooks = () => {
       return null;
     }
     return record[props.source] === true ? (
-      <BooleanField {...props} sx={{ color: "green" }} />
+      <DoneIcon sx={{ color: "green" }} />
     ) : (
-      <BooleanField {...props} sx={{ color: "red" }} />
+      <CloseIcon sx={{ color: "red" }} />
     );
   };
 
-  const IconField = (props: any) => {
+  const PayloadURLFIeld = (props: any) => {
+    const record = useRecordContext(props);
+    if (!record || !props.source) {
+      return null;
+    }
+    return (
+      <Typography
+        variant="body2"
+        sx={{ cursor: "pointer" }}
+        onClick={() => {
+          recentDeliveries(record.id);
+        }}
+      >
+        {record[props.source]}
+      </Typography>
+    );
+  };
+
+  const IconsField = (props: any) => {
     const record = useRecordContext(props);
     if (!record || !props.source) {
       return null;
@@ -87,9 +111,10 @@ const Webhooks = () => {
       record[props.source] && (
         <Box
           style={{
+            width: "100%",
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
+            justifyContent: "space-around",
           }}
         >
           <Tooltip title="Edit Webhooks" placement="top">
@@ -97,7 +122,7 @@ const Webhooks = () => {
               onClick={() => {
                 setOpenEditWebhooks(true);
                 setModeOfPopup("Update");
-                setSelectedWebhookDetails(record);
+                setWebhookDetailsForUpdate(record);
               }}
               fontSize="small"
               color="disabled"
@@ -108,7 +133,7 @@ const Webhooks = () => {
             <DeleteOutlineOutlinedIcon
               onClick={() => {
                 setOpenDeleteWebhooks(true);
-                setSelectedWebhookDetails(record);
+                setWebhookDetailsForUpdate(record);
               }}
               fontSize="small"
               color="disabled"
@@ -164,36 +189,28 @@ const Webhooks = () => {
         >
           <Datagrid
             bulkActionButtons={false}
-            rowClick="edit"
             sx={{
               overflow: "auto",
               width: "100%",
             }}
           >
-            <TextField
+            <PayloadURLFIeld
               source="payloadUrl"
               sortable={false}
               label={"Webhook URL"}
-              onClick={recentDeliveries}
-              sx={{ cursor: "pointer" }}
             />
             <ColoredField
-              source="disabled"
+              source="isLastDeliverySuccess"
               label={"Status"}
               textAlign={"center"}
               sortable={false}
             />
-            <IconField
-              source="id"
-              label={""}
-              textAlign={"center"}
-              sortable={false}
-            />
+            <IconsField source="id" sortable={false} label={""} />
           </Datagrid>
         </Box>
       </List>
 
-      {showRecentDeliveries && recentDeliveryValues && (
+      {showRecentDeliveries && recentDeliveryValues.length > 0 && (
         <RecentDeliveries recentDeliveryValues={recentDeliveryValues} />
       )}
 
@@ -206,7 +223,7 @@ const Webhooks = () => {
         headerText={"Delete Webhooks "}
         confirmText="DELETE"
         resourceName={"webhooks"}
-        selectedWebhookDetails={selectedWebhookDetails}
+        selectedWebhookDetails={webhookDetailsForUpdate}
         onRefetch={onRefetch}
         modalDescriptionText={
           <Typography sx={{ wordWrap: "breakWord" }}>
@@ -223,6 +240,7 @@ const Webhooks = () => {
         headerText={"Webhook Configuration"}
         mode={modeOfPopup}
         onRefetch={onRefetch}
+        webhookDetailsForUpdate={webhookDetailsForUpdate}
       />
     </Container>
   );

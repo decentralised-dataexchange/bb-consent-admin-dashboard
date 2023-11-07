@@ -33,7 +33,7 @@ const WebhookContentTypeDropdown = (props: Props) => {
           variant="outlined"
           fullWidth
           name={nameOfSelect}
-          defaultValue={value}
+          value={value}
           style={{
             ...dropDownStyle,
             height: "32px",

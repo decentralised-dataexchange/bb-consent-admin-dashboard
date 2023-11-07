@@ -11,6 +11,7 @@ import {
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from '@mui/icons-material/Clear';
 import { FiBox } from "react-icons/fi";
+import { formatISODateToLocalString } from "../../utils/formatISODateToLocalString";
 
 const RecentDeliveries = (props: any) => {
   const { recentDeliveryValues } = props;
@@ -74,7 +75,7 @@ const RecentDeliveries = (props: any) => {
                 </TableCell>
                 <TableCell align="right">
                   <Typography sx={{ color: "grey", fontSize: "14px" }}>
-                    {new Date(row.timestamp * 1000).toLocaleString()}
+                    {formatISODateToLocalString(row.timestamp)}
                   </Typography>
                 </TableCell>
               </TableRow>

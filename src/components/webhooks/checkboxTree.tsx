@@ -1,140 +1,153 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import {
-  Typography,
-  FormControl,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-} from "@mui/material";
+import { Controller } from "react-hook-form";
 
 interface Props {
-  webhookEventTypes: string[];
-  setEventTypesValid: Dispatch<SetStateAction<boolean>>;
-  setSelectedEventData: Dispatch<SetStateAction<any>>;
-  subscribedEventsFromWebhooksById: any;
+  control: any;
+  getValues: any;
+  setValue: any;
+  setCheckWebhookIsSelected: Dispatch<SetStateAction<boolean>>;
+  webhookEventTypesFromAPI: any;
 }
 
-const CheckboxTree = (props: Props) => {
+const CheckboxTreeForAPIKey = (props: Props) => {
   const {
-    webhookEventTypes,
-    setEventTypesValid,
-    setSelectedEventData,
-    subscribedEventsFromWebhooksById,
+    control,
+    getValues,
+    setValue,
+    setCheckWebhookIsSelected,
+    webhookEventTypesFromAPI,
   } = props;
-  let eventData = webhookEventTypes.map((str: any) => ({ name: str }));
-  let eventDataForEdit = subscribedEventsFromWebhooksById?.map((str: any) => ({
-    name: str,
-  }));
 
-  const [events, setEvents] = useState<any>(eventData);
+  const webhookEventTypes = webhookEventTypesFromAPI.map((type: any) => {
+    if (type === "consent.allowed") {
+      return "allowed";
+    } else return "disallowed";
+  });
 
-  const handleChange = (e: any) => {
-    const { name, checked } = e.target;
+  const [handleChangeTrigger, setandleChangeTrigger] = useState(false);
 
-    if (name === "allSelected") {
-      let tempEvents = events.map((event: any) => {
-        return { ...event, isChecked: checked };
+  const handleParentRadioChange = (value: string) => {
+    if (value === "all") {
+      webhookEventTypes.forEach((type: any) => {
+        setValue(`webhookEventTypes.${type}`, true);
       });
-      setEvents(tempEvents);
-    } else if (name === "selected") {
-      let tempEvents = events.map((event: any) =>
-        event.name === name ? { ...event, isChecked: checked } : event
-      );
-      setEvents(tempEvents);
-    } else {
-      let tempEvents = events.map((event: any) =>
-        event.name === name ? { ...event, isChecked: checked } : event
-      );
-      setEvents(tempEvents);
     }
+    setValue("radioGroup", value);
+    setandleChangeTrigger(!handleChangeTrigger);
+  };
+
+  const handleCheckboxChange = (fieldName: string) => {
+    if (
+      fieldName === "webhookEventTypes.allowed" ||
+      fieldName === "webhookEventTypes.disallowed"
+    ) {
+      const allChecked = webhookEventTypes.every((type: any) =>
+        getValues(`webhookEventTypes.${type}`)
+      );
+      const anyChecked = webhookEventTypes.some((type: any) =>
+        getValues(`webhookEventTypes.${type}`)
+      );
+
+      if (allChecked) {
+        setValue("radioGroup", "all");
+      } else if (anyChecked) {
+        setValue("radioGroup", "selected");
+      }
+    }
+    setandleChangeTrigger(!handleChangeTrigger);
   };
 
   useEffect(() => {
-    events.filter((event: any) => event.isChecked === true).length > 0
-      ? setEventTypesValid(true)
-      : setEventTypesValid(false);
-    const selectedArray = events.filter((event: any) => {
-      return event.isChecked === true;
-    });
-    setSelectedEventData(selectedArray);
-  }, [events]);
+    let webhookEventTypesLength = webhookEventTypes.filter(
+      (type: any) => getValues(`webhookEventTypes.${type}`) === true
+    ).length;
+    webhookEventTypesLength === 0
+      ? setCheckWebhookIsSelected(false)
+      : setCheckWebhookIsSelected(true);
+  }, [handleChangeTrigger]);
 
   return (
     <>
-      <FormControl>
-        <Typography variant="subtitle1" mt={1.5}>
-          Trigger Events
-        </Typography>
-        <RadioGroup
-          aria-labelledby="demo-radio-buttons-group-label"
-          name="radio-buttons-group"
+      <div style={{ marginTop: "10px" }}>
+        <label
+          style={{
+            fontSize: 14,
+            fontFamily: "Roboto,Helvetica,Arial,sans-serif",
+          }}
         >
-          <FormControlLabel
-            value={false}
-            name="allSelected"
-            control={
-              <Radio
-                size="small"
-                sx={{
-                  "& .MuiSvgIcon-root": {
-                    fontSize: 18,
-                  },
-                }}
-              />
-            }
-            label="All User Requests"
-            checked={
-              events?.filter((event: any) => event?.isChecked !== true).length <
-              1
-            }
-            onChange={handleChange}
+          <Controller
+            name="radioGroup"
+            control={control}
+            render={({ field }) => (
+              <>
+                <input
+                  type="radio"
+                  value="all"
+                  style={{ fontSize: "14px" }}
+                  checked={field.value === "all"}
+                  onChange={() => handleParentRadioChange("all")}
+                />
+                All User Requests
+              </>
+            )}
           />
-          <FormControlLabel
-            value={true}
-            name="selected"
-            control={
-              <Radio
-                size="small"
-                sx={{
-                  "& .MuiSvgIcon-root": {
-                    fontSize: 18,
-                  },
-                }}
-              />
-            }
-            label="Selected User Requests"
-            checked={
-              events.filter((event: any) => event?.isChecked === true)
-                ?.length !== events.length
-            }
-            onChange={handleChange}
+        </label>
+      </div>
+      <div style={{ marginTop: "10px" }}>
+        <label
+          style={{
+            fontSize: 14,
+            fontFamily: "Roboto,Helvetica,Arial,sans-serif",
+          }}
+        >
+          <Controller
+            name="radioGroup"
+            control={control}
+            render={({ field }) => (
+              <>
+                <input
+                  type="radio"
+                  value="selected"
+                  checked={field.value === "selected"}
+                  onChange={() => handleParentRadioChange("selected")}
+                />
+                Selected User Requests
+              </>
+            )}
           />
-        </RadioGroup>
-      </FormControl>
-      <form style={{ marginLeft: "25px" }}>
-        {events.map((event: any, index: number) => (
-          <div key={index}>
-            <input
-              type="checkbox"
-              style={{ height: "13px", width: "13px", marginBottom: "15px" }}
-              name={event.name}
-              checked={event?.isChecked || false }
-              onChange={handleChange}
+        </label>
+      </div>
+      {webhookEventTypes.map((type: any) => (
+        <div key={type} style={{ margin: "10px" }}>
+          <label
+            style={{
+              fontSize: 14,
+              marginLeft: "20px",
+              fontFamily: "Roboto,Helvetica,Arial,sans-serif",
+            }}
+          >
+            <Controller
+              name={`webhookEventTypes.${type}`}
+              control={control}
+              render={({ field }) => (
+                <>
+                  <input
+                    type="checkbox"
+                    checked={field.value}
+                    onChange={() => {
+                      field.onChange(!field.value);
+                      handleCheckboxChange(`webhookEventTypes.${type}`);
+                    }}
+                  />
+                  {`consent.${type}`}
+                </>
+              )}
             />
-            <label
-              style={{
-                fontSize: 16,
-                marginLeft: "3px",
-                fontFamily: "Roboto,Helvetica,Arial,sans-serif",
-              }}
-            >
-              {event.name}
-            </label>
-          </div>
-        ))}
-      </form>
+          </label>
+        </div>
+      ))}
     </>
   );
 };
 
-export default CheckboxTree;
+export default CheckboxTreeForAPIKey;
