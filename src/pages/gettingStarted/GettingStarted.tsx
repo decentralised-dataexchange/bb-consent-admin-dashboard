@@ -110,7 +110,7 @@ const GettingStarted = () => {
             <Grid item lg={3} md={6} sm={6} xs={12}>
               <Item sx={{ cursor: "pointer" }}>
                 <a
-                  href="https://docs.igrant.io/docs/"
+                  href="https://github.com/decentralised-dataexchange/bb-consent-docs/wiki/developer-documentation"
                   target="_blank"
                   rel="noreferrer"
                   style={{ textDecoration: "none" }}
