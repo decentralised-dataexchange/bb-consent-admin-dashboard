@@ -7,6 +7,7 @@ import BreadCrumb from "../../components/Breadcrumbs";
 import Dropdown from "../../components/dropdowns/dropdown";
 import { useEffect, useState } from "react";
 import { useFilterStore } from "../../store/store";
+import { useLocation } from "react-router-dom";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -43,7 +44,7 @@ const buttonStyle = {
   height: 35,
   borderRadius: 1,
   border: "1px solid #DFDFDF",
-  width: 'auto',
+  width: "auto",
   paddingLeft: "50px",
   paddingRight: "50px",
 };
@@ -51,39 +52,56 @@ const buttonStyle = {
 const filterDrpodownValues = [
   { value: "Security" },
   { value: "API Calls" },
-  { value: "Orgainsation" },
-  { value: "End User" },
   { value: "Webhooks" },
 ];
 
 const ViewLogs = () => {
   const [selectedFilterValue, setSelectedFilterValue] = useState<any>();
+  const [subscriptionMethodValue, setSubscriptionMethodValue] = useState<
+    string[]
+  >([]);
+
   const changefilterViewLogs = (filterViewLogs: any) => {
     useFilterStore.getState().updateFilterViewLogs(filterViewLogs);
   };
   const refresh = useRefresh();
+
+  const location = useLocation();
+
+  const resetStore = () => {
+    useFilterStore.getState().resetStore();
+  };
+
+  // Listen for route changes and reset the Zustand store when the route changes
+  useEffect(() => {
+    resetStore();
+    setTimeout(() => {
+      refresh();
+    }, 500);
+  }, [location.pathname]);
 
   useEffect(() => {
     if (selectedFilterValue === "Security") {
       changefilterViewLogs(1);
     } else if (selectedFilterValue === "API Calls") {
       changefilterViewLogs(2);
-    } else if (selectedFilterValue === "Orgainsation") {
-      changefilterViewLogs(3);
-    } else if (selectedFilterValue === "End User") {
-      changefilterViewLogs(4);
     } else if (selectedFilterValue === "Webhooks") {
       changefilterViewLogs(5);
     } else if (selectedFilterValue === "all") {
       changefilterViewLogs(0);
-    } else 0;
+      setSubscriptionMethodValue([]);
+    }
 
-    refresh()
+    refresh();
   }, [selectedFilterValue]);
 
   return (
     <Container>
-      <List actions={false} sx={{ width: "100%", overflow: "hidden" }} empty={false}>
+      <List
+        actions={false}
+        sx={{ width: "100%", overflow: "hidden" }}
+        empty={false}
+      >
         <Form>
           <BreadCrumb Link="Account" Link2="View Logs" />
           <HeaderContainer>
@@ -101,6 +119,8 @@ const ViewLogs = () => {
               selectWidth={"400px"}
               dropdownValues={filterDrpodownValues}
               setSelectedFilterValue={setSelectedFilterValue}
+              setSubscriptionMethodValue={setSubscriptionMethodValue}
+              subscriptionMethodValue={subscriptionMethodValue}
             />
             <Button
               style={buttonStyle}
@@ -130,16 +150,19 @@ const ViewLogs = () => {
             bulkActionButtons={false}
             sx={{
               overflow: "auto",
-              width: "100%"
+              width: "100%",
             }}
           >
-            <TextField source="action" label={"Action"} sortable={false}/>
+            <TextField source="action" label={"Action"} sortable={false} />
             <TextField source="typeStr" label={"Category"} sortable={false} />
-            <TextField source="timestamp" label={"Timestamp"} sortable={false} />
+            <TextField
+              source="timestamp"
+              label={"Timestamp"}
+              sortable={false}
+            />
           </Datagrid>
         </Box>
       </List>
-
     </Container>
   );
 };

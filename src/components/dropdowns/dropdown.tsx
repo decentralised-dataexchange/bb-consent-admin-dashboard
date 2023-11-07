@@ -6,6 +6,7 @@ import {
   MenuItem,
   SelectChangeEvent,
 } from "@mui/material";
+import { useFilterStore } from "../../store/store";
 
 interface Props {
   displayValue: string;
@@ -14,14 +15,22 @@ interface Props {
     value: string;
   }[];
   setSelectedFilterValue?: any;
+  setSubscriptionMethodValue: any;
+  subscriptionMethodValue: any;
 }
 
 const Dropdown = (props: Props) => {
-  const { displayValue, selectWidth, dropdownValues, setSelectedFilterValue } =
-    props;
-  const [subscriptionMethodValue, setSubscriptionMethodValue] = useState<
-    string[]
-  >([]);
+  const {
+    displayValue,
+    selectWidth,
+    dropdownValues,
+    setSelectedFilterValue,
+    subscriptionMethodValue,
+    setSubscriptionMethodValue,
+  } = props;
+
+  const [handleFilterDropDownTriggered, setHandleFilterDropDownTriggered] =
+    useState(false);
 
   const handleChange = (
     event: SelectChangeEvent<typeof subscriptionMethodValue>
@@ -39,6 +48,7 @@ const Dropdown = (props: Props) => {
     setSelectedFilterValue(
       subscriptionMethodValue?.[0] ? subscriptionMethodValue[0] : ""
     );
+    setHandleFilterDropDownTriggered(!handleFilterDropDownTriggered);
   }, [subscriptionMethodValue]);
 
   return (
@@ -52,7 +62,7 @@ const Dropdown = (props: Props) => {
         input={<OutlinedInput />}
         renderValue={(selected) => {
           if (selected.length === 0) {
-            return <em style={{fontSize:"14px"}}>{displayValue}</em>;
+            return <em style={{ fontSize: "14px" }}>{displayValue}</em>;
           }
 
           return selected.join(", ");

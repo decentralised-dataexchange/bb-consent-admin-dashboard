@@ -28,6 +28,7 @@ import { useFilterStore } from "../../store/store";
 import FilterByPurposeDropdown from "../../components/dropdowns/filterByPurposeDropDown";
 import FilterByLawfulBasisDropdown from "../../components/dropdowns/filterByLawfulBasisDropDown";
 import { SearchByIdRecords } from "../../components/dropdowns/searchByIdRecordsAutoselect";
+import { useLocation } from "react-router-dom";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -102,6 +103,20 @@ const UserRecords = () => {
       .getState()
       .updateDisabledLawfulBasisDropDown(disabledLawfulBasisDropDown);
   };
+
+  const location = useLocation();
+
+  const resetStore = () => {
+    useFilterStore.getState().resetStore();
+  };
+
+  // Listen for route changes and reset the Zustand store when the route changes
+  useEffect(() => {
+    resetStore();
+    setTimeout(() => {
+      refresh();
+    }, 500);
+  }, [location.pathname]);
 
   useEffect(() => {
     refresh();
@@ -310,16 +325,36 @@ const UserRecords = () => {
               width: "100%",
             }}
           >
-            <TextField source="id" label={"Consent Record ID"} sortable={false} />
-            <TextField source="individualId" label={"Individual ID"} sortable={false}  />
-            <TextField source="dataAgreement.purpose" label={"Purpose"} sortable={false}  />
+            <TextField
+              source="id"
+              label={"Consent Record ID"}
+              sortable={false}
+            />
+            <TextField
+              source="individualId"
+              label={"Individual ID"}
+              sortable={false}
+            />
+            <TextField
+              source="dataAgreement.purpose"
+              label={"Purpose"}
+              sortable={false}
+            />
             <TextField
               source="dataAgreement.lawfulBasis"
               label={"Lawful Basis"}
-              sortable={false} 
+              sortable={false}
             />
-            <TextField source="optIn" label={"Agreement Event"} sortable={false} />
-            <TextField source="timestamp" label={"Timestamp"} sortable={false}  />
+            <TextField
+              source="optIn"
+              label={"Agreement Event"}
+              sortable={false}
+            />
+            <TextField
+              source="timestamp"
+              label={"Timestamp"}
+              sortable={false}
+            />
             <IconsFIeld source="id" label={""} sortable={false} />
           </Datagrid>
         </Box>
