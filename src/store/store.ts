@@ -44,6 +44,20 @@ export let store = (set: any) => ({
     set(() => ({ disabledPurposeDropDown: disabledPurposeDropDown })),
   updateDisabledLawfulBasisDropDown: (disabledLawfulBasisDropDown: any) =>
     set(() => ({ disabledLawfulBasisDropDown: disabledLawfulBasisDropDown })),
+
+  // reset function to call when route is changed
+  resetStore: () =>
+    set({
+      filterDataAgreement: "all",
+      filterDataAttribute: "all",
+      filterViewLogs: 0,
+      disabledPurposeDropDown: true,
+      disabledLawfulBasisDropDown: true,
+      userRecordsFilter: {
+        filterType: "all",
+        value: "all",
+      },
+    }),
 });
 
 let devtoolsStore = devtools(store);

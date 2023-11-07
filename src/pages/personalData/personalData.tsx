@@ -17,6 +17,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import BreadCrumb from "../../components/Breadcrumbs";
 import EditPersonalDataModal from "../../components/modals/editPersonalDataModal";
 import { useFilterStore } from "../../store/store";
+import { useLocation } from "react-router-dom";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -48,23 +49,40 @@ const PersonalData = () => {
   const changefilterDataAttribute = (filterDataAgreement: string) => {
     useFilterStore.getState().updateFilterDataAttribute(filterDataAgreement);
   };
+  const location = useLocation();
+
+  const resetStore = () => {
+    useFilterStore.getState().resetStore();
+  };
+
+  // Listen for route changes and reset the Zustand store when the route changes
+  useEffect(() => {
+    resetStore();
+    setTimeout(() => {
+      refresh();
+    }, 500);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    refresh();
+  }, [handleChangeTriggered]);
 
   useEffect(() => {
     refresh();
   }, [handleChangeTriggered]);
 
   const handleChange = (e: any) => {
-    setHandleChangeTriggered(!handleChangeTriggered);
     const { name } = e.target;
 
     if (name === "data_source") {
       changefilterDataAttribute("data_source");
+      setHandleChangeTriggered(!handleChangeTriggered);
     } else if (name === "data_using_service") {
       changefilterDataAttribute("data_using_service");
+      setHandleChangeTriggered(!handleChangeTriggered);
     } else if (name === "all") {
       changefilterDataAttribute("all");
-    } else {
-      changefilterDataAttribute("all");
+      setHandleChangeTriggered(!handleChangeTriggered);
     }
   };
 
@@ -135,8 +153,16 @@ const PersonalData = () => {
             }}
             rowClick="edit"
           >
-            <TextField source="name" label={"Data Attribute Name"} sortable={false} />
-            <TextField source="description" label={"Description"} sortable={false} />
+            <TextField
+              source="name"
+              label={"Data Attribute Name"}
+              sortable={false}
+            />
+            <TextField
+              source="description"
+              label={"Description"}
+              sortable={false}
+            />
             <TextField
               source="dataAgreement.purpose"
               label={"Data Agreement"}

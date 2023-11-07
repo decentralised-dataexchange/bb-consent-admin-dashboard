@@ -38,6 +38,7 @@ import {
   getLawfulBasisOfProcessing,
   getPublishValues,
 } from "../../interfaces/DataAgreement";
+import { useLocation } from "react-router-dom";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -88,20 +89,33 @@ const DataAgreement = () => {
     useFilterStore.getState().updateFilterDataAgreement(filterDataAgreement);
   };
 
+  const location = useLocation();
+
+  const resetStore = () => {
+    useFilterStore.getState().resetStore();
+  };
+
+  // Listen for route changes and reset the Zustand store when the route changes
+  useEffect(() => {
+    resetStore();
+    setTimeout(() => {
+      refresh();
+    }, 500);
+  }, [location.pathname]);
+
   useEffect(() => {
     refresh();
   }, [handleChangeTriggered]);
 
   const handleChange = (e: any) => {
-    setHandleChangeTriggered(!handleChangeTriggered);
     const { name } = e.target;
 
     if (name === "complete") {
       changefilterDataAgreement("complete");
+      setHandleChangeTriggered(!handleChangeTriggered);
     } else if (name === "all") {
       changefilterDataAgreement("all");
-    } else {
-      changefilterDataAgreement("all");
+      setHandleChangeTriggered(!handleChangeTriggered);
     }
   };
 
