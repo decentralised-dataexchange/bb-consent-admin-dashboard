@@ -96,7 +96,7 @@ const UserAccess = () => {
           <Typography variant="h6" fontWeight="bold">
             User Access
           </Typography>
-          <Tooltip title="Create Data Agreement" placement="top">
+          <Tooltip title="Create User Access" placement="top">
             <AddCircleOutlineOutlinedIcon
               style={{
                 cursor: configured ? "not-allowed" : "pointer",
@@ -136,7 +136,7 @@ const UserAccess = () => {
                   style={{ cursor: "pointer" }}
                 />
               </Tooltip>
-              <Tooltip title="Delete Data Agreement" placement="top">
+              <Tooltip title="Delete User Access" placement="top">
                 <DeleteOutlineOutlinedIcon
                   onClick={() => setOpenDeleteUserAccessModal(true)}
                   fontSize="medium"
