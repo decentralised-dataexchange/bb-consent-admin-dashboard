@@ -326,7 +326,7 @@ const UserRecords = () => {
             }}
           >
             <TextField
-              source="id"
+              source="consentRecordId"
               label={"Consent Record ID"}
               sortable={false}
             />
@@ -338,6 +338,11 @@ const UserRecords = () => {
             <TextField
               source="dataAgreement.purpose"
               label={"Purpose"}
+              sortable={false}
+            />
+            <TextField
+              source="dataAgreement.version"
+              label={"Version"}
               sortable={false}
             />
             <TextField
@@ -355,7 +360,7 @@ const UserRecords = () => {
               label={"Timestamp"}
               sortable={false}
             />
-            <IconsFIeld source="id" label={""} sortable={false} />
+            <IconsFIeld source="consentRecordId" label={""} sortable={false} />
           </Datagrid>
         </Box>
       </List>
