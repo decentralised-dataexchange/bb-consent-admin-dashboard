@@ -10,17 +10,25 @@ type Props = {
   editMode: boolean;
   logoImageBase64: string;
   setLogoImageBase64: Dispatch<SetStateAction<string>>;
+  setFormDataForImageUpload: any;
+  previewImage: any;
+  setPreviewImage: any;
 };
 
 const ManageAdminProfilePicUpload = (props: Props) => {
-  const { logoImageBase64, setLogoImageBase64 } = props;
+  const {
+    logoImageBase64,
+    setFormDataForImageUpload,
+    previewImage,
+    setPreviewImage,
+  } = props;
 
   const myFile: { file: string; imagePreviewUrl: any } = {
     file: "",
     imagePreviewUrl: "",
   };
 
-  const handleCsvFile = async (e: any) => {
+  const handleChangeImage = async (e: any) => {
     let reader = new FileReader();
     let file = e.target.files[0];
     let image = /image.jpeg/;
@@ -28,6 +36,7 @@ const ManageAdminProfilePicUpload = (props: Props) => {
     reader.onloadend = () => {
       myFile.file = file;
       myFile.imagePreviewUrl = reader.result;
+      setPreviewImage(reader.result);
     };
 
     if (file.type.match(image)) {
@@ -35,23 +44,24 @@ const ManageAdminProfilePicUpload = (props: Props) => {
 
       const formData = new FormData();
       formData.append("avatarimage", file);
-
-      HttpService.updateAdminAvatar(formData)
-        .then((res) => {
-          // Get the newly uploaded image from the server
-          HttpService.getAdminAvatarImage().then((imageBase64) => {
-            setLogoImageBase64(imageBase64);
-            LocalStorageService.updateProfilePic(imageBase64);
-          });
-        })
-        .catch((error) => {
-          console.log(`Error: ${error}`);
-        });
+      setFormDataForImageUpload(formData);
     }
   };
 
   return (
     <>
+      {previewImage && (
+        <Avatar
+          src={previewImage}
+          style={{
+            position: "absolute",
+            opacity: props.editMode ? 1 : 0,
+            width: "130px",
+            height: "130px",
+            border: "solid white 6px",
+          }}
+        />
+      )}
       <Avatar
         src={
           logoImageBase64 &&
@@ -87,7 +97,7 @@ const ManageAdminProfilePicUpload = (props: Props) => {
                 id="uploadProfileImage"
                 name="uploadProfileImage"
                 hidden={true}
-                onChange={handleCsvFile}
+                onChange={handleChangeImage}
               />
             </form>
           </div>
