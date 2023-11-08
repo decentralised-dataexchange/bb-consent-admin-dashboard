@@ -35,14 +35,17 @@ export const getLawfulBasisOfProcessing = (LawfulBasisOfProcessing: string) => {
 
 export const convertConsentRecordsForClient = (consentRecords: any) => {
   const consentRecordsConvertedDataForClientPurpose =
-    consentRecords.consentRecords.map((consentRecords: any) => {
-      const { optIn, timestamp,dataAgreement, ...otherProps } = consentRecords;
+    consentRecords.consentRecords.map((consentRecords: any, index:number) => {
+      const {id, optIn, timestamp,dataAgreement, ...otherProps } = consentRecords;
       return {
+        id: index,
+        consentRecordId: id,
         optIn: getOptinValues(optIn),
         timestamp: formatISODateToLocalString(timestamp),
         dataAgreement:{
           lawfulBasis: getLawfulBasisOfProcessing(dataAgreement.lawfulBasis),
-          purpose:dataAgreement.purpose
+          purpose:dataAgreement.purpose,
+          version:dataAgreement.version,
         },
         ...otherProps,
       };
