@@ -62,9 +62,14 @@ const ManageAdmin = () => {
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [formDataForImageUpload, setFormDataForImageUpload] = useState<any>();
+  const [previewImage, setPreviewImage] = useState<any>();
 
   const handleEdit = (event: React.MouseEvent<HTMLElement>) => {
     setEditMode(!editMode);
+    setFormDataForImageUpload("");
+    setPreviewImage("");
+    setAdminName("");
   };
 
   useEffect(() => {
@@ -77,24 +82,38 @@ const ManageAdmin = () => {
   }, []);
 
   const onClickSave = () => {
-      const { name, ...otherProps } = adminDetails;
-      let payload = {
-        organisationAdmin: {
-          name: adminName ? adminName : adminDetails.name,
-          ...otherProps,
-        },
-      };
-      HttpService.updateOrganisationAdminDetails(payload).then((res) => {
-        setEditMode(false);
-        setAdminDetails(res.data.organisationAdmin);
-        LocalStorageService.updateUser(res.data.organisationAdmin);
-      });
-  
+    const { name, ...otherProps } = adminDetails;
+    let payload = {
+      organisationAdmin: {
+        name: adminName ? adminName : adminDetails.name,
+        ...otherProps,
+      },
+    };
+    HttpService.updateOrganisationAdminDetails(payload).then((res) => {
+      setEditMode(false);
+      setAdminDetails(res.data.organisationAdmin);
+      LocalStorageService.updateUser(res.data.organisationAdmin);
+    });
+
+    if (formDataForImageUpload) {
+      HttpService.updateAdminAvatar(formDataForImageUpload)
+        .then((res) => {
+          // Get the newly uploaded image from the server
+          HttpService.getAdminAvatarImage().then((imageBase64) => {
+            setLogoImageBase64(imageBase64);
+            LocalStorageService.updateProfilePic(imageBase64);
+            setFormDataForImageUpload("");
+          });
+        })
+        .catch((error) => {
+          console.log(`Error: ${error}`);
+        });
+    }
   };
 
   const onClickRestPassWord = () => {
-    setSuccess("")
-    setError("")
+    setSuccess("");
+    setError("");
     if (newPassword !== confirmNewPassword) {
       setError("New password and confirm new password should be same");
       setOpenSnackBar(true);
@@ -108,19 +127,19 @@ const ManageAdmin = () => {
         currentPassword: currentPassword,
         newPassword: newPassword,
       };
-      HttpService.resetPassword(payload).then(() => {
-        setCurrentPassword("");
-        setNewPassword("");
-        setConfirmNewPassword("");
+      HttpService.resetPassword(payload)
+        .then(() => {
+          setCurrentPassword("");
+          setNewPassword("");
+          setConfirmNewPassword("");
 
-        setSuccess("Password Changed");
-        setOpenSnackBar(true);
-      }).catch((error)=>{
-        console.log("error", error.message)
-        setError(error.message);
-        setOpenSnackBar(true);
-
-      })
+          setSuccess("Password Changed");
+          setOpenSnackBar(true);
+        })
+        .catch((error) => {
+          setError(error.message);
+          setOpenSnackBar(true);
+        });
     }
   };
 
@@ -180,6 +199,9 @@ const ManageAdmin = () => {
                       editMode={editMode}
                       logoImageBase64={logoImageBase64}
                       setLogoImageBase64={setLogoImageBase64}
+                      setFormDataForImageUpload={setFormDataForImageUpload}
+                      previewImage={previewImage}
+                      setPreviewImage={setPreviewImage}
                     />
                   </Box>
                 </Grid>
