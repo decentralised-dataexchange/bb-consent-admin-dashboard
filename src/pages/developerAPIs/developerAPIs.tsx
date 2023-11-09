@@ -26,6 +26,7 @@ import {
 } from "react-admin";
 import CreateApiKeyModal from "../../components/modals/createApiKeyModal";
 import { capitalizeFirstLetter } from "../../utils/capitaliseFIrstLetter";
+import { formatISODateToLocalString } from "../../utils/formatISODateToLocalString";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -109,13 +110,10 @@ const DeveloperAPIs = () => {
     }
     return (
       record[props.source] && (
-        <Typography variant="body2">{record[props.source]} days</Typography>
+        <Typography variant="body2">{formatISODateToLocalString(record[props.source])}</Typography>
       )
     );
   };
-
-
-
 
   const ScopeField = (props: any) => {
     const record = useRecordContext(props);
@@ -127,7 +125,11 @@ const DeveloperAPIs = () => {
       <Box style={{ display: "flex" }}>
         {scopes.map((scope: any, i: number) => {
           if (i + 1 === scopes.length) {
-            return <Typography variant="body2">{capitalizeFirstLetter(scope)} </Typography>;
+            return (
+              <Typography variant="body2">
+                {capitalizeFirstLetter(scope)}{" "}
+              </Typography>
+            );
           } else {
             return (
               <Typography variant="body2" style={{ marginRight: 7 }}>
@@ -277,8 +279,8 @@ const DeveloperAPIs = () => {
                   }}
                 >
                   <TextField
-                    source="id"
-                    label={"API Key ID"}
+                    source="name"
+                    label={"API Key Name"}
                     sortable={false}
                   />
                   <ScopeField
@@ -287,7 +289,7 @@ const DeveloperAPIs = () => {
                     sortable={false}
                   />
                   <ExpiryField
-                    source="expiryInDays"
+                    source="expiryTimestamp"
                     label={"Expiry"}
                     sortable={false}
                   />

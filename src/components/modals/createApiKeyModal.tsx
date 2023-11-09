@@ -40,6 +40,7 @@ export default function CreateApiKeyModal(props: Props) {
     reset,
   } = useForm<any>({
     defaultValues: {
+      name: "",
       expiryInDays: 30,
       radioGroup: "selected",
       scopes: {
@@ -68,6 +69,7 @@ export default function CreateApiKeyModal(props: Props) {
 
       let payload = {
         apiKey: {
+          name: createdData.name,
           scopes: selectedScopes,
           expiryInDays: createdData.expiryInDays,
         },
@@ -99,7 +101,22 @@ export default function CreateApiKeyModal(props: Props) {
             </HeaderContainer>
             <DetailsContainer>
               <Box p={1.5}>
-                <Typography variant="subtitle1" mb={0}>
+              <Typography variant="subtitle1" mb={0}>
+                  Api Key Name
+                  <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
+                </Typography>
+                <TextField
+                  autoComplete="off"
+                  sx={{ margin: 0 }}
+                  autoFocus
+                  variant="standard"
+                  fullWidth
+                  placeholder="Please type name of api key..."
+                  {...register("name", {
+                    required: true,
+                  })}
+                />
+                <Typography variant="subtitle1" mb={0} mt={2}>
                   Expiry In Days
                   <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                 </Typography>
