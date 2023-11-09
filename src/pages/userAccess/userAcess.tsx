@@ -12,6 +12,7 @@ import BreadCrumb from "../../components/Breadcrumbs";
 import GeneralModal from "../../components/modals/generalModal";
 import EditUserAccessModal from "../../components/modals/editUserAccessModal";
 import { HttpService } from "../../service/HTTPService";
+import SnackbarComponent from "../../components/notification";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -57,6 +58,9 @@ const UserAccess = () => {
     useState(false);
   const [configured, setConfigured] = useState(false);
   const [idpDetails, setIdpDetails] = useState<any>();
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("")
+
   useEffect(() => {
     HttpService.listAllIdps().then((response) => {
       if (response.idps.length !== 0) {
@@ -77,6 +81,8 @@ const UserAccess = () => {
 
       HttpService.addIndividualUsingByCsv(formData)
         .then((res) => {
+          setOpenSnackBar(true)
+          setSuccessMessage("User onboarding in progress. This process may take a little while!")
           fileInputRef.current.value = "";
         })
         .catch((error) => {
@@ -89,6 +95,12 @@ const UserAccess = () => {
   return (
     <Container>
       <BreadCrumb Link="Manage Users" Link2="Configuration" />
+      <SnackbarComponent
+        open={openSnackBar}
+        setOpen={setOpenSnackBar}
+        topStyle={100}
+        successMessage={successMessage}
+      />
       <HeaderContainer>
         <Box
           style={{
