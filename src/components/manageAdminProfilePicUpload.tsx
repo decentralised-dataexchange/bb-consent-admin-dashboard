@@ -1,10 +1,7 @@
 import { Avatar, Box } from "@mui/material";
 import LogoCammera from "../assets/camera_photo2.png";
-import DefaultLogo from "../assets/OrganisationDefaultLogo.png";
 
-import { HttpService } from "../service/HTTPService";
-import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { LocalStorageService } from "../service/localStorageService";
+import { Dispatch, SetStateAction } from "react";
 
 type Props = {
   editMode: boolean;

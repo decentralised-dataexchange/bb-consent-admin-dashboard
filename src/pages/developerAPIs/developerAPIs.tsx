@@ -280,7 +280,7 @@ const DeveloperAPIs = () => {
                 >
                   <TextField
                     source="name"
-                    label={"API Key Name"}
+                    label={"Name"}
                     sortable={false}
                   />
                   <ScopeField
