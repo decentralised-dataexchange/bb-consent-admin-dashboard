@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction } from "react";
 type Props = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  message: string;
+  message?: string;
   topStyle?: number;
   successMessage?: string;
 };
