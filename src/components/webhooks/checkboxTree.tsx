@@ -87,7 +87,7 @@ const CheckboxTreeForAPIKey = (props: Props) => {
                   checked={field.value === "all"}
                   onChange={() => handleParentRadioChange("all")}
                 />
-                All User Requests
+                All Events
               </>
             )}
           />
@@ -111,7 +111,7 @@ const CheckboxTreeForAPIKey = (props: Props) => {
                   checked={field.value === "selected"}
                   onChange={() => handleParentRadioChange("selected")}
                 />
-                Selected User Requests
+                Selected Events
               </>
             )}
           />

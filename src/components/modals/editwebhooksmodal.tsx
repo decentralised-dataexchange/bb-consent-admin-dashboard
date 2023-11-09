@@ -16,10 +16,8 @@ import {
 } from "./modalStyle";
 import CheckboxTree from "../webhooks/checkboxTree";
 import { HttpService } from "../../service/HTTPService";
-import { FormProvider, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
-import WebhookSelect from "../dropdowns/webhookSelects";
-import { useParams } from "react-router-dom";
 
 interface Props {
   open: boolean;
@@ -107,7 +105,6 @@ export default function EditWebooks(props: Props) {
   }, [open, webhookDetailsForUpdate]);
 
   const onSubmit = (createdData: any) => {
-    // console.log("created data", createdData)
     const { webhookEventTypes, radioGroup, ...otherProps } = createdData;
     let EventTypes = Object.keys(webhookEventTypes).map((key) => ({
       key: key,
@@ -196,7 +193,7 @@ export default function EditWebooks(props: Props) {
                   })}
                 />
                 <Typography variant="subtitle1" mt={1.5}>
-                  Trigger Events
+                  Events
                   <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                 </Typography>
                 <CheckboxTree
@@ -205,11 +202,6 @@ export default function EditWebooks(props: Props) {
                   getValues={getValues}
                   setValue={setValue}
                   setCheckWebhookIsSelected={setCheckWebhookIsSelected}
-                  // setEventTypesValid={setEventTypesValid}
-                  // setSelectedEventData={setSelectedEventData}
-                  // subscribedEventsFromWebhooksById={
-                  //   subscribedEventsFromWebhooksById
-                  // }
                 />
               </Box>
             </DetailsContainer>

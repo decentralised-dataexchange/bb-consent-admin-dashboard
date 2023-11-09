@@ -102,7 +102,7 @@ export default function CreateApiKeyModal(props: Props) {
             <DetailsContainer>
               <Box p={1.5}>
               <Typography variant="subtitle1" mb={0}>
-                  Api Key Name
+                  Name
                   <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                 </Typography>
                 <TextField
@@ -117,7 +117,7 @@ export default function CreateApiKeyModal(props: Props) {
                   })}
                 />
                 <Typography variant="subtitle1" mb={0} mt={2}>
-                  Expiry In Days
+                  Expiry in Day (s)
                   <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                 </Typography>
                 <TextField
@@ -133,7 +133,7 @@ export default function CreateApiKeyModal(props: Props) {
                   })}
                 />
                 <Typography variant="subtitle1" mb={0} mt={2}>
-                  Trigger Scope
+                  Scopes
                   <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                 </Typography>
                 <CheckboxTreeForAPIKey
