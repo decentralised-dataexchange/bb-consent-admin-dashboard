@@ -82,19 +82,6 @@ const ManageAdmin = () => {
   }, []);
 
   const onClickSave = () => {
-    const { name, ...otherProps } = adminDetails;
-    let payload = {
-      organisationAdmin: {
-        name: adminName ? adminName : adminDetails.name,
-        ...otherProps,
-      },
-    };
-    HttpService.updateOrganisationAdminDetails(payload).then((res) => {
-      setEditMode(false);
-      setAdminDetails(res.data.organisationAdmin);
-      LocalStorageService.updateUser(res.data.organisationAdmin);
-    });
-
     if (formDataForImageUpload) {
       HttpService.updateAdminAvatar(formDataForImageUpload)
         .then((res) => {
@@ -109,6 +96,19 @@ const ManageAdmin = () => {
           console.log(`Error: ${error}`);
         });
     }
+    
+    const { name, ...otherProps } = adminDetails;
+    let payload = {
+      organisationAdmin: {
+        name: adminName ? adminName : adminDetails.name,
+        ...otherProps,
+      },
+    };
+    HttpService.updateOrganisationAdminDetails(payload).then((res) => {
+      setEditMode(false);
+      setAdminDetails(res.data.organisationAdmin);
+      LocalStorageService.updateUser(res.data.organisationAdmin);
+    });
   };
 
   const onClickRestPassWord = () => {
