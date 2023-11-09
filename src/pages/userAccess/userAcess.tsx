@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Box, Typography, Tooltip } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -12,7 +12,6 @@ import BreadCrumb from "../../components/Breadcrumbs";
 import GeneralModal from "../../components/modals/generalModal";
 import EditUserAccessModal from "../../components/modals/editUserAccessModal";
 import { HttpService } from "../../service/HTTPService";
-import { display } from "@mui/system";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -66,8 +65,9 @@ const UserAccess = () => {
       }
     });
   }, [openDeleteUserAccessModal, openEditUserAccessModal]);
+  const fileInputRef = useRef<any>(null);
 
-  const handleCSVFile = async (e: any) => {
+  const handleCSVFile = (e: any) => {
     let file = e.target.files[0];
     let csv = /text.csv/;
 
@@ -76,9 +76,12 @@ const UserAccess = () => {
       formData.append("individuals", file);
 
       HttpService.addIndividualUsingByCsv(formData)
-        .then((res) => {})
+        .then((res) => {
+          fileInputRef.current.value = "";
+        })
         .catch((error) => {
           console.log(`Error: ${error}`);
+          e.target.value = null;
         });
     }
   };
@@ -173,21 +176,22 @@ const UserAccess = () => {
                     color: "white",
                   },
                   color: "black",
-                  display:"flex",
-                  alignItems:"center"
+                  display: "flex",
+                  alignItems: "center",
                 }}
               >
                 <Typography variant="body2">UPLOAD</Typography>
               </Box>
             </label>
             <input
+              ref={fileInputRef}
               accept=".csv"
               id="uploadCSV"
               name="uploadCSV"
               hidden={true}
               type="file"
-              multiple={false}
-              onChange={handleCSVFile}
+              multiple={true}
+              onChange={(e) => handleCSVFile(e)}
             />
           </form>
         </Box>
