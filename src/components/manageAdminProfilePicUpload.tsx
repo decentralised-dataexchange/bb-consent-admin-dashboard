@@ -2,6 +2,7 @@ import { Avatar, Box } from "@mui/material";
 import LogoCammera from "../assets/camera_photo2.png";
 
 import { Dispatch, SetStateAction } from "react";
+import { LocalStorageService } from "../service/localStorageService";
 
 type Props = {
   editMode: boolean;
@@ -14,12 +15,12 @@ type Props = {
 
 const ManageAdminProfilePicUpload = (props: Props) => {
   const {
-    logoImageBase64,
     setFormDataForImageUpload,
     previewImage,
     setPreviewImage,
   } = props;
 
+  let adminLogoImageBase64 = LocalStorageService.getUserProfilePic()
   const myFile: { file: string; imagePreviewUrl: any } = {
     file: "",
     imagePreviewUrl: "",
@@ -61,8 +62,8 @@ const ManageAdminProfilePicUpload = (props: Props) => {
       )}
       <Avatar
         src={
-          logoImageBase64 &&
-          `data:image/jpeg;charset=utf-8;base64,${logoImageBase64}`
+          adminLogoImageBase64 &&
+          `data:image/jpeg;charset=utf-8;base64,${adminLogoImageBase64}`
         }
         style={{
           position: "absolute",
