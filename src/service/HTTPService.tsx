@@ -69,22 +69,20 @@ export const HttpService = {
     };
     return httpClient.post(ENDPOINTS.login(), payload);
   },
-  // logout: async (): Promise<any> => {
-  //   const config: object = {
-  //     headers: { ...getAuthenticatedHeaders() },
-  //   };
-  //   const refresh_token = LocalStorageService.getRefreshToken();
-  //   const payload: object = {
-  //     clientid: process.env.REACT_APP_CLIENT_ID,
-  //     refreshtoken: refresh_token,
-  //   };
-  //   return httpClient.post(ENDPOINTS.logout(), payload, config);
-  // },
+  logout: async (): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    const refresh_token = LocalStorageService.getRefreshToken();
+    const payload: object = {
+      refreshtoken: refresh_token,
+    };
+    return httpClient.post(ENDPOINTS.logout(), payload, config);
+  },
   refreshToken: async (refresh_token: string): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
-    // const refresh_token = LocalStorageService.getRefreshToken()
     const payload: object = {
       clientId: process.env.REACT_APP_CLIENT_ID,
       refreshToken: refresh_token,

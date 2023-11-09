@@ -2,7 +2,7 @@ export const ENDPOINTS = {
   login: () => {
     return "/onboard/admin/login";
   },
-  // logout: () => {return "/users/logout"},
+  logout: () => {return "/onboard/logout"},
   refreshToken: () => {
     return "/onboard/token/refresh";
   },

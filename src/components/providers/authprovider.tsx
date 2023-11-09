@@ -34,12 +34,11 @@ export const myAuthProvider = {
     LocalStorageService.getAccessToken()
       ? Promise.resolve()
       : Promise.reject({ message: false }),
-  // logout: () => {
-  //   return HttpService.logout()
-  //     .then((res) => {})
-  //     .catch((error) => {});
-  // },
-  logout: (params: any): Promise<any> => Promise.resolve(),
+  logout: () => {
+    return HttpService.logout()
+      .then((res) => {})
+      .catch((error) => {});
+  },
   getIdentity: (): Promise<any> => {
     try {
       const { lastVisited, name, email } = LocalStorageService.getUser();
