@@ -77,11 +77,23 @@ const ManageAdmin = () => {
       setAdminDetails(res.data);
       HttpService.getAdminAvatarImage().then((imageBase64) => {
         setLogoImageBase64(imageBase64);
+        LocalStorageService.updateProfilePic(imageBase64);
       });
     });
-  }, []);
+  }, [logoImageBase64]);
 
   const onClickSave = () => {
+    let payload = {
+      organisationAdmin: {
+        name: adminName ? adminName : adminDetails.name,
+      },
+    };
+    HttpService.updateOrganisationAdminDetails(payload).then((res) => {
+      setEditMode(false);
+      setAdminDetails(res.data.organisationAdmin);
+      LocalStorageService.updateUser(res.data.organisationAdmin);
+    });
+    
     if (formDataForImageUpload) {
       HttpService.updateAdminAvatar(formDataForImageUpload)
         .then((res) => {
@@ -90,25 +102,13 @@ const ManageAdmin = () => {
             setLogoImageBase64(imageBase64);
             LocalStorageService.updateProfilePic(imageBase64);
             setFormDataForImageUpload("");
+            setPreviewImage("");
           });
         })
         .catch((error) => {
           console.log(`Error: ${error}`);
         });
     }
-    
-    const { name, ...otherProps } = adminDetails;
-    let payload = {
-      organisationAdmin: {
-        name: adminName ? adminName : adminDetails.name,
-        ...otherProps,
-      },
-    };
-    HttpService.updateOrganisationAdminDetails(payload).then((res) => {
-      setEditMode(false);
-      setAdminDetails(res.data.organisationAdmin);
-      LocalStorageService.updateUser(res.data.organisationAdmin);
-    });
   };
 
   const onClickRestPassWord = () => {
