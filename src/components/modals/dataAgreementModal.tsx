@@ -198,8 +198,9 @@ export default function DataAgreementModal(props: Props) {
           Jurisdiction: dataAgreements.policy.jurisdiction,
           IndustryScope: dataAgreements.policy.industrySector,
           StorageLocation: dataAgreements.policy.storageLocation,
-          dataRetentionPeriodDays:
-            dataAgreements.policy.dataRetentionPeriodDays,
+          dataRetentionPeriodDays: Math.floor(
+            dataAgreements.policy.dataRetentionPeriodDays / 365
+          ),
           Restriction: dataAgreements.policy.geographicRestriction,
           Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
           DpiaDate: dataAgreements.dpiaDate,
