@@ -8,7 +8,6 @@ import ManageAdminProfilePicUpload from "../../components/manageAdminProfilePicU
 import { HttpService } from "../../service/HTTPService";
 import { LocalStorageService } from "../../service/localStorageService";
 import SnackbarComponent from "../../components/notification";
-import { TextInput } from "react-admin";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
