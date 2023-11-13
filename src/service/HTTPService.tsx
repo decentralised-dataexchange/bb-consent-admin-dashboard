@@ -163,13 +163,14 @@ export const HttpService = {
     offsetValue: number,
     pageSize: number,
     filter: string,
-    revisionId: string | undefined
+    revisionId: string | undefined,
+    includeRevisions: boolean | string
   ): Promise<any> => {
     const config: object = {
       headers: { ...getAuthenticatedHeaders() },
     };
     return httpClient
-      .get(ENDPOINTS.listDataAgreements(offsetValue, pageSize, filter, revisionId), config)
+      .get(ENDPOINTS.listDataAgreements(offsetValue, pageSize, filter, revisionId, includeRevisions), config)
       .then((res) => {
         const dataAgreements: DataAgreementsResponse = res.data;
         return dataAgreements

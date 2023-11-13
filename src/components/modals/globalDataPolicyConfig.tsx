@@ -362,7 +362,6 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                               control={control}
                               render={({ field: { onChange, value } }) => (
                                 <>
-                                  {console.log("value,", value)}
                                   <Select
                                     onChange={(e: any) => {
                                       onChange(e);
