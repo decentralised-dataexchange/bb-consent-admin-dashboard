@@ -45,7 +45,6 @@ export default function MyAppBar() {
             firstName={identity?.name}
             lastVisited={identity?.lastVisited}
             email={identity?.email}
-            image={identity?.imageUrl}
           />
         </Toolbar>
       </AppBar>

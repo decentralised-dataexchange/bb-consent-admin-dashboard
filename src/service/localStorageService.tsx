@@ -25,9 +25,9 @@ export const LocalStorageService = {
     localStorage.removeItem("cachedLogoImage");
   },
   updateProfilePic: (avatar: any) => {
-    localStorage.setItem("Avatar", JSON.stringify(avatar));
+    localStorage.setItem("Avatar", avatar);
   },
   getUserProfilePic: (): any => {
-    return JSON.parse(localStorage.getItem("Avatar")!);
+    return localStorage.getItem("Avatar")!;
   },
 };

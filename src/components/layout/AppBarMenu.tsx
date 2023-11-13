@@ -7,12 +7,11 @@ import { Box, Menu, Avatar, Typography, IconButton } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-
+import defaultAvatar from "../../assets/avatar.png";
 type Props = {
   firstName: string;
   email: string;
   lastVisited: string;
-  image: any;
 };
 
 export const AppBarMenu = (props: Props) => {
@@ -23,6 +22,8 @@ export const AppBarMenu = (props: Props) => {
     logout();
     LocalStorageService.clear();
   };
+
+  let Avatar = LocalStorageService.getUserProfilePic();
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -40,14 +41,18 @@ export const AppBarMenu = (props: Props) => {
         onClick={handleMenu}
         sx={{ marginLeft: "auto" }}
       >
-        {props.image ? (
-          <Avatar
-            style={{ width: "50px", height: "50px" }}
-            src={`data:image/jpeg;charset=utf-8;base64,${props.image}`}
+        {Avatar ? (
+          <img
+            style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+            src={`data:image/jpeg;charset=utf-8;base64,${Avatar}`}
             alt="img"
           />
         ) : (
-          <AccountCircle style={{ height: 60, width: 60 }} />
+          <img
+            style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+            src={defaultAvatar}
+            alt="img"
+          />
         )}
       </IconButton>
       <Menu
@@ -73,9 +78,9 @@ export const AppBarMenu = (props: Props) => {
             padding: 10,
           }}
         >
-          <Avatar
-            style={{ width: "70px", height: "70px" }}
-            src={`data:image/jpeg;charset=utf-8;base64,${props.image}`}
+          <img
+            style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+            src={`data:image/jpeg;charset=utf-8;base64,${Avatar}`}
             alt="img"
           />
           <Typography

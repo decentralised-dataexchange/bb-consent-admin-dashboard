@@ -28,15 +28,14 @@ const ManageAdminProfilePicUpload = (props: Props) => {
   const handleChangeImage = async (e: any) => {
     let reader = new FileReader();
     let file = e.target.files[0];
-    let image = /image.jpeg/;
 
-    reader.onloadend = () => {
-      myFile.file = file;
-      myFile.imagePreviewUrl = reader.result;
-      setPreviewImage(reader.result);
-    };
+    if (file && file.type && file.type.startsWith("image/")) {
+      reader.onloadend = () => {
+        myFile.file = file;
+        myFile.imagePreviewUrl = reader.result;
+        setPreviewImage(reader.result);
+      };
 
-    if (file.type.match(image)) {
       reader.readAsDataURL(file);
 
       const formData = new FormData();
@@ -90,7 +89,7 @@ const ManageAdminProfilePicUpload = (props: Props) => {
               </label>
               <input
                 type="file"
-                accept="image/jpeg,image/jpg"
+                accept="image/jpeg,image/jpg,image/png"
                 id="uploadProfileImage"
                 name="uploadProfileImage"
                 hidden={true}
