@@ -42,8 +42,7 @@ export const myAuthProvider = {
   getIdentity: (): Promise<any> => {
     try {
       const { lastVisited, name, email } = LocalStorageService.getUser();
-      const imageUrl = LocalStorageService.getUserProfilePic();
-      return Promise.resolve({ lastVisited, name, email, imageUrl });
+      return Promise.resolve({ lastVisited, name, email });
     } catch (error) {
       return Promise.reject(error);
     }

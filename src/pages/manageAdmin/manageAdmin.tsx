@@ -63,6 +63,10 @@ const ManageAdmin = () => {
   const [success, setSuccess] = useState("");
   const [formDataForImageUpload, setFormDataForImageUpload] = useState<any>();
   const [previewImage, setPreviewImage] = useState<any>();
+  let myFile: { file: string; imagePreviewUrl: any } = {
+    file: "",
+    imagePreviewUrl: "",
+  };
 
   const handleEdit = (event: React.MouseEvent<HTMLElement>) => {
     setEditMode(!editMode);
@@ -79,7 +83,7 @@ const ManageAdmin = () => {
         LocalStorageService.updateProfilePic(imageBase64);
       });
     });
-  }, [logoImageBase64]);
+  }, []);
 
   const onClickSave = () => {
     let payload = {
@@ -88,26 +92,26 @@ const ManageAdmin = () => {
       },
     };
     HttpService.updateOrganisationAdminDetails(payload).then((res) => {
-      setEditMode(false);
       setAdminDetails(res.data.organisationAdmin);
       LocalStorageService.updateUser(res.data.organisationAdmin);
-    });
-    
-    if (formDataForImageUpload) {
-      HttpService.updateAdminAvatar(formDataForImageUpload)
-        .then((res) => {
-          // Get the newly uploaded image from the server
-          HttpService.getAdminAvatarImage().then((imageBase64) => {
-            setLogoImageBase64(imageBase64);
-            LocalStorageService.updateProfilePic(imageBase64);
-            setFormDataForImageUpload("");
-            setPreviewImage("");
+
+      if (formDataForImageUpload) {
+        HttpService.updateAdminAvatar(formDataForImageUpload)
+          .then((res) => {
+            HttpService.getAdminAvatarImage().then((imageBase64) => {
+              setLogoImageBase64(imageBase64);
+              LocalStorageService.updateProfilePic(imageBase64);
+            });
+          })
+          .catch((error) => {
+            console.log(`Error: ${error}`);
           });
-        })
-        .catch((error) => {
-          console.log(`Error: ${error}`);
-        });
-    }
+      }
+    });
+
+    setFormDataForImageUpload("");
+    setPreviewImage("");
+    setEditMode(false);
   };
 
   const onClickRestPassWord = () => {
