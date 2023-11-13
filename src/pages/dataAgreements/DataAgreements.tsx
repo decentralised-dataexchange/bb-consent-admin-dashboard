@@ -16,6 +16,7 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
+  FormControl,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -32,13 +33,13 @@ import GeneralModal from "../../components/modals/generalModal";
 import DataAgreementModal from "../../components/modals/dataAgreementModal";
 import DeleteModal from "../../components/modals/generalModal";
 import { useFilterStore } from "../../store/store";
-import { HttpService } from "../../service/HTTPService";
 import {
   getMethodOfUse,
   getLawfulBasisOfProcessing,
   getPublishValues,
 } from "../../interfaces/DataAgreement";
 import { useLocation } from "react-router-dom";
+import VersionDropdown from "../../components/dataAgreements/versionDropdown";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -74,12 +75,12 @@ const DataAgreement = () => {
     useState(false);
   const [openDataAgreementModal, setOpenDataAgreementModal] = useState(false);
   const [dataAgreementMode, setDataAgreementMode] = useState("");
-  const [handleChangeTriggered, setHandleChangeTriggered] = useState(false);
   const [
     selectededDataAgreementFromDataAgreement,
     setSelectededDataAgreementFromDataAgreement,
   ] = useState<any>();
-
+  const [handleChangeTriggered, setHandleChangeTriggered] = useState(false);
+  const [selectedDropdownValue, setSelectedDorpdownValue] = useState({});
   const refresh = useRefresh();
   const onRefetch = () => {
     refresh();
@@ -90,6 +91,8 @@ const DataAgreement = () => {
   };
 
   const location = useLocation();
+
+  const filter = useFilterStore.getState().filterDataAgreement;
 
   const resetStore = () => {
     useFilterStore.getState().resetStore();
@@ -105,18 +108,17 @@ const DataAgreement = () => {
 
   useEffect(() => {
     refresh();
+    setSelectedDorpdownValue({});
   }, [handleChangeTriggered]);
 
   const handleChange = (e: any) => {
     const { name } = e.target;
-
     if (name === "complete") {
       changefilterDataAgreement("complete");
-      setHandleChangeTriggered(!handleChangeTriggered);
     } else if (name === "all") {
       changefilterDataAgreement("all");
-      setHandleChangeTriggered(!handleChangeTriggered);
     }
+    setHandleChangeTriggered(!handleChangeTriggered);
   };
 
   const ColoredField = (props: any) => {
@@ -124,10 +126,10 @@ const DataAgreement = () => {
     if (!record || !props.source) {
       return null;
     }
-    return record.active === true ? (
-      <TextField {...props} sx={{ color: "black" }} />
-    ) : (
+    return record.active === false && filter !== "complete" ? (
       <TextField {...props} sx={{ color: "#FF0C10" }} />
+    ) : (
+      <TextField {...props} sx={{ color: "black" }} />
     );
   };
 
@@ -139,7 +141,12 @@ const DataAgreement = () => {
     return (
       <Typography
         variant="body2"
-        sx={{ color: record.active === true ? "black" : "#FF0C10" }}
+        sx={{
+          color:
+            record.active === false && filter !== "complete"
+              ? "#FF0C10"
+              : "black",
+        }}
       >
         {getMethodOfUse(record[props.source])}
       </Typography>
@@ -154,7 +161,12 @@ const DataAgreement = () => {
     return (
       <Typography
         variant="body2"
-        sx={{ color: record.active === true ? "black" : "#FF0C10" }}
+        sx={{
+          color:
+            record.active === false && filter !== "complete"
+              ? "#FF0C10"
+              : "black",
+        }}
       >
         {getPublishValues(record[props.source])}
       </Typography>
@@ -169,7 +181,12 @@ const DataAgreement = () => {
     return (
       <Typography
         variant="body2"
-        sx={{ color: record.active === true ? "black" : "#FF0C10" }}
+        sx={{
+          color:
+            record.active === false && filter !== "complete"
+              ? "#FF0C10"
+              : "black",
+        }}
       >
         {getLawfulBasisOfProcessing(record[props.source])}
       </Typography>
@@ -181,6 +198,7 @@ const DataAgreement = () => {
     if (!record || !props.source) {
       return null;
     }
+
     return (
       record[props.source] && (
         <Box display={"flex"} justifyContent={"space-around"}>
@@ -193,14 +211,22 @@ const DataAgreement = () => {
             placement="top"
           >
             <UploadOutlinedIcon
-              onClick={() =>{
+              onClick={() => {
                 record.active === false &&
-                setOpenPublishDataAgreementModal(true);
-                setSelectededDataAgreementFromDataAgreement(record)
+                  (record?.selectedRevision === undefined ||
+                    (record?.selectedRevision &&
+                      record?.selectedRevision.version === record.version)) &&
+                  setOpenPublishDataAgreementModal(true);
+                setSelectededDataAgreementFromDataAgreement(record);
               }}
               fontSize="small"
               style={{
-                cursor: record.active === true ? "not-allowed" : "pointer",
+                cursor:
+                  record.active === true ||
+                  (record?.selectedRevision &&
+                    record?.selectedRevision.version !== record.version)
+                    ? "not-allowed"
+                    : "pointer",
                 color: record.active === true ? "#B9B9B9" : "#FF0C10",
               }}
             />
@@ -222,13 +248,20 @@ const DataAgreement = () => {
           <Tooltip title="Edit Data Agreement" placement="top">
             <EditOutlinedIcon
               onClick={() => {
-                setOpenDataAgreementModal(true);
+                (record?.selectedRevision === undefined ||
+                  (record?.selectedRevision &&
+                    record?.selectedRevision.version === record.version)) &&
+                  setOpenDataAgreementModal(true);
                 setDataAgreementMode("Update");
                 setSelectededDataAgreementFromDataAgreement(record);
               }}
               fontSize="small"
               style={{
-                cursor: "pointer",
+                cursor:
+                  record?.selectedRevision &&
+                  record?.selectedRevision.version !== record.version
+                    ? "not-allowed"
+                    : "pointer",
                 color: record.active === true ? "#B9B9B9" : "#FF0C10",
               }}
             />
@@ -236,18 +269,42 @@ const DataAgreement = () => {
           <Tooltip title="Delete Data Agreement" placement="top">
             <DeleteOutlineOutlinedIcon
               onClick={() => {
-                setOpenDeleteDataAgreementModal(true);
-                setSelectededDataAgreementFromDataAgreement(record);
+                (record?.selectedRevision === undefined ||
+                  (record?.selectedRevision &&
+                    record?.selectedRevision.version === record.version)) &&
+                  setOpenDeleteDataAgreementModal(true),
+                  setSelectededDataAgreementFromDataAgreement(record);
               }}
               fontSize="small"
               style={{
-                cursor: "pointer",
+                cursor:
+                  record?.selectedRevision &&
+                  record?.selectedRevision.version !== record.version
+                    ? "not-allowed"
+                    : "pointer",
                 color: record.active === true ? "#B9B9B9" : "#FF0C10",
               }}
             />
           </Tooltip>
         </Box>
       )
+    );
+  };
+
+  const VersionField = (props: any) => {
+    const record = useRecordContext(props);
+
+    if (!record || !props.source) {
+      return null;
+    }
+
+    return (
+      <VersionDropdown
+        record={record}
+        setSelectedValue={setSelectedDorpdownValue}
+        selectedValue={selectedDropdownValue}
+        key={record.id}
+      />
     );
   };
 
@@ -271,7 +328,7 @@ const DataAgreement = () => {
                 onClick={() => {
                   setOpenDataAgreementModal(true);
                   setDataAgreementMode("Create");
-                  setSelectededDataAgreementFromDataAgreement({})
+                  setSelectededDataAgreementFromDataAgreement({});
                 }}
                 style={{ cursor: "pointer", marginLeft: "5px" }}
               />
@@ -285,29 +342,31 @@ const DataAgreement = () => {
               flexWrap: "wrap",
             }}
           >
-            <Box>
+            <FormControl>
               <RadioGroup
                 aria-labelledby="demo-radio-buttons-group-label"
                 defaultValue="all"
-                name="all"
+                name="radio-buttons-group"
                 row
               >
                 <FormControlLabel
                   value="all"
-                  name="all"
-                  control={<Radio color="default" size="small" />}
-                  label={<Typography variant="body2">All</Typography>}
                   onClick={handleChange}
+                  name="all"
+                  control={<Radio name="all" color="default" size="small" />}
+                  label={<Typography variant="body2">All</Typography>}
                 />
                 <FormControlLabel
                   value="complete"
-                  name="complete"
-                  control={<Radio color="default" size="small" />}
-                  label={<Typography variant="body2">Published</Typography>}
                   onClick={handleChange}
+                  name={"complete"}
+                  control={
+                    <Radio name="complete" color="default" size="small" />
+                  }
+                  label={<Typography variant="body2">Published</Typography>}
                 />
               </RadioGroup>
-            </Box>
+            </FormControl>
             <Box>
               <Button
                 style={buttonStyle}
@@ -345,7 +404,6 @@ const DataAgreement = () => {
           <Datagrid
             bulkActionButtons={false}
             sx={{
-              overflow: "auto",
               width: "100%",
             }}
           >
@@ -354,7 +412,7 @@ const DataAgreement = () => {
               label={"Usage Purpose"}
               sortable={false}
             />
-            <ColoredField source="version" label={"Version"} sortable={false} />
+            <VersionField source="id" label={"Version"} sortable={false} />
             <DataExchangeField
               source="methodOfUse"
               label={"Data Exchange"}

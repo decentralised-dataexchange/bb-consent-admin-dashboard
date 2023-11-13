@@ -132,8 +132,79 @@ export default function DataAgreementModal(props: Props) {
       let dataAgreements = selectededDataAgreementFromDataAgreement;
       let dataAttributes =
         selectededDataAgreementFromDataAgreement.dataAttributes;
+
       setSelectedDataAgreement(dataAgreements);
-      if (mode !== "Create") {
+      if (mode === "Update") {
+        methods.reset({
+          Name: dataAgreements.purpose,
+          Description: dataAgreements.purposeDescription,
+          Version:
+            dataAgreements.version === "" ? "0.0.0" : dataAgreements.version,
+          AttributeType: dataAgreements.methodOfUse,
+          LawfulBasisOfProcessing: dataAgreements.lawfulBasis,
+          PolicyURL: dataAgreements.policy.url,
+          Jurisdiction: dataAgreements.policy.jurisdiction,
+          IndustryScope: dataAgreements.policy.industrySector,
+          StorageLocation: dataAgreements.policy.storageLocation,
+          dataRetentionPeriodDays: Math.floor(
+            dataAgreements.policy.dataRetentionPeriodDays / 365
+          ),
+
+          Restriction: dataAgreements.policy.geographicRestriction,
+          Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
+          DpiaDate: dataAgreements.dpiaDate,
+          DpiaSummaryURL: dataAgreements.dpiaSummaryUrl,
+          dataAttributes: dataAttributes?.map((attribute: any) => {
+            const { name, description, ...otherProps } = attribute;
+            return {
+              attributeName: name,
+              attributeDescription: description,
+              ...otherProps,
+            };
+          }),
+        });
+      } else if (
+        mode === "Read" &&
+        dataAgreements.selectedRevision !== undefined &&
+        dataAgreements?.selectedRevision?.version !== dataAgreements.version
+      ) {
+        methods.reset({
+          Name: dataAgreements.selectedRevision.purpose,
+          Description: dataAgreements.selectedRevision.purposeDescription,
+          Version: dataAgreements.selectedRevision.version,
+          AttributeType: dataAgreements.selectedRevision.methodOfUse,
+          LawfulBasisOfProcessing: dataAgreements.selectedRevision.lawfulBasis,
+          PolicyURL: dataAgreements.selectedRevision.policy.url,
+          Jurisdiction: dataAgreements.selectedRevision.policy.jurisdiction,
+          IndustryScope: dataAgreements.selectedRevision.policy.industrySector,
+          StorageLocation:
+            dataAgreements.selectedRevision.policy.storageLocation,
+          dataRetentionPeriodDays: Math.floor(
+            dataAgreements.selectedRevision.policy.dataRetentionPeriodDays / 365
+          ),
+
+          Restriction:
+            dataAgreements.selectedRevision.policy.geographicRestriction,
+          Shared3PP:
+            dataAgreements.selectedRevision.policy.thirdPartyDataSharing,
+          DpiaDate: dataAgreements.selectedRevision.dpiaDate,
+          DpiaSummaryURL: dataAgreements.selectedRevision.dpiaSummaryUrl,
+          dataAttributes: dataAgreements.selectedRevision.dataAttributes?.map(
+            (attribute: any) => {
+              const { name, description, ...otherProps } = attribute;
+              return {
+                attributeName: name,
+                attributeDescription: description,
+                ...otherProps,
+              };
+            }
+          ),
+        });
+      } else if (
+        mode === "Read" &&
+        (dataAgreements?.selectedRevision?.version === dataAgreements.version ||
+          dataAgreements.selectedRevision === undefined)
+      ) {
         methods.reset({
           Name: dataAgreements.purpose,
           Description: dataAgreements.purposeDescription,
@@ -181,7 +252,8 @@ export default function DataAgreementModal(props: Props) {
         0,
         10,
         "",
-        dataAgrreementRevisionIdForSelectedRecord
+        dataAgrreementRevisionIdForSelectedRecord,
+        ""
       ).then((response) => {
         let dataAgreements = response.dataAgreements[0];
         let dataAttributes = response.dataAgreements[0].dataAttributes;
@@ -282,7 +354,6 @@ export default function DataAgreementModal(props: Props) {
       });
     } else return {};
   };
-
   return (
     <>
       <Drawer anchor="right" open={open}>
@@ -296,7 +367,10 @@ export default function DataAgreementModal(props: Props) {
                     {mode === "Update" &&
                       `Edit Data Agreement:  ${selectedDataAgreement?.purpose}`}
                     {mode === "Read" &&
-                      `View Data Agreement: ${selectedDataAgreement?.purpose}`}
+                      `View Data Agreement: ${
+                        selectedDataAgreement?.selectedRevision?.purpose ||
+                        selectedDataAgreement?.purpose
+                      }`}
                   </Typography>
                   {mode !== "Create" && (
                     <Typography color="#F3F3F6">

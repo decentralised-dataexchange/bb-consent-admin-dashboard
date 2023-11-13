@@ -8,9 +8,8 @@ const dataAgreementDataProvider = {
     const filter = useFilterStore.getState().filterDataAgreement;
     let pageSize = params.pagination.perPage;
     let pageNumber = params.pagination.page;
-
     let offsetValue = offSet(pageNumber, pageSize);
-    return HttpService.listDataAgreements(offsetValue, pageSize, filter, "")
+    return HttpService.listDataAgreements(offsetValue, pageSize, filter, "", true)
       .then((dataAgreements) => {
         return {
           data: dataAgreements.dataAgreements,

@@ -28,11 +28,12 @@ export const ENDPOINTS = {
     offsetValue: number,
     pageSize: number,
     filter: string,
-    revisionId: string | undefined
+    revisionId: string | undefined,
+    includeRevisions: boolean | string
   ) => {
     return `/config/data-agreements?limit=${pageSize}&offset=${offsetValue}${
-      filter === "complete" ? "&lifecycle=complete" : ""
-    }${revisionId !== "" ? `&revisionId=${revisionId}` : ""}`
+      filter === "complete" ? `&lifecycle=complete` : ""}&includeRevisions=${includeRevisions}${
+      revisionId !== "" ? `&revisionId=${revisionId}` : ""}`
   },
   addDataAgreements: () => {
     return "/config/data-agreement";
