@@ -8,6 +8,7 @@ import ManageAdminProfilePicUpload from "../../components/manageAdminProfilePicU
 import { HttpService } from "../../service/HTTPService";
 import { LocalStorageService } from "../../service/localStorageService";
 import SnackbarComponent from "../../components/notification";
+import { useFilterStore } from "../../store/store";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -50,11 +51,18 @@ const buttonStyle = {
   border: "1px solid #DFDFDF",
 };
 
+const editStyleEnable: React.CSSProperties = {
+  borderWidth: 1,
+  borderBottomStyle: "solid",
+  borderBottomColor: "#DFE0E1",
+  height: 23,
+};
+
 const ManageAdmin = () => {
   const [editMode, setEditMode] = useState(false);
   const [adminDetails, setAdminDetails] = useState<any>();
   const [logoImageBase64, setLogoImageBase64] = useState<any>(null);
-  const [adminName, setAdminName] = useState("");
+  const [adminName, setAdminName] = useState(adminDetails?.name);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -63,16 +71,18 @@ const ManageAdmin = () => {
   const [success, setSuccess] = useState("");
   const [formDataForImageUpload, setFormDataForImageUpload] = useState<any>();
   const [previewImage, setPreviewImage] = useState<any>();
-  let myFile: { file: string; imagePreviewUrl: any } = {
-    file: "",
-    imagePreviewUrl: "",
-  };
+  const changeAvatar = useFilterStore.getState().changeAvatar
+
+  useEffect(() => {
+    if (adminDetails?.name) {
+      setAdminName(adminDetails.name);
+    }
+  }, [adminDetails]);
 
   const handleEdit = (event: React.MouseEvent<HTMLElement>) => {
     setEditMode(!editMode);
     setFormDataForImageUpload("");
     setPreviewImage("");
-    setAdminName("");
   };
 
   useEffect(() => {
@@ -84,6 +94,7 @@ const ManageAdmin = () => {
       });
     });
   }, []);
+
 
   const onClickSave = () => {
     let payload = {
@@ -101,6 +112,7 @@ const ManageAdmin = () => {
             HttpService.getAdminAvatarImage().then((imageBase64) => {
               setLogoImageBase64(imageBase64);
               LocalStorageService.updateProfilePic(imageBase64);
+              useFilterStore.getState().updaChangeAvatar(!changeAvatar);
             });
           })
           .catch((error) => {
@@ -226,9 +238,11 @@ const ManageAdmin = () => {
                           variant="standard"
                           autoComplete="off"
                           placeholder="Name"
-                          sx={{ marginTop: 0 }}
+                          sx={{ marginTop: -0.1 }}
+                          style={{
+                            ...editStyleEnable,
+                          }}
                           value={adminName}
-                          defaultValue={adminDetails?.name}
                           onChange={(e) => setAdminName(e.target.value)}
                           InputProps={{
                             disableUnderline: true,
