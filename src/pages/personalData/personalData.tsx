@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { List, Datagrid, TextField, Form, useRefresh } from "react-admin";
 
 import {
@@ -8,6 +8,7 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
+  FormControl,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -17,7 +18,6 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import BreadCrumb from "../../components/Breadcrumbs";
 import EditPersonalDataModal from "../../components/modals/editPersonalDataModal";
 import { useFilterStore } from "../../store/store";
-import { useLocation } from "react-router-dom";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -38,7 +38,7 @@ const HeaderContainer = styled("div")({
 const PersonalData = () => {
   const [openEditPersonalDataModal, setOpenEditPersonalDataModal] =
     useState(false);
-  const [handleChangeTriggered, setHandleChangeTriggered] = useState(false);
+  const [listFilterValue, setListFilterValue] = useState("all");
 
   const refresh = useRefresh();
 
@@ -49,40 +49,18 @@ const PersonalData = () => {
   const changefilterDataAttribute = (filterDataAgreement: string) => {
     useFilterStore.getState().updateFilterDataAttribute(filterDataAgreement);
   };
-  const location = useLocation();
 
-  const resetStore = () => {
-    useFilterStore.getState().resetStore();
-  };
+  const handleChange = (value: any) => {
 
-  // Listen for route changes and reset the Zustand store when the route changes
-  useEffect(() => {
-    resetStore();
-    setTimeout(() => {
-      refresh();
-    }, 500);
-  }, [location.pathname]);
-
-  useEffect(() => {
-    refresh();
-  }, [handleChangeTriggered]);
-
-  useEffect(() => {
-    refresh();
-  }, [handleChangeTriggered]);
-
-  const handleChange = (e: any) => {
-    const { name } = e.target;
-
-    if (name === "data_source") {
+    if (value === "data_source") {
       changefilterDataAttribute("data_source");
-      setHandleChangeTriggered(!handleChangeTriggered);
-    } else if (name === "data_using_service") {
+      setListFilterValue("data_source")
+    } else if (value === "data_using_service") {
       changefilterDataAttribute("data_using_service");
-      setHandleChangeTriggered(!handleChangeTriggered);
-    } else if (name === "all") {
+      setListFilterValue("data_using_service")
+    } else if (value === "all") {
       changefilterDataAttribute("all");
-      setHandleChangeTriggered(!handleChangeTriggered);
+      setListFilterValue("all")
     }
   };
 
@@ -92,6 +70,7 @@ const PersonalData = () => {
         actions={false}
         empty={false}
         sx={{ width: "100%", overflow: "hidden" }}
+        filter={{ status: listFilterValue }}
       >
         <Form>
           <BreadCrumb Link="Personal Data" />
@@ -99,7 +78,7 @@ const PersonalData = () => {
             <Typography variant="h6" fontWeight="bold">
               Personal Data
             </Typography>
-            <Box>
+            <FormControl>
               <RadioGroup
                 aria-labelledby="demo-radio-buttons-group-label"
                 defaultValue="all"
@@ -108,29 +87,26 @@ const PersonalData = () => {
               >
                 <FormControlLabel
                   value="all"
-                  onClick={handleChange}
-                  name={"all"}
-                  control={<Radio color="default" size="small" />}
+                  onChange={() => handleChange("all")}
+                  control={<Radio name={"all"} color="default" size="small" />}
                   label={<Typography variant="body2">All</Typography>}
                 />
                 <FormControlLabel
                   value="data_source"
-                  onClick={handleChange}
-                  name={"data_source"}
-                  control={<Radio color="default" size="small" />}
+                  onChange={() => handleChange("data_source")}
+                  control={<Radio name={"data_source"} color="default" size="small" />}
                   label={<Typography variant="body2">Data Source</Typography>}
                 />
                 <FormControlLabel
                   value="data_using_service"
-                  onClick={handleChange}
-                  name={"data_using_service"}
-                  control={<Radio color="default" size="small" />}
+                  onChange={() => handleChange("data_using_service")}
+                  control={<Radio name={"data_using_service"} color="default" size="small" />}
                   label={
                     <Typography variant="body2">Data Using Service</Typography>
                   }
                 />
               </RadioGroup>
-            </Box>
+            </FormControl>
           </HeaderContainer>
           <Typography variant="body2" mt={1.25}>
             Manage the personal data attributes. Personal data attributes can be
