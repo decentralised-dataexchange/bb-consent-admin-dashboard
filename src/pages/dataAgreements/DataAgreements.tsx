@@ -38,7 +38,6 @@ import {
   getLawfulBasisOfProcessing,
   getPublishValues,
 } from "../../interfaces/DataAgreement";
-import { useLocation } from "react-router-dom";
 import VersionDropdown from "../../components/dataAgreements/versionDropdown";
 
 const Container = styled("div")(({ theme }) => ({
@@ -81,6 +80,7 @@ const DataAgreement = () => {
   ] = useState<any>();
   const [handleChangeTriggered, setHandleChangeTriggered] = useState(false);
   const [selectedDropdownValue, setSelectedDorpdownValue] = useState({});
+  const [listFilterValue, setListFilterValue] = useState("all");
   const refresh = useRefresh();
   const onRefetch = () => {
     refresh();
@@ -90,36 +90,23 @@ const DataAgreement = () => {
     useFilterStore.getState().updateFilterDataAgreement(filterDataAgreement);
   };
 
-  const location = useLocation();
-
   const filter = useFilterStore.getState().filterDataAgreement;
 
-  const resetStore = () => {
-    useFilterStore.getState().resetStore();
-  };
 
-  // Listen for route changes and reset the Zustand store when the route changes
-  useEffect(() => {
-    resetStore();
-    setTimeout(() => {
-      refresh();
-    }, 500);
-  }, [location.pathname]);
-
-  useEffect(() => {
-    refresh();
-    setSelectedDorpdownValue({});
-  }, [handleChangeTriggered]);
-
-  const handleChange = (e: any) => {
-    const { name } = e.target;
-    if (name === "complete") {
+  const handleChange = (value: any) => {
+    if (value === "complete") {
       changefilterDataAgreement("complete");
-    } else if (name === "all") {
+      setListFilterValue("complete");
+    } else if (value === "all") {
       changefilterDataAgreement("all");
+      setListFilterValue("all");
     }
     setHandleChangeTriggered(!handleChangeTriggered);
   };
+
+  useEffect(() => {
+      setSelectedDorpdownValue({});
+  }, [handleChangeTriggered]);
 
   const ColoredField = (props: any) => {
     const record = useRecordContext(props);
@@ -227,7 +214,9 @@ const DataAgreement = () => {
                     record?.selectedRevision.version !== record.version)
                     ? "not-allowed"
                     : "pointer",
-                color: record.active === true ? "#B9B9B9" : "#FF0C10",
+                color: record.active === false && filter !== "complete"
+                ? "#FF0C10"
+                : "#B9B9B9",
               }}
             />
           </Tooltip>
@@ -241,7 +230,9 @@ const DataAgreement = () => {
               fontSize="small"
               style={{
                 cursor: "pointer",
-                color: record.active === true ? "#B9B9B9" : "#FF0C10",
+                color: record.active === false && filter !== "complete"
+                ? "#FF0C10"
+                : "#B9B9B9",
               }}
             />
           </Tooltip>
@@ -262,7 +253,9 @@ const DataAgreement = () => {
                   record?.selectedRevision.version !== record.version
                     ? "not-allowed"
                     : "pointer",
-                color: record.active === true ? "#B9B9B9" : "#FF0C10",
+                color: record.active === false && filter !== "complete"
+                ? "#FF0C10"
+                : "#B9B9B9",
               }}
             />
           </Tooltip>
@@ -282,7 +275,9 @@ const DataAgreement = () => {
                   record?.selectedRevision.version !== record.version
                     ? "not-allowed"
                     : "pointer",
-                color: record.active === true ? "#B9B9B9" : "#FF0C10",
+                color: record.active === false && filter !== "complete"
+                ? "#FF0C10"
+                : "#B9B9B9",
               }}
             />
           </Tooltip>
@@ -351,15 +346,13 @@ const DataAgreement = () => {
               >
                 <FormControlLabel
                   value="all"
-                  onClick={handleChange}
-                  name="all"
+                  onChange={() => handleChange("all")}
                   control={<Radio name="all" color="default" size="small" />}
                   label={<Typography variant="body2">All</Typography>}
                 />
                 <FormControlLabel
                   value="complete"
-                  onClick={handleChange}
-                  name={"complete"}
+                  onChange={() => handleChange("complete")}
                   control={
                     <Radio name="complete" color="default" size="small" />
                   }
@@ -393,6 +386,7 @@ const DataAgreement = () => {
         actions={false}
         sx={{ width: "100%", overflow: "hidden" }}
         empty={false}
+        filter={{ status: listFilterValue }}
       >
         <Box
           style={{

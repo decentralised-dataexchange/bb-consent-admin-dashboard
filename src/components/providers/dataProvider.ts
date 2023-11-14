@@ -5,10 +5,11 @@ import { useFilterStore } from "../../store/store";
 
 const dataAgreementDataProvider = {
   getList: (resource: any, params: any) => {
-    const filter = useFilterStore.getState().filterDataAgreement;
     let pageSize = params.pagination.perPage;
     let pageNumber = params.pagination.page;
     let offsetValue = offSet(pageNumber, pageSize);
+    const filter = params.filter.status
+
     return HttpService.listDataAgreements(offsetValue, pageSize, filter, "", true)
       .then((dataAgreements) => {
         return {
@@ -24,7 +25,7 @@ const dataAgreementDataProvider = {
 
 const personalDataDataProvider = {
   getList: (resource: any, params: any) => {
-    const filter = useFilterStore.getState().filterDataAttribute;
+    const filter = params.filter.status
     let pageSize = params.pagination.perPage;
     let pageNumber = params.pagination.page;
 
