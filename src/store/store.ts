@@ -22,7 +22,6 @@ type Action = {
 // Setup store
 export let store = (set: any) => ({
   filterDataAgreement: "all",
-  filterDataAttribute: "all",
   filterViewLogs: 0,
   disabledPurposeDropDown: true,
   disabledLawfulBasisDropDown: true,
@@ -35,8 +34,6 @@ export let store = (set: any) => ({
     set(() => {
       return { filterDataAgreement: filterDataAgreement };
     }),
-  updateFilterDataAttribute: (filterDataAttribute: any) =>
-    set(() => ({ filterDataAttribute: filterDataAttribute })),
   updateFilterViewLogs: (filterViewLogs: any) =>
     set(() => ({ filterViewLogs: filterViewLogs })),
   updateFilterUserRecords: (userRecordsFilter: any) =>

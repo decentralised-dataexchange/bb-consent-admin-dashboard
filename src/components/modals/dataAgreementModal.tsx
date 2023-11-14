@@ -42,6 +42,7 @@ interface Props {
   resourceName?: string;
   selectededDataAgreementFromDataAgreement?: any;
   dataAgrreementRevisionIdForSelectedRecord?: string | undefined;
+  setSelectedDropdownValue?: any;
 }
 
 let defaultValue = {
@@ -71,6 +72,7 @@ export default function DataAgreementModal(props: Props) {
     resourceName,
     selectededDataAgreementFromDataAgreement,
     dataAgrreementRevisionIdForSelectedRecord,
+    setSelectedDropdownValue,
   } = props;
 
   const [selectedDataAgreement, setSelectedDataAgreement] = useState<any>();
@@ -305,6 +307,7 @@ export default function DataAgreementModal(props: Props) {
       ).then(() => {
         successCallback();
         methods.reset({ ...defaultValue });
+        setSelectedDropdownValue({});
         setOpen(false);
       });
     } else if (mode === "Update") {
@@ -319,6 +322,7 @@ export default function DataAgreementModal(props: Props) {
         selectedDataAgreement?.id
       ).then((response) => {
         successCallback();
+        setSelectedDropdownValue({});
         methods.reset({ ...defaultValue });
         setOpen(false);
       });
@@ -335,6 +339,7 @@ export default function DataAgreementModal(props: Props) {
       ).then(() => {
         successCallback();
         methods.reset({ ...defaultValue });
+        setSelectedDropdownValue({});
         setOpen(false);
       });
     } else if (mode === "Update") {
@@ -349,6 +354,7 @@ export default function DataAgreementModal(props: Props) {
         selectedDataAgreement?.id
       ).then((response) => {
         successCallback();
+        setSelectedDropdownValue({});
         methods.reset({ ...defaultValue });
         setOpen(false);
       });
