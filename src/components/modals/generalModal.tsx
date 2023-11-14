@@ -28,6 +28,8 @@ interface Props {
   developerApiDeleteID?:string
   selectededDataAgreementFromDataAgreement?: any
   selectedWebhookDetails?: any
+  setSelectedDropdownValue?:any
+
 }
 
 export default function DeleteModal(props: Props) {
@@ -42,7 +44,8 @@ export default function DeleteModal(props: Props) {
     resourceName,
     developerApiDeleteID,
     selectededDataAgreementFromDataAgreement,
-    selectedWebhookDetails
+    selectedWebhookDetails,
+    setSelectedDropdownValue
   } = props;
   const [isOk, setIsOk] = useState(false);
   const [confirmationTextInput, setConfirmationTextInput] = useState("");
@@ -57,6 +60,7 @@ export default function DeleteModal(props: Props) {
       if (confirmText === "DELETE" && resourceName === "dataagreements") {
         HttpService.deleteDataAgreement(selectededDataAgreementFromDataAgreement.id).then((response) => {
           onRefetch();
+          setSelectedDropdownValue({})
           setOpen(false);
         });
       } else if (confirmText === "PUBLISH" && resourceName === "dataagreements") {
@@ -74,6 +78,7 @@ export default function DeleteModal(props: Props) {
         HttpService.updateDataAgreementById(updateDAPayload, selectededDataAgreementFromDataAgreement.id).then(
           (response) => {
             onRefetch();
+            setSelectedDropdownValue({})
             setOpen(false);
           }
         );

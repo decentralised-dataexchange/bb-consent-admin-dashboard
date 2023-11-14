@@ -23,8 +23,8 @@ interface Props {
 
 const VersionDropdown = (props: Props) => {
   const { record, selectedValue, setSelectedValue } = props;
-  const filter = useFilterStore.getState().filterDataAgreement
-  
+  const filter = useFilterStore.getState().filterDataAgreement;
+
   const [dataAgreementFromRevision, setDataAgreementFromRevision] =
     useState<any>();
 
@@ -67,6 +67,7 @@ const VersionDropdown = (props: Props) => {
 
   const newSelectedValue =
     selectedValue[record.id] || setDefaultSelectedValueNew;
+
   return (
     <>
       <Select
@@ -81,7 +82,7 @@ const VersionDropdown = (props: Props) => {
           <span
             style={{
               color:
-                record.active === false && filter !== "complete"
+                record.active === false && newSelectedValue === record.version
                   ? "red"
                   : "black",
             }}

@@ -79,7 +79,8 @@ const DataAgreement = () => {
     setSelectededDataAgreementFromDataAgreement,
   ] = useState<any>();
   const [handleChangeTriggered, setHandleChangeTriggered] = useState(false);
-  const [selectedDropdownValue, setSelectedDorpdownValue] = useState({});
+  const [selectedDropdownValue, setSelectedDropdownValue] = useState<any>({});
+
   const [listFilterValue, setListFilterValue] = useState("all");
   const refresh = useRefresh();
   const onRefetch = () => {
@@ -89,9 +90,6 @@ const DataAgreement = () => {
   const changefilterDataAgreement = (filterDataAgreement: string) => {
     useFilterStore.getState().updateFilterDataAgreement(filterDataAgreement);
   };
-
-  const filter = useFilterStore.getState().filterDataAgreement;
-
 
   const handleChange = (value: any) => {
     if (value === "complete") {
@@ -105,23 +103,52 @@ const DataAgreement = () => {
   };
 
   useEffect(() => {
-      setSelectedDorpdownValue({});
+    setSelectedDropdownValue({});
   }, [handleChangeTriggered]);
+
+  const getTextColor = (record: any) => {
+    if (record.active === false) {
+      if (selectedDropdownValue[record.id] === record.version) {
+        return "#FF0C10"; // Red color
+      } else if (selectedDropdownValue[record.id] === undefined) {
+        return "#FF0C10";
+      } else if (selectedDropdownValue[record.id] !== record.version) {
+        return "black";
+      }
+      return "#FF0C10";
+    }
+
+    return "black";
+  };
+
+  const getIconColor = (record: any) => {
+    if (record.active === false) {
+      if (selectedDropdownValue[record.id] === record.version) {
+        return "#FF0C10"; // Red color
+      } else if (selectedDropdownValue[record.id] === undefined) {
+        return "#FF0C10";
+      } else if (selectedDropdownValue[record.id] !== record.version) {
+        return "#B9B9B9";
+      }
+      return "#FF0C10";
+    }
+
+    return "#B9B9B9";
+  };
 
   const ColoredField = (props: any) => {
     const record = useRecordContext(props);
+    const textColor = getTextColor(record);
+
     if (!record || !props.source) {
       return null;
     }
-    return record.active === false && filter !== "complete" ? (
-      <TextField {...props} sx={{ color: "#FF0C10" }} />
-    ) : (
-      <TextField {...props} sx={{ color: "black" }} />
-    );
+    return <TextField {...props} sx={{ color: textColor }} />;
   };
 
   const DataExchangeField = (props: any) => {
     const record = useRecordContext(props);
+    const textColor = getTextColor(record);
     if (!record || !props.source) {
       return null;
     }
@@ -129,10 +156,7 @@ const DataAgreement = () => {
       <Typography
         variant="body2"
         sx={{
-          color:
-            record.active === false && filter !== "complete"
-              ? "#FF0C10"
-              : "black",
+          color: textColor,
         }}
       >
         {getMethodOfUse(record[props.source])}
@@ -142,6 +166,8 @@ const DataAgreement = () => {
 
   const PublishStatusField = (props: any) => {
     const record = useRecordContext(props);
+    const textColor = getTextColor(record);
+
     if (!record || !props.source) {
       return null;
     }
@@ -149,10 +175,7 @@ const DataAgreement = () => {
       <Typography
         variant="body2"
         sx={{
-          color:
-            record.active === false && filter !== "complete"
-              ? "#FF0C10"
-              : "black",
+          color: textColor,
         }}
       >
         {getPublishValues(record[props.source])}
@@ -162,6 +185,8 @@ const DataAgreement = () => {
 
   const LawfulBasisField = (props: any) => {
     const record = useRecordContext(props);
+    const textColor = getTextColor(record);
+
     if (!record || !props.source) {
       return null;
     }
@@ -169,10 +194,7 @@ const DataAgreement = () => {
       <Typography
         variant="body2"
         sx={{
-          color:
-            record.active === false && filter !== "complete"
-              ? "#FF0C10"
-              : "black",
+          color: textColor,
         }}
       >
         {getLawfulBasisOfProcessing(record[props.source])}
@@ -182,6 +204,8 @@ const DataAgreement = () => {
 
   const IconsFIeld = (props: any) => {
     const record = useRecordContext(props);
+    const textColor = getIconColor(record);
+
     if (!record || !props.source) {
       return null;
     }
@@ -214,9 +238,7 @@ const DataAgreement = () => {
                     record?.selectedRevision.version !== record.version)
                     ? "not-allowed"
                     : "pointer",
-                color: record.active === false && filter !== "complete"
-                ? "#FF0C10"
-                : "#B9B9B9",
+                color: textColor,
               }}
             />
           </Tooltip>
@@ -230,9 +252,7 @@ const DataAgreement = () => {
               fontSize="small"
               style={{
                 cursor: "pointer",
-                color: record.active === false && filter !== "complete"
-                ? "#FF0C10"
-                : "#B9B9B9",
+                color: textColor,
               }}
             />
           </Tooltip>
@@ -253,9 +273,7 @@ const DataAgreement = () => {
                   record?.selectedRevision.version !== record.version
                     ? "not-allowed"
                     : "pointer",
-                color: record.active === false && filter !== "complete"
-                ? "#FF0C10"
-                : "#B9B9B9",
+                color: textColor,
               }}
             />
           </Tooltip>
@@ -275,9 +293,7 @@ const DataAgreement = () => {
                   record?.selectedRevision.version !== record.version
                     ? "not-allowed"
                     : "pointer",
-                color: record.active === false && filter !== "complete"
-                ? "#FF0C10"
-                : "#B9B9B9",
+                color: textColor,
               }}
             />
           </Tooltip>
@@ -296,7 +312,7 @@ const DataAgreement = () => {
     return (
       <VersionDropdown
         record={record}
-        setSelectedValue={setSelectedDorpdownValue}
+        setSelectedValue={setSelectedDropdownValue}
         selectedValue={selectedDropdownValue}
         key={record.id}
       />
@@ -437,6 +453,7 @@ const DataAgreement = () => {
         selectededDataAgreementFromDataAgreement={
           selectededDataAgreementFromDataAgreement
         }
+        setSelectedDropdownValue={setSelectedDropdownValue}
       />
 
       <GlobalDataPolicyConfigModal
@@ -463,10 +480,12 @@ const DataAgreement = () => {
             click DELETE. This action is not reversible.
           </Typography>
         }
+        setSelectedDropdownValue={setSelectedDropdownValue}
       />
 
       {/* PublishDataAgreementModal */}
       <GeneralModal
+        setSelectedDropdownValue={setSelectedDropdownValue}
         open={openPublishDataAgreementModal}
         setOpen={setOpenPublishDataAgreementModal}
         headerText={"Publish Data Agreement:"}

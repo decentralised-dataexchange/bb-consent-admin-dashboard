@@ -17,7 +17,6 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 import BreadCrumb from "../../components/Breadcrumbs";
 import EditPersonalDataModal from "../../components/modals/editPersonalDataModal";
-import { useFilterStore } from "../../store/store";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -46,20 +45,14 @@ const PersonalData = () => {
     refresh();
   };
 
-  const changefilterDataAttribute = (filterDataAgreement: string) => {
-    useFilterStore.getState().updateFilterDataAttribute(filterDataAgreement);
-  };
 
   const handleChange = (value: any) => {
 
     if (value === "data_source") {
-      changefilterDataAttribute("data_source");
       setListFilterValue("data_source")
     } else if (value === "data_using_service") {
-      changefilterDataAttribute("data_using_service");
       setListFilterValue("data_using_service")
     } else if (value === "all") {
-      changefilterDataAttribute("all");
       setListFilterValue("all")
     }
   };
