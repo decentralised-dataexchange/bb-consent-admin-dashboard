@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLogout } from "react-admin";
 import { useNavigate } from "react-router-dom";
 import { LocalStorageService } from "../../service/localStorageService";
@@ -8,6 +8,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import defaultAvatar from "../../assets/avatar.png";
+import { useFilterStore } from "../../store/store";
 type Props = {
   firstName: string;
   email: string;
@@ -18,12 +19,18 @@ export const AppBarMenu = (props: Props) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const logout = useLogout();
+  const changeAvatar = useFilterStore((state) => state.changeAvatar);
+
   const handleClickLogOut = () => {
     logout();
     LocalStorageService.clear();
   };
 
-  let Avatar = LocalStorageService.getUserProfilePic();
+  let userAvatar = LocalStorageService.getUserProfilePic();
+
+  useEffect(() => {
+    userAvatar = LocalStorageService.getUserProfilePic();
+  }, [changeAvatar]);
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -41,10 +48,10 @@ export const AppBarMenu = (props: Props) => {
         onClick={handleMenu}
         sx={{ marginLeft: "auto" }}
       >
-        {Avatar ? (
+        {userAvatar ? (
           <img
             style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-            src={`data:image/jpeg;charset=utf-8;base64,${Avatar}`}
+            src={`data:image/jpeg;charset=utf-8;base64,${userAvatar}`}
             alt="img"
           />
         ) : (
@@ -80,7 +87,7 @@ export const AppBarMenu = (props: Props) => {
         >
           <img
             style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-            src={`data:image/jpeg;charset=utf-8;base64,${Avatar}`}
+            src={`data:image/jpeg;charset=utf-8;base64,${userAvatar}`}
             alt="img"
           />
           <Typography

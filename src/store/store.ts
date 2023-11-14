@@ -30,6 +30,7 @@ export let store = (set: any) => ({
     filterType: "all",
     value: "all",
   },
+  changeAvatar: false,
   updateFilterDataAgreement: (filterDataAgreement: any) =>
     set(() => {
       return { filterDataAgreement: filterDataAgreement };
@@ -44,6 +45,8 @@ export let store = (set: any) => ({
     set(() => ({ disabledPurposeDropDown: disabledPurposeDropDown })),
   updateDisabledLawfulBasisDropDown: (disabledLawfulBasisDropDown: any) =>
     set(() => ({ disabledLawfulBasisDropDown: disabledLawfulBasisDropDown })),
+  updaChangeAvatar: (changeAvatar: any) =>
+    set(() => ({ changeAvatar: changeAvatar })),
 
   // reset function to call when route is changed
   resetStore: () =>
@@ -64,3 +67,4 @@ let devtoolsStore = devtools(store);
 // let persistStore = persist(devtoolsStore, { name: 'filterSetting'});
 
 export const useFilterStore = create(devtoolsStore);
+
