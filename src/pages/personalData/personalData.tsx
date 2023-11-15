@@ -137,7 +137,8 @@ const PersonalData = () => {
               label={"Data Agreement"}
               sortable={false}
             />
-            <Box
+            {/* Edit icon temporarily hidden */}
+            {/* <Box
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -155,7 +156,7 @@ const PersonalData = () => {
                   style={{ cursor: "pointer" }}
                 />
               </Tooltip>
-            </Box>
+            </Box> */}
           </Datagrid>
         </Box>
       </List>
