@@ -3,12 +3,12 @@ import { useLogout } from "react-admin";
 import { useNavigate } from "react-router-dom";
 import { LocalStorageService } from "../../service/localStorageService";
 import { formatISODateToLocalString } from "../../utils/formatISODateToLocalString";
-import { Box, Menu, Avatar, Typography, IconButton } from "@mui/material";
-import AccountCircle from "@mui/icons-material/AccountCircle";
+import { Box, Menu, Typography, IconButton } from "@mui/material";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import defaultAvatar from "../../assets/avatar.png";
 import { useFilterStore } from "../../store/store";
+import { HttpService } from "../../service/HTTPService";
 type Props = {
   firstName: string;
   email: string;
@@ -20,17 +20,31 @@ export const AppBarMenu = (props: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const logout = useLogout();
   const changeAvatar = useFilterStore((state) => state.changeAvatar);
+  const changeAdminName = useFilterStore((state) => state.changeAdminName);
+
+  const [userAvatar, setUserAvatar] = useState<any>(LocalStorageService.getUserProfilePic());
+  const [userName, setUserName] = useState<any>();
+
+  useEffect(() => {
+    HttpService.getAdminAvatarImage().then((imageBase64) => {
+      setUserAvatar(imageBase64);
+    });
+  }, []);
 
   const handleClickLogOut = () => {
     logout();
     LocalStorageService.clear();
   };
 
-  let userAvatar = LocalStorageService.getUserProfilePic();
+  useEffect(() => {
+    setUserAvatar(LocalStorageService.getUserProfilePic());
+  }, [changeAvatar]);
 
   useEffect(() => {
-    userAvatar = LocalStorageService.getUserProfilePic();
-  }, [changeAvatar]);
+    HttpService.getOrganisationAdminDetails().then((res) => {
+      setUserName(res.data.name)
+    })
+  }, [changeAdminName]);
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -52,7 +66,6 @@ export const AppBarMenu = (props: Props) => {
           <img
             style={{ width: "50px", height: "50px", borderRadius: "50%" }}
             src={`data:image/jpeg;charset=utf-8;base64,${userAvatar}`}
-            alt="img"
           />
         ) : (
           <img
@@ -94,7 +107,7 @@ export const AppBarMenu = (props: Props) => {
             variant="body2"
             style={{ fontWeight: "bold", marginBottom: "4px" }}
           >
-            {props.firstName}
+            {userName || props.firstName}
           </Typography>
           <Typography variant="caption" style={{ marginBottom: "6px" }}>
             {props.email}
