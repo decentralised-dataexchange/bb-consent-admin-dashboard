@@ -233,14 +233,14 @@ export default function EditUserAccesModal(props: Props) {
                   />
 
                   <Typography variant="subtitle1" mb={0}>
-                    Client ID URL
+                    Client ID
                     <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                   </Typography>
                   <TextField
                     sx={{ margin: 0, marginBottom: "10px" }}
                     variant="outlined"
                     fullWidth
-                    placeholder="Client ID URL"
+                    placeholder="Client ID"
                     {...register("clientId", {
                       required: true,
                       minLength: 1,
@@ -248,14 +248,14 @@ export default function EditUserAccesModal(props: Props) {
                   />
 
                   <Typography variant="subtitle1" mb={0}>
-                    Client Secret URL
+                    Client Secret
                     <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                   </Typography>
                   <TextField
                     sx={{ margin: 0, marginBottom: "10px" }}
                     variant="outlined"
                     fullWidth
-                    placeholder="Client Secret URL"
+                    placeholder="Client Secret"
                     {...register("clientSecret", {
                       required: true,
                       minLength: 1,
