@@ -110,7 +110,7 @@ export const DataAttribute = (props: Props) => {
                     cursor: props.mode === "Read" ? "not-allowed" : "pointer",
                   }}
                   onClick={() => {
-                    remove(index);
+                    props.mode !== "Read" && remove(index);
                   }}
                 />
               </th>
