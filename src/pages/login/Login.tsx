@@ -52,6 +52,9 @@ export const Login = () => {
         ) {
           setError("Password & User ID: Value required");
           setOpenSnackBar(true);
+        }  else if (error.substring(0, 28) === "Failed to get token for user") {
+          setError("Invalid login credentials. Please double-check your username and password and try again.");
+          setOpenSnackBar(true);
         } else {
           setError(error);
           setOpenSnackBar(true);
