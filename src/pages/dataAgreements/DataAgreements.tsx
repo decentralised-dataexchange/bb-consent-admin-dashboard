@@ -136,14 +136,25 @@ const DataAgreement = () => {
     return "#B9B9B9";
   };
 
-  const ColoredField = (props: any) => {
+  const PurposeField = (props: any) => {
     const record = useRecordContext(props);
     const textColor = getTextColor(record);
 
     if (!record || !props.source) {
       return null;
     }
-    return <TextField {...props} sx={{ color: textColor }} />;
+    return (
+      <Typography
+        variant="body2"
+        sx={{
+          color: textColor,
+        }}
+      >
+        {selectedDropdownValue[record.id] === undefined ||  selectedDropdownValue[record.id] === record.version
+          ? record[props.source]
+          : record.selectedRevision.purpose}
+      </Typography>
+    ); 
   };
 
   const DataExchangeField = (props: any) => {
@@ -159,7 +170,9 @@ const DataAgreement = () => {
           color: textColor,
         }}
       >
-        {getMethodOfUse(record[props.source])}
+        {selectedDropdownValue[record.id] === undefined ||  selectedDropdownValue[record.id] === record.version
+          ? getMethodOfUse(record[props.source])
+          : getMethodOfUse(record.selectedRevision.methodOfUse)}
       </Typography>
     );
   };
@@ -178,7 +191,9 @@ const DataAgreement = () => {
           color: textColor,
         }}
       >
-        {getPublishValues(record[props.source])}
+        {selectedDropdownValue[record.id] === undefined ||  selectedDropdownValue[record.id] === record.version
+          ? getPublishValues(record[props.source])
+          : getPublishValues(record.selectedRevision.lifecycle)}
       </Typography>
     );
   };
@@ -197,7 +212,9 @@ const DataAgreement = () => {
           color: textColor,
         }}
       >
-        {getLawfulBasisOfProcessing(record[props.source])}
+        {selectedDropdownValue[record.id] === undefined ||  selectedDropdownValue[record.id] === record.version
+          ? getLawfulBasisOfProcessing(record[props.source])
+          : getLawfulBasisOfProcessing(record.selectedRevision.lawfulBasis)}
       </Typography>
     );
   };
@@ -417,7 +434,7 @@ const DataAgreement = () => {
               width: "100%",
             }}
           >
-            <ColoredField
+            <PurposeField
               source="purpose"
               label={"Usage Purpose"}
               sortable={false}
