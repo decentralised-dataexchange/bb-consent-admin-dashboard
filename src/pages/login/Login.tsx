@@ -1,6 +1,5 @@
 /* eslint-disable no-lone-blocks */
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { Form, TextInput, useLogin } from "react-admin";
 import {
   Box,
@@ -44,7 +43,7 @@ export const Login = () => {
           setError("Password: Value required");
           setOpenSnackBar(true);
         } else if (error === "Username: non zero value required") {
-          setError("username: Value required");
+          setError("User ID: Value required");
           setOpenSnackBar(true);
         } else if (
           error ===
@@ -52,14 +51,25 @@ export const Login = () => {
         ) {
           setError("Password & User ID: Value required");
           setOpenSnackBar(true);
-        }  else if (error.substring(0, 28) === "Failed to get token for user") {
-          setError("Invalid login credentials. Please double-check your username and password and try again.");
+        } else if (error.substring(0, 28) === "Failed to get token for user") {
+          setError(
+            "Invalid login credentials. Please double-check your username and password and try again."
+          );
           setOpenSnackBar(true);
         } else {
-          setError(error);
+          setError(
+            "Invalid login credentials. Please double-check your username and password and try again."
+          );
           setOpenSnackBar(true);
         }
       });
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      submit();
+    }
   };
 
   return (
@@ -72,7 +82,7 @@ export const Login = () => {
         backgroundColor: "#FFFF",
       }}
     >
-      <Form noValidate>
+      <Form onSubmit={submit}>
         <SnackbarComponent
           open={openSnackBar}
           setOpen={setOpenSnackBar}
@@ -122,6 +132,7 @@ export const Login = () => {
                   <PersonOutlineOutlinedIcon style={{ color: "#A1A1A1" }} />
                 ),
                 disableUnderline: true,
+                onKeyPress: handleKeyPress,
               }}
             />
             <Divider />
@@ -139,10 +150,10 @@ export const Login = () => {
               InputProps={{
                 startAdornment: <LockOpenIcon style={{ color: "#A1A1A1" }} />,
                 disableUnderline: true,
+                onKeyPress: handleKeyPress,
                 endAdornment: (
                   <ArrowCircleRightOutlinedIcon
                     style={{ color: "#A1A1A1", cursor: "pointer" }}
-                    // type="submit"
                     onClick={submit}
                   />
                 ),
