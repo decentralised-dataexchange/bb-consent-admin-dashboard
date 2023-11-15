@@ -19,6 +19,8 @@
     "@types/react-dom": "^18.2.7",
     "axios": "^1.5.1",
     "lodash.debounce": "^4.0.8",
+    "mobx": "^6.11.0",
+    "mobx-react": "^9.1.0",
     "mui-image": "^1.0.7",
     "ra-data-fakerest": "^4.14.0",
     "react": "^18.2.0",

@@ -61,7 +61,7 @@ build/docker/deployable: ## Builds deployable docker image for preview, staging 
 
 .PHONY: build/docker/deployable/dockerhub
 build/docker/deployable/dockerhub: ## Builds deployable docker image for docker hub
-	docker build -t $(DOCKER_HUB_IMAGE):$(DOCKER_HUB_TAG) -f resources/docker/Dockerfile.dockerhub .
+	docker build -t $(DOCKER_HUB_IMAGE):$(DOCKER_HUB_TAG) -f resources/docker/Dockerfile .
 	echo "$(DOCKER_HUB_IMAGE):$(DOCKER_HUB_TAG)" > $(DEPLOY_VERSION_FILE)
 
 .PHONY: build

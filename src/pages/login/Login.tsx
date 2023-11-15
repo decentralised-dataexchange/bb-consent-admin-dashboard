@@ -18,6 +18,7 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 
 import Logo from "../../assets/GovstackLogoBlue.svg";
 import SnackbarComponent from "../../components/notification";
+import { configStore } from "../../store/configStore";
 
 const FooterContainer = styled("div")({
   position: "fixed",
@@ -33,7 +34,7 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [error, setError] = useState("");
-  let version = process.env.REACT_APP_VERSION;
+  let version = configStore.appVersion;
 
   const submit = () => {
     login({ username, password })

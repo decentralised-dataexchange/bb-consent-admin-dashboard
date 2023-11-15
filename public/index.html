@@ -15,6 +15,7 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <script src="https://d3js.org/d3.v6.min.js"></script>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -39,5 +40,12 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      let resourcePath = "%PUBLIC_URL%/config/config.json";
+      d3.json(resourcePath + "?v=" + Date.now()).then(function (config) {
+        console.log(config);
+        window.Init(config);
+      });
+    </script>
   </body>
 </html>

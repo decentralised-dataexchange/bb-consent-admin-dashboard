@@ -27,6 +27,7 @@ import {
 import CreateApiKeyModal from "../../components/modals/createApiKeyModal";
 import { capitalizeFirstLetter } from "../../utils/capitaliseFIrstLetter";
 import { formatISODateToLocalString } from "../../utils/formatISODateToLocalString";
+import { configStore } from "../../store/configStore";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -66,7 +67,7 @@ const DeveloperAPIs = () => {
   const [showAPI, setShowAPI] = useState(false);
   const [apiKeyValue, setApiKeyValue] = useState<any>();
   const { id } = LocalStorageService.getUser();
-  let stagingURL = process.env.REACT_APP_API_BASE_URL;
+  let stagingURL = configStore.baseUrl;
   const [openDeleteApiKey, setOpenDeleteApiKey] = useState(false);
   const [developerApiDeleteID, setDeveloperApiDeleteID] = useState<any>();
 

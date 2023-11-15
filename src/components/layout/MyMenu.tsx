@@ -7,12 +7,13 @@ import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 import SubMenu from "./SubMenu";
+import { configStore } from "../../store/configStore";
 
 type MenuName = "manageusers" | "account";
 
 export default function MyMenu({ dense = false }: MenuProps) {
   const [open] = useSidebarState();
-  let version = process.env.REACT_APP_VERSION;
+  let version = configStore.appVersion;
   const [state, setState] = useState({
     manageusers: false,
     account: false,

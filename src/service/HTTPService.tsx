@@ -11,8 +11,16 @@ import {
 } from "../interfaces/DataAgreement";
 import { convertConsentRecordsForClient } from "./adapter";
 import { convertViewLogsForClient } from "./adapter";
+import { configStore } from "../store/configStore";
+import { autorun } from "mobx";
+
+
 const httpClient = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL,
+  baseURL: configStore.baseUrl,
+});
+
+const disposer = autorun(() => {
+  httpClient.defaults.baseURL = configStore.baseUrl;
 });
 
 const getAuthenticatedHeaders = () => {
@@ -84,7 +92,7 @@ export const HttpService = {
       headers: { ...getAuthenticatedHeaders() },
     };
     const payload: object = {
-      clientId: process.env.REACT_APP_CLIENT_ID,
+      clientId: configStore.clientId,
       refreshToken: refresh_token,
     };
     return httpClient.post(ENDPOINTS.refreshToken(), payload, config);

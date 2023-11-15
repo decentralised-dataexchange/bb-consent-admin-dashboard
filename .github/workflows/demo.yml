@@ -46,11 +46,13 @@ jobs:
           location: ${{ env.GKE_ZONE }}
           credentials: ${{ secrets.GKE_SA_KEY }}
 
-      - name: Update REACT_APP_API_BASE_URL in .env using sed
-        run: sed -i 's~^REACT_APP_API_BASE_URL = "https://staging-consent-bb-api\.igrant\.io/v2"$~REACT_APP_API_BASE_URL = "https://demo-consent-bb-api.igrant.io/v2"~' .env
-
-      - name: Update REACT_APP_VERSION in .env using sed
-        run: sed -i "s~^REACT_APP_VERSION=\".*\"$~REACT_APP_VERSION=\"${{ steps.extract_tag.outputs.TAG }}\"~" .env
+      - name: Update baseUrl
+        run: |
+          sed -i 's/"baseUrl": ".*"/"baseUrl": "https:\/\/demo-consent-bb-api.igrant.io\/v2"/' public/config/config.json
+      
+      - name: Update version
+        run: |
+          sed -i 's/"appVersion": ".*"/"appVersion": "${{ steps.extract_tag.outputs.TAG }}"/' public/config/config.json
 
       # Build docker image, publish docker image to gcp container registry, deploy to production
       - name: Build docker image, publish docker image to gcp container registry, deploy to production

@@ -24,16 +24,16 @@ jobs:
       - name: Get the version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-      
+
       # Install dependencies
       - name: Install Dependencies
         run: npm install --force
-      
+
       - name: Run Tests and Generate Coverage
         run: npm test
         # If your test script does not generate coverage by default, you might need:
         # run: npm test -- --coverage
-      
+
       - uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -43,7 +43,7 @@ jobs:
       # - uses: sonarsource/sonarqube-quality-gate-action@master
       #   timeout-minutes: 5
       #   env:
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       # Setup gcloud CLI
       - uses: google-github-actions/setup-gcloud@v0
@@ -63,6 +63,10 @@ jobs:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_ZONE }}
           credentials: ${{ secrets.GKE_SA_KEY }}
+
+      - name: Update baseUrl
+        run: |
+          sed -i 's/"baseUrl": ".*"/"baseUrl": "https:\/\/staging-consent-bb-api.igrant.io\/v2"/' public/config/config.json
 
       # Build docker image, publish docker image to gcp container registry, deploy to production
       - name: Build docker image, publish docker image to gcp container registry, deploy to production
