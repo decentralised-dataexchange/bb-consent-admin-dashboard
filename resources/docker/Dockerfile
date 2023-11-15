@@ -11,5 +11,9 @@ RUN npm run build --production
 FROM nginx:1.15.8-alpine
 COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
 COPY resources/config/nginx.conf /etc/nginx/conf.d/default.conf
+
+# Run sed command to remove defer="defer" attribute
+RUN sed -i 's/defer="defer"//g' /usr/share/nginx/html/index.html
+
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

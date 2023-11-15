@@ -1,5 +1,5 @@
 {
-  "baseUrl": "https://demo-consent-bb-api.igrant.io/v2",
+  "baseUrl": "https://staging-consent-bb-api.igrant.io/v2",
   "appVersion": "2023.11.4",
   "clientId": "igrant-ios-app"
 }
