@@ -150,9 +150,7 @@ const DataAgreement = () => {
           color: textColor,
         }}
       >
-        {selectedDropdownValue[record.id] === undefined ||  selectedDropdownValue[record.id] === record.version
-          ? record[props.source]
-          : record.selectedRevision.purpose}
+          {record[props.source]}
       </Typography>
     ); 
   };
@@ -170,9 +168,7 @@ const DataAgreement = () => {
           color: textColor,
         }}
       >
-        {selectedDropdownValue[record.id] === undefined ||  selectedDropdownValue[record.id] === record.version
-          ? getMethodOfUse(record[props.source])
-          : getMethodOfUse(record.selectedRevision.methodOfUse)}
+        {getMethodOfUse(record[props.source])}
       </Typography>
     );
   };
@@ -191,9 +187,7 @@ const DataAgreement = () => {
           color: textColor,
         }}
       >
-        {selectedDropdownValue[record.id] === undefined ||  selectedDropdownValue[record.id] === record.version
-          ? getPublishValues(record[props.source])
-          : getPublishValues(record.selectedRevision.lifecycle)}
+        {getPublishValues(record[props.source])}
       </Typography>
     );
   };
@@ -212,9 +206,7 @@ const DataAgreement = () => {
           color: textColor,
         }}
       >
-        {selectedDropdownValue[record.id] === undefined ||  selectedDropdownValue[record.id] === record.version
-          ? getLawfulBasisOfProcessing(record[props.source])
-          : getLawfulBasisOfProcessing(record.selectedRevision.lawfulBasis)}
+        {getLawfulBasisOfProcessing(record[props.source])}
       </Typography>
     );
   };
