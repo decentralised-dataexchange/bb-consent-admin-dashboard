@@ -72,6 +72,7 @@ const ManageAdmin = () => {
   const [formDataForImageUpload, setFormDataForImageUpload] = useState<any>();
   const [previewImage, setPreviewImage] = useState<any>();
   const changeAvatar = useFilterStore.getState().changeAvatar
+  const changeAdminName = useFilterStore.getState().changeAdminName
 
   useEffect(() => {
     if (adminDetails?.name) {
@@ -105,6 +106,7 @@ const ManageAdmin = () => {
     HttpService.updateOrganisationAdminDetails(payload).then((res) => {
       setAdminDetails(res.data.organisationAdmin);
       LocalStorageService.updateUser(res.data.organisationAdmin);
+      useFilterStore.getState().updateChangeAdminName(!changeAdminName);
 
       if (formDataForImageUpload) {
         HttpService.updateAdminAvatar(formDataForImageUpload)
@@ -112,13 +114,13 @@ const ManageAdmin = () => {
             HttpService.getAdminAvatarImage().then((imageBase64) => {
               setLogoImageBase64(imageBase64);
               LocalStorageService.updateProfilePic(imageBase64);
-              useFilterStore.getState().updaChangeAvatar(!changeAvatar);
+              useFilterStore.getState().updateChangeAvatar(!changeAvatar);
             });
           })
           .catch((error) => {
             console.log(`Error: ${error}`);
           });
-      }
+        }
     });
 
     setFormDataForImageUpload("");
