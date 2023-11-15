@@ -54,8 +54,11 @@ export const DataExchangeMode = (props: DataExchangeModeProps) => {
         name="AttributeType"
         disabled={
           props.mode === "Read" ||
-          props?.selectededDataAgreementFromDataAgreement?.active === true || 
-          props?.selectededDataAgreementFromDataAgreement?.version !== "1.0.0"
+          props?.selectededDataAgreementFromDataAgreement?.active === true ||
+          (props?.selectededDataAgreementFromDataAgreement.version !==
+            undefined &&
+            props?.selectededDataAgreementFromDataAgreement?.version !==
+              "1.0.0")
         }
         style={
           props.mode === "Read"
