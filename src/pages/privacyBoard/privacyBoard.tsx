@@ -95,7 +95,7 @@ const Privacyboard = () => {
                 width: "auto",
                 paddingLeft: "50px",
                 paddingRight: "50px",
-                color:"black"
+                color: "black",
               }}
             >
               CONFIGURE
@@ -108,29 +108,38 @@ const Privacyboard = () => {
           Privacy Dashboard Settings
         </Typography>
         <Grid container mt={1.5}>
-          <Grid item lg={3} md={3} sm={3} xs={12}>
+          <Grid item lg={3} md={5} sm={5} xs={12}>
             <Typography color="black" variant="body2">
-              Deployed version:
+              Deployed Version:
             </Typography>
           </Grid>
-          <Grid item lg={2} md={3} sm={3} xs={12}>
+          <Grid item lg={5} md={7} sm={7} xs={12}>
             <Typography color="grey" variant="body2">
-              {privacyBoardDetails?.hostname
-                ? privacyBoardDetails?.hostname
-                : ""}
+              {privacyBoardDetails?.version ? privacyBoardDetails?.version : ""}
             </Typography>
           </Grid>
         </Grid>
         <Grid container>
-          <Grid item lg={3} md={3} sm={3} xs={12}>
+          <Grid item lg={3} md={5} sm={5} xs={12}>
             <Typography color="black" variant="body2">
               Deployed Domain Address:
             </Typography>
           </Grid>
-          <Grid item lg={2} md={3} sm={3} xs={12}>
-            <Typography color="grey" variant="body2">
-              {privacyBoardDetails?.version ? privacyBoardDetails?.version : ""}
-            </Typography>
+          <Grid item lg={5} md={7} sm={7} xs={12}>
+            <a
+              style={{
+                color: "blue",
+                fontSize: "14px",
+                textDecoration: "none",
+              }}
+              href={privacyBoardDetails?.hostname}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {privacyBoardDetails?.hostname
+                ? privacyBoardDetails?.hostname
+                : ""}
+            </a>
           </Grid>
         </Grid>
       </ItemGrid>
