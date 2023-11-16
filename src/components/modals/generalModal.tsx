@@ -61,6 +61,7 @@ export default function DeleteModal(props: Props) {
         HttpService.deleteDataAgreement(selectededDataAgreementFromDataAgreement.id).then((response) => {
           onRefetch();
           setSelectedDropdownValue({})
+          setIsOk(false)
           setOpen(false);
         });
       } else if (confirmText === "PUBLISH" && resourceName === "dataagreements") {
@@ -78,17 +79,20 @@ export default function DeleteModal(props: Props) {
         HttpService.updateDataAgreementById(updateDAPayload, selectededDataAgreementFromDataAgreement.id).then(
           (response) => {
             onRefetch();
+            setIsOk(false)
             setSelectedDropdownValue({})
             setOpen(false);
           }
         );
       } else if (confirmText === "DELETE" && userAccessId) {
         HttpService.deleteIdpBy(userAccessId).then(() => {
+          setIsOk(false)
           setOpen(false);
         });
       } else if (confirmText === "DELETE" && resourceName === "developerapi") {
         HttpService.deleteApiKey(developerApiDeleteID).then(() => {
           onRefetch();
+          setIsOk(false)
           setOpen(false);
         });
       } else if (
@@ -97,6 +101,7 @@ export default function DeleteModal(props: Props) {
       ) {
         HttpService.deleteWebhook(selectedWebhookDetails.id).then(() => {
           onRefetch();
+          setIsOk(false)
           setOpen(false);
         });
       }
