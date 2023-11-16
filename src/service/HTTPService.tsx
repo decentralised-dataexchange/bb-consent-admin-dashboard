@@ -13,14 +13,23 @@ import { convertConsentRecordsForClient } from "./adapter";
 import { convertViewLogsForClient } from "./adapter";
 import { configStore } from "../store/configStore";
 import { autorun } from "mobx";
+import https from 'https';
+
 
 
 const httpClient = axios.create({
   baseURL: configStore.baseUrl,
 });
 
+const httpsAgent = new https.Agent({
+  rejectUnauthorized: false,
+})
+
 const disposer = autorun(() => {
   httpClient.defaults.baseURL = configStore.baseUrl;
+  if (configStore.baseUrl.includes("localhost") || configStore.baseUrl.includes(".dev")) {
+    httpClient.defaults.httpsAgent = httpsAgent
+  }
 });
 
 const getAuthenticatedHeaders = () => {
