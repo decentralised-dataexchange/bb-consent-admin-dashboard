@@ -35,7 +35,7 @@ const Item = styled("div")(({ theme }) => ({
   padding: theme.spacing(1),
   justifyContent: "center",
   color: "#0000",
-  height: 100,
+  height: 90,
   borderRadius: 7,
   border: "1px solid grey",
 }));
