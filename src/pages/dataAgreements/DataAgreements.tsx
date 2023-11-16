@@ -79,7 +79,12 @@ const DataAgreement = () => {
     setSelectededDataAgreementFromDataAgreement,
   ] = useState<any>();
   const [handleChangeTriggered, setHandleChangeTriggered] = useState(false);
+  // Store the selected versions and table values
   const [selectedDropdownValue, setSelectedDropdownValue] = useState<any>({});
+  const [
+    selectedDropdownDataAgreementValue,
+    setSelectedDropdownDataAgreementValue,
+  ] = useState<any>({});
 
   const [listFilterValue, setListFilterValue] = useState("all");
   const refresh = useRefresh();
@@ -150,9 +155,14 @@ const DataAgreement = () => {
           color: textColor,
         }}
       >
-          {record[props.source]}
+        {selectedDropdownValue[record.id] === undefined ||
+        selectedDropdownDataAgreementValue[record.id] === undefined ||
+        selectedDropdownDataAgreementValue[record.id]?.version ===
+          record.version
+          ? record[props.source]
+          : selectedDropdownDataAgreementValue[record.id]?.purpose}
       </Typography>
-    ); 
+    );
   };
 
   const DataExchangeField = (props: any) => {
@@ -168,7 +178,14 @@ const DataAgreement = () => {
           color: textColor,
         }}
       >
-        {getMethodOfUse(record[props.source])}
+        {selectedDropdownValue[record.id] === undefined ||
+        selectedDropdownDataAgreementValue[record.id] === undefined ||
+        selectedDropdownDataAgreementValue[record.id]?.version ===
+          record.version
+          ? getMethodOfUse(record[props.source])
+          : getMethodOfUse(
+              selectedDropdownDataAgreementValue[record.id]?.methodOfUse
+            )}
       </Typography>
     );
   };
@@ -187,7 +204,14 @@ const DataAgreement = () => {
           color: textColor,
         }}
       >
-        {getPublishValues(record[props.source])}
+        {selectedDropdownValue[record.id] === undefined ||
+        selectedDropdownDataAgreementValue[record.id] === undefined ||
+        selectedDropdownDataAgreementValue[record.id]?.version ===
+          record.version
+          ? getPublishValues(record[props.source])
+          : getPublishValues(
+              selectedDropdownDataAgreementValue[record.id]?.lifecycle
+            )}
       </Typography>
     );
   };
@@ -206,7 +230,14 @@ const DataAgreement = () => {
           color: textColor,
         }}
       >
-        {getLawfulBasisOfProcessing(record[props.source])}
+        {selectedDropdownValue[record.id] === undefined ||
+        selectedDropdownDataAgreementValue[record.id] === undefined ||
+        selectedDropdownDataAgreementValue[record.id]?.version ===
+          record.version
+          ? getLawfulBasisOfProcessing(record[props.source])
+          : getLawfulBasisOfProcessing(
+              selectedDropdownDataAgreementValue[record.id]?.lawfulBasis
+            )}
       </Typography>
     );
   };
@@ -324,6 +355,9 @@ const DataAgreement = () => {
         setSelectedValue={setSelectedDropdownValue}
         selectedValue={selectedDropdownValue}
         key={record.id}
+        setSelectedDropdownDataAgreementValue={
+          setSelectedDropdownDataAgreementValue
+        }
       />
     );
   };

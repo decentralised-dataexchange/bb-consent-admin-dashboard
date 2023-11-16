@@ -19,10 +19,16 @@ interface Props {
   selectedValue: any;
   setSelectedValue: any;
   key: any;
+  setSelectedDropdownDataAgreementValue: any;
 }
 
 const VersionDropdown = (props: Props) => {
-  const { record, selectedValue, setSelectedValue } = props;
+  const {
+    record,
+    selectedValue,
+    setSelectedValue,
+    setSelectedDropdownDataAgreementValue,
+  } = props;
   const filter = useFilterStore.getState().filterDataAgreement;
 
   const [dataAgreementFromRevision, setDataAgreementFromRevision] =
@@ -61,6 +67,19 @@ const VersionDropdown = (props: Props) => {
     const selectedRevision = dataAgreementFromRevision?.find(
       (dataAgreement: any) => dataAgreement.version === event.target.value
     );
+
+    setSelectedDropdownDataAgreementValue((prevSelectedRevision: any) => ({
+      ...prevSelectedRevision,
+      [record.id]: selectedRevision
+        ? {
+            purpose: selectedRevision.purpose,
+            version: selectedRevision.version,
+            methodOfUse: selectedRevision.methodOfUse,
+            lifecycle: selectedRevision.lifecycle,
+            lawfulBasis: selectedRevision.lawfulBasis,
+          }
+        : null,
+    }));
 
     record.selectedRevision = selectedRevision;
   };
