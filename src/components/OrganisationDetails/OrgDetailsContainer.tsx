@@ -119,14 +119,14 @@ const OrganisationDetailsContainer = (props: Props) => {
                   }}
                   InputProps={{
                     disableUnderline: true,
-                    style: { fontSize: 20, fontWeight: "bold" },
+                    style: { fontSize: 20, fontWeight: "bold", marginTop:"-4px" },
                   }}
                 />
                 <Typography
                   color="#9F9F9F"
                   variant="body2"
                   height="23px"
-                  style={{ marginTop: "3.9px" }}
+                  style={{ marginTop: "-0px" }}
                 >
                   Sector: {organisationDetails.sector}
                 </Typography>
@@ -163,7 +163,7 @@ const OrganisationDetailsContainer = (props: Props) => {
               </>
             ) : (
               <>
-                <Typography variant="h6" fontWeight="bold">
+                <Typography variant="h6" fontWeight="bold" mt={"-4px"}>
                   {organisationDetails.name}
                 </Typography>
                 <Typography variant="body2" height="23px">
@@ -232,13 +232,13 @@ const OrganisationDetailsContainer = (props: Props) => {
       </Grid>
       <Grid
         sx={{
-          marginTop: editMode === true ? { xs: 0.8, sm: 7 } : { xs: 2, sm: 7 },
+          marginTop: editMode === true ? { xs: 0.8, sm: 4 } : { xs: 2, sm: 4 },
         }}
       >
         <Typography variant="h6" fontWeight="bold">
           Overview
         </Typography>
-        <Box sx={{ minHeight: 100, maxHeight: 150, overflow: "auto" }}>
+        <Box sx={{ minHeight: 100, maxHeight: 160, overflow: "auto" }}>
           {editMode ? (
             <TextInput
               source="overview"
