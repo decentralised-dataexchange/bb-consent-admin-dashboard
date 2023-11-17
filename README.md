@@ -23,13 +23,37 @@ This repository hosts source code for the reference implementation of the GovSta
 
 Released. Refer to the [wiki page](https://github.com/decentralised-dataexchange/bb-consent-docs/wiki/wps-and-deliverables) for the latest status of the deliverables.
 
-## Instructions to run
+## Instructions to run the docker image
+
+`docker run -p 3000:80 igrantio/bb-consent-admin-dashboard:<tag>`
+
+Example: To run 2023.11.5 execute the following command in the terminal 
+
+`docker run -p 3000:80 igrantio/bb-consent-admin-dashboard:2023.11.5`
+
+In case you wish to override the base URL for consent-bb API server to connect to from the admin dashboard, use the following command:
+
+`docker run -v ./config.json:/usr/share/nginx/html/config/config.json -p 3000:80 igrantio/bb-consent-admin-dashboard:2023.11.5`
+
+A sample config 
+
+```
+{
+  "baseUrl": "https://staging-consent-bb-api.igrant.io/v2",
+  "appVersion": "2023.11.4",
+  "clientId": "igrant-ios-app"
+}
+```
+
+The admin dashboard can be run at http://localhost:3000/#/login.
+
+## Instructions to build from source and run
 
 Follow the steps below to get the admin dashboard up and running locally.
 
 1. Clone this repository to your local server using `git clone`.
 2. Check out the latest release or any available release you wish to run.
-3. Modify the `.env` file in the root folder to point to Consent BB API server instance.
+3. Modify the public/config/config.json file attribute baseUrl in the root folder to point to the Consent BB API server instance.
 4. Execute `make setup`. This establishes the necessary dependencies and configurations for running the admin dashboard instance.
 5. Execute `make build`. The compiles and assembles source code into executable files or libraries, following the instructions specified in the Makefile of the admin dashboard instance.
 6. Execute `make run`.  This executes a predefined set of instructions in the  Makefile to launch or run the compiled admin dashboard server instance.
