@@ -26,10 +26,20 @@ import ManageAdmin from './pages/manageAdmin/manageAdmin';
 import DeveloperAPIs from './pages/developerAPIs/developerAPIs'
 import ViewLogs from './pages/viewLogs/viewLogs';
 import Webhooks from './pages/webhooks/webhooks';
+import { QueryClient } from 'react-query';
 
 function App() {
+  
+    const queryClient = new QueryClient({
+      defaultOptions: {
+          queries: {
+              refetchOnWindowFocus: false,
+            },
+        },
+    });
+
   return (
-    <Admin layout={MyLayout} loginPage={Login} dataProvider={dataProvider} theme={theme} authProvider={authProvider} requireAuth>
+    <Admin queryClient={queryClient}  layout={MyLayout} loginPage={Login} dataProvider={dataProvider} theme={theme} authProvider={authProvider} requireAuth>
       <Resource name='start' options={{ label: 'Getting Started' }} list={GettingStarted} icon={HouseIcon} />
       <Resource name='dataagreement' options={{ label: 'Data Agreements' }} list={DataAgreements} icon={InsertDriveFileOutlinedIcon}  />
       <Resource name='personaldata' options={{ label: 'Personal Data' }} list={PersonalData} icon={InsertChartOutlinedOutlinedIcon}/>

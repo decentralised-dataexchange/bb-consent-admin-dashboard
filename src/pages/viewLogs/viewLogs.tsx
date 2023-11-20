@@ -1,4 +1,4 @@
-import { List, Datagrid, TextField, Form, useRefresh } from "react-admin";
+import { List, Datagrid, TextField, Form } from "react-admin";
 
 import { Box, Typography, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -6,8 +6,6 @@ import { styled } from "@mui/material/styles";
 import BreadCrumb from "../../components/Breadcrumbs";
 import Dropdown from "../../components/dropdowns/dropdown";
 import { useEffect, useState } from "react";
-import { useFilterStore } from "../../store/store";
-import { useLocation } from "react-router-dom";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -60,39 +58,19 @@ const ViewLogs = () => {
   const [subscriptionMethodValue, setSubscriptionMethodValue] = useState<
     string[]
   >([]);
-
-  const changefilterViewLogs = (filterViewLogs: any) => {
-    useFilterStore.getState().updateFilterViewLogs(filterViewLogs);
-  };
-  const refresh = useRefresh();
-
-  const location = useLocation();
-
-  const resetStore = () => {
-    useFilterStore.getState().resetStore();
-  };
-
-  // Listen for route changes and reset the Zustand store when the route changes
-  useEffect(() => {
-    resetStore();
-    setTimeout(() => {
-      refresh();
-    }, 500);
-  }, [location.pathname]);
+  const [listFilterValue, setListFilterValue] = useState(0);
 
   useEffect(() => {
     if (selectedFilterValue === "Security") {
-      changefilterViewLogs(1);
+      setListFilterValue(1);
     } else if (selectedFilterValue === "API Calls") {
-      changefilterViewLogs(2);
+      setListFilterValue(2);
     } else if (selectedFilterValue === "Webhooks") {
-      changefilterViewLogs(5);
+      setListFilterValue(5);
     } else if (selectedFilterValue === "all") {
-      changefilterViewLogs(0);
+      setListFilterValue(0);
       setSubscriptionMethodValue([]);
     }
-
-    refresh();
   }, [selectedFilterValue]);
 
   return (
@@ -101,6 +79,7 @@ const ViewLogs = () => {
         actions={false}
         sx={{ width: "100%", overflow: "hidden" }}
         empty={false}
+        filter={{ status: listFilterValue }}
       >
         <Form>
           <BreadCrumb Link="Account" Link2="View Logs" />
