@@ -292,6 +292,12 @@ export default function DataAgreementModal(props: Props) {
     }
   }, [dataAgrreementRevisionIdForSelectedRecord, open]);
 
+  // To check the input field is change during update
+  const isFormDataChanged = () => {
+    const dirtyFields = methods.formState.dirtyFields;
+    return Object.keys(dirtyFields).length > 0;
+  };
+
   const [openExistingSchemaModal, setOpenExistingSchemaModal] = useState(false);
 
   const { organisationDetails, logoImageBase64, coverImageBase64 }: any =
@@ -310,7 +316,12 @@ export default function DataAgreementModal(props: Props) {
         setSelectedDropdownValue({});
         setOpen(false);
       });
-    } else if (mode === "Update") {
+    } else if (
+      mode === "Update" &&
+      (selectedDataAgreement && selectedDataAgreement.lifecycle === "draft"
+        ? selectedDataAgreement.lifecycle === "draft"
+        : isFormDataChanged())
+    ) {
       HttpService.updateDataAgreementById(
         DataAgreementPayload(
           createdData,
@@ -342,7 +353,7 @@ export default function DataAgreementModal(props: Props) {
         setSelectedDropdownValue({});
         setOpen(false);
       });
-    } else if (mode === "Update") {
+    } else if (mode === "Update" && isFormDataChanged()) {
       HttpService.updateDataAgreementById(
         DataAgreementPayload(
           createdData,
@@ -360,6 +371,7 @@ export default function DataAgreementModal(props: Props) {
       });
     } else return {};
   };
+
   return (
     <>
       <Drawer anchor="right" open={open}>
@@ -507,17 +519,23 @@ export default function DataAgreementModal(props: Props) {
                 <Button
                   variant="outlined"
                   style={
-                    methods.formState.isValid && mode !== "Read"
+                    methods.formState.isValid &&
+                    mode !== "Read" &&
+                    isFormDataChanged()
                       ? buttonStyle
                       : disabledButtonstyle
                   }
                   sx={{
                     cursor:
-                      methods.formState.isValid && mode !== "Read"
+                      methods.formState.isValid &&
+                      mode !== "Read" &&
+                      isFormDataChanged()
                         ? "pointer"
                         : "not-allowed",
                     color:
-                      methods.formState.isValid && mode !== "Read"
+                      methods.formState.isValid &&
+                      mode !== "Read" &&
+                      isFormDataChanged()
                         ? "black"
                         : "#6D7676",
                     marginRight: "15px",
@@ -534,11 +552,21 @@ export default function DataAgreementModal(props: Props) {
                   variant="outlined"
                   sx={{
                     cursor:
-                      methods.formState.isValid && mode !== "Read"
+                      methods.formState.isValid &&
+                      mode !== "Read" &&
+                      (selectedDataAgreement &&
+                      selectedDataAgreement.lifecycle === "draft"
+                        ? selectedDataAgreement.lifecycle === "draft"
+                        : isFormDataChanged())
                         ? "pointer"
                         : "not-allowed",
                     color:
-                      methods.formState.isValid && mode !== "Read"
+                      methods.formState.isValid &&
+                      mode !== "Read" &&
+                      (selectedDataAgreement &&
+                      selectedDataAgreement.lifecycle === "draft"
+                        ? selectedDataAgreement.lifecycle === "draft"
+                        : isFormDataChanged())
                         ? "black"
                         : "#6D7676",
                     "&:hover": {
@@ -548,7 +576,12 @@ export default function DataAgreementModal(props: Props) {
                     marginLeft: "15px",
                   }}
                   style={
-                    methods.formState.isValid && mode !== "Read"
+                    methods.formState.isValid &&
+                    mode !== "Read" &&
+                    (selectedDataAgreement &&
+                    selectedDataAgreement.lifecycle === "draft"
+                      ? selectedDataAgreement.lifecycle === "draft"
+                      : isFormDataChanged())
                       ? buttonStyle
                       : disabledButtonstyle
                   }
