@@ -1,7 +1,6 @@
 import { combineDataProviders } from "react-admin";
 import { HttpService } from "../../service/HTTPService";
 import { offSet } from "../../utils/paginateFunction";
-import { useFilterStore } from "../../store/store";
 
 const dataAgreementDataProvider = {
   getList: (resource: any, params: any) => {
@@ -45,7 +44,7 @@ const personalDataDataProvider = {
 
 const userRecordsDataProvider = {
   getList: (resource: any, params: any) => {
-    const filter = useFilterStore.getState().userRecordsFilter;
+    const filter = params.filter.status
 
     let pageSize = params.pagination.perPage;
     let pageNumber = params.pagination.page;
@@ -72,7 +71,7 @@ const viewLogsProvider = {
   getList: (resource: any, params: any) => {
     let pageSize = params.pagination.perPage;
     let pageNumber = params.pagination.page;
-    const filter = useFilterStore.getState().filterViewLogs;
+    const filter = params.filter.status
 
     let offsetValue = offSet(pageNumber, pageSize);
     return HttpService.listAllAdminLogs(offsetValue, pageSize, filter)

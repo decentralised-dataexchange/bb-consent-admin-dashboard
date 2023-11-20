@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  List,
-  Datagrid,
-  TextField,
-  Form,
-  useRefresh,
-  useRecordContext,
-} from "react-admin";
+import { List, Datagrid, TextField, Form, useRecordContext } from "react-admin";
 
 import {
   Box,
@@ -69,6 +62,10 @@ const UserRecords = () => {
   const [handleFilterDropDownTriggered, setHandleFilterDropDownTriggered] =
     useState(false);
   const [handleSearchTriggered, sethandleSearchTriggered] = useState(false);
+  const [listFilterValue, setListFilterValue] = useState({
+    filterType: "all",
+    value: "all",
+  });
 
   const lawfullBasisOfProcessingDropdownvalues = [
     { label: "Consent", value: "consent" },
@@ -83,12 +80,6 @@ const UserRecords = () => {
     dataAgrreementRevisionIdForSelectedRecord,
     setDataAgrreementRevisionIdForSelectedRecord,
   ] = useState<string | undefined>();
-
-  const refresh = useRefresh();
-
-  const changefilter = (filterDataAgreement: any) => {
-    useFilterStore.getState().updateFilterUserRecords(filterDataAgreement);
-  };
 
   const updateDisabledPurposeDropDown = (disabledPurposeDropDown: any) => {
     useFilterStore
@@ -106,25 +97,15 @@ const UserRecords = () => {
 
   const location = useLocation();
 
-  const resetStore = () => {
-    useFilterStore.getState().resetStore();
-  };
-
   // Listen for route changes and reset the Zustand store when the route changes
   useEffect(() => {
-    resetStore();
-    setTimeout(() => {
-      refresh();
-    }, 500);
+    updateDisabledPurposeDropDown(true);
+    updateDisabledLawfulBasisDropDown(true);
+    setListFilterValue({
+      filterType: "all",
+      value: "all",
+    });
   }, [location.pathname]);
-
-  useEffect(() => {
-    refresh();
-  }, [
-    handleChangeTriggered,
-    handleFilterDropDownTriggered,
-    handleSearchTriggered,
-  ]);
 
   const handleChange = (e: any) => {
     setHandleChangeTriggered(!handleChangeTriggered);
@@ -137,14 +118,14 @@ const UserRecords = () => {
       updateDisabledPurposeDropDown(true);
       updateDisabledLawfulBasisDropDown(false);
     } else if (name === "all") {
-      changefilter({
+      setListFilterValue({
         filterType: "all",
         value: "all",
       });
       updateDisabledPurposeDropDown(true);
       updateDisabledLawfulBasisDropDown(true);
     } else {
-      changefilter({
+      setListFilterValue({
         filterType: "all",
         value: "all",
       });
@@ -192,6 +173,7 @@ const UserRecords = () => {
         actions={false}
         empty={false}
         sx={{ width: "100%", overflow: "hidden" }}
+        filter={{ status: listFilterValue }}
       >
         <Form>
           <BreadCrumb Link="Manage Users" Link2="Consent Records" />
@@ -212,7 +194,7 @@ const UserRecords = () => {
               Do queries on the consent records for audit purpose
             </Typography>
             <SearchByIdRecords
-              changefilter={changefilter}
+              changefilter={setListFilterValue}
               handleSearchTriggered={handleSearchTriggered}
               sethandleSearchTriggered={sethandleSearchTriggered}
             />
@@ -271,7 +253,7 @@ const UserRecords = () => {
                   />
                   <FilterByPurposeDropdown
                     displayValue={"Filter by Purpose"}
-                    changefilter={changefilter}
+                    changefilter={setListFilterValue}
                     setHandleFilterDropDownTriggered={
                       setHandleFilterDropDownTriggered
                     }
@@ -298,7 +280,7 @@ const UserRecords = () => {
                   <FilterByLawfulBasisDropdown
                     displayValue={"Filter by Lawful Basis"}
                     dropdownValues={lawfullBasisOfProcessingDropdownvalues}
-                    changefilter={changefilter}
+                    changefilter={setListFilterValue}
                     setHandleFilterDropDownTriggered={
                       setHandleFilterDropDownTriggered
                     }
