@@ -18,6 +18,7 @@ import CheckboxTree from "../webhooks/checkboxTree";
 import { HttpService } from "../../service/HTTPService";
 import { useForm } from "react-hook-form";
 import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
+import { isFormDataChanged } from "../../utils/isFormDataChanged";
 
 interface Props {
   open: boolean;
@@ -125,12 +126,15 @@ export default function EditWebooks(props: Props) {
         },
       };
       if (mode === "Update") {
-        HttpService.updateWebhookById(payload, webhookDetailsForUpdate.id).then(
-          () => {
+        if (isFormDataChanged(formState)) {
+          HttpService.updateWebhookById(
+            payload,
+            webhookDetailsForUpdate.id
+          ).then(() => {
             onRefetch();
             setOpen(false);
-          }
-        );
+          });
+        }
       } else {
         HttpService.addWebhooks(payload).then(() => {
           onRefetch();
@@ -224,18 +228,24 @@ export default function EditWebooks(props: Props) {
               <Button
                 variant="outlined"
                 style={
-                  formState.isValid && checkWebhookIsSelected === true
+                  formState.isValid &&
+                  checkWebhookIsSelected === true &&
+                  isFormDataChanged(formState)
                     ? buttonStyle
                     : disabledButtonstyle
                 }
                 sx={{
                   cursor:
-                    formState.isValid && checkWebhookIsSelected === true
+                    formState.isValid &&
+                    checkWebhookIsSelected === true &&
+                    isFormDataChanged(formState)
                       ? "pointer"
                       : "not-allowed",
                   marginRight: "20px",
                   color:
-                    formState.isValid && checkWebhookIsSelected === true
+                    formState.isValid &&
+                    checkWebhookIsSelected === true &&
+                    isFormDataChanged(formState)
                       ? "black"
                       : "#6D7676",
                   "&:hover": {

@@ -25,6 +25,7 @@ import {
 } from "./modalStyle";
 import { FormProvider, useForm } from "react-hook-form";
 import { HttpService } from "../../service/HTTPService";
+import { isFormDataChanged } from "../../utils/isFormDataChanged";
 
 interface Props {
   open: boolean;
@@ -84,9 +85,11 @@ export default function EditUserAccesModal(props: Props) {
     };
 
     if (idpDetails) {
-      HttpService.updateIdpByid(payload, idpDetails.id).then(() => {
-        setOpen(false);
-      });
+      if (isFormDataChanged(methods.formState)) {
+        HttpService.updateIdpByid(payload, idpDetails.id).then(() => {
+          setOpen(false);
+        });
+      }
     } else {
       HttpService.addNewIDP(payload).then(() => {
         setOpen(false);
@@ -298,16 +301,23 @@ export default function EditUserAccesModal(props: Props) {
                   variant="outlined"
                   type="submit"
                   style={
-                    methods.formState.isValid
+                    methods.formState.isValid &&
+                    isFormDataChanged(methods.formState)
                       ? buttonStyle
                       : disabledButtonstyle
                   }
                   sx={{
-                    cursor: methods.formState.isValid
-                      ? "pointer"
-                      : "not-allowed",
+                    cursor:
+                      methods.formState.isValid &&
+                      isFormDataChanged(methods.formState)
+                        ? "pointer"
+                        : "not-allowed",
                     marginRight: "20px",
-                    color: methods.formState.isValid ? "black" : "#6D7676",
+                    color:
+                      methods.formState.isValid &&
+                      isFormDataChanged(methods.formState)
+                        ? "black"
+                        : "#6D7676",
                     "&:hover": {
                       backgroundColor: "black",
                       color: "white",
