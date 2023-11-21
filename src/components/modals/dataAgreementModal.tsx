@@ -33,6 +33,7 @@ import { DataExchangeModeFormControl } from "../dataAgreements/DataExchangeMode"
 import { PurposeDescription } from "../dataAgreements/PurposeDescription";
 import { LawfullBasisOfProcessingFormControll } from "../dataAgreements/LawfullBasisOfProcessing";
 import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
+import SnackbarComponent from "../notification";
 
 interface Props {
   open: boolean;
@@ -80,7 +81,8 @@ export default function DataAgreementModal(props: Props) {
     useState("");
   const [policyDetailsForInitialValue, setPolicyDetailsForInitialValue] =
     useState<any>();
-
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const [error, setError] = useState("");
   useEffect(() => {
     HttpService.listAllPolicies().then((response) => {
       setPolicyDetailsForInitialValue(response[0]);
@@ -310,12 +312,22 @@ export default function DataAgreementModal(props: Props) {
     if (mode === "Create") {
       HttpService.addDataAgreements(
         DataAgreementPayload(createdData, active, lifecycle, mode)
-      ).then(() => {
-        successCallback();
-        methods.reset({ ...defaultValue });
-        setSelectedDropdownValue({});
-        setOpen(false);
-      });
+      )
+        .then(() => {
+          successCallback();
+          methods.reset({ ...defaultValue });
+          setSelectedDropdownValue({});
+          setOpen(false);
+        })
+        .catch((error) => {
+          let errorDescription = error.response.data.errorDescription;
+          setError(
+            errorDescription === "Data agreement purpose exists"
+              ? "Usage purpose already exists"
+              : errorDescription
+          );
+          setOpenSnackBar(true);
+        });
     } else if (
       mode === "Update" &&
       (selectedDataAgreement && selectedDataAgreement.lifecycle === "draft"
@@ -331,12 +343,22 @@ export default function DataAgreementModal(props: Props) {
           selectedDataAgreement
         ),
         selectedDataAgreement?.id
-      ).then((response) => {
-        successCallback();
-        setSelectedDropdownValue({});
-        methods.reset({ ...defaultValue });
-        setOpen(false);
-      });
+      )
+        .then((response) => {
+          successCallback();
+          setSelectedDropdownValue({});
+          methods.reset({ ...defaultValue });
+          setOpen(false);
+        })
+        .catch((error) => {
+          let errorDescription = error.response.data.errorDescription;
+          setError(
+            errorDescription === "Data agreement purpose exists"
+              ? "Usage purpose already exists"
+              : errorDescription
+          );
+          setOpenSnackBar(true);
+        });
     } else return {};
   };
 
@@ -347,12 +369,22 @@ export default function DataAgreementModal(props: Props) {
     if (mode === "Create") {
       HttpService.addDataAgreements(
         DataAgreementPayload(createdData, active, lifecycle, mode)
-      ).then(() => {
-        successCallback();
-        methods.reset({ ...defaultValue });
-        setSelectedDropdownValue({});
-        setOpen(false);
-      });
+      )
+        .then(() => {
+          successCallback();
+          methods.reset({ ...defaultValue });
+          setSelectedDropdownValue({});
+          setOpen(false);
+        })
+        .catch((error) => {
+          let errorDescription = error.response.data.errorDescription;
+          setError(
+            errorDescription === "Data agreement purpose exists"
+              ? "Usage purpose already exists"
+              : errorDescription
+          );
+          setOpenSnackBar(true);
+        });
     } else if (mode === "Update" && isFormDataChanged()) {
       HttpService.updateDataAgreementById(
         DataAgreementPayload(
@@ -363,12 +395,22 @@ export default function DataAgreementModal(props: Props) {
           selectedDataAgreement
         ),
         selectedDataAgreement?.id
-      ).then((response) => {
-        successCallback();
-        setSelectedDropdownValue({});
-        methods.reset({ ...defaultValue });
-        setOpen(false);
-      });
+      )
+        .then((response) => {
+          successCallback();
+          setSelectedDropdownValue({});
+          methods.reset({ ...defaultValue });
+          setOpen(false);
+        })
+        .catch((error) => {
+          let errorDescription = error.response.data.errorDescription;
+          setError(
+            errorDescription === "Data agreement purpose exists"
+              ? "Usage purpose already exists"
+              : errorDescription
+          );
+          setOpenSnackBar(true);
+        });
     } else return {};
   };
 
@@ -377,6 +419,11 @@ export default function DataAgreementModal(props: Props) {
       <Drawer anchor="right" open={open}>
         <Container>
           <FormProvider {...methods}>
+            <SnackbarComponent
+              open={openSnackBar}
+              setOpen={setOpenSnackBar}
+              message={error}
+            />
             <form>
               <HeaderContainer>
                 <Box pl={2}>
