@@ -167,6 +167,10 @@ export default function EditWebooks(props: Props) {
                   {...register("payloadUrl", {
                     required: true,
                     minLength: 3,
+                    pattern: {
+                      value: /^(ftp|http|https):\/\/[^ "]+$/,
+                      message: "",
+                    },
                   })}
                 />
                 <Typography variant="subtitle1" mt={1.5}>

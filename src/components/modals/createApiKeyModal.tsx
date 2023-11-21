@@ -126,6 +126,7 @@ export default function CreateApiKeyModal(props: Props) {
                   autoFocus
                   variant="standard"
                   fullWidth
+                  type="number"
                   placeholder="Please type the expiry in days..."
                   {...register("expiryInDays", {
                     required: true,
