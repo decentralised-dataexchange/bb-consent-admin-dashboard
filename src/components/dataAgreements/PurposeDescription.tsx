@@ -40,6 +40,10 @@ export const PurposeDescription = (props: Props) => {
           required: true,
           minLength: 3,
           maxLength: 500,
+          pattern: {
+            value: /.*\D.*/,
+            message: "",
+          },
         })}
         rows={5}
         cols={25}

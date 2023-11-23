@@ -243,6 +243,10 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                               {...register("url", {
                                 required: true,
                                 minLength: 1,
+                                pattern: {
+                                  value: /^(ftp|http|https):\/\/[^ "]+$/,
+                                  message: "",
+                                },
                               })}
                             />
                           </td>
@@ -261,6 +265,10 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                               {...register("jurisdiction", {
                                 required: true,
                                 minLength: 1,
+                                pattern: {
+                                  value: /.*\D.*/,
+                                  message: "",
+                                },
                               })}
                             />
                           </td>
@@ -285,6 +293,10 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                               {...register("industrySector", {
                                 required: true,
                                 minLength: 1,
+                                pattern: {
+                                  value: /.*\D.*/,
+                                  message: "",
+                                },
                               })}
                               style={{
                                 ...inputDataConfigStyle,
@@ -307,6 +319,10 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                               {...register("storageLocation", {
                                 required: true,
                                 minLength: 1,
+                                pattern: {
+                                  value: /.*\D.*/,
+                                  message: "",
+                                },
                               })}
                             />
                           </td>
@@ -320,6 +336,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                           <td style={tableCellStyle}>
                             <input
                               autoComplete="off"
+                              type="number"
                               style={{
                                 ...inputDataConfigStyle,
                                 height: "25px",
@@ -346,6 +363,10 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                               {...register("geographicRestriction", {
                                 required: true,
                                 minLength: 1,
+                                pattern: {
+                                  value: /.*\D.*/,
+                                  message: "",
+                                },
                               })}
                             />
                           </td>
@@ -422,7 +443,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                       ? "pointer"
                       : "not-allowed",
                     marginRight: "20px",
-                    color: "black",
+                    color: methods.formState.isValid ? "black" : "#6D7676",
                     "&:hover": {
                       backgroundColor: "black",
                       color: "white",

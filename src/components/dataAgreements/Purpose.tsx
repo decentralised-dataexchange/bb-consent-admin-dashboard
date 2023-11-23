@@ -1,4 +1,5 @@
 import { Typography } from "@mui/material";
+import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
 interface Props {
@@ -19,8 +20,15 @@ const inputStyle = {
 };
 
 export const Purpose = (props: Props) => {
-  const { register } = useFormContext();
+  const { register, setValue, watch } = useFormContext();
+  const value = watch("Name");
 
+  useEffect(() => {
+    if (value.length > 60) {
+       // Truncate input if length exceeds 60 characters
+      setValue("Name", value.slice(0, 60));
+    }
+  }, [value, setValue]);
   return (
     <>
       <Typography mb={1.3} variant="subtitle1">
@@ -38,6 +46,11 @@ export const Purpose = (props: Props) => {
         {...register("Name", {
           required: true,
           minLength: 3,
+          maxLength: 60,
+          pattern: {
+            value: /.*\D.*/,
+            message: "",
+          },
         })}
         autoComplete="off"
       />

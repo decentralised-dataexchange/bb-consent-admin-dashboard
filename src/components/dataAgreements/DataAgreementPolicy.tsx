@@ -57,6 +57,10 @@ const DataAgreementPolicy = (props: Props) => {
               {...register("PolicyURL", {
                 required: true,
                 minLength: 1,
+                pattern: {
+                  value: /^(ftp|http|https):\/\/[^ "]+$/,
+                  message: "",
+                },
               })}
             />
           </td>
@@ -79,6 +83,10 @@ const DataAgreementPolicy = (props: Props) => {
               {...register("Jurisdiction", {
                 required: true,
                 minLength: 1,
+                pattern: {
+                  value: /.*\D.*/,
+                  message: "",
+                },
               })}
             />
           </td>
@@ -101,6 +109,10 @@ const DataAgreementPolicy = (props: Props) => {
               {...register("IndustryScope", {
                 required: true,
                 minLength: 1,
+                pattern: {
+                  value: /.*\D.*/,
+                  message: "",
+                },
               })}
             />
           </td>
@@ -122,6 +134,10 @@ const DataAgreementPolicy = (props: Props) => {
               {...register("StorageLocation", {
                 required: true,
                 minLength: 1,
+                pattern: {
+                  value: /.*\D.*/,
+                  message: "",
+                },
               })}
             />
           </td>
@@ -165,6 +181,10 @@ const DataAgreementPolicy = (props: Props) => {
               {...register("Restriction", {
                 required: true,
                 minLength: 1,
+                pattern: {
+                  value: /.*\D.*/,
+                  message: "",
+                },
               })}
             />
           </td>
