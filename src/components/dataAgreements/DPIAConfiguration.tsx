@@ -76,6 +76,10 @@ const DPIAConfigurations = (props: Props) => {
               }}
               {...register("DpiaSummaryURL", {
                 required: false,
+                pattern: {
+                  value: /^(ftp|http|https):\/\/[^ "]+$/,
+                  message: "",
+                },
             })}
             />
           </td>

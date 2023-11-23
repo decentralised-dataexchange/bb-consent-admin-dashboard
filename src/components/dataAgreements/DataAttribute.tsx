@@ -82,6 +82,10 @@ export const DataAttribute = (props: Props) => {
                   {...register(`dataAttributes.${props.index}.attributeName`, {
                     required: true,
                     minLength: 3,
+                    pattern: {
+                      value: /.*\D.*/,
+                      message: "",
+                    },
                   })}
                   placeholder="Attribute Name (minimum 3 characters)"
                   disabled={props.mode === "Read"}
@@ -128,6 +132,10 @@ export const DataAttribute = (props: Props) => {
                   {...register(`dataAttributes.${index}.attributeDescription`, {
                     required: true,
                     minLength: 3,
+                    pattern: {
+                      value: /.*\D.*/,
+                      message: "",
+                    },
                   })}
                   placeholder="Attribute description (minimum 3 characters)"
                   disabled={props.mode === "Read"}
