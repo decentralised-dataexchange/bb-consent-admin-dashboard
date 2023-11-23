@@ -59,7 +59,8 @@ const UserAccess = () => {
   const [configured, setConfigured] = useState(false);
   const [idpDetails, setIdpDetails] = useState<any>();
   const [openSnackBar, setOpenSnackBar] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("")
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     HttpService.listAllIdps().then((response) => {
@@ -81,12 +82,19 @@ const UserAccess = () => {
 
       HttpService.addIndividualUsingByCsv(formData)
         .then((res) => {
-          setOpenSnackBar(true)
-          setSuccessMessage("User onboarding in progress. This process may take a little while!")
+          setErrorMessage("");
+          setSuccessMessage(
+            "User onboarding in progress. This process may take a little while!"
+          );
+          setOpenSnackBar(true);
           fileInputRef.current.value = "";
+          e.target.value = null;
         })
         .catch((error) => {
-          console.log(`Error: ${error}`);
+          setSuccessMessage("");
+          setErrorMessage("User onboarding failed. Please try again later");
+          setOpenSnackBar(true);
+          fileInputRef.current.value = "";
           e.target.value = null;
         });
     }
@@ -100,6 +108,7 @@ const UserAccess = () => {
         setOpen={setOpenSnackBar}
         topStyle={100}
         successMessage={successMessage}
+        message={errorMessage}
       />
       <HeaderContainer>
         <Box
