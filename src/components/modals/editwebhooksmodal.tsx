@@ -18,7 +18,6 @@ import CheckboxTree from "../webhooks/checkboxTree";
 import { HttpService } from "../../service/HTTPService";
 import { useForm } from "react-hook-form";
 import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
-import { isFormDataChanged } from "../../utils/isFormDataChanged";
 
 interface Props {
   open: boolean;
@@ -47,6 +46,7 @@ export default function EditWebooks(props: Props) {
     register,
     formState,
     reset,
+    watch,
   } = useForm<any>({
     mode: "onChange",
   });
@@ -54,6 +54,10 @@ export default function EditWebooks(props: Props) {
   const [webhookContentTypes, setWebhookContentTypes] = useState<string[]>([]);
   const [webhookEventTypes, setWebhookEventTypes] = useState<string[]>([]);
   const [checkWebhookIsSelected, setCheckWebhookIsSelected] = useState(false);
+  const [
+    webhookEventTypesConvertedForUpdate,
+    setWebhookEventTypesConvertedForUpdate,
+  ] = useState({});
 
   const { organisationDetails } = React.useContext(
     OrganizationDetailsCRUDContext
@@ -92,18 +96,32 @@ export default function EditWebooks(props: Props) {
         newSubscribedEvents[value] = true;
       });
 
+      let webhookEventTypes = {
+        allowed: newSubscribedEvents["consent.allowed"] === true ? true : false,
+        disallowed:
+          newSubscribedEvents["consent.disallowed"] === true ? true : false,
+      };
+
+      setWebhookEventTypesConvertedForUpdate(webhookEventTypes);
       reset({
-        webhookEventTypes: {
-          allowed:
-            newSubscribedEvents["consent.allowed"] === true ? true : false,
-          disallowed:
-            newSubscribedEvents["consent.disallowed"] === true ? true : false,
-        },
+        webhookEventTypes: webhookEventTypes,
         radioGroup: subscribedEvents.length === 2 ? "all" : "selected",
         ...otherProps,
       });
     } else reset({ ...defaultValues });
   }, [open, webhookDetailsForUpdate]);
+
+  const isFormDataChanged = (formState: any) => {
+    const { dirtyFields } = formState;
+    const { webhookEventTypes, ...restDirtyFields } = dirtyFields;
+
+    const webhookEventTypesUpdated = watch("webhookEventTypes");
+    return (
+      Object.keys(restDirtyFields).length > 0 ||
+      JSON.stringify(webhookEventTypesConvertedForUpdate) !==
+        JSON.stringify(webhookEventTypesUpdated)
+    );
+  };
 
   const onSubmit = (createdData: any) => {
     const { webhookEventTypes, radioGroup, ...otherProps } = createdData;

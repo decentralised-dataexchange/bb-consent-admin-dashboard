@@ -33,7 +33,7 @@ const FilterByPurposeDropdown = (props: Props) => {
 
   useEffect(() => {
     HttpService.listDataAgreements(0, 100, "complete", "", "").then((res) => {
-      setDropdownValues(res.dataAgreements.filter((dataAgreement: any)=>{return dataAgreement}));
+      setDropdownValues(res?.dataAgreements?.filter((dataAgreement: any)=>{return dataAgreement}));
     });
   }, []);
 
