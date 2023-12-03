@@ -27,29 +27,31 @@ import DeveloperAPIs from './pages/developerAPIs/developerAPIs'
 import ViewLogs from './pages/viewLogs/viewLogs';
 import Webhooks from './pages/webhooks/webhooks';
 import { QueryClient } from 'react-query';
+import { useTranslation } from 'react-i18next';
 
 function App() {
-  
-    const queryClient = new QueryClient({
-      defaultOptions: {
-          queries: {
-              refetchOnWindowFocus: false,
-            },
-        },
-    });
+  const { t } = useTranslation("translation");
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchOnWindowFocus: false,
+          },
+      },
+  });    
 
   return (
     <Admin queryClient={queryClient}  layout={MyLayout} loginPage={Login} dataProvider={dataProvider} theme={theme} authProvider={authProvider} requireAuth>
-      <Resource name='start' options={{ label: 'Getting Started' }} list={GettingStarted} icon={HouseIcon} />
-      <Resource name='dataagreement' options={{ label: 'Data Agreements' }} list={DataAgreements} icon={InsertDriveFileOutlinedIcon}  />
-      <Resource name='personaldata' options={{ label: 'Personal Data' }} list={PersonalData} icon={InsertChartOutlinedOutlinedIcon}/>
-      <Resource name='configuration' options={{ label: 'Configuration' }} list={UserAccess}/>
-      <Resource name='consentrecords' options={{ label: 'Consent Records'}} list={UserRecords} />
-      <Resource name='privacydashboard' options={{ label: 'Privacy Dashboard' }} list={Privacyboard} icon={HealthAndSafetyOutlinedIcon} />
-      <Resource name='manageadmin' options={{ label: 'Manage Admin' }} list={ManageAdmin} />
-      <Resource name='developerapi' options={{ label: 'Developer APIs' }} list={DeveloperAPIs} />
-      <Resource name='viewlogs' options={{ label: 'View Logs' }} list={ViewLogs} />
-      <Resource name='webhooks' options={{ label: 'Webhooks' }} list={Webhooks} />
+      <Resource name='start' options={{ label: t("sidebar.gettingStarted") }} list={GettingStarted} icon={HouseIcon} />
+      <Resource name='dataagreement' options={{ label: t("sidebar.dataAgreements") }} list={DataAgreements} icon={InsertDriveFileOutlinedIcon}  />
+      <Resource name='personaldata' options={{ label: t("sidebar.personalData") }} list={PersonalData} icon={InsertChartOutlinedOutlinedIcon}/>
+      <Resource name='configuration' options={{ label: t("sidebar.configuration") }} list={UserAccess}/>
+      <Resource name='consentrecords' options={{ label: t("sidebar.consentRecords")}} list={UserRecords} />
+      <Resource name='privacydashboard' options={{ label: t("sidebar.privacyDashboard") }} list={Privacyboard} icon={HealthAndSafetyOutlinedIcon} />
+      <Resource name='manageadmin' options={{ label: t("sidebar.manageAdmin") }} list={ManageAdmin} />
+      <Resource name='developerapi' options={{ label: t("sidebar.developerAPIs") }} list={DeveloperAPIs} />
+      <Resource name='viewlogs' options={{ label: t("sidebar.viewLogs") }} list={ViewLogs} />
+      <Resource name='webhooks' options={{ label: t("sidebar.Webhooks") }} list={Webhooks} />
     </Admin>
   );
 }

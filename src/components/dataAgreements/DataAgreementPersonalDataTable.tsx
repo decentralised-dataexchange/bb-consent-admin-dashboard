@@ -10,6 +10,7 @@ import {
   DataAgreementsCRUDContextValue,
 } from "../../contexts/dataAgreementCrud";
 import { DataAttribute } from "./DataAttribute";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   mode: string;
@@ -21,6 +22,7 @@ interface Props {
 }
 
 const DataAgreementPersonalDataTable = (props: Props) => {
+  const { t } = useTranslation("translation");
   const { mode, subtext, append, fields, remove, formController } = props;
   const { existingDataAttributes } = useContext<DataAgreementsCRUDContextValue>(
     DataAgreementsCRUDContext
@@ -43,7 +45,7 @@ const DataAgreementPersonalDataTable = (props: Props) => {
           }}
         >
           <Typography variant="subtitle1">
-            Data Attributes
+            {t("dataAgreements.dataAttributes")}
             <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
           </Typography>
           <AddCircleOutlineOutlinedIcon

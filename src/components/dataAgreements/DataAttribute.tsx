@@ -6,6 +6,7 @@ import { DataAttributeInterface } from "../../interfaces/DataAttribute";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import BlockOutlinedIcon from "@mui/icons-material/BlockOutlined";
+import { useTranslation } from "react-i18next";
 
 const titleAttrRestrictionStyle = {
   fontWeight: "normal",
@@ -65,6 +66,7 @@ export interface Props {
 export const DataAttribute = (props: Props) => {
   const { index, remove, formController } = props;
   const { register } = formController;
+  const { t } = useTranslation("translation");
 
   return (
     <Box
@@ -87,7 +89,7 @@ export const DataAttribute = (props: Props) => {
                       message: "",
                     },
                   })}
-                  placeholder="Attribute Name (minimum 3 characters)"
+                  placeholder={t("dataAgreements.dataAttributesName")}
                   disabled={props.mode === "Read"}
                   style={{
                     ...inputStyleAttr,
@@ -137,7 +139,7 @@ export const DataAttribute = (props: Props) => {
                       message: "",
                     },
                   })}
-                  placeholder="Attribute description (minimum 3 characters)"
+                  placeholder={t("dataAgreements.dataAttributesDescription")}
                   disabled={props.mode === "Read"}
                   style={{
                     ...inputStyleAttr,

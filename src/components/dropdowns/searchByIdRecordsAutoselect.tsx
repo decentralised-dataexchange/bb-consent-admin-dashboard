@@ -1,5 +1,6 @@
 import { TextField } from "@mui/material";
 import { useFilterStore } from "../../store/store";
+import { useTranslation } from "react-i18next";
 const debounce = require("lodash.debounce");
 
 const inputStyleAttr = {
@@ -13,6 +14,7 @@ const inputStyleAttr = {
 export const SearchByIdRecords = (props: any) => {
   const { handleSearchTriggered, sethandleSearchTriggered, changefilter } =
     props;
+  const { t } = useTranslation("translation");
 
   const updateDisabledPurposeDropDown = (disabledPurposeDropDown: any) => {
     useFilterStore
@@ -46,7 +48,7 @@ export const SearchByIdRecords = (props: any) => {
         ...inputStyleAttr,
       }}
       sx={{ width: { xs: "100%", sm: "40%" } }}
-      placeholder="Search by Individual ID, Consent Record ID, Data Agreement ID"
+      placeholder={t("consentRecords.searchPlaceholder")}
       onChange={debouncedOnChange}
     />
   );

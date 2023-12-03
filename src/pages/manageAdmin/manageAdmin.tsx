@@ -9,6 +9,7 @@ import { HttpService } from "../../service/HTTPService";
 import { LocalStorageService } from "../../service/localStorageService";
 import SnackbarComponent from "../../components/notification";
 import { useFilterStore } from "../../store/store";
+import { useTranslation } from "react-i18next";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -71,8 +72,9 @@ const ManageAdmin = () => {
   const [success, setSuccess] = useState("");
   const [formDataForImageUpload, setFormDataForImageUpload] = useState<any>();
   const [previewImage, setPreviewImage] = useState<any>();
-  const changeAvatar = useFilterStore.getState().changeAvatar
-  const changeAdminName = useFilterStore.getState().changeAdminName
+  const changeAvatar = useFilterStore.getState().changeAvatar;
+  const changeAdminName = useFilterStore.getState().changeAdminName;
+  const { t } = useTranslation("translation");
 
   useEffect(() => {
     if (adminDetails?.name) {
@@ -95,7 +97,6 @@ const ManageAdmin = () => {
       });
     });
   }, []);
-
 
   const onClickSave = () => {
     let payload = {
@@ -120,7 +121,7 @@ const ManageAdmin = () => {
           .catch((error) => {
             console.log(`Error: ${error}`);
           });
-        }
+      }
     });
 
     setFormDataForImageUpload("");
@@ -132,7 +133,7 @@ const ManageAdmin = () => {
     setSuccess("");
     setError("");
     if (newPassword !== confirmNewPassword) {
-      setError("New password and confirm new password should be same");
+      setError(t("manageAdmin.samePassword"));
       setOpenSnackBar(true);
     } else if (
       currentPassword.length > 7 &&
@@ -150,7 +151,7 @@ const ManageAdmin = () => {
           setNewPassword("");
           setConfirmNewPassword("");
 
-          setSuccess("Password Changed");
+          setSuccess(t("manageAdmin.passwordChanged"));
           setOpenSnackBar(true);
         })
         .catch((error) => {
@@ -162,7 +163,10 @@ const ManageAdmin = () => {
 
   return (
     <Container>
-      <BreadCrumb Link="Account" Link2="Manage Admin" />
+      <BreadCrumb
+        Link={t("sidebar.account")}
+        Link2={t("sidebar.manageAdmin")}
+      />
       <SnackbarComponent
         open={openSnackBar}
         setOpen={setOpenSnackBar}
@@ -172,12 +176,12 @@ const ManageAdmin = () => {
       />
       <HeaderContainer>
         <Typography variant="h6" fontWeight="bold">
-          Admin User
+          {t("manageAdmin.adminUser")}
         </Typography>
       </HeaderContainer>
       <DetailsContainer sx={{ flexGrow: 1 }}>
         <Typography variant="body2" mt={1.25} mb={1.5}>
-          Manage admin user configurations.
+          {t("manageAdmin.pageDescription")}
         </Typography>
         <Grid container spacing={2}>
           <Grid item lg={7} md={6} sm={12} xs={12}>
@@ -188,7 +192,7 @@ const ManageAdmin = () => {
                 fontWeight="bold"
                 mb={1}
               >
-                User Settings
+                {t("manageAdmin.userSettings")}
               </Typography>
               <Grid container>
                 <Grid
@@ -232,7 +236,9 @@ const ManageAdmin = () => {
                 >
                   <Grid container height={"20px"}>
                     <Grid item lg={3} md={6} sm={6} xs={6}>
-                      <Typography variant="body2">Name:</Typography>
+                      <Typography variant="body2">
+                        {t("common.name")}:
+                      </Typography>
                     </Grid>
                     <Grid item lg={9} md={5} sm={5} xs={5}>
                       {editMode ? (
@@ -263,7 +269,9 @@ const ManageAdmin = () => {
                   </Grid>
                   <Grid container height={"20px"}>
                     <Grid item lg={3} md={6} sm={6} xs={6}>
-                      <Typography variant="body2">Email:</Typography>
+                      <Typography variant="body2">
+                        {t("manageAdmin.email")}:
+                      </Typography>
                     </Grid>
                     <Grid item lg={9} md={5} sm={5} xs={5}>
                       <Typography
@@ -276,7 +284,9 @@ const ManageAdmin = () => {
                   </Grid>
                   <Grid container height={"20px"}>
                     <Grid item lg={3} md={6} sm={6} xs={6}>
-                      <Typography variant="body2">User ID:</Typography>
+                      <Typography variant="body2">
+                        {t("login.userid")}:
+                      </Typography>
                     </Grid>
                     <Grid item lg={9} md={5} sm={5} xs={5}>
                       <Typography
@@ -302,7 +312,7 @@ const ManageAdmin = () => {
                         },
                       }}
                     >
-                      Cancel
+                      {t("common.cancel")}
                     </Button>
                     <Button
                       style={buttonStyle}
@@ -316,7 +326,7 @@ const ManageAdmin = () => {
                         },
                       }}
                     >
-                      Save
+                      {t("common.save")}
                     </Button>
                   </Box>
                 ) : (
@@ -335,7 +345,7 @@ const ManageAdmin = () => {
                         color: "grey",
                       }}
                     >
-                      Edit
+                      {t("common.edit")}
                     </Typography>
                   </Box>
                 )}
@@ -345,7 +355,7 @@ const ManageAdmin = () => {
           <Grid item lg={5} md={6} sm={12} xs={12}>
             <Item sx={{ display: "grid", alignContent: "space-between" }}>
               <Typography color="black" variant="subtitle1" fontWeight="bold">
-                User Credentials
+                {t("manageAdmin.userCredentials")}
               </Typography>
               <Box
                 sx={{
@@ -355,13 +365,15 @@ const ManageAdmin = () => {
                   width: "100%",
                 }}
               >
-                <Typography variant="body2">Current Password:</Typography>
+                <Typography variant="body2">
+                  {t("manageAdmin.currentPassword")}:
+                </Typography>
                 <TextField
                   variant="standard"
                   inputProps={{
                     autoComplete: "new-password",
                   }}
-                  placeholder="Enter Current Password"
+                  placeholder={t("manageAdmin.enterCurrentPassword")}
                   type="password"
                   sx={{ width: "50%", marginRight: "20px" }}
                   value={currentPassword}
@@ -376,10 +388,12 @@ const ManageAdmin = () => {
                   width: "100%",
                 }}
               >
-                <Typography variant="body2">New Password:</Typography>
+                <Typography variant="body2">
+                  {t("manageAdmin.newPassword")}:
+                </Typography>
                 <TextField
                   variant="standard"
-                  placeholder="Enter New Password"
+                  placeholder={t("manageAdmin.enterNewPassword")}
                   type="password"
                   sx={{ width: "50%", marginRight: "20px" }}
                   value={newPassword}
@@ -394,7 +408,7 @@ const ManageAdmin = () => {
                   width: "100%",
                 }}
               >
-                <Typography variant="body2">Confirm New Password:</Typography>
+                <Typography variant="body2">{t("manageAdmin.confirmNewPassword")}:</Typography>
                 <TextField
                   variant="standard"
                   placeholder="Confirm New Password"
@@ -416,7 +430,7 @@ const ManageAdmin = () => {
                     width: "100%",
                   }}
                 >
-                  Change Password
+                  {t("manageAdmin.changePassword")}
                 </Typography>
               </Box>
             </Item>

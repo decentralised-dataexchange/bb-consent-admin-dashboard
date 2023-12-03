@@ -13,6 +13,7 @@ import GeneralModal from "../../components/modals/generalModal";
 import EditUserAccessModal from "../../components/modals/editUserAccessModal";
 import { HttpService } from "../../service/HTTPService";
 import SnackbarComponent from "../../components/notification";
+import { useTranslation } from "react-i18next";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -61,6 +62,10 @@ const UserAccess = () => {
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const { t } = useTranslation("translation");
+  // split delete description so that to make DELETE word to bold
+  const deleteDescription = t("userAccess.deleteDescription");
+  const splittedDeleteDescription = deleteDescription.split("Please type ");
 
   useEffect(() => {
     HttpService.listAllIdps().then((response) => {
@@ -86,16 +91,14 @@ const UserAccess = () => {
       HttpService.addIndividualUsingByCsv(formData)
         .then((res) => {
           setErrorMessage("");
-          setSuccessMessage(
-            "User onboarding in progress. This process may take a little while!"
-          );
+          setSuccessMessage(t("userAccess.onboardingSuccessMsg"));
           setOpenSnackBar(true);
           fileInputRef.current.value = "";
           e.target.value = null;
         })
         .catch((error) => {
           setSuccessMessage("");
-          setErrorMessage("User onboarding failed. Please try again later");
+          setErrorMessage(t("userAccess.onboardingErrorMsg"));
           setOpenSnackBar(true);
           fileInputRef.current.value = "";
           e.target.value = null;
@@ -105,7 +108,10 @@ const UserAccess = () => {
 
   return (
     <Container>
-      <BreadCrumb Link="Manage Users" Link2="Configuration" />
+      <BreadCrumb
+        Link={t("sidebar.manageUsers")}
+        Link2={t("sidebar.configuration")}
+      />
       <SnackbarComponent
         open={openSnackBar}
         setOpen={setOpenSnackBar}
@@ -121,9 +127,9 @@ const UserAccess = () => {
           }}
         >
           <Typography variant="h6" fontWeight="bold">
-            User Access
+            {t("userAccess.userAccess")}
           </Typography>
-          <Tooltip title="Create User Access" placement="top">
+          <Tooltip title={t("userAccess.createUserAccess")} placement="top">
             <AddCircleOutlineOutlinedIcon
               style={{
                 cursor: configured ? "not-allowed" : "pointer",
@@ -137,8 +143,7 @@ const UserAccess = () => {
         </Box>
       </HeaderContainer>
       <Typography variant="body2" mt={1.35}>
-        Manage how individual users of your organisation can access the privacy
-        board.
+        {t("userAccess.pageDescription")}
       </Typography>
 
       <Item>
@@ -146,14 +151,14 @@ const UserAccess = () => {
           <>
             <Box style={{ display: "flex" }}>
               <Typography color="black" variant="body2">
-                Authentication mechanism:
+                {t("userAccess.authMechanism")}:
               </Typography>
               <Typography color="black" variant="body2" ml={1}>
-                Open-ID Connect
+                {t("userAccess.openIDConnect")}
               </Typography>
             </Box>
             <Box>
-              <Tooltip title="Edit User Access" placement="top">
+              <Tooltip title={t("userAccess.editUserAccess")} placement="top">
                 <EditOutlinedIcon
                   onClick={() => {
                     setOpenEditUserAccessModal(true);
@@ -163,7 +168,7 @@ const UserAccess = () => {
                   style={{ cursor: "pointer" }}
                 />
               </Tooltip>
-              <Tooltip title="Delete User Access" placement="top">
+              <Tooltip title={t("userAccess.deleteUserAccess")} placement="top">
                 <DeleteOutlineOutlinedIcon
                   onClick={() => setOpenDeleteUserAccessModal(true)}
                   fontSize="medium"
@@ -176,17 +181,17 @@ const UserAccess = () => {
         ) : (
           <Box style={{ display: "flex" }}>
             <Typography color="black" variant="body2">
-              Authentication mechanism:
+              {t("userAccess.authMechanism")}:
             </Typography>
             <Typography color="grey" variant="body2" ml={1}>
-              {"<Not configured. Choose + to configure>"}
+              {t("userAccess.notConfigured")}
             </Typography>
           </Box>
         )}
       </Item>
       <Item>
         <Typography color="black" variant="body2">
-          Upload existing users via a .csv file using the UPLOAD option.
+          {t("userAccess.uploadCSVDescription")}
         </Typography>
         <Box>
           <form>
@@ -204,7 +209,9 @@ const UserAccess = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography variant="body2">UPLOAD</Typography>
+                <Typography variant="body2">
+                  {t("userAccess.upload")}
+                </Typography>
               </Box>
             </label>
             <input
@@ -226,15 +233,19 @@ const UserAccess = () => {
       <GeneralModal
         open={openDeleteUserAccessModal}
         setOpen={setOpenDeleteUserAccessModal}
-        headerText={"Delete User Access "}
+        headerText={t("userAccess.deleteUserAccess")}
         confirmText="DELETE"
+        confirmButtonText={`${t("common.delete")}`}
         resourceName={"configuration"}
         userAccessId={idpDetails?.id}
         modalDescriptionText={
-          <Typography sx={{ wordWrap: "breakWord" }}>
-            You are about to delete an existing user access. Please type{" "}
-            <span style={{ fontWeight: "bold" }}>DELETE</span> to confirm and
-            click DELETE. This action is not reversible.
+          <Typography variant="body1">
+            {splittedDeleteDescription[0]}Please type{" "}
+            <b>{splittedDeleteDescription[1].split(" ")[0]}</b>
+            {" " +
+              splittedDeleteDescription[1].substring(
+                splittedDeleteDescription[1].indexOf(" ") + 1
+              )}
           </Typography>
         }
       />
@@ -242,7 +253,7 @@ const UserAccess = () => {
       <EditUserAccessModal
         open={openEditUserAccessModal}
         setOpen={setOpenEditUserAccessModal}
-        headerText={"Access Configuration"}
+        headerText={t("userAccess.accessConfiguration")}
         idpDetails={idpDetails}
       />
     </Container>

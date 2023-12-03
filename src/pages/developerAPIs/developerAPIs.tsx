@@ -28,6 +28,8 @@ import CreateApiKeyModal from "../../components/modals/createApiKeyModal";
 import { capitalizeFirstLetter } from "../../utils/capitaliseFIrstLetter";
 import { formatISODateToLocalString } from "../../utils/formatISODateToLocalString";
 import { configStore } from "../../store/configStore";
+import { useTranslation } from "react-i18next";
+import { TableEmptyMessage } from "../../components/tableEmptyMessage";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -70,6 +72,10 @@ const DeveloperAPIs = () => {
   let stagingURL = configStore.baseUrl;
   const [openDeleteApiKey, setOpenDeleteApiKey] = useState(false);
   const [developerApiDeleteID, setDeveloperApiDeleteID] = useState<any>();
+  const { t } = useTranslation("translation");
+  // split delete description so that to make DELETE word to bold
+  const deleteDescription = t("developerAPIs.deleteDescription");
+  const splittedDeleteDescription = deleteDescription.split("Please type ");
 
   const refresh = useRefresh();
   const onRefetch = () => {
@@ -145,7 +151,7 @@ const DeveloperAPIs = () => {
 
   return (
     <Container>
-      <BreadCrumb Link="Account" Link2="Developer APIs" />
+      <BreadCrumb Link={t("sidebar.account")} Link2={t("sidebar.developerAPIs")} />
       <Snackbar
         open={showAPI}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -169,7 +175,7 @@ const DeveloperAPIs = () => {
                 style={{ fontWeight: "bold" }}
                 onClick={handleCopy}
               >
-                COPY
+                {t("developerAPIs.copy")}
               </Button>
               <Button
                 color="inherit"
@@ -181,20 +187,18 @@ const DeveloperAPIs = () => {
             </Box>
           }
         >
-          Here is your new key. Copy it now! This is the only time we will show
-          it you.
+          {t("developerAPIs.apiKeyCopyMessage")}
         </Alert>
       </Snackbar>
 
       <HeaderContainer>
         <Typography variant="h6" fontWeight="bold">
-          Developer APIs and Credentials
+        {t("developerAPIs.headerText")}
         </Typography>
       </HeaderContainer>
       <DetailsContainer sx={{ flexGrow: 1 }}>
         <Typography variant="body2" mt={1.25} mb={1}>
-          All API requests require you to authenticate using the credentials
-          below
+        {t("developerAPIs.pageDescription")}
         </Typography>
         <Grid container spacing={2}>
           <Grid item lg={4} md={12} sm={12} xs={12}>
@@ -205,7 +209,7 @@ const DeveloperAPIs = () => {
                 fontWeight="bold"
                 mb={0.5}
               >
-                Organization ID
+                {t("developerAPIs.organizationID")}
               </Typography>
               <Typography color="grey" variant="body2">
                 {organisationDetails.id}
@@ -220,7 +224,7 @@ const DeveloperAPIs = () => {
                 fontWeight="bold"
                 mb={0.5}
               >
-                Your User ID
+                {t("developerAPIs.yourUserID")}
               </Typography>
               <Typography color="grey" variant="body2">
                 {id}
@@ -235,7 +239,7 @@ const DeveloperAPIs = () => {
                 fontWeight="bold"
                 mb={0.5}
               >
-                Configured base URL
+               {t("developerAPIs.configuredBaseURL")}
               </Typography>
               <Typography color="grey" variant="body2">
                 {stagingURL}
@@ -245,9 +249,9 @@ const DeveloperAPIs = () => {
           <Grid item lg={12} md={12} sm={12} xs={12}>
             <Box style={{ display: "flex", alignItems: "center" }} mt={1}>
               <Typography color="black" variant="subtitle1" fontWeight="bold">
-                API Key
+              {t("developerAPIs.apiKey")}
               </Typography>
-              <Tooltip title="Create API Key" placement="top">
+              <Tooltip title={t("developerAPIs.createApiKey")} placement="top">
                 <AddCircleOutlineOutlinedIcon
                   onClick={() => {
                     setOpenEditPersonalDataModal(true);
@@ -263,8 +267,8 @@ const DeveloperAPIs = () => {
             <List
               actions={false}
               sx={{ width: "100%", overflow: "hidden" }}
-              empty={false}
-            >
+              empty={<TableEmptyMessage />}
+              >
               <Box
                 style={{
                   display: "flex",
@@ -281,17 +285,17 @@ const DeveloperAPIs = () => {
                 >
                   <TextField
                     source="name"
-                    label={"Name"}
+                    label={t("common.name")}
                     sortable={false}
                   />
                   <ScopeField
                     source="scopes"
-                    label={"Scope"}
+                    label={t("developerAPIs.scope")}
                     sortable={false}
                   />
                   <ExpiryField
                     source="expiryTimestamp"
-                    label={"Expiry"}
+                    label={t("developerAPIs.expiry")}
                     sortable={false}
                   />
 
@@ -312,23 +316,27 @@ const DeveloperAPIs = () => {
       <GeneralModal
         open={openDeleteApiKey}
         setOpen={setOpenDeleteApiKey}
-        headerText={"Delete API Key "}
+        headerText={t("developerAPIs.deleteAPIKey")}
         confirmText="DELETE"
+        confirmButtonText={`${t("common.delete")}`}
         resourceName={"developerapi"}
         developerApiDeleteID={developerApiDeleteID}
         onRefetch={onRefetch}
         modalDescriptionText={
-          <Typography sx={{ wordWrap: "breakWord" }}>
-            You are about to delete an existing api key. Please type{" "}
-            <span style={{ fontWeight: "bold" }}>DELETE</span> to confirm and
-            click DELETE. This action is not reversible.
+          <Typography variant="body1">
+            {splittedDeleteDescription[0]}Please type{" "}
+            <b>{splittedDeleteDescription[1].split(" ")[0]}</b>
+            {" " +
+              splittedDeleteDescription[1].substring(
+                splittedDeleteDescription[1].indexOf(" ") + 1
+              )}
           </Typography>
         }
       />
       <CreateApiKeyModal
         open={openEditPersonalDataModal}
         setOpen={setOpenEditPersonalDataModal}
-        headerText={"Create API Key"}
+        headerText={t("developerAPIs.createApiKey")}
         onRefetch={onRefetch}
         setApiKeyValue={setApiKeyValue}
         setShowAPI={setShowAPI}

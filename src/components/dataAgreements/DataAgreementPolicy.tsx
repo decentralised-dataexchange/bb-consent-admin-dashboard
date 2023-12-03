@@ -1,6 +1,7 @@
 import CSS from "csstype";
 import { useFormContext } from "react-hook-form";
 import { ThirdPartyDataSharingFormControl } from "./ThirdPartySharing";
+import { useTranslation } from "react-i18next";
 
 const tableCellStyle: CSS.Properties = {
   fontWeight: "normal",
@@ -28,6 +29,7 @@ interface Props {
 const DataAgreementPolicy = (props: Props) => {
   const { mode } = props;
   const { register } = useFormContext();
+  const { t } = useTranslation("translation");
 
   return (
     <table
@@ -42,7 +44,7 @@ const DataAgreementPolicy = (props: Props) => {
       <tbody>
         <tr>
           <th style={{ ...tableCellStyle, borderTop: 0 }} scope="row">
-            Policy URL
+            {t("common.policyUrl")}
           </th>
 
           <td style={{ ...tableCellStyle, borderTop: 0 }}>
@@ -68,7 +70,7 @@ const DataAgreementPolicy = (props: Props) => {
 
         <tr>
           <th style={tableCellStyle} scope="row">
-            Jurisdiction
+            {t("dataAgreements.jurisdiction")}
           </th>
 
           <td style={tableCellStyle}>
@@ -94,7 +96,7 @@ const DataAgreementPolicy = (props: Props) => {
 
         <tr>
           <th style={tableCellStyle} scope="row">
-            Industry scope
+            {t("dataAgreements.industryScope")}
           </th>
 
           <td style={tableCellStyle}>
@@ -120,7 +122,7 @@ const DataAgreementPolicy = (props: Props) => {
 
         <tr>
           <th style={tableCellStyle} scope="row">
-            Storage Location
+            {t("dataAgreements.storageLocation")}
           </th>
 
           <td style={{ ...tableCellStyle, borderRight: 0 }}>
@@ -145,7 +147,7 @@ const DataAgreementPolicy = (props: Props) => {
 
         <tr>
           <th style={tableCellStyle} scope="row">
-            Data retention period in year (s)
+            {t("dataAgreements.retentionPeriod")}
           </th>
 
           <td style={tableCellStyle}>
@@ -167,7 +169,7 @@ const DataAgreementPolicy = (props: Props) => {
 
         <tr>
           <th style={tableCellStyle} scope="row">
-            Geographic restriction
+          {t("dataAgreements.geographicRestriction")}
           </th>
 
           <td style={{ ...tableCellStyle, borderRight: 0 }}>

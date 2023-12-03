@@ -3,6 +3,7 @@ import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 import CSS from "csstype";
+import { useTranslation } from "react-i18next";
 
 interface ThirdPartyDataSharingFormControlProps {
   mode: string;
@@ -12,6 +13,7 @@ interface ThirdPartyDataProps {
   mode: string;
   onChange: (e: React.SyntheticEvent) => void;
   value: any;
+  thirdPartyDataSharingOptions: any
 }
 
 const tableCellStyle: CSS.Properties = {
@@ -43,17 +45,6 @@ const disabledDropDownStyle = {
   cursor: "not-allowed",
 };
 
-const thirdPartyDataSharingOptions = [
-  {
-    value: false,
-    label: "False",
-  },
-  {
-    value: true,
-    label: "True",
-  },
-];
-
 export const ThirdPartyDataSharing = (props: ThirdPartyDataProps) => {
   return (
     <>
@@ -68,7 +59,7 @@ export const ThirdPartyDataSharing = (props: ThirdPartyDataProps) => {
         value={props.value}
         style={props.mode === "Read" ? disabledDropDownStyle : dropDownStyle}
       >
-        {thirdPartyDataSharingOptions.map((modes: any) => (
+        {props.thirdPartyDataSharingOptions.map((modes: any) => (
           <MenuItem key={modes.label} value={modes.value}>
             {modes.label}
           </MenuItem>
@@ -82,10 +73,20 @@ export const ThirdPartyDataSharingFormControl = (
   props: ThirdPartyDataSharingFormControlProps
 ) => {
   const { control } = useFormContext();
-
+  const { t } = useTranslation("translation");
+  const thirdPartyDataSharingOptions = [
+    {
+      value: false,
+      label: t("common.false"),
+    },
+    {
+      value: true,
+      label: t("common.true"),
+    },
+  ];
   return (
     <>
-      <th style={tableCellStyle}>Third party data sharing</th>
+      <th style={tableCellStyle}>{t("dataAgreements.3pp")}</th>
 
       <td style={{ ...tableCellStyle, borderRight: 0 }}>
         <Controller
@@ -99,6 +100,7 @@ export const ThirdPartyDataSharingFormControl = (
               onChange={onChange}
               value={value}
               mode={props.mode}
+              thirdPartyDataSharingOptions = {thirdPartyDataSharingOptions}
             />
           )}
         />

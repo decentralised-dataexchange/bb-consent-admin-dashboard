@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   open: boolean;
@@ -22,6 +23,7 @@ const inputStyle = {
 export const Purpose = (props: Props) => {
   const { register, setValue, watch } = useFormContext();
   const value = watch("Name");
+  const { t } = useTranslation("translation");
 
   useEffect(() => {
     if (value.length > 60) {
@@ -32,11 +34,11 @@ export const Purpose = (props: Props) => {
   return (
     <>
       <Typography mb={1.3} variant="subtitle1">
-        Usage Purpose
+        {t("dataAgreements.usagePurpose")}
         <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
       </Typography>
       <input
-        placeholder="E.g. Marketing and campaign (minimum 3 characters)"
+        placeholder={t("dataAgreements.usagePurposePlaceholder")}
         type="text"
         disabled={props.mode === "Read"}
         style={{

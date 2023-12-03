@@ -1,5 +1,6 @@
 import { Typography } from "@mui/material";
 import { useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 const inputStyle = {
   width: "100%",
@@ -15,11 +16,12 @@ const inputStyle = {
 
 export const Version = () => {
   const { register } = useFormContext();
+  const { t } = useTranslation("translation");
 
   return (
     <>
       <Typography mt={1.3} mb={1.3} variant="subtitle1">
-        Version
+        {t("dataAgreements.version")}
       </Typography>
       <input
         style={{

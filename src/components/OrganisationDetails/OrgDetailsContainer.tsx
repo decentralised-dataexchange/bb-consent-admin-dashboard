@@ -7,6 +7,7 @@ import { styled } from "@mui/material/styles";
 import OrgLogoImageUpload from "../../components/OrganisationDetails/OrgLogoImageUpload";
 import { HttpService } from "../../service/HTTPService";
 import { UpdateOrganisationReq } from "../../interfaces/UpdateOrganisation";
+import { useTranslation } from "react-i18next";
 
 const DetailsContainer = styled("div")({
   height: "auto",
@@ -52,6 +53,7 @@ const OrganisationDetailsContainer = (props: Props) => {
   const [organisationLocation, setOrganisationLocation] = useState("");
   const [organisationPolicyURL, setOrganisationPolicyURL] = useState("");
   const [organisationOverView, setOrganisationOverView] = useState("");
+  const { t } = useTranslation("translation");
 
   const handleSave = () => {
     const payload: UpdateOrganisationReq = {
@@ -111,7 +113,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                   onChange={(e) => setOrganisationName(e.target.value)}
                   variant="standard"
                   label={false}
-                  placeholder="Organisation Name"
+                  placeholder={t("gettingStarted.organisationName")}
                   fullWidth
                   style={{
                     ...editStyleEnable,
@@ -128,7 +130,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                   height="23px"
                   style={{ marginTop: "-0px" }}
                 >
-                  Sector: {organisationDetails.sector}
+                  {t("gettingStarted.sector")}: {organisationDetails.sector}
                 </Typography>
                 <TextInput
                   source="location"
@@ -137,7 +139,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                   defaultValue={organisationDetails.location}
                   value={organisationLocation}
                   onChange={(e) => setOrganisationLocation(e.target.value)}
-                  placeholder="Location"
+                  placeholder={t("gettingStarted.location")}
                   fullWidth
                   style={{ ...editStyleEnable, marginTop: "-1px" }}
                   InputProps={{
@@ -151,7 +153,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                   label={false}
                   value={organisationPolicyURL}
                   onChange={(e) => setOrganisationPolicyURL(e.target.value)}
-                  placeholder="Policy URL"
+                  placeholder={t("common.policyUrl")}
                   defaultValue={organisationDetails.policyUrl}
                   fullWidth
                   style={{ ...editStyleEnable, marginTop: "-4px" }}
@@ -167,7 +169,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                   {organisationDetails.name}
                 </Typography>
                 <Typography variant="body2" height="23px">
-                  Sector: {organisationDetails.sector}
+                {t("gettingStarted.sector")}: {organisationDetails.sector}
                 </Typography>
                 <Typography variant="body2" height="23px">
                   {organisationDetails.location}
@@ -199,7 +201,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                   color: "black",
                 }}
               >
-                Cancel
+                {t("common.cancel")}
               </Button>
               <Button
                 onClick={handleSave}
@@ -213,7 +215,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                   color: "black",
                 }}
               >
-                Save
+                {t("common.save")}
               </Button>
             </Box>
           ) : (
@@ -225,7 +227,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                 marginTop: { xs: "14px", sm: "0px" },
               }}
             >
-              Edit
+              {t("common.edit")}
             </Typography>
           )}
         </Grid>
@@ -236,7 +238,7 @@ const OrganisationDetailsContainer = (props: Props) => {
         }}
       >
         <Typography variant="h6" fontWeight="bold">
-          Overview
+        {t("common.overView")}
         </Typography>
         <Box sx={{ minHeight: 100, maxHeight: 160, overflow: "auto" }}>
           {editMode ? (
@@ -248,7 +250,7 @@ const OrganisationDetailsContainer = (props: Props) => {
               multiline={true}
               defaultValue={organisationDetails.description}
               label={false}
-              placeholder="Description of organisation with character limit of 500 characters"
+              placeholder={t("gettingStarted.descriptionPlaceholder")}
               fullWidth
               style={{ marginTop: "-0.9px" }}
               InputProps={{

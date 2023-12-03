@@ -15,6 +15,7 @@ import {
 import { useForm } from "react-hook-form";
 import { HttpService } from "../../service/HTTPService";
 import CheckboxTreeForAPIKey from "../checkboxTreeforDeveloperApi";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   open: boolean;
@@ -29,6 +30,7 @@ export default function CreateApiKeyModal(props: Props) {
   const { open, setOpen, headerText, onRefetch, setApiKeyValue, setShowAPI } =
     props;
   const [checkScopeIsSelected, setCheckScopeIsSelected] = React.useState(false);
+  const { t } = useTranslation("translation");
 
   const {
     control,
@@ -101,8 +103,8 @@ export default function CreateApiKeyModal(props: Props) {
             </HeaderContainer>
             <DetailsContainer>
               <Box p={1.5}>
-              <Typography variant="subtitle1" mb={0}>
-                  Name
+                <Typography variant="subtitle1" mb={0}>
+                  {t("common.name")}
                   <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                 </Typography>
                 <TextField
@@ -111,13 +113,13 @@ export default function CreateApiKeyModal(props: Props) {
                   autoFocus
                   variant="standard"
                   fullWidth
-                  placeholder="Please type name of api key..."
+                  placeholder={t("developerAPIs.keyNamePlaceholder")}
                   {...register("name", {
                     required: true,
                   })}
                 />
                 <Typography variant="subtitle1" mb={0} mt={2}>
-                  Expiry in Day (s)
+                  {t("developerAPIs.expiryDate")}
                   <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                 </Typography>
                 <TextField
@@ -127,14 +129,14 @@ export default function CreateApiKeyModal(props: Props) {
                   variant="standard"
                   fullWidth
                   type="number"
-                  placeholder="Please type the expiry in days..."
+                  placeholder={t("developerAPIs.expiryDatePlaceholder")}
                   {...register("expiryInDays", {
                     required: true,
                     valueAsNumber: true,
                   })}
                 />
                 <Typography variant="subtitle1" mb={0} mt={2}>
-                  Scopes
+                  {t("developerAPIs.scopes")}
                   <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                 </Typography>
                 <CheckboxTreeForAPIKey
@@ -159,7 +161,7 @@ export default function CreateApiKeyModal(props: Props) {
                 }}
                 variant="outlined"
               >
-                CLOSE
+                {t("common.close")}
               </Button>
               <Button
                 style={
@@ -185,7 +187,7 @@ export default function CreateApiKeyModal(props: Props) {
                 variant="outlined"
                 type="submit"
               >
-                SAVE{" "}
+                {t("common.save")}{" "}
               </Button>
             </FooterContainer>
           </form>

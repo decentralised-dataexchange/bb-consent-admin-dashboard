@@ -2,10 +2,8 @@ import { useState } from "react";
 import {
   List,
   Datagrid,
-  TextField,
   Form,
   useRefresh,
-  BooleanField,
   useRecordContext,
 } from "react-admin";
 
@@ -24,7 +22,8 @@ import GeneralModal from "../../components/modals/generalModal";
 import EditWebhooks from "../../components/modals/editwebhooksmodal";
 import RecentDeliveries from "../../components/webhooks/recentDeliveries";
 import { HttpService } from "../../service/HTTPService";
-import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { TableEmptyMessage } from "../../components/tableEmptyMessage";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -49,6 +48,11 @@ const Webhooks = () => {
   const [recentDeliveryValues, setRecentDeliveryValues] = useState([]);
   const [webhookDetailsForUpdate, setWebhookDetailsForUpdate] = useState<any>();
   const [modeOfPopup, setModeOfPopup] = useState("");
+  const { t } = useTranslation("translation");
+  // split delete description so that to make DELETE word to bold
+  const deleteDescription = t("webhooks.deleteDescription");
+  const splittedDeleteDescription = deleteDescription.split("Please type ");
+
   const [lastSelectedRecentDeliveryID, setLastSelectedRecentDeliveryID] =
     useState();
   const refresh = useRefresh();
@@ -117,7 +121,7 @@ const Webhooks = () => {
             justifyContent: "space-around",
           }}
         >
-          <Tooltip title="Edit Webhooks" placement="top">
+          <Tooltip title={t("webhooks.editWebhooks")} placement="top">
             <EditOutlinedIcon
               onClick={() => {
                 setOpenEditWebhooks(true);
@@ -129,7 +133,7 @@ const Webhooks = () => {
               style={{ cursor: "pointer", marginRight: 10 }}
             />
           </Tooltip>
-          <Tooltip title="Delete Webhooks" placement="top">
+          <Tooltip title={t("webhooks.deleteWebhooks")} placement="top">
             <DeleteOutlineOutlinedIcon
               onClick={() => {
                 setOpenDeleteWebhooks(true);
@@ -147,39 +151,38 @@ const Webhooks = () => {
 
   return (
     <Container>
+      <Form>
+        <BreadCrumb Link={t("sidebar.account")} Link2={t("sidebar.webhooks")} />
+        <HeaderContainer>
+          <Box
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="h6" fontWeight="bold">
+              {t("sidebar.webhooks")}
+            </Typography>
+            <Tooltip title="Create Webhooks" placement="top">
+              <AddCircleOutlineOutlinedIcon
+                onClick={() => {
+                  setOpenEditWebhooks(true);
+                  setModeOfPopup("Create");
+                }}
+                style={{ cursor: "pointer", marginLeft: "7px" }}
+              />
+            </Tooltip>
+          </Box>
+        </HeaderContainer>
+        <Typography variant="body2" mt={1.25}>
+          {t("webhooks.pageDescription")}
+        </Typography>
+      </Form>
       <List
-        empty={false}
+        empty={<TableEmptyMessage />}
         actions={false}
         sx={{ width: "100%", overflow: "hidden" }}
       >
-        <Form>
-          <BreadCrumb Link="Account" Link2="Webhooks" />
-          <HeaderContainer>
-            <Box
-              style={{
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <Typography variant="h6" fontWeight="bold">
-                Webhooks
-              </Typography>
-              <Tooltip title="Create Webhooks" placement="top">
-                <AddCircleOutlineOutlinedIcon
-                  onClick={() => {
-                    setOpenEditWebhooks(true);
-                    setModeOfPopup("Create");
-                  }}
-                  style={{ cursor: "pointer", marginLeft: "7px" }}
-                />
-              </Tooltip>
-            </Box>
-          </HeaderContainer>
-          <Typography variant="body2" mt={1.25}>
-            Manage webhooks for user events. Webhooks allow external services to
-            be notified when certain events happen.
-          </Typography>
-        </Form>
         <Box
           style={{
             display: "flex",
@@ -197,11 +200,11 @@ const Webhooks = () => {
             <PayloadURLFIeld
               source="payloadUrl"
               sortable={false}
-              label={"Webhook URL"}
+              label={t("webhooks.webhookURL")}
             />
             <ColoredField
               source="isLastDeliverySuccess"
-              label={"Status"}
+              label={t("common.status")}
               textAlign={"center"}
               sortable={false}
             />
@@ -220,16 +223,20 @@ const Webhooks = () => {
       <GeneralModal
         open={openDeleteWebhooks}
         setOpen={setOpenDeleteWebhooks}
-        headerText={"Delete Webhooks "}
+        headerText={t("webhooks.deleteWebhooks")}
         confirmText="DELETE"
+        confirmButtonText={`${t("common.delete")}`}
         resourceName={"webhooks"}
         selectedWebhookDetails={webhookDetailsForUpdate}
         onRefetch={onRefetch}
         modalDescriptionText={
-          <Typography sx={{ wordWrap: "breakWord" }}>
-            You are about to delete an existing webhook data. Please type{" "}
-            <span style={{ fontWeight: "bold" }}>DELETE</span> to confirm and
-            click DELETE. This action is not reversible.
+          <Typography variant="body1">
+            {splittedDeleteDescription[0]}Please type{" "}
+            <b>{splittedDeleteDescription[1].split(" ")[0]}</b>
+            {" " +
+              splittedDeleteDescription[1].substring(
+                splittedDeleteDescription[1].indexOf(" ") + 1
+              )}
           </Typography>
         }
       />
@@ -237,7 +244,7 @@ const Webhooks = () => {
       <EditWebhooks
         open={openEditWebhooks}
         setOpen={setOpenEditWebhooks}
-        headerText={"Webhook Configuration"}
+        headerText={t("webhooks.configureWebhook")}
         mode={modeOfPopup}
         onRefetch={onRefetch}
         webhookDetailsForUpdate={webhookDetailsForUpdate}

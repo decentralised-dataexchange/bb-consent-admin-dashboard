@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 export interface DataAgreementsResponse {
   dataAgreements: DataAgreement[];
   pagination: Pagination;
@@ -35,21 +37,6 @@ export interface Policy {
   storageLocation: string;
 }
 
-enum DataExchangeModes {
-  DataSource = "Data Source",
-  DataUsingService = "Data Using Service",
-  None = "None",
-}
-
-enum LawfulBasisOfProcessingEnum {
-  ConsentBasis = "Consent",
-  ContractBasis = "Contract",
-  LegalObligationBasis = "Legal Obligation",
-  VitalInterestBasis = "Vital Interest",
-  PublicTaskBasis = "Public Task",
-  LegitimateInterestBasis = "Legitimate Interest",
-}
-
 export interface Pagination {
   currentPage: number;
   totalItems: number;
@@ -59,41 +46,42 @@ export interface Pagination {
   hasNext: boolean;
 }
 
-enum PublishFlagEnum {
-  Saved = "Draft",
-  Published = "Published",
-}
-
 export const getMethodOfUse = (methodOfUse: string) => {
+  const { t } = useTranslation("translation");
+
   if (methodOfUse === "null") {
-    return DataExchangeModes.None;
+    return t("dataAgreements.none");
   } else if (methodOfUse === "data_source") {
-    return DataExchangeModes.DataSource;
+    return t("dataAgreements.dataSource");
   } else {
-    return DataExchangeModes.DataUsingService;
+    return t("dataAgreements.dataUsingService");
   }
 };
 
 export const getLawfulBasisOfProcessing = (LawfulBasisOfProcessing: string) => {
+  const { t } = useTranslation("translation");
+
   if (LawfulBasisOfProcessing === "consent") {
-    return LawfulBasisOfProcessingEnum.ConsentBasis;
+    return t("dataAgreements.consent");
   } else if (LawfulBasisOfProcessing === "contract") {
-    return LawfulBasisOfProcessingEnum.ContractBasis;
+    return t("dataAgreements.contract");
   } else if (LawfulBasisOfProcessing === "legal_obligation") {
-    return LawfulBasisOfProcessingEnum.LegalObligationBasis;
+    return t("dataAgreements.legalObligation");
   } else if (LawfulBasisOfProcessing === "vital_interest") {
-    return LawfulBasisOfProcessingEnum.VitalInterestBasis;
+    return t("dataAgreements.vitalInterest");
   } else if (LawfulBasisOfProcessing === "public_task") {
-    return LawfulBasisOfProcessingEnum.PublicTaskBasis;
+    return t("dataAgreements.publicTask");
   } else {
-    return LawfulBasisOfProcessingEnum.LegitimateInterestBasis;
+    return t("dataAgreements.legitimateInterest");
   }
 };
 
 export const getPublishValues = (lifecycle: string) => {
+  const { t } = useTranslation("translation");
+
   if (lifecycle === "draft") {
-    return PublishFlagEnum.Saved;
+    return t("dataAgreements.draft");
   } else {
-    return PublishFlagEnum.Published;
+    return t("dataAgreements.published");
   }
 };

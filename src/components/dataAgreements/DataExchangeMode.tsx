@@ -1,12 +1,7 @@
 import { Typography, Box, FormControl, Select, MenuItem } from "@mui/material";
 import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
-
-const dataExchangeModes = [
-  { value: "null", label: "None" },
-  { value: "data_source", label: "Data Source" },
-  { value: "data_using_service", label: "Data Using Service" },
-];
+import { useTranslation } from "react-i18next";
 
 interface DataExchangeModeFormControlProps {
   open: boolean;
@@ -42,6 +37,17 @@ const disabledDropDownStyle = {
 };
 
 export const DataExchangeMode = (props: DataExchangeModeProps) => {
+  const { t } = useTranslation("translation");
+
+  const dataExchangeModes = [
+    { value: "null", label: t("dataAgreements.none") },
+    { value: "data_source", label: t("dataAgreements.dataSource") },
+    {
+      value: "data_using_service",
+      label: t("dataAgreements.dataUsingService"),
+    },
+  ];
+
   return (
     <>
       <Select
@@ -88,6 +94,7 @@ export const DataExchangeModeFormControl = (
   props: DataExchangeModeFormControlProps
 ) => {
   const { control } = useFormContext();
+  const { t } = useTranslation("translation");
 
   return (
     <>
@@ -99,7 +106,9 @@ export const DataExchangeModeFormControl = (
           marginTop: "20px",
         }}
       >
-        <Typography variant="subtitle1">Data Exchange</Typography>
+        <Typography variant="subtitle1">
+          {t("dataAgreements.dataExchange")}
+        </Typography>
         <FormControl>
           <Controller
             name="AttributeType"

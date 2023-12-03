@@ -1,3 +1,4 @@
+import i18n from "i18next";
 import { formatISODateToLocalString } from "../utils/formatISODateToLocalString";
 
 export const getOptinValues = (optIn: boolean) => {
@@ -8,44 +9,42 @@ export const getOptinValues = (optIn: boolean) => {
   }
 };
 
-enum LawfulBasisOfProcessingEnum {
-  ConsentBasis = "Consent",
-  ContractBasis = "Contract",
-  LegalObligationBasis = "Legal Obligation",
-  VitalInterestBasis = "Vital Interest",
-  PublicTaskBasis = "Public Task",
-  LegitimateInterestBasis = "Legitimate Interest",
-}
-
-export const getLawfulBasisOfProcessing = (LawfulBasisOfProcessing: string) => {
+export const getLawfulBasisOfProcessing = (
+  LawfulBasisOfProcessing: string,
+  t: (key: string) => string
+) => {
   if (LawfulBasisOfProcessing === "consent") {
-    return LawfulBasisOfProcessingEnum.ConsentBasis;
+    return t("dataAgreements.consent");
   } else if (LawfulBasisOfProcessing === "contract") {
-    return LawfulBasisOfProcessingEnum.ContractBasis;
+    return t("dataAgreements.contract");
   } else if (LawfulBasisOfProcessing === "legal_obligation") {
-    return LawfulBasisOfProcessingEnum.LegalObligationBasis;
+    return t("dataAgreements.legalObligation");
   } else if (LawfulBasisOfProcessing === "vital_interest") {
-    return LawfulBasisOfProcessingEnum.VitalInterestBasis;
+    return t("dataAgreements.vitalInterest");
   } else if (LawfulBasisOfProcessing === "public_task") {
-    return LawfulBasisOfProcessingEnum.PublicTaskBasis;
+    return t("dataAgreements.publicTask");
   } else {
-    return LawfulBasisOfProcessingEnum.LegitimateInterestBasis;
+    return t("dataAgreements.legitimateInterest");
   }
 };
 
 export const convertConsentRecordsForClient = (consentRecords: any) => {
   const consentRecordsConvertedDataForClientPurpose =
-    consentRecords.consentRecords.map((consentRecords: any, index:number) => {
-      const {id, optIn, timestamp,dataAgreement, ...otherProps } = consentRecords;
+    consentRecords.consentRecords.map((consentRecords: any, index: number) => {
+      const { id, optIn, timestamp, dataAgreement, ...otherProps } =
+        consentRecords;
       return {
         id: index,
         consentRecordId: id,
         optIn: getOptinValues(optIn),
         timestamp: formatISODateToLocalString(timestamp),
-        dataAgreement:{
-          lawfulBasis: getLawfulBasisOfProcessing(dataAgreement.lawfulBasis),
-          purpose:dataAgreement.purpose,
-          version:dataAgreement.version,
+        dataAgreement: {
+          lawfulBasis: getLawfulBasisOfProcessing(
+            dataAgreement.lawfulBasis,
+            i18n.t
+          ),
+          purpose: dataAgreement.purpose,
+          version: dataAgreement.version,
         },
         ...otherProps,
       };
@@ -59,14 +58,15 @@ export const convertConsentRecordsForClient = (consentRecords: any) => {
 };
 
 export const convertViewLogsForClient = (viewLogs: any) => {
-  const viewLogsConvertedDataForClientPurpose =
-  viewLogs.logs.map((viewLogs: any) => {
+  const viewLogsConvertedDataForClientPurpose = viewLogs.logs.map(
+    (viewLogs: any) => {
       const { timestamp, ...otherProps } = viewLogs;
       return {
         timestamp: formatISODateToLocalString(timestamp),
         ...otherProps,
       };
-    });
+    }
+  );
   const convertedViewLogs = {
     logs: viewLogsConvertedDataForClientPurpose,
     pagination: viewLogs.pagination,

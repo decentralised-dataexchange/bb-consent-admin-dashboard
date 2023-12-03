@@ -35,6 +35,7 @@ import { LawfullBasisOfProcessingFormControll } from "../dataAgreements/LawfullB
 import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
 import SnackbarComponent from "../notification";
 import { isFormDataChanged } from "../../utils/isFormDataChanged";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   open: boolean;
@@ -76,7 +77,7 @@ export default function DataAgreementModal(props: Props) {
     dataAgrreementRevisionIdForSelectedRecord,
     setSelectedDropdownValue,
   } = props;
-
+  const { t } = useTranslation("translation");
   const [selectedDataAgreement, setSelectedDataAgreement] = useState<any>();
   const [dataAgreementIdForUserRecordes, setDataAgreementIdForUserRecordes] =
     useState("");
@@ -318,7 +319,7 @@ export default function DataAgreementModal(props: Props) {
           let errorDescription = error.response.data.errorDescription;
           setError(
             errorDescription === "Data agreement purpose exists"
-              ? "Usage purpose already exists"
+              ? t("dataAgreements.purposeExist")
               : errorDescription
           );
           setOpenSnackBar(true);
@@ -349,7 +350,7 @@ export default function DataAgreementModal(props: Props) {
           let errorDescription = error.response.data.errorDescription;
           setError(
             errorDescription === "Data agreement purpose exists"
-              ? "Usage purpose already exists"
+              ? t("dataAgreements.purposeExist")
               : errorDescription
           );
           setOpenSnackBar(true);
@@ -375,7 +376,7 @@ export default function DataAgreementModal(props: Props) {
           let errorDescription = error.response.data.errorDescription;
           setError(
             errorDescription === "Data agreement purpose exists"
-              ? "Usage purpose already exists"
+              ? t("dataAgreements.purposeExist")
               : errorDescription
           );
           setOpenSnackBar(true);
@@ -401,7 +402,7 @@ export default function DataAgreementModal(props: Props) {
           let errorDescription = error.response.data.errorDescription;
           setError(
             errorDescription === "Data agreement purpose exists"
-              ? "Usage purpose already exists"
+              ? t("dataAgreements.purposeExist")
               : errorDescription
           );
           setOpenSnackBar(true);
@@ -423,11 +424,11 @@ export default function DataAgreementModal(props: Props) {
               <HeaderContainer>
                 <Box pl={2}>
                   <Typography color="#F3F3F6">
-                    {mode === "Create" && "Add Data Agreement"}
+                    {mode === "Create" && t("dataAgreements.addDA")}
                     {mode === "Update" &&
-                      `Edit Data Agreement:  ${selectedDataAgreement?.purpose}`}
+                     `${t("dataAgreements.editDA")}:  ${selectedDataAgreement?.purpose}`}
                     {mode === "Read" &&
-                      `View Data Agreement: ${
+                      `${t("dataAgreements.viewDA")}: ${
                         selectedDataAgreement?.selectedRevision?.purpose ||
                         selectedDataAgreement?.purpose
                       }`}
@@ -487,7 +488,7 @@ export default function DataAgreementModal(props: Props) {
                     {organisationDetails.name}
                   </Typography>
                   <Typography variant="subtitle1" mt={3}>
-                    Overview
+                    {t("common.overView")}
                   </Typography>
                   <Typography
                     variant="subtitle2"
@@ -532,13 +533,13 @@ export default function DataAgreementModal(props: Props) {
                     />
 
                     <Typography variant="subtitle1">
-                      Data Policy Configurations
+                      {t("dataAgreements.dataPolicyConfigurations")}
                       <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                     </Typography>
                     <DataAgreementPolicy mode={mode} />
 
                     <Typography variant="subtitle1">
-                      DPIA Configurations
+                      {t("dataAgreements.DPIAConfigurations")}
                     </Typography>
                     <DPIAConfigurations mode={mode} />
                   </Box>
@@ -588,7 +589,7 @@ export default function DataAgreementModal(props: Props) {
                   }}
                   onClick={methods.handleSubmit(onSave)}
                 >
-                  SAVE
+                  {t("common.save")}
                 </Button>
                 <Button
                   variant="outlined"
@@ -629,7 +630,7 @@ export default function DataAgreementModal(props: Props) {
                   }
                   onClick={methods.handleSubmit(onPublish)}
                 >
-                  PUBLISH
+                  {t("dataAgreements.publish")}
                 </Button>
               </FooterContainer>
             </form>

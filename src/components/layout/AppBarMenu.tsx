@@ -1,14 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLogout } from "react-admin";
 import { useNavigate } from "react-router-dom";
 import { LocalStorageService } from "../../service/localStorageService";
 import { formatISODateToLocalString } from "../../utils/formatISODateToLocalString";
-import { Box, Menu, Typography, IconButton } from "@mui/material";
+import { Box, Menu, Typography, IconButton, Button } from "@mui/material";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import defaultAvatar from "../../assets/avatar.png";
 import { useFilterStore } from "../../store/store";
 import { HttpService } from "../../service/HTTPService";
+import { useTranslation } from "react-i18next";
+import LanguageSelectorForAppBarMenu from "../dropdowns/languageSelectorForAppBarMenu";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
 type Props = {
   firstName: string;
   email: string;
@@ -21,8 +25,16 @@ export const AppBarMenu = (props: Props) => {
   const logout = useLogout();
   const changeAvatar = useFilterStore((state) => state.changeAvatar);
   const changeAdminName = useFilterStore((state) => state.changeAdminName);
+  const { t } = useTranslation("translation");
+  const [openLanguageSelector, setOpenLanguageSelector] = useState(false);
+  const anchorRefLanguageSelector = useRef<HTMLButtonElement>(null);
+  const handleToggleLanguageSelector = () => {
+    setOpenLanguageSelector((prevOpen: any) => !prevOpen);
+  };
 
-  const [userAvatar, setUserAvatar] = useState<any>(LocalStorageService.getUserProfilePic());
+  const [userAvatar, setUserAvatar] = useState<any>(
+    LocalStorageService.getUserProfilePic()
+  );
   const [userName, setUserName] = useState<any>();
 
   useEffect(() => {
@@ -42,8 +54,8 @@ export const AppBarMenu = (props: Props) => {
 
   useEffect(() => {
     HttpService.getOrganisationAdminDetails().then((res) => {
-      setUserName(res.data.name)
-    })
+      setUserName(res.data.name);
+    });
   }, [changeAdminName]);
 
   const handleClose = () => {
@@ -113,7 +125,8 @@ export const AppBarMenu = (props: Props) => {
             {props.email}
           </Typography>
           <Typography variant="caption" style={{ marginBottom: "3px" }}>
-            Last visit: {formatISODateToLocalString(props.lastVisited)}
+            {t("appbar.lastVisit")}:{" "}
+            {formatISODateToLocalString(props.lastVisited)}
           </Typography>
         </Box>
         <Box style={{ color: "black", borderTop: "1px solid #BDBDBD" }}>
@@ -129,7 +142,26 @@ export const AppBarMenu = (props: Props) => {
           >
             <SettingsOutlinedIcon />
             <Typography ml={1} variant="body2">
-              Settings
+              {t("appbar.settings")}
+            </Typography>
+          </Box>
+          <Box
+            style={{
+              display: "flex",
+              alignItems: "center",
+              padding: 7,
+              paddingLeft: 15,
+              cursor: "pointer",
+              marginTop: 5,
+            }}
+            ref={anchorRefLanguageSelector}
+            aria-controls={openLanguageSelector ? "dropdown-menu" : undefined}
+            aria-haspopup="true"
+            onClick={handleToggleLanguageSelector}
+          >
+            <KeyboardArrowDownIcon sx={{ marginRight: "8px" }} />
+            <Typography sx={{ fontSize: "14px" }}>
+              {t("common.language")}
             </Typography>
           </Box>
           <Box
@@ -145,11 +177,18 @@ export const AppBarMenu = (props: Props) => {
           >
             <ExitToAppIcon />
             <Typography ml={1} variant="body2">
-              Signout
+              {t("appbar.signout")}
             </Typography>
           </Box>
         </Box>
       </Menu>
+
+      <LanguageSelectorForAppBarMenu
+        open={openLanguageSelector}
+        setOpen={setOpenLanguageSelector}
+        anchorRef={anchorRefLanguageSelector}
+        handleToggle={handleToggleLanguageSelector}
+      />
     </>
   );
 };

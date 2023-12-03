@@ -1,5 +1,6 @@
 import CSS from "csstype";
 import { useFormContext } from 'react-hook-form';
+import { useTranslation } from "react-i18next";
 
 const tableCellStyle: CSS.Properties = {
   fontWeight: "normal",
@@ -27,6 +28,7 @@ interface Props {
 const DPIAConfigurations = (props: Props) => {
   const { mode } = props;
   const { register } = useFormContext();
+  const { t } = useTranslation("translation");
 
   return (
     <table
@@ -41,7 +43,7 @@ const DPIAConfigurations = (props: Props) => {
       <tbody>
         <tr>
           <th style={{ ...tableCellStyle, borderTop: 0 }} scope="row">
-            DPIA Date
+          {t("dataAgreements.DPIADate")}
           </th>
 
           <td style={{ ...tableCellStyle, borderTop: 0, borderRight: 0 }}>
@@ -62,7 +64,7 @@ const DPIAConfigurations = (props: Props) => {
 
         <tr>
           <th style={tableCellStyle} scope="row">
-            DPIA Summary URL
+          {t("dataAgreements.DPIASummaryURL")}
           </th>
 
           <td style={tableCellStyle}>

@@ -18,6 +18,7 @@ import CheckboxTree from "../webhooks/checkboxTree";
 import { HttpService } from "../../service/HTTPService";
 import { useForm } from "react-hook-form";
 import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   open: boolean;
@@ -62,6 +63,7 @@ export default function EditWebooks(props: Props) {
   const { organisationDetails } = React.useContext(
     OrganizationDetailsCRUDContext
   );
+  const { t } = useTranslation("translation");
 
   useEffect(() => {
     HttpService.listWebhookContentTypes().then((res) => {
@@ -178,14 +180,14 @@ export default function EditWebooks(props: Props) {
             <DetailsContainer>
               <Box p={1.5}>
                 <Typography variant="subtitle1" mb={0}>
-                  Payload URL
+                {t("webhooks.payloadURL")}
                   <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                 </Typography>
                 <TextField
                   autoFocus
                   variant="standard"
                   fullWidth
-                  placeholder="Please provide the callback URL"
+                  placeholder={t("webhooks.payloadURLPlaceholder")}
                   {...register("payloadUrl", {
                     required: true,
                     minLength: 3,
@@ -196,7 +198,7 @@ export default function EditWebooks(props: Props) {
                   })}
                 />
                 <Typography variant="subtitle1" mt={1.5}>
-                  Content Type
+                {t("webhooks.contentType")}
                 </Typography>
                 <ContentTypeDropdown
                   filterValues={webhookContentTypes}
@@ -205,21 +207,21 @@ export default function EditWebooks(props: Props) {
                 />
 
                 <Typography variant="subtitle1" mt={1.5}>
-                  Secret Key
+                {t("webhooks.secretKey")}
                   <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                 </Typography>
                 <TextField
                   autoFocus
                   variant="standard"
                   fullWidth
-                  placeholder="Please provide a secret key"
+                  placeholder= {t("webhooks.secretKeyPlaceholder")}
                   {...register("secretKey", {
                     required: true,
                     minLength: 3,
                   })}
                 />
                 <Typography variant="subtitle1" mt={1.5}>
-                  Events
+                {t("webhooks.events")}
                   <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                 </Typography>
                 <CheckboxTree
@@ -245,7 +247,7 @@ export default function EditWebooks(props: Props) {
                 }}
                 variant="outlined"
               >
-                CLOSE
+                {t("common.close")}
               </Button>
               <Button
                 variant="outlined"
@@ -277,7 +279,7 @@ export default function EditWebooks(props: Props) {
                 }}
                 type="submit"
               >
-                SAVE{" "}
+                {t("common.save")}{" "}
               </Button>
             </FooterContainer>
           </form>

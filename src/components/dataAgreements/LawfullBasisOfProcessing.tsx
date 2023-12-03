@@ -1,11 +1,13 @@
 import { FormControl, MenuItem, Select, Typography } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 interface LawfullBasisProps {
   open: boolean;
   mode: string;
   onChange: (e: React.SyntheticEvent) => void;
   value: any;
+  lawfullBasisOfProcessing:any
 }
 
 interface LawfullBasisFormControlProps {
@@ -32,15 +34,6 @@ const disabledDropDownStyle = {
   borderRadius: "5px",
   cursor: "not-allowed",
 };
-
-const lawfullBasisOfProcessing = [
-  { value: 'consent', label: "Consent" },
-  { value: 'contract', label: "Contract" },
-  { value: 'legal_obligation', label: "Legal Obligation" },
-  { value: 'vital_interest', label: "Vital Interest" },
-  { value: 'public_task', label: "Public Task" },
-  { value: 'legitimate_interest', label: "Legitimate Interest" },
-];
 
 export const LawfullBasisMethods = (props: LawfullBasisProps) => {
   return (
@@ -70,7 +63,7 @@ export const LawfullBasisMethods = (props: LawfullBasisProps) => {
               }
         }
       >
-        {lawfullBasisOfProcessing.map((modes) => (
+        {props.lawfullBasisOfProcessing.map((modes:any) => (
           <MenuItem key={modes?.label} value={modes.value}>
             {modes.label}
           </MenuItem>
@@ -84,12 +77,22 @@ export const LawfullBasisOfProcessingFormControll = (
   props: LawfullBasisFormControlProps
 ) => {
   const { control } = useFormContext();
+  const { t } = useTranslation("translation");
+
+  const lawfullBasisOfProcessing = [
+    { value: 'consent', label: t("dataAgreements.consent") },
+    { value: 'contract', label: t("dataAgreements.contract") },
+    { value: 'legal_obligation', label: t("dataAgreements.legalObligation") },
+    { value: 'vital_interest', label: t("dataAgreements.vitalInterest") },
+    { value: 'public_task', label: t("dataAgreements.publicTask") },
+    { value: 'legitimate_interest', label: t("dataAgreements.legitimateInterest") },
+  ];
 
   return (
     <>
       {" "}
       <Typography mb={1.3} mt={1.3} variant="subtitle1">
-        Lawful Basis Of Processing
+        {t("dataAgreements.lawfulBasisOfProcessing")}
         <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
       </Typography>
       <FormControl style={{ width: "100%" }}>
@@ -105,6 +108,7 @@ export const LawfullBasisOfProcessingFormControll = (
               value={value}
               open={props.open}
               mode={props.mode}
+              lawfullBasisOfProcessing={lawfullBasisOfProcessing}
             />
           )}
         />

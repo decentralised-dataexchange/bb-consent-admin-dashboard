@@ -11,6 +11,7 @@ import OrgCoverImageUpload from "../../components/OrganisationDetails/OrgCoverIm
 
 import OrganisationDetailsContainer from "../../components/OrganisationDetails/OrgDetailsContainer";
 import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
+import { useTranslation } from "react-i18next";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -43,7 +44,8 @@ const Item = styled("div")(({ theme }) => ({
 const GettingStarted = () => {
   const navigate = useNavigate();
   const [editMode, setEditMode] = useState(false);
- 
+  const { t } = useTranslation("translation");
+
   const {
     organisationDetails,
     logoImageBase64,
@@ -60,7 +62,7 @@ const GettingStarted = () => {
   return (
     <Form>
       <Container>
-        <BreadCrumb Link="Getting Started" />
+        <BreadCrumb Link={t("sidebar.gettingStarted")} />
         <OrgCoverImageUpload
           editMode={editMode}
           coverImageBase64={coverImageBase64}
@@ -83,7 +85,7 @@ const GettingStarted = () => {
                 onClick={() => navigate("/dataagreement")}
               >
                 <Typography variant="body1" color="grey">
-                  Prepare Data Agreements
+                {t("gettingStarted.prepareDA")}
                 </Typography>
               </Item>
             </Grid>
@@ -93,7 +95,7 @@ const GettingStarted = () => {
                 onClick={() => navigate("/developerapi")}
               >
                 <Typography variant="body1" color="grey">
-                  Developer APIs
+                {t("sidebar.developerAPIs")}
                 </Typography>
               </Item>
             </Grid>
@@ -103,7 +105,7 @@ const GettingStarted = () => {
                 onClick={() => navigate("/manageadmin")}
               >
                 <Typography variant="body1" color="grey">
-                  Manage Admin Users
+                {t("gettingStarted.manageAdminUsers")}
                 </Typography>
               </Item>
             </Grid>
@@ -116,7 +118,7 @@ const GettingStarted = () => {
                   style={{ textDecoration: "none" }}
                 >
                   <Typography variant="body1" color="grey">
-                    Developer Documentation
+                  {t("gettingStarted.developerDocumentation")}
                   </Typography>
                 </a>
               </Item>

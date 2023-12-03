@@ -26,6 +26,7 @@ import {
 import { FormProvider, useForm } from "react-hook-form";
 import { HttpService } from "../../service/HTTPService";
 import { isFormDataChanged } from "../../utils/isFormDataChanged";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   open: boolean;
@@ -41,6 +42,7 @@ export default function EditUserAccesModal(props: Props) {
   const [subscriptionMethodValue, setSubscriptionMethodValue] = React.useState<
     string[]
   >([]);
+  const { t } = useTranslation("translation");
 
   const handleChange = (
     event: SelectChangeEvent<typeof subscriptionMethodValue>
@@ -115,7 +117,7 @@ export default function EditUserAccesModal(props: Props) {
               <DetailsContainer>
                 <Box p={1.5}>
                   <Typography variant="subtitle1" mb={0}>
-                    Authentication Protocol
+                    {t("userAccess.authProtocol")}
                   </Typography>
                   <FormControl fullWidth sx={{ marginBottom: "15px" }}>
                     <Select
@@ -125,7 +127,7 @@ export default function EditUserAccesModal(props: Props) {
                       input={<OutlinedInput />}
                       renderValue={(selected) => {
                         if (selected.length === 0) {
-                          return <em>Open-ID Connect</em>;
+                          return <em>{t("userAccess.openIDConnect")}</em>;
                         }
 
                         return selected.join(", ");
@@ -145,7 +147,7 @@ export default function EditUserAccesModal(props: Props) {
                     </Select>
                   </FormControl>
                   <Typography variant="subtitle1" mb={0}>
-                    Authorisation URL
+                    {t("userAccess.authURL")}
                     <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                   </Typography>
                   <TextField
@@ -153,7 +155,7 @@ export default function EditUserAccesModal(props: Props) {
                     autoFocus
                     variant="outlined"
                     fullWidth
-                    placeholder="Authorisation URL"
+                    placeholder={t("userAccess.authURL")}
                     {...register("authorisationUrl", {
                       required: true,
                       minLength: 1,
@@ -161,14 +163,14 @@ export default function EditUserAccesModal(props: Props) {
                   />
 
                   <Typography variant="subtitle1" mb={0}>
-                    Token URL
+                    {t("userAccess.tokenURL")}
                     <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                   </Typography>
                   <TextField
                     sx={{ margin: 0, marginBottom: "10px" }}
                     variant="outlined"
                     fullWidth
-                    placeholder="Token URL"
+                    placeholder={t("userAccess.tokenURL")}
                     {...register("tokenUrl", {
                       required: true,
                       minLength: 1,
@@ -176,14 +178,14 @@ export default function EditUserAccesModal(props: Props) {
                   />
 
                   <Typography variant="subtitle1" mb={0}>
-                    Logout URL
+                    {t("userAccess.logoutURL")}
                     <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                   </Typography>
                   <TextField
                     sx={{ margin: 0, marginBottom: "10px" }}
                     variant="outlined"
                     fullWidth
-                    placeholder="Logout URL"
+                    placeholder={t("userAccess.logoutURL")}
                     {...register("logoutUrl", {
                       required: true,
                       minLength: 1,
@@ -191,14 +193,14 @@ export default function EditUserAccesModal(props: Props) {
                   />
 
                   <Typography variant="subtitle1" mb={0}>
-                    Issue URL
+                    {t("userAccess.issueURL")}
                     <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                   </Typography>
                   <TextField
                     sx={{ margin: 0, marginBottom: "10px" }}
                     variant="outlined"
                     fullWidth
-                    placeholder="Issue URL"
+                    placeholder={t("userAccess.issueURL")}
                     {...register("issuerUrl", {
                       required: true,
                       minLength: 1,
@@ -206,14 +208,14 @@ export default function EditUserAccesModal(props: Props) {
                   />
 
                   <Typography variant="subtitle1" mb={0}>
-                    User Info URL
+                    {t("userAccess.userInfoURL")}
                     <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                   </Typography>
                   <TextField
                     sx={{ margin: 0, marginBottom: "10px" }}
                     variant="outlined"
                     fullWidth
-                    placeholder="User Info URL"
+                    placeholder={t("userAccess.userInfoURL")}
                     {...register("userInfoUrl", {
                       required: true,
                       minLength: 1,
@@ -221,14 +223,14 @@ export default function EditUserAccesModal(props: Props) {
                   />
 
                   <Typography variant="subtitle1" mb={0}>
-                    JWKS URL
+                    {t("userAccess.jwksURL")}
                     <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                   </Typography>
                   <TextField
                     sx={{ margin: 0, marginBottom: "10px" }}
                     variant="outlined"
                     fullWidth
-                    placeholder="JWKS URL"
+                    placeholder={t("userAccess.jwksURL")}
                     {...register("jwksUrl", {
                       required: true,
                       minLength: 1,
@@ -236,14 +238,14 @@ export default function EditUserAccesModal(props: Props) {
                   />
 
                   <Typography variant="subtitle1" mb={0}>
-                    Client ID
+                    {t("userAccess.clientID")}
                     <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                   </Typography>
                   <TextField
                     sx={{ margin: 0, marginBottom: "10px" }}
                     variant="outlined"
                     fullWidth
-                    placeholder="Client ID"
+                    placeholder={t("userAccess.clientID")}
                     {...register("clientId", {
                       required: true,
                       minLength: 1,
@@ -251,14 +253,14 @@ export default function EditUserAccesModal(props: Props) {
                   />
 
                   <Typography variant="subtitle1" mb={0}>
-                    Client Secret
+                    {t("userAccess.clientSecret")}
                     <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                   </Typography>
                   <TextField
                     sx={{ margin: 0, marginBottom: "10px" }}
                     variant="outlined"
                     fullWidth
-                    placeholder="Client Secret"
+                    placeholder={t("userAccess.clientSecret")}
                     {...register("clientSecret", {
                       required: true,
                       minLength: 1,
@@ -266,14 +268,14 @@ export default function EditUserAccesModal(props: Props) {
                   />
 
                   <Typography variant="subtitle1" mb={0}>
-                    Default Scopes
+                  {t("userAccess.defaultScopes")}
                     <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
                   </Typography>
                   <TextField
                     variant="outlined"
                     fullWidth
                     style={{ marginBottom: "60px" }}
-                    placeholder="Default Scopes"
+                    placeholder={t("userAccess.defaultScopes")}
                     {...register("defaultScope", {
                       required: true,
                       minLength: 1,
@@ -295,7 +297,7 @@ export default function EditUserAccesModal(props: Props) {
                   }}
                   variant="outlined"
                 >
-                  CLOSE
+                  {t("common.close")}
                 </Button>
                 <Button
                   variant="outlined"
@@ -324,7 +326,7 @@ export default function EditUserAccesModal(props: Props) {
                     },
                   }}
                 >
-                  SAVE{" "}
+                  {t("common.save")}{" "}
                 </Button>
               </FooterContainer>
             </form>

@@ -1,17 +1,19 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   control: any;
   getValues: any;
   setValue: any;
-  setCheckScopeIsSelected:Dispatch<SetStateAction<boolean>>
+  setCheckScopeIsSelected: Dispatch<SetStateAction<boolean>>;
 }
 
 const CheckboxTreeForAPIKey = (props: Props) => {
-  const { control,  getValues, setValue, setCheckScopeIsSelected } = props;
+  const { control, getValues, setValue, setCheckScopeIsSelected } = props;
   const scopes = ["Config", "Audit", "Service", "Onboard"];
   const [handleChangeTrigger, setandleChangeTrigger] = useState(false);
+  const { t } = useTranslation("translation");
 
   const handleParentRadioChange = (value: string) => {
     if (value === "all") {
@@ -46,7 +48,9 @@ const CheckboxTreeForAPIKey = (props: Props) => {
     let scopesLength = scopes.filter(
       (scope) => getValues(`scopes.${scope}`) === true
     ).length;
-    scopesLength === 0 ? setCheckScopeIsSelected(false) : setCheckScopeIsSelected(true);
+    scopesLength === 0
+      ? setCheckScopeIsSelected(false)
+      : setCheckScopeIsSelected(true);
   }, [handleChangeTrigger]);
 
   return (
@@ -70,7 +74,7 @@ const CheckboxTreeForAPIKey = (props: Props) => {
                   checked={field.value === "all"}
                   onChange={() => handleParentRadioChange("all")}
                 />
-                All Scopes
+                {t("developerAPIs.allScopes")}
               </>
             )}
           />
@@ -94,7 +98,7 @@ const CheckboxTreeForAPIKey = (props: Props) => {
                   checked={field.value === "selected"}
                   onChange={() => handleParentRadioChange("selected")}
                 />
-                Selected Scopes
+                {t("developerAPIs.selectedScopes")}
               </>
             )}
           />
