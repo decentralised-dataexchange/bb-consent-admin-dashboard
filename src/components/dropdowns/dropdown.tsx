@@ -13,6 +13,7 @@ interface Props {
   selectWidth?: string;
   dropdownValues: {
     value: string;
+    label: string
   }[];
   setSelectedFilterValue?: any;
   setSubscriptionMethodValue: any;
@@ -71,7 +72,7 @@ const Dropdown = (props: Props) => {
       >
         {dropdownValues.map((dropdownValues) => (
           <MenuItem key={dropdownValues.value} value={dropdownValues.value}>
-            {dropdownValues.value}
+            {dropdownValues.label}
           </MenuItem>
         ))}
       </Select>

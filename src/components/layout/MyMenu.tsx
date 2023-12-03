@@ -8,12 +8,15 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 import SubMenu from "./SubMenu";
 import { configStore } from "../../store/configStore";
+import { useTranslation } from "react-i18next";
 
 type MenuName = "manageusers" | "account";
 
 export default function MyMenu({ dense = false }: MenuProps) {
   const [open] = useSidebarState();
   let version = configStore.appVersion;
+  const { t } = useTranslation("translation");
+
   const [state, setState] = useState({
     manageusers: false,
     account: false,
@@ -41,25 +44,25 @@ export default function MyMenu({ dense = false }: MenuProps) {
       <SubMenu
         handleToggle={() => handleToggle("manageusers")}
         isOpen={state.manageusers}
-        name="Manage Users"
+        name={t("sidebar.manageUsers")}
         icon={<PeopleAltOutlinedIcon />}
         dense={!dense}
       >
-        <Menu.Item to="/configuration" primaryText="Configuration" />
-        <Menu.Item to="/consentrecords" primaryText="Consent Records" />
+        <Menu.Item to="/configuration" primaryText={t("sidebar.configuration")} />
+        <Menu.Item to="/consentrecords" primaryText={t("sidebar.consentRecords")} />
       </SubMenu>
       <Menu.ResourceItem name="privacydashboard" />
       <SubMenu
         handleToggle={() => handleToggle("account")}
         isOpen={state.account}
-        name="Account"
+        name={t("sidebar.account")}
         icon={<LockOutlinedIcon />}
         dense={!dense}
       >
-        <Menu.Item to="/manageadmin" primaryText="Manage Admin" />
-        <Menu.Item to="/developerapi" primaryText="Developer APIs" />
-        <Menu.Item to="/viewlogs" primaryText="View Logs" />
-        <Menu.Item to="/webhooks" primaryText="Webhooks" />
+        <Menu.Item to="/manageadmin" primaryText={t("sidebar.manageAdmin")} />
+        <Menu.Item to="/developerapi" primaryText={t("sidebar.developerAPIs")} />
+        <Menu.Item to="/viewlogs" primaryText={t("sidebar.viewLogs")} />
+        <Menu.Item to="/webhooks" primaryText={t("sidebar.webhooks")} />
       </SubMenu>
 
       {open ? (

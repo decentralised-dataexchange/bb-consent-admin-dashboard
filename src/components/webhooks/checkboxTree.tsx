@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   control: any;
@@ -17,6 +18,7 @@ const CheckboxTreeForAPIKey = (props: Props) => {
     setCheckWebhookIsSelected,
     webhookEventTypesFromAPI,
   } = props;
+  const { t } = useTranslation("translation");
 
   const webhookEventTypes = webhookEventTypesFromAPI.map((type: any) => {
     if (type === "consent.allowed") {
@@ -87,7 +89,7 @@ const CheckboxTreeForAPIKey = (props: Props) => {
                   checked={field.value === "all"}
                   onChange={() => handleParentRadioChange("all")}
                 />
-                All Events
+                {t("webhooks.allEvents")}
               </>
             )}
           />
@@ -111,7 +113,7 @@ const CheckboxTreeForAPIKey = (props: Props) => {
                   checked={field.value === "selected"}
                   onChange={() => handleParentRadioChange("selected")}
                 />
-                Selected Events
+                {t("webhooks.selectedEvents")}
               </>
             )}
           />

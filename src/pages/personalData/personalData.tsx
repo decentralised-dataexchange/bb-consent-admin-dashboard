@@ -17,6 +17,8 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 import BreadCrumb from "../../components/Breadcrumbs";
 import EditPersonalDataModal from "../../components/modals/editPersonalDataModal";
+import { useTranslation } from "react-i18next";
+import { TableEmptyMessage } from "../../components/tableEmptyMessage";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -38,6 +40,7 @@ const PersonalData = () => {
   const [openEditPersonalDataModal, setOpenEditPersonalDataModal] =
     useState(false);
   const [listFilterValue, setListFilterValue] = useState("all");
+  const { t } = useTranslation("translation");
 
   const refresh = useRefresh();
 
@@ -45,68 +48,80 @@ const PersonalData = () => {
     refresh();
   };
 
-
   const handleChange = (value: any) => {
-
     if (value === "data_source") {
-      setListFilterValue("data_source")
+      setListFilterValue("data_source");
     } else if (value === "data_using_service") {
-      setListFilterValue("data_using_service")
+      setListFilterValue("data_using_service");
     } else if (value === "all") {
-      setListFilterValue("all")
+      setListFilterValue("all");
     }
   };
 
   return (
     <Container>
+      <Form>
+        <BreadCrumb Link={t("sidebar.personalData")} />
+        <HeaderContainer>
+          <Typography variant="h6" fontWeight="bold">
+            {t("sidebar.personalData")}
+          </Typography>
+          <FormControl>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              defaultValue="all"
+              name="radio-buttons-group"
+              row
+            >
+              <FormControlLabel
+                value="all"
+                onChange={() => handleChange("all")}
+                control={<Radio name={"all"} color="default" size="small" />}
+                label={
+                  <Typography variant="body2">{t("common.all")}</Typography>
+                }
+              />
+              <FormControlLabel
+                value="data_source"
+                onChange={() => handleChange("data_source")}
+                control={
+                  <Radio name={"data_source"} color="default" size="small" />
+                }
+                label={
+                  <Typography variant="body2">
+                    {t("dataAgreements.dataSource")}
+                  </Typography>
+                }
+              />
+              <FormControlLabel
+                value="data_using_service"
+                onChange={() => handleChange("data_using_service")}
+                control={
+                  <Radio
+                    name={"data_using_service"}
+                    color="default"
+                    size="small"
+                  />
+                }
+                label={
+                  <Typography variant="body2">
+                    {t("dataAgreements.dataUsingService")}
+                  </Typography>
+                }
+              />
+            </RadioGroup>
+          </FormControl>
+        </HeaderContainer>
+        <Typography variant="body2" mt={1.25}>
+          {t("personalData.pageDescription")}
+        </Typography>
+      </Form>
       <List
         actions={false}
-        empty={false}
         sx={{ width: "100%", overflow: "hidden" }}
         filter={{ status: listFilterValue }}
+        empty={<TableEmptyMessage />}
       >
-        <Form>
-          <BreadCrumb Link="Personal Data" />
-          <HeaderContainer>
-            <Typography variant="h6" fontWeight="bold">
-              Personal Data
-            </Typography>
-            <FormControl>
-              <RadioGroup
-                aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="all"
-                name="radio-buttons-group"
-                row
-              >
-                <FormControlLabel
-                  value="all"
-                  onChange={() => handleChange("all")}
-                  control={<Radio name={"all"} color="default" size="small" />}
-                  label={<Typography variant="body2">All</Typography>}
-                />
-                <FormControlLabel
-                  value="data_source"
-                  onChange={() => handleChange("data_source")}
-                  control={<Radio name={"data_source"} color="default" size="small" />}
-                  label={<Typography variant="body2">Data Source</Typography>}
-                />
-                <FormControlLabel
-                  value="data_using_service"
-                  onChange={() => handleChange("data_using_service")}
-                  control={<Radio name={"data_using_service"} color="default" size="small" />}
-                  label={
-                    <Typography variant="body2">Data Using Service</Typography>
-                  }
-                />
-              </RadioGroup>
-            </FormControl>
-          </HeaderContainer>
-          <Typography variant="body2" mt={1.25}>
-            Manage the personal data attributes. Personal data attributes can be
-            used for Internal purposes, can be exposed as a Data Source or is
-            consumed as a Data Using Service
-          </Typography>
-        </Form>
         <Box
           style={{
             display: "flex",
@@ -124,17 +139,17 @@ const PersonalData = () => {
           >
             <TextField
               source="name"
-              label={"Data Attribute Name"}
+              label={t("personalData.dataAttributeName")}
               sortable={false}
             />
             <TextField
               source="description"
-              label={"Description"}
+              label={t("common.description")}
               sortable={false}
             />
             <TextField
               source="dataAgreement.purpose"
-              label={"Data Agreement"}
+              label={t("personalData.dataAgreement")}
               sortable={false}
             />
             {/* Edit icon temporarily hidden */}

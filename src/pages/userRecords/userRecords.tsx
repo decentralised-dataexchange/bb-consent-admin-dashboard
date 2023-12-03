@@ -22,6 +22,8 @@ import FilterByPurposeDropdown from "../../components/dropdowns/filterByPurposeD
 import FilterByLawfulBasisDropdown from "../../components/dropdowns/filterByLawfulBasisDropDown";
 import { SearchByIdRecords } from "../../components/dropdowns/searchByIdRecordsAutoselect";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { TableEmptyMessage } from "../../components/tableEmptyMessage";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -66,14 +68,18 @@ const UserRecords = () => {
     filterType: "all",
     value: "all",
   });
+  const { t } = useTranslation("translation");
 
   const lawfullBasisOfProcessingDropdownvalues = [
-    { label: "Consent", value: "consent" },
-    { label: "Legal Obligation", value: "legal_obligation" },
-    { label: "Contract", value: "contract" },
-    { label: "Vital Interest", value: "vital_interest" },
-    { label: "Public Task", value: "public_task" },
-    { label: "Legitimate Interest", value: "legitimate_interest" },
+    { value: "consent", label: t("dataAgreements.consent") },
+    { value: "contract", label: t("dataAgreements.contract") },
+    { value: "legal_obligation", label: t("dataAgreements.legalObligation") },
+    { value: "vital_interest", label: t("dataAgreements.vitalInterest") },
+    { value: "public_task", label: t("dataAgreements.publicTask") },
+    {
+      value: "legitimate_interest",
+      label: t("dataAgreements.legitimateInterest"),
+    },
   ];
 
   const [
@@ -149,7 +155,7 @@ const UserRecords = () => {
             width: "100%",
           }}
         >
-          <Tooltip title="View Data Agreement" placement="top">
+          <Tooltip title={t("dataAgreements.viewDA")} placement="top">
             <RemoveRedEyeOutlinedIcon
               onClick={() => {
                 setOpenDataAgreementModal(true);
@@ -169,130 +175,129 @@ const UserRecords = () => {
 
   return (
     <Container>
-      <List
-        actions={false}
-        empty={false}
-        sx={{ width: "100%", overflow: "hidden" }}
-        filter={{ status: listFilterValue }}
-      >
-        <Form>
-          <BreadCrumb Link="Manage Users" Link2="Consent Records" />
-          <HeaderContainer>
-            <Typography variant="h6" fontWeight="bold">
-              Consent Records
-            </Typography>
-          </HeaderContainer>
-          <Box
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
+      <Form>
+        <BreadCrumb
+          Link={t("sidebar.manageUsers")}
+          Link2={t("sidebar.consentRecords")}
+        />
+        <HeaderContainer>
+          <Typography variant="h6" fontWeight="bold">
+            {t("sidebar.consentRecords")}
+          </Typography>
+        </HeaderContainer>
+        <Box
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+          }}
+        >
+          <Typography variant="body2">
+            {t("consentRecords.pageDescription")}
+          </Typography>
+          <SearchByIdRecords
+            changefilter={setListFilterValue}
+            handleSearchTriggered={handleSearchTriggered}
+            sethandleSearchTriggered={sethandleSearchTriggered}
+          />
+        </Box>
+        <Item>
+          <Typography color="grey" variant="body2">
+            {t("consentRecords.filterQuery")}
+          </Typography>
+          <FormControl
+            sx={{
+              width: "70%",
             }}
           >
-            <Typography variant="body2">
-              Do queries on the consent records for audit purpose
-            </Typography>
-            <SearchByIdRecords
-              changefilter={setListFilterValue}
-              handleSearchTriggered={handleSearchTriggered}
-              sethandleSearchTriggered={sethandleSearchTriggered}
-            />
-          </Box>
-          <Item>
-            <Typography color="grey" variant="body2">
-              Filter query
-            </Typography>
-            <FormControl
+            <RadioGroup
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="all"
+              defaultValue="all"
               sx={{
-                width: "70%",
+                display: "flex",
+                justifyContent: "space-between",
               }}
             >
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="all"
-                defaultValue="all"
+              <Box
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",
+                  alignItems: "center",
                 }}
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <FormControlLabel
-                    value="all"
-                    name="all"
-                    onClick={handleChange}
-                    control={<Radio color="default" size="small" />}
-                    label=""
-                    sx={{ color: "black" }}
-                  />
-                  <Typography sx={{ color: "black" }} variant="body2">
-                    View All
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <FormControlLabel
-                    value="dataAgreementId"
-                    name="dataAgreementId"
-                    control={<Radio color="default" size="small" />}
-                    label=""
-                    onClick={handleChange}
-                  />
-                  <FilterByPurposeDropdown
-                    displayValue={"Filter by Purpose"}
-                    changefilter={setListFilterValue}
-                    setHandleFilterDropDownTriggered={
-                      setHandleFilterDropDownTriggered
-                    }
-                    handleFilterDropDownTriggered={
-                      handleFilterDropDownTriggered
-                    }
-                  />
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  {" "}
-                  <FormControlLabel
-                    name={"lawfulBasis"}
-                    value="lawfulBasis"
-                    onClick={handleChange}
-                    control={<Radio color="default" size="small" />}
-                    label=""
-                  />
-                  <FilterByLawfulBasisDropdown
-                    displayValue={"Filter by Lawful Basis"}
-                    dropdownValues={lawfullBasisOfProcessingDropdownvalues}
-                    changefilter={setListFilterValue}
-                    setHandleFilterDropDownTriggered={
-                      setHandleFilterDropDownTriggered
-                    }
-                    handleFilterDropDownTriggered={
-                      handleFilterDropDownTriggered
-                    }
-                  />
-                </Box>
-              </RadioGroup>
-            </FormControl>
-          </Item>
-        </Form>
+                <FormControlLabel
+                  value="all"
+                  name="all"
+                  onClick={handleChange}
+                  control={<Radio color="default" size="small" />}
+                  label=""
+                  sx={{ color: "black" }}
+                />
+                <Typography sx={{ color: "black" }} variant="body2">
+                  {t("common.viewAll")}
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <FormControlLabel
+                  value="dataAgreementId"
+                  name="dataAgreementId"
+                  control={<Radio color="default" size="small" />}
+                  label=""
+                  onClick={handleChange}
+                />
+                <FilterByPurposeDropdown
+                  displayValue={t("consentRecords.filterByPurpose")}
+                  changefilter={setListFilterValue}
+                  setHandleFilterDropDownTriggered={
+                    setHandleFilterDropDownTriggered
+                  }
+                  handleFilterDropDownTriggered={handleFilterDropDownTriggered}
+                />
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                {" "}
+                <FormControlLabel
+                  name={"lawfulBasis"}
+                  value="lawfulBasis"
+                  onClick={handleChange}
+                  control={<Radio color="default" size="small" />}
+                  label=""
+                />
+                <FilterByLawfulBasisDropdown
+                  displayValue={t("consentRecords.filterByLawfulBasis")}
+                  dropdownValues={lawfullBasisOfProcessingDropdownvalues}
+                  changefilter={setListFilterValue}
+                  setHandleFilterDropDownTriggered={
+                    setHandleFilterDropDownTriggered
+                  }
+                  handleFilterDropDownTriggered={handleFilterDropDownTriggered}
+                />
+              </Box>
+            </RadioGroup>
+          </FormControl>
+        </Item>
+      </Form>
+      <List
+        actions={false}
+        empty={<TableEmptyMessage />}
+        sx={{ width: "100%", overflow: "hidden" }}
+        filter={{ status: listFilterValue }}
+      >
         <Box
           style={{
             display: "flex",
@@ -309,37 +314,37 @@ const UserRecords = () => {
           >
             <TextField
               source="consentRecordId"
-              label={"Consent Record ID"}
+              label={t("consentRecords.consentRecordID")}
               sortable={false}
             />
             <TextField
               source="individualId"
-              label={"Individual ID"}
+              label={t("consentRecords.individualID")}
               sortable={false}
             />
             <TextField
               source="dataAgreement.purpose"
-              label={"Purpose"}
+              label={t("consentRecords.purpose")}
               sortable={false}
             />
             <TextField
               source="dataAgreement.version"
-              label={"Version"}
+              label={t("dataAgreements.version")}
               sortable={false}
             />
             <TextField
               source="dataAgreement.lawfulBasis"
-              label={"Lawful Basis"}
+              label={t("consentRecords.lawfulBasis")}
               sortable={false}
             />
             <TextField
               source="optIn"
-              label={"Agreement Event"}
+              label={t("consentRecords.agreementEvent")}
               sortable={false}
             />
             <TextField
               source="timestamp"
-              label={"Timestamp"}
+              label={t("common.timestamp")}
               sortable={false}
             />
             <IconsFIeld source="consentRecordId" label={""} sortable={false} />

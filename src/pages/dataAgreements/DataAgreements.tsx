@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   List,
   Datagrid,
-  TextField,
   Form,
   useRefresh,
   useRecordContext,
@@ -39,6 +38,8 @@ import {
   getPublishValues,
 } from "../../interfaces/DataAgreement";
 import VersionDropdown from "../../components/dataAgreements/versionDropdown";
+import { useTranslation } from "react-i18next";
+import { TableEmptyMessage } from "../../components/tableEmptyMessage";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -85,6 +86,14 @@ const DataAgreement = () => {
     selectedDropdownDataAgreementValue,
     setSelectedDropdownDataAgreementValue,
   ] = useState<any>({});
+  const { t } = useTranslation("translation");
+
+  // split delete description so that to make DELETE word to bold
+  const deleteDescription = t("dataAgreements.deleteDADescription");
+  const splittedDeleteDescription = deleteDescription.split("Please type ");
+  // split publish description so that to make DELETE word to bold
+  const publishDescription = t("dataAgreements.publishDADescription");
+  const splittedPublishDescription = publishDescription.split("Please type ");
 
   const [listFilterValue, setListFilterValue] = useState("all");
   const refresh = useRefresh();
@@ -256,8 +265,8 @@ const DataAgreement = () => {
           <Tooltip
             title={
               record.active === true
-                ? "Data Agreement Is Published"
-                : "Publish Data Agreement"
+                ? t("dataAgreements.PublishedDAAlready")
+                : t("dataAgreements.publishDA")
             }
             placement="top"
           >
@@ -282,7 +291,7 @@ const DataAgreement = () => {
               }}
             />
           </Tooltip>
-          <Tooltip title="View Data Agreement" placement="top">
+          <Tooltip title={t("dataAgreements.viewDA")} placement="top">
             <RemoveRedEyeOutlinedIcon
               onClick={() => {
                 setOpenDataAgreementModal(true);
@@ -296,7 +305,7 @@ const DataAgreement = () => {
               }}
             />
           </Tooltip>
-          <Tooltip title="Edit Data Agreement" placement="top">
+          <Tooltip title={t("dataAgreements.editDA")} placement="top">
             <EditOutlinedIcon
               onClick={() => {
                 (record?.selectedRevision === undefined ||
@@ -317,7 +326,7 @@ const DataAgreement = () => {
               }}
             />
           </Tooltip>
-          <Tooltip title="Delete Data Agreement" placement="top">
+          <Tooltip title={t("dataAgreements.deleteDA")} placement="top">
             <DeleteOutlineOutlinedIcon
               onClick={() => {
                 (record?.selectedRevision === undefined ||
@@ -365,7 +374,7 @@ const DataAgreement = () => {
   return (
     <Container>
       <Form>
-        <BreadCrumb Link="Data Agreements" />
+        <BreadCrumb Link={t("sidebar.dataAgreements")} />
         <HeaderContainer>
           <Box
             style={{
@@ -375,9 +384,9 @@ const DataAgreement = () => {
             }}
           >
             <Typography variant="h6" fontWeight="bold">
-              Data Agreements
+              {t("sidebar.dataAgreements")}
             </Typography>
-            <Tooltip title="Create Data Agreement" placement="top">
+            <Tooltip title={t("dataAgreements.createDA")} placement="top">
               <AddCircleOutlineOutlinedIcon
                 onClick={() => {
                   setOpenDataAgreementModal(true);
@@ -407,7 +416,9 @@ const DataAgreement = () => {
                   value="all"
                   onChange={() => handleChange("all")}
                   control={<Radio name="all" color="default" size="small" />}
-                  label={<Typography variant="body2">All</Typography>}
+                  label={
+                    <Typography variant="body2">{t("common.all")}</Typography>
+                  }
                 />
                 <FormControlLabel
                   value="complete"
@@ -415,7 +426,11 @@ const DataAgreement = () => {
                   control={
                     <Radio name="complete" color="default" size="small" />
                   }
-                  label={<Typography variant="body2">Published</Typography>}
+                  label={
+                    <Typography variant="body2">
+                      {t("dataAgreements.published")}
+                    </Typography>
+                  }
                 />
               </RadioGroup>
             </FormControl>
@@ -432,19 +447,19 @@ const DataAgreement = () => {
                 }}
                 onClick={() => setOpenGlobalDataPolicyModal(true)}
               >
-                GLOBAL DATA POLICY
+                {t("dataAgreements.globalDataPolicy")}
               </Button>
             </Box>
           </Box>
         </HeaderContainer>
         <Typography variant="body2" sx={{ marginTop: "10px" }}>
-          Manage Data Agreements for your organisation.
+          {t("dataAgreements.pageDescription")}
         </Typography>
       </Form>
       <List
         actions={false}
         sx={{ width: "100%", overflow: "hidden" }}
-        empty={false}
+        empty={<TableEmptyMessage />}
         filter={{ status: listFilterValue }}
       >
         <Box
@@ -462,23 +477,23 @@ const DataAgreement = () => {
           >
             <PurposeField
               source="purpose"
-              label={"Usage Purpose"}
+              label={t("dataAgreements.usagePurpose")}
               sortable={false}
             />
-            <VersionField source="id" label={"Version"} sortable={false} />
+            <VersionField
+              source="id"
+              label={t("dataAgreements.version")}
+              sortable={false}
+            />
             <DataExchangeField
               source="methodOfUse"
-              label={"Data Exchange"}
+              label={t("dataAgreements.dataExchange")}
               sortable={false}
             />
-            <PublishStatusField
-              source="lifecycle"
-              label={"Status"}
-              sortable={false}
-            />
+            <PublishStatusField source="lifecycle" label={t("common.status")} />
             <LawfulBasisField
               source="lawfulBasis"
-              label={"Lawful Basis Of Processing"}
+              label={t("dataAgreements.lawfulBasisOfProcessing")}
               sortable={false}
             />
             <IconsFIeld source="purpose" label={""} sortable={false} />
@@ -508,19 +523,22 @@ const DataAgreement = () => {
       <DeleteModal
         open={openDeleteDataAgreementModal}
         setOpen={setOpenDeleteDataAgreementModal}
-        headerText={"Delete Data Agreement:"}
+        headerText={`${t("dataAgreements.deleteDA")}:`}
         confirmText="DELETE"
+        confirmButtonText={`${t("common.delete")}`}
         resourceName="dataagreements"
         onRefetch={onRefetch}
         selectededDataAgreementFromDataAgreement={
           selectededDataAgreementFromDataAgreement
         }
         modalDescriptionText={
-          <Typography sx={{ wordWrap: "breakWord" }}>
-            You are about to delete an existing data agreement and ALL its
-            revisions. Please type{" "}
-            <span style={{ fontWeight: "bold" }}>DELETE</span> to confirm and
-            click DELETE. This action is not reversible.
+          <Typography variant="body1">
+            {splittedDeleteDescription[0]}Please type{" "}
+            <b>{splittedDeleteDescription[1].split(" ")[0]}</b>
+            {" " +
+              splittedDeleteDescription[1].substring(
+                splittedDeleteDescription[1].indexOf(" ") + 1
+              )}
           </Typography>
         }
         setSelectedDropdownValue={setSelectedDropdownValue}
@@ -531,18 +549,22 @@ const DataAgreement = () => {
         setSelectedDropdownValue={setSelectedDropdownValue}
         open={openPublishDataAgreementModal}
         setOpen={setOpenPublishDataAgreementModal}
-        headerText={"Publish Data Agreement:"}
+        headerText={`${t("dataAgreements.publishDA")}:`}
         confirmText="PUBLISH"
+        confirmButtonText={`${t("dataAgreements.publish")}`}
         onRefetch={onRefetch}
         resourceName="dataagreements"
         selectededDataAgreementFromDataAgreement={
           selectededDataAgreementFromDataAgreement
         }
         modalDescriptionText={
-          <Typography sx={{ wordWrap: "breakWord" }}>
-            You are about to publish a data agreement. Please type{" "}
-            <span style={{ fontWeight: "bold" }}>PUBLISH</span> to confirm and
-            click PUBLISH. This action is not reversible.
+          <Typography variant="body1">
+            {splittedPublishDescription[0]}Please type{" "}
+            <b>{splittedPublishDescription[1].split(" ")[0]}</b>
+            {" " +
+              splittedPublishDescription[1].substring(
+                splittedPublishDescription[1].indexOf(" ") + 1
+              )}
           </Typography>
         }
       />

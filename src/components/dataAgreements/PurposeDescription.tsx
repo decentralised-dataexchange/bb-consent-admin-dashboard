@@ -1,5 +1,6 @@
 import { Typography } from "@mui/material";
 import { useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   open: boolean;
@@ -20,16 +21,17 @@ const inputStyle = {
 
 export const PurposeDescription = (props: Props) => {
   const { register } = useFormContext();
+  const { t } = useTranslation("translation");
 
   return (
     <>
       <Typography mb={1.3} mt={1.3} variant="subtitle1">
-        Description
+      {t("common.description")}
         <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
       </Typography>
       <textarea
         disabled={props.mode === "Read"}
-        placeholder="Brief description about the usage of data (3-500 characters)"
+        placeholder={t("dataAgreements.descritptionInputPlaceholder")}
         style={{
           ...inputStyle,
           cursor: props.mode === "Read" ? "not-allowed" : "auto",

@@ -19,6 +19,8 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import Logo from "../../assets/GovstackLogoBlue.svg";
 import SnackbarComponent from "../../components/notification";
 import { configStore } from "../../store/configStore";
+import LanguageSelector from "../../components/dropdowns/languageSelector";
+import { useTranslation } from "react-i18next";
 
 const FooterContainer = styled("div")({
   position: "fixed",
@@ -35,34 +37,16 @@ export const Login = () => {
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [error, setError] = useState("");
   let version = configStore.appVersion;
+  const { t } = useTranslation("translation");
 
   const submit = () => {
     login({ username, password })
       .then((res) => {})
       .catch((error) => {
-        if (error === "password: non zero value required") {
-          setError("Password: Value required");
-          setOpenSnackBar(true);
-        } else if (error === "Username: non zero value required") {
-          setError("User ID: Value required");
-          setOpenSnackBar(true);
-        } else if (
-          error ===
-          "password: non zero value required;username: non zero value required"
-        ) {
-          setError("Password & User ID: Value required");
-          setOpenSnackBar(true);
-        } else if (error.substring(0, 28) === "Failed to get token for user") {
-          setError(
-            "Invalid login credentials. Please double-check your username and password and try again."
-          );
-          setOpenSnackBar(true);
-        } else {
-          setError(
-            "Invalid login credentials. Please double-check your username and password and try again."
-          );
-          setOpenSnackBar(true);
-        }
+        setError(
+          t("login.errorMessage")
+        );
+        setOpenSnackBar(true);
       });
   };
 
@@ -106,7 +90,7 @@ export const Login = () => {
               justifyContent: "center",
             }}
           >
-            <Typography variant="h6">Login to Admin Dashboard</Typography>
+            <Typography variant="h6">{t("login.header")}</Typography>
           </Box>
           <Box
             style={{
@@ -126,7 +110,7 @@ export const Login = () => {
               variant="standard"
               sx={{ height: "25px" }}
               label={false}
-              placeholder="User ID"
+              placeholder={t("login.userid")}
               fullWidth
               InputProps={{
                 startAdornment: (
@@ -145,7 +129,7 @@ export const Login = () => {
               source="password"
               variant="standard"
               label={false}
-              placeholder="Password"
+              placeholder={t("login.password")}
               fullWidth
               sx={{ height: "25px" }}
               InputProps={{
@@ -182,7 +166,7 @@ export const Login = () => {
                     }}
                   />
                 }
-                label={<Typography variant="body2">Remember Me</Typography>}
+                label={<Typography variant="body2">{t("login.rememberMe")}</Typography>}
                 style={{ color: "#A1A1A1" }}
               />
             </Box>
@@ -190,12 +174,13 @@ export const Login = () => {
         </Box>
       </Form>
       <FooterContainer>
+        <LanguageSelector />
         <Typography mb={0.5} variant="caption">
           {version}
         </Typography>
         <Box mb={2} display={"flex"} justifyContent={"center"}>
           <Typography color="grey" variant="caption">
-            Powered by{" "}
+          {t("common.poweredby")}{" "}
             <a
               href="https://igrant.io/"
               target="blank"

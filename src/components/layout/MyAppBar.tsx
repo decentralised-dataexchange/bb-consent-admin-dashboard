@@ -7,10 +7,12 @@ import { AppBarMenu } from "./AppBarMenu";
 import { useSidebarState } from "ra-ui-materialui";
 
 import Logo from "../../assets/GovstackLogo.svg";
+import { useTranslation } from "react-i18next";
 
 export default function MyAppBar() {
   const [open, setOpen] = useSidebarState();
   const { identity } = useGetIdentity();
+  const { t } = useTranslation("translation");
 
   return (
     <Box>
@@ -39,7 +41,7 @@ export default function MyAppBar() {
             }}
             variant="h6"
           >
-            Consent Building Block - Admin Dashboard
+            {t("appbar.appbarHeader")}
           </Typography>
           <AppBarMenu
             firstName={identity?.name}

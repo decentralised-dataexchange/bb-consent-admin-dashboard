@@ -9,16 +9,19 @@ import {
   Typography,
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
-import ClearIcon from '@mui/icons-material/Clear';
+import ClearIcon from "@mui/icons-material/Clear";
 import { FiBox } from "react-icons/fi";
 import { formatISODateToLocalString } from "../../utils/formatISODateToLocalString";
+import { useTranslation } from "react-i18next";
 
 const RecentDeliveries = (props: any) => {
   const { recentDeliveryValues } = props;
+  const { t } = useTranslation("translation");
+
   return (
     <Box mt={-3}>
       <Typography variant="h6" fontWeight="bold" mb={1}>
-        Recent Deliveries
+        {t("webhooks.recentDeliveries")}
       </Typography>
       <TableContainer
         component={Paper}
@@ -28,7 +31,7 @@ const RecentDeliveries = (props: any) => {
           aria-label="simple table"
           sx={{
             overflow: "auto",
-            width: "100%" 
+            width: "100%",
           }}
         >
           <TableBody>
@@ -40,7 +43,7 @@ const RecentDeliveries = (props: any) => {
                 }}
               >
                 <TableCell sx={{ width: "10px" }}>
-                  {row.status === 'completed' ? (
+                  {row.status === "completed" ? (
                     <DoneIcon
                       color="success"
                       style={{ height: "15px", width: "15px" }}

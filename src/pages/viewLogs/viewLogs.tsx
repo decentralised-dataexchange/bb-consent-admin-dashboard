@@ -6,6 +6,8 @@ import { styled } from "@mui/material/styles";
 import BreadCrumb from "../../components/Breadcrumbs";
 import Dropdown from "../../components/dropdowns/dropdown";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { TableEmptyMessage } from "../../components/tableEmptyMessage";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -47,18 +49,19 @@ const buttonStyle = {
   paddingRight: "50px",
 };
 
-const filterDrpodownValues = [
-  { value: "Security" },
-  { value: "API Calls" },
-  { value: "Webhooks" },
-];
-
 const ViewLogs = () => {
   const [selectedFilterValue, setSelectedFilterValue] = useState<any>();
   const [subscriptionMethodValue, setSubscriptionMethodValue] = useState<
     string[]
   >([]);
   const [listFilterValue, setListFilterValue] = useState(0);
+  const { t } = useTranslation("translation");
+
+  const filterDrpodownValues = [
+    { value: "Security", label: t("viewLogs.security") },
+    { value: "API Calls", label: t("viewLogs.apiCalls") },
+    { value: "Webhooks", label: t("sidebar.webhooks") },
+  ];
 
   useEffect(() => {
     if (selectedFilterValue === "Security") {
@@ -75,49 +78,48 @@ const ViewLogs = () => {
 
   return (
     <Container>
+      <Form>
+        <BreadCrumb Link={t("sidebar.account")} Link2={t("sidebar.viewLogs")} />
+        <HeaderContainer>
+          <Typography variant="h6" fontWeight="bold">
+            {t("sidebar.viewLogs")}
+          </Typography>
+        </HeaderContainer>
+        <Typography variant="body2" mt={1.25}>
+          {t("viewLogs.pageDescription")}
+        </Typography>
+        <DetailsContainer>
+          <Dropdown
+            displayValue={t("viewLogs.filterCategories")}
+            selectWidth={"400px"}
+            dropdownValues={filterDrpodownValues}
+            setSelectedFilterValue={setSelectedFilterValue}
+            setSubscriptionMethodValue={setSubscriptionMethodValue}
+            subscriptionMethodValue={subscriptionMethodValue}
+          />
+          <Button
+            style={buttonStyle}
+            onClick={() => {
+              setSelectedFilterValue("all");
+            }}
+            sx={{
+              color: "black",
+              "&:hover": {
+                backgroundColor: "black",
+                color: "white",
+              },
+            }}
+          >
+            {t("common.viewAll")}
+          </Button>
+        </DetailsContainer>
+      </Form>
       <List
         actions={false}
         sx={{ width: "100%", overflow: "hidden" }}
-        empty={false}
+        empty={<TableEmptyMessage />}
         filter={{ status: listFilterValue }}
       >
-        <Form>
-          <BreadCrumb Link="Account" Link2="View Logs" />
-          <HeaderContainer>
-            <Typography variant="h6" fontWeight="bold">
-              View Logs
-            </Typography>
-          </HeaderContainer>
-          <Typography variant="body2" mt={1.25}>
-            Provides all logs, can also be filtered against various log
-            categories.
-          </Typography>
-          <DetailsContainer>
-            <Dropdown
-              displayValue={"Filter Categories"}
-              selectWidth={"400px"}
-              dropdownValues={filterDrpodownValues}
-              setSelectedFilterValue={setSelectedFilterValue}
-              setSubscriptionMethodValue={setSubscriptionMethodValue}
-              subscriptionMethodValue={subscriptionMethodValue}
-            />
-            <Button
-              style={buttonStyle}
-              onClick={() => {
-                setSelectedFilterValue("all");
-              }}
-              sx={{
-                color: "black",
-                "&:hover": {
-                  backgroundColor: "black",
-                  color: "white",
-                },
-              }}
-            >
-              View All
-            </Button>
-          </DetailsContainer>
-        </Form>
         <Box
           style={{
             display: "flex",
@@ -132,11 +134,11 @@ const ViewLogs = () => {
               width: "100%",
             }}
           >
-            <TextField source="action" label={"Action"} sortable={false} />
-            <TextField source="typeStr" label={"Category"} sortable={false} />
+            <TextField source="action" label={t("viewLogs.action")} sortable={false} />
+            <TextField source="typeStr" label={t("viewLogs.category")} sortable={false} />
             <TextField
               source="timestamp"
-              label={"Timestamp"}
+              label={t("common.timestamp")}
               sortable={false}
             />
           </Datagrid>

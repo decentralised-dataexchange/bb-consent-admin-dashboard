@@ -15,6 +15,7 @@ import {
   disabledButtonstyle,
 } from "./modalStyle";
 import { HttpService } from "../../service/HTTPService";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   open: boolean;
@@ -29,7 +30,7 @@ interface Props {
   selectededDataAgreementFromDataAgreement?: any
   selectedWebhookDetails?: any
   setSelectedDropdownValue?:any
-
+  confirmButtonText: string
 }
 
 export default function DeleteModal(props: Props) {
@@ -45,10 +46,12 @@ export default function DeleteModal(props: Props) {
     developerApiDeleteID,
     selectededDataAgreementFromDataAgreement,
     selectedWebhookDetails,
-    setSelectedDropdownValue
+    setSelectedDropdownValue,
+    confirmButtonText
   } = props;
   const [isOk, setIsOk] = useState(false);
   const [confirmationTextInput, setConfirmationTextInput] = useState("");
+  const { t } = useTranslation("translation");
 
   const handleCancelConfirmationText = (event: any) => {
     setConfirmationTextInput(event.target.value);
@@ -162,7 +165,7 @@ export default function DeleteModal(props: Props) {
                 }}
                 variant="outlined"
               >
-                CANCEL
+                {t("common.cancel")}
               </Button>
               <Button
                 onClick={onSubmit}
@@ -178,7 +181,7 @@ export default function DeleteModal(props: Props) {
                   },
                 }}
               >
-                {confirmText}
+                {confirmButtonText}
               </Button>
             </FooterContainer>
           </Form>
