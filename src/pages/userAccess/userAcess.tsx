@@ -57,7 +57,7 @@ const UserAccess = () => {
   const [openDeleteUserAccessModal, setOpenDeleteUserAccessModal] =
     useState(false);
   const [configured, setConfigured] = useState(false);
-  const [idpDetails, setIdpDetails] = useState<any>();
+  const [idpDetails, setIdpDetails] = useState<any>(null);
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -67,6 +67,9 @@ const UserAccess = () => {
       if (response.idps.length !== 0) {
         setConfigured(true);
         setIdpDetails(response.idps[0]);
+      } else {
+        setConfigured(false);
+        setIdpDetails(null);
       }
     });
   }, [openDeleteUserAccessModal, openEditUserAccessModal]);
