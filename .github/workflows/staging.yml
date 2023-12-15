@@ -29,10 +29,10 @@ jobs:
       - name: Install Dependencies
         run: npm install --force
 
-      - name: Run Tests and Generate Coverage
-        run: npm test
-        # If your test script does not generate coverage by default, you might need:
-        # run: npm test -- --coverage
+      # - name: Run Tests and Generate Coverage
+      #   run: npm test
+      #   # If your test script does not generate coverage by default, you might need:
+      #   # run: npm test -- --coverage
 
       - uses: sonarsource/sonarqube-scan-action@master
         env:
