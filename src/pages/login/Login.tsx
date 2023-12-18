@@ -19,13 +19,13 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import Logo from "../../assets/GovstackLogoBlue.svg";
 import SnackbarComponent from "../../components/notification";
 import { configStore } from "../../store/configStore";
-import LanguageSelector from "../../components/dropdowns/languageSelector";
 import { useTranslation } from "react-i18next";
+import Footer from "../../components/layout/Footer";
 
 const FooterContainer = styled("div")({
   position: "fixed",
   left: 0,
-  bottom: 0,
+  bottom: 16,
   width: "100%",
   textAlign: "center",
 });
@@ -43,9 +43,7 @@ export const Login = () => {
     login({ username, password })
       .then((res) => {})
       .catch((error) => {
-        setError(
-          t("login.errorMessage")
-        );
+        setError(t("login.errorMessage"));
         setOpenSnackBar(true);
       });
   };
@@ -166,7 +164,11 @@ export const Login = () => {
                     }}
                   />
                 }
-                label={<Typography variant="body2">{t("login.rememberMe")}</Typography>}
+                label={
+                  <Typography variant="body2">
+                    {t("login.rememberMe")}
+                  </Typography>
+                }
                 style={{ color: "#A1A1A1" }}
               />
             </Box>
@@ -174,26 +176,7 @@ export const Login = () => {
         </Box>
       </Form>
       <FooterContainer>
-        <LanguageSelector />
-        <Typography mb={0.5} variant="caption">
-          {version}
-        </Typography>
-        <Box mb={2} display={"flex"} justifyContent={"center"}>
-          <Typography color="grey" variant="caption">
-          {t("common.poweredby")}{" "}
-            <a
-              href="https://igrant.io/"
-              target="blank"
-              style={{
-                textDecoration: "none",
-                color: "#1890ff",
-              }}
-            >
-              iGrant.io
-            </a>
-            , Sweden
-          </Typography>
-        </Box>
+        <Footer version={version} />
       </FooterContainer>
     </Box>
   );

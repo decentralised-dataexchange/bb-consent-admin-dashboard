@@ -1,5 +1,5 @@
 import { Menu, MenuProps } from "react-admin";
-import { Typography, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import { useSidebarState } from "ra-ui-materialui";
 import { useState } from "react";
 
@@ -9,6 +9,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import SubMenu from "./SubMenu";
 import { configStore } from "../../store/configStore";
 import { useTranslation } from "react-i18next";
+import Footer from "./Footer";
 
 type MenuName = "manageusers" | "account";
 
@@ -48,8 +49,14 @@ export default function MyMenu({ dense = false }: MenuProps) {
         icon={<PeopleAltOutlinedIcon />}
         dense={!dense}
       >
-        <Menu.Item to="/configuration" primaryText={t("sidebar.configuration")} />
-        <Menu.Item to="/consentrecords" primaryText={t("sidebar.consentRecords")} />
+        <Menu.Item
+          to="/configuration"
+          primaryText={t("sidebar.configuration")}
+        />
+        <Menu.Item
+          to="/consentrecords"
+          primaryText={t("sidebar.consentRecords")}
+        />
       </SubMenu>
       <Menu.ResourceItem name="privacydashboard" />
       <SubMenu
@@ -60,7 +67,10 @@ export default function MyMenu({ dense = false }: MenuProps) {
         dense={!dense}
       >
         <Menu.Item to="/manageadmin" primaryText={t("sidebar.manageAdmin")} />
-        <Menu.Item to="/developerapi" primaryText={t("sidebar.developerAPIs")} />
+        <Menu.Item
+          to="/developerapi"
+          primaryText={t("sidebar.developerAPIs")}
+        />
         <Menu.Item to="/viewlogs" primaryText={t("sidebar.viewLogs")} />
         <Menu.Item to="/webhooks" primaryText={t("sidebar.webhooks")} />
       </SubMenu>
@@ -72,24 +82,8 @@ export default function MyMenu({ dense = false }: MenuProps) {
             paddingBottom: 10,
             textAlign: "center",
           }}
-          display={"flex"}
-          flexDirection="column"
         >
-          <Typography variant="caption">{version}</Typography>
-          <Typography color="grey" variant="caption">
-            Powered by{" "}
-            <a
-              href="https://igrant.io/"
-              target="blank"
-              style={{
-                textDecoration: "none",
-                color: "#1890ff",
-              }}
-            >
-              iGrant.io
-            </a>
-            , Sweden
-          </Typography>
+          <Footer version={version} />
         </Box>
       ) : null}
     </Menu>

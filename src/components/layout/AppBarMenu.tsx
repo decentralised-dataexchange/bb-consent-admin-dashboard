@@ -1,17 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLogout } from "react-admin";
 import { useNavigate } from "react-router-dom";
 import { LocalStorageService } from "../../service/localStorageService";
 import { formatISODateToLocalString } from "../../utils/formatISODateToLocalString";
-import { Box, Menu, Typography, IconButton, Button } from "@mui/material";
+import { Box, Menu, Typography, IconButton } from "@mui/material";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import defaultAvatar from "../../assets/avatar.png";
 import { useFilterStore } from "../../store/store";
 import { HttpService } from "../../service/HTTPService";
 import { useTranslation } from "react-i18next";
-import LanguageSelectorForAppBarMenu from "../dropdowns/languageSelectorForAppBarMenu";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 type Props = {
   firstName: string;
@@ -26,11 +24,6 @@ export const AppBarMenu = (props: Props) => {
   const changeAvatar = useFilterStore((state) => state.changeAvatar);
   const changeAdminName = useFilterStore((state) => state.changeAdminName);
   const { t } = useTranslation("translation");
-  const [openLanguageSelector, setOpenLanguageSelector] = useState(false);
-  const anchorRefLanguageSelector = useRef<HTMLButtonElement>(null);
-  const handleToggleLanguageSelector = () => {
-    setOpenLanguageSelector((prevOpen: any) => !prevOpen);
-  };
 
   const [userAvatar, setUserAvatar] = useState<any>(
     LocalStorageService.getUserProfilePic()
@@ -154,25 +147,6 @@ export const AppBarMenu = (props: Props) => {
               cursor: "pointer",
               marginTop: 5,
             }}
-            ref={anchorRefLanguageSelector}
-            aria-controls={openLanguageSelector ? "dropdown-menu" : undefined}
-            aria-haspopup="true"
-            onClick={handleToggleLanguageSelector}
-          >
-            <KeyboardArrowDownIcon sx={{ marginRight: "8px" }} />
-            <Typography sx={{ fontSize: "14px" }}>
-              {t("common.language")}
-            </Typography>
-          </Box>
-          <Box
-            style={{
-              display: "flex",
-              alignItems: "center",
-              padding: 7,
-              paddingLeft: 15,
-              cursor: "pointer",
-              marginTop: 5,
-            }}
             onClick={handleClickLogOut}
           >
             <ExitToAppIcon />
@@ -182,13 +156,6 @@ export const AppBarMenu = (props: Props) => {
           </Box>
         </Box>
       </Menu>
-
-      <LanguageSelectorForAppBarMenu
-        open={openLanguageSelector}
-        setOpen={setOpenLanguageSelector}
-        anchorRef={anchorRefLanguageSelector}
-        handleToggle={handleToggleLanguageSelector}
-      />
     </>
   );
 };

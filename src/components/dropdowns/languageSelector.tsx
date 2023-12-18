@@ -27,7 +27,7 @@ const LanguageSelector: React.FC = () => {
         aria-controls={open ? "dropdown-menu" : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
-        sx={{ textTransform: "none", padding: 0, color: "#1890ff" }}
+        sx={{ textTransform: "none", padding: 0, color: "#1890ff", fontSize:"12px" }}
       >
         {t("common.language")}
       </Button>
@@ -57,9 +57,9 @@ const LanguageSelector: React.FC = () => {
                 horizontal: "center",
               }}
             >
-              <MenuItem onClick={() => handleChange("en")}>English</MenuItem>
-              <MenuItem onClick={() => handleChange("sv")}>Swedish</MenuItem>
-              <MenuItem onClick={() => handleChange("fi")}>Finnish</MenuItem>
+              <MenuItem style={{fontSize:"12px"}} onClick={() => handleChange("en")}>English</MenuItem>
+              <MenuItem style={{fontSize:"12px"}} onClick={() => handleChange("sv")}>Swedish</MenuItem>
+              <MenuItem style={{fontSize:"12px"}} onClick={() => handleChange("fi")}>Finnish</MenuItem>
             </Menu>
           </ClickAwayListener>
         )}
