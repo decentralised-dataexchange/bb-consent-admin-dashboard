@@ -50,11 +50,10 @@ const buttonStyle = {
 };
 
 const ViewLogs = () => {
-  const [selectedFilterValue, setSelectedFilterValue] = useState<any>();
-  const [subscriptionMethodValue, setSubscriptionMethodValue] = useState<
-    string[]
-  >([]);
-  const [listFilterValue, setListFilterValue] = useState(0);
+  const [selectViewAll, setSelectViewAll] = useState<any>();
+  const [selectedChips, setSelectedChips] = useState<string[]>([]);
+
+  const [listFilterValue, setListFilterValue] = useState([0]);
   const { t } = useTranslation("translation");
 
   const filterDrpodownValues = [
@@ -64,17 +63,30 @@ const ViewLogs = () => {
   ];
 
   useEffect(() => {
-    if (selectedFilterValue === "Security") {
-      setListFilterValue(1);
-    } else if (selectedFilterValue === "API Calls") {
-      setListFilterValue(2);
-    } else if (selectedFilterValue === "Webhooks") {
-      setListFilterValue(5);
-    } else if (selectedFilterValue === "all") {
-      setListFilterValue(0);
-      setSubscriptionMethodValue([]);
+    const containsWebhooks = selectedChips?.includes("Webhooks");
+    const containsAPICalls = selectedChips?.includes("API Calls");
+    const containsSecurity = selectedChips?.includes("Security");
+
+    if (selectedChips?.length === 0 || selectViewAll === "all") {
+      setListFilterValue([0]);
+      setSelectedChips([]);
+      setSelectViewAll([]);
+    } else if (containsWebhooks && containsAPICalls && containsSecurity) {
+      setListFilterValue([1, 2, 5]);
+    } else if (containsWebhooks && containsAPICalls && !containsSecurity) {
+      setListFilterValue([2, 5]);
+    } else if (containsWebhooks && containsSecurity && !containsAPICalls) {
+      setListFilterValue([1, 5]);
+    } else if (containsAPICalls && containsSecurity && !containsWebhooks) {
+      setListFilterValue([1, 2]);
+    } else if (containsWebhooks && !containsAPICalls && !containsSecurity) {
+      setListFilterValue([5]);
+    } else if (containsAPICalls && !containsSecurity && !containsWebhooks) {
+      setListFilterValue([2]);
+    } else if (containsSecurity && !containsAPICalls && !containsWebhooks) {
+      setListFilterValue([1]);
     }
-  }, [selectedFilterValue]);
+  }, [selectedChips, selectViewAll]);
 
   return (
     <Container>
@@ -93,14 +105,13 @@ const ViewLogs = () => {
             displayValue={t("viewLogs.filterCategories")}
             selectWidth={"400px"}
             dropdownValues={filterDrpodownValues}
-            setSelectedFilterValue={setSelectedFilterValue}
-            setSubscriptionMethodValue={setSubscriptionMethodValue}
-            subscriptionMethodValue={subscriptionMethodValue}
+            selectedChips={selectedChips}
+            setSelectedChips={setSelectedChips}
           />
           <Button
             style={buttonStyle}
             onClick={() => {
-              setSelectedFilterValue("all");
+              setSelectViewAll("all");
             }}
             sx={{
               color: "black",
@@ -134,8 +145,16 @@ const ViewLogs = () => {
               width: "100%",
             }}
           >
-            <TextField source="action" label={t("viewLogs.action")} sortable={false} />
-            <TextField source="typeStr" label={t("viewLogs.category")} sortable={false} />
+            <TextField
+              source="action"
+              label={t("viewLogs.action")}
+              sortable={false}
+            />
+            <TextField
+              source="typeStr"
+              label={t("viewLogs.category")}
+              sortable={false}
+            />
             <TextField
               source="timestamp"
               label={t("common.timestamp")}

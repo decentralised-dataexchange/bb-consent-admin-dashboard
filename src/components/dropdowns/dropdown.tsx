@@ -1,23 +1,23 @@
-import { useState, useEffect } from "react";
+import React from "react";
 import {
   FormControl,
   Select,
   OutlinedInput,
   MenuItem,
+  Chip,
   SelectChangeEvent,
 } from "@mui/material";
-import { useFilterStore } from "../../store/store";
 
 interface Props {
   displayValue: string;
   selectWidth?: string;
   dropdownValues: {
     value: string;
-    label: string
+    label: string;
   }[];
   setSelectedFilterValue?: any;
-  setSubscriptionMethodValue: any;
-  subscriptionMethodValue: any;
+  selectedChips: any;
+  setSelectedChips: any;
 }
 
 const Dropdown = (props: Props) => {
@@ -25,54 +25,65 @@ const Dropdown = (props: Props) => {
     displayValue,
     selectWidth,
     dropdownValues,
-    setSelectedFilterValue,
-    subscriptionMethodValue,
-    setSubscriptionMethodValue,
+    selectedChips,
+    setSelectedChips,
   } = props;
 
-  const [handleFilterDropDownTriggered, setHandleFilterDropDownTriggered] =
-    useState(false);
-
-  const handleChange = (
-    event: SelectChangeEvent<typeof subscriptionMethodValue>
-  ) => {
+  const handleChange = (event: SelectChangeEvent<typeof selectedChips>) => {
     const {
       target: { value },
     } = event;
-    setSubscriptionMethodValue(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+    const selectedValue = typeof value === "string" ? value.split(",") : value;
+
+    setSelectedChips(selectedValue);
   };
 
-  useEffect(() => {
-    setSelectedFilterValue(
-      subscriptionMethodValue?.[0] ? subscriptionMethodValue[0] : ""
+  const handleDeleteChip = (chipToDelete: string) => () => {
+    const updatedChips = selectedChips.filter(
+      (chip: string) => chip !== chipToDelete
     );
-    setHandleFilterDropDownTriggered(!handleFilterDropDownTriggered);
-  }, [subscriptionMethodValue]);
+    setSelectedChips(updatedChips);
+  };
+
+  const stopPropagation = (event: React.MouseEvent) => {
+    event.stopPropagation();
+  };
 
   return (
     <FormControl
-      sx={{ width: selectWidth ? { xs: "250px", sm: selectWidth } : "250px" }}
+      sx={{
+        width: selectWidth ? { xs: "250px", sm: selectWidth } : "250px",
+      }}
     >
       <Select
         displayEmpty
-        value={subscriptionMethodValue}
+        multiple
+        value={selectedChips}
         onChange={handleChange}
         input={<OutlinedInput />}
         renderValue={(selected) => {
           if (selected.length === 0) {
             return <em style={{ fontSize: "14px" }}>{displayValue}</em>;
           }
-
-          return selected.join(", ");
+          return (
+            <div style={{ display: "flex", flexWrap: "wrap" }}>
+              {selected.map((value: string) => (
+                <Chip
+                  key={value}
+                  label={value}
+                  onDelete={handleDeleteChip(value)}
+                  onMouseDown={stopPropagation}
+                  style={{ margin: "2px" }}
+                />
+              ))}
+            </div>
+          );
         }}
         inputProps={{ "aria-label": "Without label" }}
       >
-        {dropdownValues.map((dropdownValues) => (
-          <MenuItem key={dropdownValues.value} value={dropdownValues.value}>
-            {dropdownValues.label}
+        {dropdownValues.map((dropdownValue) => (
+          <MenuItem key={dropdownValue.value} value={dropdownValue.value}>
+            {dropdownValue.label}
           </MenuItem>
         ))}
       </Select>
