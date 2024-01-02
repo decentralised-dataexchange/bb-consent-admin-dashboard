@@ -33,6 +33,7 @@ import {
 import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import { HttpService } from "../../service/HTTPService";
+import { useTranslation } from "react-i18next";
 
 const tableCellStyle: CSS.Properties = {
   fontWeight: "normal",
@@ -67,17 +68,6 @@ interface Props {
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const thirdPartyDataSharingOptions = [
-  {
-    value: false,
-    label: "False",
-  },
-  {
-    value: true,
-    label: "True",
-  },
-];
-
 let defaultValues = {
   name: "string",
   version: "string",
@@ -92,6 +82,17 @@ let defaultValues = {
 
 export default function GlobalDataPolicyConfigModal(props: Props) {
   const { open, setOpen } = props;
+  const { t } = useTranslation("translation");
+  const thirdPartyDataSharingOptions = [
+    {
+      value: false,
+      label: t("common.false"),
+    },
+    {
+      value: true,
+      label: t("common.true"),
+    },
+  ];
 
   const { organisationDetails, logoImageBase64, coverImageBase64 } = useContext(
     OrganizationDetailsCRUDContext
@@ -156,7 +157,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
             <form onSubmit={methods.handleSubmit(onSubmit)}>
               <HeaderContainer>
                 <Typography pl={2} color="#F3F3F6">
-                  Global Data Policy Configurations{" "}
+                {t("dataAgreements.globalDataPolicyConfigurations")}{" "}
                 </Typography>
                 <CloseIcon
                   onClick={() => setOpen(false)}
@@ -201,7 +202,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                     {organisationDetails.location}
                   </Typography>
                   <Typography variant="subtitle1" mt={2}>
-                    Overview
+                  {t("common.overView")}
                   </Typography>
                   <Typography
                     color="#9F9F9F"
@@ -215,7 +216,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                   <Box mt={2}>
                     <Typography variant="subtitle1">
                       {" "}
-                      Global Data Policy Configurations{" "}
+                      {t("dataAgreements.globalDataPolicyConfigurations")}{" "}
                     </Typography>
                     <table
                       style={{
@@ -232,7 +233,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                             style={{ ...tableCellStyle, borderTop: 0 }}
                             scope="row"
                           >
-                            Policy URL
+                            {t("common.policyUrl")}
                           </th>
 
                           <td style={{ ...tableCellStyle, borderTop: 0 }}>
@@ -254,7 +255,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
 
                         <tr>
                           <th style={tableCellStyle} scope="row">
-                            Jurisdiction
+                            {t("dataAgreements.jurisdiction")}
                           </th>
 
                           <td style={tableCellStyle}>
@@ -276,7 +277,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
 
                         <tr>
                           <th style={tableCellStyle} scope="row">
-                            Industry scope
+                          {t("dataAgreements.industryScope")}
                           </th>
 
                           <td
@@ -308,7 +309,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
 
                         <tr>
                           <th style={tableCellStyle} scope="row">
-                            Storage Location
+                          {t("dataAgreements.storageLocation")}
                           </th>
 
                           <td style={tableCellStyle}>
@@ -330,7 +331,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
 
                         <tr>
                           <th style={tableCellStyle} scope="row">
-                            Data retention period in year(s)
+                          {t("dataAgreements.retentionPeriod")}
                           </th>
 
                           <td style={tableCellStyle}>
@@ -351,7 +352,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                         </tr>
 
                         <tr>
-                          <th style={tableCellStyle}>Geographic restriction</th>
+                          <th style={tableCellStyle}>{t("dataAgreements.geographicRestriction")}</th>
 
                           <td style={{ ...tableCellStyle, borderRight: 0 }}>
                             <input
@@ -374,7 +375,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
 
                         <tr>
                           <th style={tableCellStyle}>
-                            Third party data sharing
+                          {t("dataAgreements.3pp")}
                           </th>
 
                           <td style={{ ...tableCellStyle, borderRight: 0 }}>
@@ -428,7 +429,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                   }}
                   variant="outlined"
                 >
-                  Close
+                  {t("common.close")}
                 </Button>
                 <Button
                   variant="outlined"
@@ -450,7 +451,7 @@ export default function GlobalDataPolicyConfigModal(props: Props) {
                     },
                   }}
                 >
-                  Save
+                  {t("common.save")}
                 </Button>
               </FooterContainer>
             </form>

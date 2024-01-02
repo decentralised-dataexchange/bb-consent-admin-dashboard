@@ -24,6 +24,7 @@ import { SearchByIdRecords } from "../../components/dropdowns/searchByIdRecordsA
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { TableEmptyMessage } from "../../components/tableEmptyMessage";
+import useLanguageChange from "../../utils/translateTableLanguage";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -69,6 +70,7 @@ const UserRecords = () => {
     value: "all",
   });
   const { t } = useTranslation("translation");
+  const key = useLanguageChange();
 
   const lawfullBasisOfProcessingDropdownvalues = [
     { value: "consent", label: t("dataAgreements.consent") },
@@ -311,6 +313,7 @@ const UserRecords = () => {
               overflow: "auto",
               width: "100%",
             }}
+            key={key}
           >
             <TextField
               source="consentRecordId"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { List, Datagrid, TextField, Form, useRefresh } from "react-admin";
 
 import {
@@ -19,6 +19,7 @@ import BreadCrumb from "../../components/Breadcrumbs";
 import EditPersonalDataModal from "../../components/modals/editPersonalDataModal";
 import { useTranslation } from "react-i18next";
 import { TableEmptyMessage } from "../../components/tableEmptyMessage";
+import useLanguageChange from "../../utils/translateTableLanguage";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -41,6 +42,7 @@ const PersonalData = () => {
     useState(false);
   const [listFilterValue, setListFilterValue] = useState("all");
   const { t } = useTranslation("translation");
+  const key = useLanguageChange();
 
   const refresh = useRefresh();
 
@@ -136,6 +138,7 @@ const PersonalData = () => {
               width: "100%",
             }}
             rowClick="edit"
+            key={key}
           >
             <TextField
               source="name"

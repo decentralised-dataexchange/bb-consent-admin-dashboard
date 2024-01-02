@@ -63,9 +63,6 @@ const UserAccess = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const { t } = useTranslation("translation");
-  // split delete description so that to make DELETE word to bold
-  const deleteDescription = t("userAccess.deleteDescription");
-  const splittedDeleteDescription = deleteDescription.split("Please type ");
 
   useEffect(() => {
     HttpService.listAllIdps().then((response) => {
@@ -240,12 +237,8 @@ const UserAccess = () => {
         userAccessId={idpDetails?.id}
         modalDescriptionText={
           <Typography variant="body1">
-            {splittedDeleteDescription[0]}Please type{" "}
-            <b>{splittedDeleteDescription[1].split(" ")[0]}</b>
-            {" " +
-              splittedDeleteDescription[1].substring(
-                splittedDeleteDescription[1].indexOf(" ") + 1
-              )}
+            {t("userAccess.deleteDescription1")} <b>DELETE</b>
+            {t("userAccess.deleteDescription2")}
           </Typography>
         }
       />

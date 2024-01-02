@@ -24,6 +24,7 @@ import RecentDeliveries from "../../components/webhooks/recentDeliveries";
 import { HttpService } from "../../service/HTTPService";
 import { useTranslation } from "react-i18next";
 import { TableEmptyMessage } from "../../components/tableEmptyMessage";
+import useLanguageChange from "../../utils/translateTableLanguage";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -49,9 +50,7 @@ const Webhooks = () => {
   const [webhookDetailsForUpdate, setWebhookDetailsForUpdate] = useState<any>();
   const [modeOfPopup, setModeOfPopup] = useState("");
   const { t } = useTranslation("translation");
-  // split delete description so that to make DELETE word to bold
-  const deleteDescription = t("webhooks.deleteDescription");
-  const splittedDeleteDescription = deleteDescription.split("Please type ");
+  const key = useLanguageChange();
 
   const [lastSelectedRecentDeliveryID, setLastSelectedRecentDeliveryID] =
     useState();
@@ -196,6 +195,7 @@ const Webhooks = () => {
               overflow: "auto",
               width: "100%",
             }}
+            key={key}
           >
             <PayloadURLFIeld
               source="payloadUrl"
@@ -231,12 +231,8 @@ const Webhooks = () => {
         onRefetch={onRefetch}
         modalDescriptionText={
           <Typography variant="body1">
-            {splittedDeleteDescription[0]}Please type{" "}
-            <b>{splittedDeleteDescription[1].split(" ")[0]}</b>
-            {" " +
-              splittedDeleteDescription[1].substring(
-                splittedDeleteDescription[1].indexOf(" ") + 1
-              )}
+            {t("webhooks.deleteDescription1")} <b>DELETE</b>
+            {t("webhooks.deleteDescription2")}
           </Typography>
         }
       />

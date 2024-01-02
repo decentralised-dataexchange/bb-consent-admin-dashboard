@@ -30,6 +30,7 @@ import { formatISODateToLocalString } from "../../utils/formatISODateToLocalStri
 import { configStore } from "../../store/configStore";
 import { useTranslation } from "react-i18next";
 import { TableEmptyMessage } from "../../components/tableEmptyMessage";
+import useLanguageChange from "../../utils/translateTableLanguage";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -73,9 +74,7 @@ const DeveloperAPIs = () => {
   const [openDeleteApiKey, setOpenDeleteApiKey] = useState(false);
   const [developerApiDeleteID, setDeveloperApiDeleteID] = useState<any>();
   const { t } = useTranslation("translation");
-  // split delete description so that to make DELETE word to bold
-  const deleteDescription = t("developerAPIs.deleteDescription");
-  const splittedDeleteDescription = deleteDescription.split("Please type ");
+  const key = useLanguageChange();
 
   const refresh = useRefresh();
   const onRefetch = () => {
@@ -117,7 +116,9 @@ const DeveloperAPIs = () => {
     }
     return (
       record[props.source] && (
-        <Typography variant="body2">{formatISODateToLocalString(record[props.source])}</Typography>
+        <Typography variant="body2">
+          {formatISODateToLocalString(record[props.source])}
+        </Typography>
       )
     );
   };
@@ -151,7 +152,10 @@ const DeveloperAPIs = () => {
 
   return (
     <Container>
-      <BreadCrumb Link={t("sidebar.account")} Link2={t("sidebar.developerAPIs")} />
+      <BreadCrumb
+        Link={t("sidebar.account")}
+        Link2={t("sidebar.developerAPIs")}
+      />
       <Snackbar
         open={showAPI}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -193,12 +197,12 @@ const DeveloperAPIs = () => {
 
       <HeaderContainer>
         <Typography variant="h6" fontWeight="bold">
-        {t("developerAPIs.headerText")}
+          {t("developerAPIs.headerText")}
         </Typography>
       </HeaderContainer>
       <DetailsContainer sx={{ flexGrow: 1 }}>
         <Typography variant="body2" mt={1.25} mb={1}>
-        {t("developerAPIs.pageDescription")}
+          {t("developerAPIs.pageDescription")}
         </Typography>
         <Grid container spacing={2}>
           <Grid item lg={4} md={12} sm={12} xs={12}>
@@ -239,7 +243,7 @@ const DeveloperAPIs = () => {
                 fontWeight="bold"
                 mb={0.5}
               >
-               {t("developerAPIs.configuredBaseURL")}
+                {t("developerAPIs.configuredBaseURL")}
               </Typography>
               <Typography color="grey" variant="body2">
                 {stagingURL}
@@ -249,7 +253,7 @@ const DeveloperAPIs = () => {
           <Grid item lg={12} md={12} sm={12} xs={12}>
             <Box style={{ display: "flex", alignItems: "center" }} mt={1}>
               <Typography color="black" variant="subtitle1" fontWeight="bold">
-              {t("developerAPIs.apiKey")}
+                {t("developerAPIs.apiKey")}
               </Typography>
               <Tooltip title={t("developerAPIs.createApiKey")} placement="top">
                 <AddCircleOutlineOutlinedIcon
@@ -268,7 +272,7 @@ const DeveloperAPIs = () => {
               actions={false}
               sx={{ width: "100%", overflow: "hidden" }}
               empty={<TableEmptyMessage />}
-              >
+            >
               <Box
                 style={{
                   display: "flex",
@@ -282,6 +286,7 @@ const DeveloperAPIs = () => {
                     overflow: "auto",
                     width: "100%",
                   }}
+                  key={key}
                 >
                   <TextField
                     source="name"
@@ -324,12 +329,9 @@ const DeveloperAPIs = () => {
         onRefetch={onRefetch}
         modalDescriptionText={
           <Typography variant="body1">
-            {splittedDeleteDescription[0]}Please type{" "}
-            <b>{splittedDeleteDescription[1].split(" ")[0]}</b>
-            {" " +
-              splittedDeleteDescription[1].substring(
-                splittedDeleteDescription[1].indexOf(" ") + 1
-              )}
+            {t("developerAPIs.deleteDescription1")}
+            <b>DELETE</b>
+            {t("developerAPIs.deleteDescription2")}
           </Typography>
         }
       />
