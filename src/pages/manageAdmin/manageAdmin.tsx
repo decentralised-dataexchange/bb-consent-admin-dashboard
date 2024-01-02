@@ -245,7 +245,7 @@ const ManageAdmin = () => {
                         <TextField
                           variant="standard"
                           autoComplete="off"
-                          placeholder="Name"
+                          placeholder={t("common.name")}
                           sx={{ marginTop: -0.1 }}
                           style={{
                             ...editStyleEnable,
@@ -411,7 +411,7 @@ const ManageAdmin = () => {
                 <Typography variant="body2">{t("manageAdmin.confirmNewPassword")}:</Typography>
                 <TextField
                   variant="standard"
-                  placeholder="Confirm New Password"
+                  placeholder={t("manageAdmin.confirmNewPassword")}
                   type="password"
                   sx={{ width: "50%", marginRight: "20px" }}
                   value={confirmNewPassword}

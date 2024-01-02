@@ -98,11 +98,14 @@
     "publish": "PUBLISH",
     "purposeExist": "Usage purpose already exists",
     "draft": "Draft",
-    "deleteDADescription": "You are about to delete an existing data agreement and ALL its revisions. Please type DELETE to confirm and click DELETE. This action is not reversible.",
-    "publishDADescription": "You are about to publish a data agreement. Please type PUBLISH to confirm and click PUBLISH. This action is not reversible."
+    "deleteDADescription1": "You are about to delete an existing data agreement and ALL its revisions. Please type ",
+    "deleteDADescription2": " to confirm and click DELETE. This action is not reversible.",
+    "publishDADescription1": "You are about to publish a data agreement. Please type ",
+    "publishDADescription2": " to confirm and click PUBLISH. This action is not reversible.",
+    "globalDataPolicyConfigurations" : "Global Data Policy Configurations"
   },
   "personalData": {
-    "pageDescription": "Manage the personal data attributes. Personal data attributes can beused for Internal purposes, can be exposed as a Data Source or is consumed as a Data Using Service.",
+    "pageDescription": "Manage the personal data attributes. Personal data attributes can be used for Internal purposes, can be exposed as a Data Source or is consumed as a Data Using Service.",
     "dataAttributeName": "Data Attribute Name",
     "dataAgreement": "Data Agreement"
   },
@@ -119,7 +122,8 @@
     "deleteUserAccess": "Delete User Access",
     "uploadCSVDescription": "Upload existing users via a .csv file using the UPLOAD option.",
     "upload": "UPLOAD",
-    "deleteDescription": "You are about to delete an existing user access. Please type Delete to confirm and click DELETE. This action is not reversible.",
+    "deleteDescription1": "You are about to delete an existing user access. Please type ",
+    "deleteDescription2": " to confirm and click DELETE. This action is not reversible.",
     "accessConfiguration": "Access Configuration",
     "authProtocol": "Authentication Protocol",
     "authURL": "Authorisation URL",
@@ -186,7 +190,8 @@
     "expiryDatePlaceholder": "Please type the expiry in days...",
     "allScopes": "All Scopes",
     "selectedScopes": "Selected Scopes",
-    "deleteDescription": "You are about to delete an existing api key. Please type DELETE to confirm and click DELETE. This action is not reversible."
+    "deleteDescription1": "You are about to delete an existing api key. Please type ",
+    "deleteDescription2": " to confirm and click DELETE. This action is not reversible."
   },
   "viewLogs": {
     "pageDescription": "Provides all logs, can also be filtered against various log categories.",
@@ -211,6 +216,7 @@
     "events": "Events",
     "selectedEvents": "Selected Events",
     "allEvents": "All Events",
-    "deleteDescription": "You are about to delete an existing webhook data. Please type DELETE to confirm and click DELETE. This action is not reversible."
+    "deleteDescription1": "You are about to delete an existing webhook data. Please type ",
+    "deleteDescription2": " to confirm and click DELETE. This action is not reversible."
   }
 }

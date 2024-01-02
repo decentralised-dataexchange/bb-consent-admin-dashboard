@@ -8,6 +8,7 @@ import Dropdown from "../../components/dropdowns/dropdown";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TableEmptyMessage } from "../../components/tableEmptyMessage";
+import useLanguageChange from "../../utils/translateTableLanguage";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -55,6 +56,7 @@ const ViewLogs = () => {
 
   const [listFilterValue, setListFilterValue] = useState([0]);
   const { t } = useTranslation("translation");
+  const key = useLanguageChange();
 
   const filterDrpodownValues = [
     { value: "Security", label: t("viewLogs.security") },
@@ -144,6 +146,7 @@ const ViewLogs = () => {
               overflow: "auto",
               width: "100%",
             }}
+            key={key}
           >
             <TextField
               source="action"
