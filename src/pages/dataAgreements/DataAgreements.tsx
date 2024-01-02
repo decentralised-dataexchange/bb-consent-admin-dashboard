@@ -88,13 +88,6 @@ const DataAgreement = () => {
   ] = useState<any>({});
   const { t } = useTranslation("translation");
 
-  // split delete description so that to make DELETE word to bold
-  const deleteDescription = t("dataAgreements.deleteDADescription");
-  const splittedDeleteDescription = deleteDescription.split("Please type ");
-  // split publish description so that to make DELETE word to bold
-  const publishDescription = t("dataAgreements.publishDADescription");
-  const splittedPublishDescription = publishDescription.split("Please type ");
-
   const [listFilterValue, setListFilterValue] = useState("all");
   const refresh = useRefresh();
   const onRefetch = () => {
@@ -533,12 +526,9 @@ const DataAgreement = () => {
         }
         modalDescriptionText={
           <Typography variant="body1">
-            {splittedDeleteDescription[0]}Please type{" "}
-            <b>{splittedDeleteDescription[1].split(" ")[0]}</b>
-            {" " +
-              splittedDeleteDescription[1].substring(
-                splittedDeleteDescription[1].indexOf(" ") + 1
-              )}
+            {t("dataAgreements.deleteDADescription1")}
+            <b>DELETE</b>
+            {t("dataAgreements.deleteDADescription2")}
           </Typography>
         }
         setSelectedDropdownValue={setSelectedDropdownValue}
@@ -559,12 +549,9 @@ const DataAgreement = () => {
         }
         modalDescriptionText={
           <Typography variant="body1">
-            {splittedPublishDescription[0]}Please type{" "}
-            <b>{splittedPublishDescription[1].split(" ")[0]}</b>
-            {" " +
-              splittedPublishDescription[1].substring(
-                splittedPublishDescription[1].indexOf(" ") + 1
-              )}
+            {t("dataAgreements.publishDADescription1")}
+            <b>PUBLISH</b>
+            {t("dataAgreements.publishDADescription2")}
           </Typography>
         }
       />
