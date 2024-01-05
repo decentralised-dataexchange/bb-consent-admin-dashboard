@@ -96,6 +96,7 @@ const VersionDropdown = (props: Props) => {
         fullWidth
         style={{
           ...dropDownStyle,
+          width: "120px"
         }}
         renderValue={(value) => (
           <span
@@ -109,7 +110,6 @@ const VersionDropdown = (props: Props) => {
             {value}
           </span>
         )}
-        sx={{ margin: 0, padding: 0 }}
       >
         {dataAgreementFromRevision?.map((versions: any, index: number) => (
           <MenuItem
