@@ -40,6 +40,7 @@ import {
 import VersionDropdown from "../../components/dataAgreements/versionDropdown";
 import { useTranslation } from "react-i18next";
 import { TableEmptyMessage } from "../../components/tableEmptyMessage";
+import '../../index.css'
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -484,6 +485,7 @@ const DataAgreement = () => {
               source="id"
               label={t("dataAgreements.version")}
               sortable={false}
+              cellClassName="custom-version-column"
             />
             <DataExchangeField
               source="methodOfUse"
