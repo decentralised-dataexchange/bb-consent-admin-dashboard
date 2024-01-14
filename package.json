@@ -67,6 +67,7 @@
     "@types/lodash.debounce": "^4.0.8",
     "@types/mui-image": "^1.0.3",
     "@types/uuid": "^9.0.5",
+    "cypress": "^13.6.2",
     "jest": "^27.5.1"
   }
 }
