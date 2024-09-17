@@ -25,6 +25,7 @@ import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { TableEmptyMessage } from "../../components/tableEmptyMessage";
 import useLanguageChange from "../../utils/translateTableLanguage";
+import { HttpService } from "../../service/HTTPService";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "58px 15px 0px 15px",
@@ -85,9 +86,9 @@ const UserRecords = () => {
   ];
 
   const [
-    dataAgrreementRevisionIdForSelectedRecord,
-    setDataAgrreementRevisionIdForSelectedRecord,
-  ] = useState<string | undefined>();
+    selectededDataAgreementFromDataAgreement,
+    setSelectededDataAgreementFromDataAgreement,
+  ] = useState<any>();
 
   const updateDisabledPurposeDropDown = (disabledPurposeDropDown: any) => {
     useFilterStore
@@ -158,16 +159,24 @@ const UserRecords = () => {
           }}
         >
           <Tooltip title={t("dataAgreements.viewDA")} placement="top">
-            <RemoveRedEyeOutlinedIcon
+          <RemoveRedEyeOutlinedIcon
               onClick={() => {
-                setOpenDataAgreementModal(true);
-                setDataAgrreementRevisionIdForSelectedRecord(
-                  record.dataAgreementRevisionId
-                );
+                HttpService.listDataAgreements(
+                  0,
+                  10,
+                  "",
+                  record.dataAgreementRevisionId,
+                  ""
+                ).then((response) => {
+                  let dataAgreements = response.dataAgreements[0];
+
+                  setSelectededDataAgreementFromDataAgreement(dataAgreements);
+                  setOpenDataAgreementModal(true);
+                });
               }}
               fontSize="small"
-              color="disabled"
-              style={{ cursor: "pointer" }}
+              
+              style={{ cursor: "pointer", color:"#4D4D4F" }}
             />
           </Tooltip>
         </Box>
@@ -362,8 +371,8 @@ const UserRecords = () => {
         setOpen={setOpenDataAgreementModal}
         mode={"Read"}
         resourceName="userrecords"
-        dataAgrreementRevisionIdForSelectedRecord={
-          dataAgrreementRevisionIdForSelectedRecord
+        selectededDataAgreementFromDataAgreement={
+          selectededDataAgreementFromDataAgreement
         }
       />
     </Container>

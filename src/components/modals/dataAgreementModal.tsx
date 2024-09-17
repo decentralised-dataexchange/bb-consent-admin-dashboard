@@ -44,7 +44,6 @@ interface Props {
   successCallback?: any;
   resourceName?: string;
   selectededDataAgreementFromDataAgreement?: any;
-  dataAgrreementRevisionIdForSelectedRecord?: string | undefined;
   setSelectedDropdownValue?: any;
 }
 
@@ -74,7 +73,6 @@ export default function DataAgreementModal(props: Props) {
     successCallback,
     resourceName,
     selectededDataAgreementFromDataAgreement,
-    dataAgrreementRevisionIdForSelectedRecord,
     setSelectedDropdownValue,
   } = props;
   const { t } = useTranslation("translation");
@@ -86,9 +84,11 @@ export default function DataAgreementModal(props: Props) {
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [error, setError] = useState("");
   useEffect(() => {
-    HttpService.listAllPolicies().then((response) => {
-      setPolicyDetailsForInitialValue(response[0]);
-    });
+    if(open){
+      HttpService.listAllPolicies().then((response) => {
+        setPolicyDetailsForInitialValue(response[0]);
+      });
+    } 
   }, [open]);
 
   const methods = useForm({
@@ -241,6 +241,46 @@ export default function DataAgreementModal(props: Props) {
         });
       }
     }
+
+    if (
+      selectededDataAgreementFromDataAgreement &&
+      resourceName === "userrecords" &&
+      mode === "Read"
+    ) {
+      let dataAgreements = selectededDataAgreementFromDataAgreement;
+      let dataAttributes =
+        selectededDataAgreementFromDataAgreement.dataAttributes;
+      setSelectedDataAgreement(dataAgreements);
+
+      setDataAgreementIdForUserRecordes(dataAgreements.id);
+
+      methods.reset({
+        Name: dataAgreements.purpose,
+        Description: dataAgreements.purposeDescription,
+        Version: dataAgreements.version,
+        AttributeType: dataAgreements.methodOfUse,
+        LawfulBasisOfProcessing: dataAgreements.lawfulBasis,
+        PolicyURL: dataAgreements.policy.url,
+        Jurisdiction: dataAgreements.policy.jurisdiction,
+        IndustryScope: dataAgreements.policy.industrySector,
+        StorageLocation: dataAgreements.policy.storageLocation,
+        dataRetentionPeriodDays: Math.floor(
+          dataAgreements.policy.dataRetentionPeriodDays / 365
+        ),
+        Restriction: dataAgreements.policy.geographicRestriction,
+        Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
+        DpiaDate: dataAgreements.dpiaDate,
+        DpiaSummaryURL: dataAgreements.dpiaSummaryUrl,
+        dataAttributes: dataAttributes.map((attribute: any) => {
+          const { name, description, ...otherProps } = attribute;
+          return {
+            attributeName: name,
+            attributeDescription: description,
+            ...otherProps,
+          };
+        }),
+      });
+    }
   }, [
     selectededDataAgreementFromDataAgreement,
     open,
@@ -248,53 +288,7 @@ export default function DataAgreementModal(props: Props) {
     policyDetailsForInitialValue,
   ]);
 
-  // This is useEffect is called when resource is user records
-  useEffect(() => {
-    if (
-      dataAgrreementRevisionIdForSelectedRecord &&
-      resourceName === "userrecords"
-    ) {
-      HttpService.listDataAgreements(
-        0,
-        10,
-        "",
-        dataAgrreementRevisionIdForSelectedRecord,
-        ""
-      ).then((response) => {
-        let dataAgreements = response.dataAgreements[0];
-        let dataAttributes = response.dataAgreements[0].dataAttributes;
 
-        setDataAgreementIdForUserRecordes(dataAgreements.id);
-        setSelectedDataAgreement(dataAgreements);
-        methods.reset({
-          Name: dataAgreements.purpose,
-          Description: dataAgreements.purposeDescription,
-          Version: dataAgreements.version,
-          AttributeType: dataAgreements.methodOfUse,
-          LawfulBasisOfProcessing: dataAgreements.lawfulBasis,
-          PolicyURL: dataAgreements.policy.url,
-          Jurisdiction: dataAgreements.policy.jurisdiction,
-          IndustryScope: dataAgreements.policy.industrySector,
-          StorageLocation: dataAgreements.policy.storageLocation,
-          dataRetentionPeriodDays: Math.floor(
-            dataAgreements.policy.dataRetentionPeriodDays / 365
-          ),
-          Restriction: dataAgreements.policy.geographicRestriction,
-          Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
-          DpiaDate: dataAgreements.dpiaDate,
-          DpiaSummaryURL: dataAgreements.dpiaSummaryUrl,
-          dataAttributes: dataAttributes.map((attribute: any) => {
-            const { name, description, ...otherProps } = attribute;
-            return {
-              attributeName: name,
-              attributeDescription: description,
-              ...otherProps,
-            };
-          }),
-        });
-      });
-    }
-  }, [dataAgrreementRevisionIdForSelectedRecord, open]);
 
   const [openExistingSchemaModal, setOpenExistingSchemaModal] = useState(false);
 
@@ -426,7 +420,9 @@ export default function DataAgreementModal(props: Props) {
                   <Typography color="#F3F3F6">
                     {mode === "Create" && t("dataAgreements.addDA")}
                     {mode === "Update" &&
-                     `${t("dataAgreements.editDA")}:  ${selectedDataAgreement?.purpose}`}
+                      `${t("dataAgreements.editDA")}:  ${
+                        selectedDataAgreement?.purpose
+                      }`}
                     {mode === "Read" &&
                       `${t("dataAgreements.viewDA")}: ${
                         selectedDataAgreement?.selectedRevision?.purpose ||
