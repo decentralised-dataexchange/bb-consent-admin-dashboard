@@ -2,50 +2,39 @@ import * as React from "react";
 import { Dispatch, SetStateAction } from "react";
 import { Form } from "react-admin";
 
-import {
-  Drawer,
-  Typography,
-  Box,
-  MenuItem,
-  FormControl,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
-import OutlinedInput from "@mui/material/OutlinedInput";
+import { Drawer, Typography, Box } from "@mui/material";
 
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
-import DataAgreementPersonalDataTable from "../dataAgreements/DataAgreementPersonalDataTable";
 import { Container, HeaderContainer, DetailsContainer } from "./modalStyle";
+import { useTranslation } from "react-i18next";
+import DataSourcesTableContainer from "../dataAgreements/DataSourcesTableContainer";
 
 interface Props {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   mode: string;
+  AttributeType: string;
+  appendDataAttributes: any;
+  fieldsDataAttributes: any;
+  removeDataAttributes: any;
+  methods: any;
+  formController: any;
 }
 
-const DataSchemaTemplate = [
-  "Aadhar Card",
-  "EU Covid19 Test Certificate",
-  "EU Covid19 Vaccination Certificate",
-  "EU Passport",
-  "India Covid19 Vaccination Certificate",
-  "My Data Profile",
-];
-
 export default function DataSchemaModal(props: Props) {
-  const { open, setOpen, mode } = props;
-  const [schemaValue, setShcemaValue] = React.useState<string[]>([]);
-
-  const handleChange = (event: SelectChangeEvent<typeof schemaValue>) => {
-    const {
-      target: { value },
-    } = event;
-    setShcemaValue(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
-  };
+  const {
+    open,
+    setOpen,
+    mode,
+    AttributeType,
+    appendDataAttributes,
+    fieldsDataAttributes,
+    removeDataAttributes,
+    formController,
+    methods,
+  } = props;
+  const { t } = useTranslation("translation");
 
   return (
     <React.Fragment>
@@ -59,48 +48,29 @@ export default function DataSchemaModal(props: Props) {
                   sx={{ marginRight: 1, cursor: "pointer", color: "#F3F3F6" }}
                 />
                 <Typography color="#F3F3F6">
-                  Choose Existing Schema: Data Using Service (Verifier)
+                  {AttributeType === "data_using_service" ? (
+                    <>
+                      {t("dataAgreements.configure")} :{" "}
+                      {t("dataAgreements.DUSVerifier")}
+                    </>
+                  ) : (
+                    <>
+                      {t("dataAgreements.configure")} :{" "}
+                      {t("dataAgreements.DSIssuer")}
+                    </>
+                  )}
                 </Typography>
               </Box>
             </HeaderContainer>
             <DetailsContainer>
               <Box p={1.5}>
-                <Typography variant="subtitle1" mt={1.5}>
-                  Data Schema Template
-                </Typography>
-                <Box sx={{ minWidth: 120, marginBottom: "10px" }}>
-                  <FormControl fullWidth>
-                    <Select
-                      displayEmpty
-                      value={schemaValue}
-                      onChange={handleChange}
-                      input={<OutlinedInput />}
-                      renderValue={(selected) => {
-                        if (selected.length === 0) {
-                          return <em>Select...</em>;
-                        }
-
-                        return selected.join(", ");
-                      }}
-                      inputProps={{ "aria-label": "Without label" }}
-                    >
-                      {DataSchemaTemplate.map((DataSchemaTemplate) => (
-                        <MenuItem
-                          key={DataSchemaTemplate}
-                          value={DataSchemaTemplate}
-                        >
-                          {DataSchemaTemplate}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Box>
-
-                <DataAgreementPersonalDataTable
+                <DataSourcesTableContainer
                   mode={mode}
-                  subtext={
-                    "Attribute names must be exact match of the credentials"
-                  }
+                  methods={methods}
+                  formController={formController}
+                  appendDataAttributes={appendDataAttributes}
+                  fieldsDataAttributes={fieldsDataAttributes}
+                  removeDataAttributes={removeDataAttributes}
                 />
               </Box>
             </DetailsContainer>

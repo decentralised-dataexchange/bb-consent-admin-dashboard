@@ -102,7 +102,16 @@
     "deleteDADescription2": " to confirm and click DELETE. This action is not reversible.",
     "publishDADescription1": "You are about to publish a data agreement. Please type ",
     "publishDADescription2": " to confirm and click PUBLISH. This action is not reversible.",
-    "globalDataPolicyConfigurations" : "Global Data Policy Configurations"
+    "globalDataPolicyConfigurations": "Global Data Policy Configurations",
+    "configure": "Configure",
+    "privacyDashboardURL": "Privacy Dashboard URL",
+    "dataSources": "Data Sources",
+    "dataSourceSubText": "List of known data sources from where data is consumed.",
+    "dataSourceName": "Data Source Name (minimum 3 characters)",
+    "dataSourceSector": "Sector (minimum 3 characters)",
+    "dataSourceLocation": "Location (minimum 3 characters)",
+    "DUSVerifier": "Data Using Service (Verifier)",
+    "DSIssuer": "Data Source (Issuer)"
   },
   "personalData": {
     "pageDescription": "Manage the personal data attributes. Personal data attributes can be used for Internal purposes, can be exposed as a Data Source or is consumed as a Data Using Service.",

@@ -5,7 +5,12 @@ import {
   useContext,
   useEffect,
 } from "react";
-import { useForm, FormProvider, useFieldArray } from "react-hook-form";
+import {
+  useForm,
+  FormProvider,
+  useFieldArray,
+  useWatch,
+} from "react-hook-form";
 
 import { Drawer, Typography, Button, Box, Avatar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -25,7 +30,10 @@ import {
   buttonStyle,
   disabledButtonstyle,
 } from "./modalStyle";
-import { DataAgreementPayload } from "../dataAgreements/DataAgreementActions";
+import {
+  DataAgreementPayload,
+  validateSources,
+} from "../dataAgreements/DataAgreementActions";
 import { HttpService } from "../../service/HTTPService";
 import { Purpose } from "../dataAgreements/Purpose";
 import { Version } from "../dataAgreements/Version";
@@ -63,6 +71,14 @@ let defaultValue = {
   DpiaDate: new Date().toISOString().slice(0, 16),
   DpiaSummaryURL: "https://privacyant.se/dpia_results.html",
   dataAttributes: [{ attributeName: "", attributeDescription: "" }],
+  dataSources: [
+    {
+      name: "",
+      sector: "",
+      location: "",
+      privacyDashboardUrl: "",
+    },
+  ],
 };
 
 export default function DataAgreementModal(props: Props) {
@@ -84,11 +100,11 @@ export default function DataAgreementModal(props: Props) {
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [error, setError] = useState("");
   useEffect(() => {
-    if(open){
+    if (open) {
       HttpService.listAllPolicies().then((response) => {
         setPolicyDetailsForInitialValue(response[0]);
       });
-    } 
+    }
   }, [open]);
 
   const methods = useForm({
@@ -105,6 +121,28 @@ export default function DataAgreementModal(props: Props) {
     rules: {
       required: true,
     },
+  });
+
+  const {
+    fields: fieldsDataAttributes,
+    remove: removeDataAttributes,
+    append: appendDataAttributes,
+  } = useFieldArray({
+    control,
+    name: "dataSources",
+    rules: {
+      required: true,
+    },
+  });
+
+  const AttributeType = useWatch({
+    control: methods.control,
+    name: `AttributeType`,
+  });
+
+  const dataSources = useWatch({
+    control: methods.control,
+    name: `dataSources`,
   });
 
   useEffect(() => {
@@ -127,6 +165,14 @@ export default function DataAgreementModal(props: Props) {
         DpiaDate: new Date().toISOString().slice(0, 16),
         DpiaSummaryURL: "https://privacyant.se/dpia_results.html",
         dataAttributes: [{ attributeName: "", attributeDescription: "" }],
+        dataSources: [
+          {
+            name: "",
+            sector: "",
+            location: "",
+            privacyDashboardUrl: "",
+          },
+        ],
       });
     }
 
@@ -138,6 +184,7 @@ export default function DataAgreementModal(props: Props) {
       let dataAgreements = selectededDataAgreementFromDataAgreement;
       let dataAttributes =
         selectededDataAgreementFromDataAgreement.dataAttributes;
+      let dataSources = selectededDataAgreementFromDataAgreement.dataSources;
 
       setSelectedDataAgreement(dataAgreements);
       if (mode === "Update") {
@@ -155,7 +202,6 @@ export default function DataAgreementModal(props: Props) {
           dataRetentionPeriodDays: Math.floor(
             dataAgreements.policy.dataRetentionPeriodDays / 365
           ),
-
           Restriction: dataAgreements.policy.geographicRestriction,
           Shared3PP: dataAgreements.policy.thirdPartyDataSharing,
           DpiaDate: dataAgreements.dpiaDate,
@@ -168,6 +214,22 @@ export default function DataAgreementModal(props: Props) {
               ...otherProps,
             };
           }),
+          dataSources:
+            dataSources && dataSources.length > 0
+              ? dataSources.map((attribute: any) => ({
+                  name: attribute.name || "",
+                  sector: attribute.sector || "",
+                  location: attribute.location || "",
+                  privacyDashboardUrl: attribute.privacyDashboardUrl || "",
+                }))
+              : [
+                  {
+                    name: "",
+                    sector: "",
+                    location: "",
+                    privacyDashboardUrl: "",
+                  },
+                ],
         });
       } else if (
         mode === "Read" &&
@@ -205,6 +267,17 @@ export default function DataAgreementModal(props: Props) {
               };
             }
           ),
+          dataSources: dataAgreements.selectedRevision?.dataSources?.map(
+            (attribute: any) => {
+              const { name, sector, location, privacyDashboardUrl } = attribute;
+              return {
+                name: name,
+                sector: sector,
+                location: location,
+                privacyDashboardUrl: privacyDashboardUrl,
+              };
+            }
+          ),
         });
       } else if (
         mode === "Read" &&
@@ -238,6 +311,15 @@ export default function DataAgreementModal(props: Props) {
               ...otherProps,
             };
           }),
+          dataSources: dataSources?.map((attribute: any) => {
+            const { name, sector, location, privacyDashboardUrl } = attribute;
+            return {
+              name: name,
+              sector: sector,
+              location: location,
+              privacyDashboardUrl: privacyDashboardUrl,
+            };
+          }),
         });
       }
     }
@@ -253,6 +335,7 @@ export default function DataAgreementModal(props: Props) {
       setSelectedDataAgreement(dataAgreements);
 
       setDataAgreementIdForUserRecordes(dataAgreements.id);
+      let dataSources = selectededDataAgreementFromDataAgreement.dataSources;
 
       methods.reset({
         Name: dataAgreements.purpose,
@@ -279,6 +362,15 @@ export default function DataAgreementModal(props: Props) {
             ...otherProps,
           };
         }),
+        dataSources: dataSources?.map((attribute: any) => {
+          const { name, sector, location, privacyDashboardUrl } = attribute;
+          return {
+            name: name,
+            sector: sector,
+            location: location,
+            privacyDashboardUrl: privacyDashboardUrl,
+          };
+        }),
       });
     }
   }, [
@@ -287,8 +379,6 @@ export default function DataAgreementModal(props: Props) {
     mode,
     policyDetailsForInitialValue,
   ]);
-
-
 
   const [openExistingSchemaModal, setOpenExistingSchemaModal] = useState(false);
 
@@ -299,109 +389,160 @@ export default function DataAgreementModal(props: Props) {
     let active = true;
     let lifecycle = "complete";
 
-    if (mode === "Create") {
-      HttpService.addDataAgreements(
-        DataAgreementPayload(createdData, active, lifecycle, mode)
-      )
-        .then(() => {
-          successCallback();
-          methods.reset({ ...defaultValue });
-          setSelectedDropdownValue({});
-          setOpen(false);
-        })
-        .catch((error) => {
-          let errorDescription = error.response.data.errorDescription;
-          setError(
-            errorDescription === "Data agreement purpose exists"
-              ? t("dataAgreements.purposeExist")
-              : errorDescription
-          );
-          setOpenSnackBar(true);
-        });
-    } else if (
-      mode === "Update" &&
-      (selectedDataAgreement && selectedDataAgreement.lifecycle === "draft"
-        ? selectedDataAgreement.lifecycle === "draft"
-        : isFormDataChanged(methods.formState))
+    if (
+      dataSources &&
+      dataSources.length > 0 &&
+      AttributeType === "data_using_service"
+        ? validateSources(dataSources)
+        : true
     ) {
-      HttpService.updateDataAgreementById(
-        DataAgreementPayload(
-          createdData,
-          active,
-          lifecycle,
-          mode,
-          selectedDataAgreement
-        ),
-        selectedDataAgreement?.id
-      )
-        .then((response) => {
-          successCallback();
-          setSelectedDropdownValue({});
-          methods.reset({ ...defaultValue });
-          setOpen(false);
-        })
-        .catch((error) => {
-          let errorDescription = error.response.data.errorDescription;
-          setError(
-            errorDescription === "Data agreement purpose exists"
-              ? t("dataAgreements.purposeExist")
-              : errorDescription
-          );
-          setOpenSnackBar(true);
-        });
-    } else return {};
+      if (mode === "Create") {
+        HttpService.addDataAgreements(
+          DataAgreementPayload(createdData, active, lifecycle, mode)
+        )
+          .then(() => {
+            successCallback();
+            methods.reset({ ...defaultValue });
+            setSelectedDropdownValue({});
+            setOpen(false);
+          })
+          .catch((error) => {
+            let errorDescription = error.response.data.errorDescription;
+            setError(
+              errorDescription === "Data agreement purpose exists"
+                ? t("dataAgreements.purposeExist")
+                : errorDescription
+            );
+            setOpenSnackBar(true);
+          });
+      } else if (
+        mode === "Update" &&
+        (selectedDataAgreement && selectedDataAgreement.lifecycle === "draft"
+          ? selectedDataAgreement.lifecycle === "draft"
+          : isFormDataChanged(methods.formState))
+      ) {
+        HttpService.updateDataAgreementById(
+          DataAgreementPayload(
+            createdData,
+            active,
+            lifecycle,
+            mode,
+            selectedDataAgreement
+          ),
+          selectedDataAgreement?.id
+        )
+          .then((response) => {
+            successCallback();
+            setSelectedDropdownValue({});
+            methods.reset({ ...defaultValue });
+            setOpen(false);
+          })
+          .catch((error) => {
+            let errorDescription = error.response.data.errorDescription;
+            setError(
+              errorDescription === "Data agreement purpose exists"
+                ? t("dataAgreements.purposeExist")
+                : errorDescription
+            );
+            setOpenSnackBar(true);
+          });
+      } else return {};
+    }
   };
 
   const onSave = (createdData: any) => {
     let active = false;
     let lifecycle = "draft";
 
-    if (mode === "Create") {
-      HttpService.addDataAgreements(
-        DataAgreementPayload(createdData, active, lifecycle, mode)
-      )
-        .then(() => {
-          successCallback();
-          methods.reset({ ...defaultValue });
-          setSelectedDropdownValue({});
-          setOpen(false);
-        })
-        .catch((error) => {
-          let errorDescription = error.response.data.errorDescription;
-          setError(
-            errorDescription === "Data agreement purpose exists"
-              ? t("dataAgreements.purposeExist")
-              : errorDescription
-          );
-          setOpenSnackBar(true);
-        });
-    } else if (mode === "Update" && isFormDataChanged(methods.formState)) {
-      HttpService.updateDataAgreementById(
-        DataAgreementPayload(
-          createdData,
-          active,
-          lifecycle,
-          mode,
-          selectedDataAgreement
-        ),
-        selectedDataAgreement?.id
-      )
-        .then((response) => {
-          successCallback();
-          setSelectedDropdownValue({});
-          methods.reset({ ...defaultValue });
-          setOpen(false);
-        })
-        .catch((error) => {
-          let errorDescription = error.response.data.errorDescription;
-          setError(
-            errorDescription === "Data agreement purpose exists"
-              ? t("dataAgreements.purposeExist")
-              : errorDescription
-          );
-          setOpenSnackBar(true);
-        });
-    } else return {};
+    if (
+      dataSources &&
+      dataSources.length > 0 &&
+      AttributeType === "data_using_service"
+        ? validateSources(dataSources)
+        : true
+    ) {
+      if (mode === "Create") {
+        HttpService.addDataAgreements(
+          DataAgreementPayload(createdData, active, lifecycle, mode)
+        )
+          .then(() => {
+            successCallback();
+            methods.reset({ ...defaultValue });
+            setSelectedDropdownValue({});
+            setOpen(false);
+          })
+          .catch((error) => {
+            let errorDescription = error.response.data.errorDescription;
+            setError(
+              errorDescription === "Data agreement purpose exists"
+                ? t("dataAgreements.purposeExist")
+                : errorDescription
+            );
+            setOpenSnackBar(true);
+          });
+      } else if (mode === "Update" && isFormDataChanged(methods.formState)) {
+        HttpService.updateDataAgreementById(
+          DataAgreementPayload(
+            createdData,
+            active,
+            lifecycle,
+            mode,
+            selectedDataAgreement
+          ),
+          selectedDataAgreement?.id
+        )
+          .then((response) => {
+            successCallback();
+            setSelectedDropdownValue({});
+            methods.reset({ ...defaultValue });
+            setOpen(false);
+          })
+          .catch((error) => {
+            let errorDescription = error.response.data.errorDescription;
+            setError(
+              errorDescription === "Data agreement purpose exists"
+                ? t("dataAgreements.purposeExist")
+                : errorDescription
+            );
+            setOpenSnackBar(true);
+          });
+      } else return {};
+    }
+  };
+
+  const enableSaveButtonFunction = () => {
+    if (
+      mode !== "Read" &&
+      methods.formState.isValid &&
+      // before validateSources consider old da as data sources are undefined
+      (dataSources &&
+      dataSources.length > 0 &&
+      AttributeType === "data_using_service"
+        ? validateSources(dataSources)
+        : true) &&
+      isFormDataChanged(methods.formState)
+    ) {
+      return true;
+    } else return false;
+  };
+
+  const enableButtonFunction = () => {
+    if (
+      mode !== "Read" &&
+      methods.formState.isValid &&
+      // before validateSources consider old da as data sources are undefined
+      (dataSources &&
+      dataSources.length > 0 &&
+      AttributeType === "data_using_service"
+        ? validateSources(dataSources)
+        : true) &&
+      // if da is saved initially so during edit user can directly publish
+      (selectedDataAgreement && selectedDataAgreement.lifecycle === "draft"
+        ? selectedDataAgreement.lifecycle === "draft"
+        : isFormDataChanged(methods.formState))
+    ) {
+      return true;
+    } else return false;
   };
 
   return (
@@ -508,18 +649,31 @@ export default function DataAgreementModal(props: Props) {
                       }
                     />
 
-                    {/* Required for future purpose in enterprise dashboard */}
-                    {/* <Typography
-                        style={{
-                          fontSize: "14px",
-                          textDecoration: "underline",
-                          color: "grey",
-                          marginTop: "-7px",
-                          cursor: "not-allowed",
-                        }}
-                      >
-                        (Choose existing schemas)
-                      </Typography> */}
+                    <Typography
+                      style={{
+                        fontSize: "14px",
+                        textDecoration: "underline",
+                        color:
+                          mode !== "Read" &&
+                          AttributeType === "data_using_service"
+                            ? "blue"
+                            : "grey",
+                        marginTop: "-7px",
+                        cursor:
+                          mode !== "Read" &&
+                          AttributeType === "data_using_service"
+                            ? "pointer"
+                            : "not-allowed",
+                      }}
+                      onClick={() =>
+                        mode !== "Read" &&
+                        AttributeType === "data_using_service"
+                          ? setOpenExistingSchemaModal(true)
+                          : null
+                      }
+                    >
+                      ({t("dataAgreements.configure")})
+                    </Typography>
 
                     <PurposeDescription open={props.open} mode={props.mode} />
 
@@ -558,25 +712,15 @@ export default function DataAgreementModal(props: Props) {
                 <Button
                   variant="outlined"
                   style={
-                    methods.formState.isValid &&
-                    mode !== "Read" &&
-                    isFormDataChanged(methods.formState)
+                    enableSaveButtonFunction()
                       ? buttonStyle
                       : disabledButtonstyle
                   }
                   sx={{
-                    cursor:
-                      methods.formState.isValid &&
-                      mode !== "Read" &&
-                      isFormDataChanged(methods.formState)
-                        ? "pointer"
-                        : "not-allowed",
-                    color:
-                      methods.formState.isValid &&
-                      mode !== "Read" &&
-                      isFormDataChanged(methods.formState)
-                        ? "black"
-                        : "#6D7676",
+                    cursor: enableSaveButtonFunction()
+                      ? "pointer"
+                      : "not-allowed",
+                    color: enableSaveButtonFunction() ? "black" : "#6D7676",
                     marginRight: "15px",
                     "&:hover": {
                       backgroundColor: "black",
@@ -590,24 +734,8 @@ export default function DataAgreementModal(props: Props) {
                 <Button
                   variant="outlined"
                   sx={{
-                    cursor:
-                      methods.formState.isValid &&
-                      mode !== "Read" &&
-                      (selectedDataAgreement &&
-                      selectedDataAgreement.lifecycle === "draft"
-                        ? selectedDataAgreement.lifecycle === "draft"
-                        : isFormDataChanged(methods.formState))
-                        ? "pointer"
-                        : "not-allowed",
-                    color:
-                      methods.formState.isValid &&
-                      mode !== "Read" &&
-                      (selectedDataAgreement &&
-                      selectedDataAgreement.lifecycle === "draft"
-                        ? selectedDataAgreement.lifecycle === "draft"
-                        : isFormDataChanged(methods.formState))
-                        ? "black"
-                        : "#6D7676",
+                    cursor: enableButtonFunction() ? "pointer" : "not-allowed",
+                    color: enableButtonFunction() ? "black" : "#6D7676",
                     "&:hover": {
                       backgroundColor: "black",
                       color: "white",
@@ -615,14 +743,7 @@ export default function DataAgreementModal(props: Props) {
                     marginLeft: "15px",
                   }}
                   style={
-                    methods.formState.isValid &&
-                    mode !== "Read" &&
-                    (selectedDataAgreement &&
-                    selectedDataAgreement.lifecycle === "draft"
-                      ? selectedDataAgreement.lifecycle === "draft"
-                      : isFormDataChanged(methods.formState))
-                      ? buttonStyle
-                      : disabledButtonstyle
+                    enableButtonFunction() ? buttonStyle : disabledButtonstyle
                   }
                   onClick={methods.handleSubmit(onPublish)}
                 >
@@ -636,6 +757,12 @@ export default function DataAgreementModal(props: Props) {
             open={openExistingSchemaModal}
             setOpen={setOpenExistingSchemaModal}
             mode={mode}
+            AttributeType={AttributeType}
+            appendDataAttributes={appendDataAttributes}
+            fieldsDataAttributes={fieldsDataAttributes}
+            removeDataAttributes={removeDataAttributes}
+            formController={control}
+            methods={methods}
           />
         </Container>
       </Drawer>
