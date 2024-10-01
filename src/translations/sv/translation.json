@@ -102,7 +102,16 @@
     "deleteDADescription2": " för att konfirmera och klicka sedan RADERA. Du kan inte ångra denna händelse.",
     "publishDADescription1": "Du kommer nu publicera detta dataavtal. Vänligen skriv ",
     "publishDADescription2": " för att bekräfta, klicka sedan Publisera. Denna händelse går inte att ångra.",
-    "globalDataPolicyConfigurations" : "Global Data Policy Configurations"
+    "globalDataPolicyConfigurations": "Global Data Policy Configurations",
+    "configure": "Configure",
+    "privacyDashboardURL": "Privacy Dashboard URL",
+    "dataSources": "Data Sources",
+    "dataSourceSubText": "List of known data sources from where data is consumed.",
+    "dataSourceName": "Data Source Name (minimum 3 characters)",
+    "dataSourceSector": "Sector (minimum 3 characters)",
+    "dataSourceLocation": "Location (minimum 3 characters)",
+    "DUSVerifier": "Data Using Service (Verifier)",
+    "DSIssuer": "Data Source (Issuer)"
   },
   "personalData": {
     "pageDescription": "Hantera personuppgiftsattribut. Personuppgifter kan användas för interna ändamål, för att delas i en datakälla eller för användning via en datakonsument.",
