@@ -116,23 +116,17 @@ export const DataAgreementPayload = (
     },
   };
 
-  // Update dataSources if AttributeType is "data_using_service" and all names are not empty
-  if (
-    createdData.AttributeType === "data_using_service" &&
-    createdData.dataSources
-  ) {
-    const validDataSources = createdData.dataSources.filter(
-      (source: any) => source.name !== ""
-    );
-    if (validDataSources.length === createdData.dataSources.length) {
-      payload.dataAgreement.dataSources = validDataSources;
-    }
-  }
+// Update dataSources to include only objects with non-empty name
+if (createdData.dataSources && Array.isArray(createdData.dataSources)) {
+  payload.dataAgreement.dataSources = createdData.dataSources.filter(
+    (source) => source.name && source.name.trim() !== ""
+  );
+}
 
   return payload;
 };
 
-export function validateSources(data: any[]): boolean {
+export function validateDataSources(data: any[]): boolean {
   if (!data || data.length === 0) {
     return true; // Return true for empty or undefined data
   }
@@ -145,6 +139,26 @@ export function validateSources(data: any[]): boolean {
     const name = item.name || "";
     const location = item.location || "";
     const sector = item.sector || "";
+    const privacyDashboardUrl = item.privacyDashboardUrl || "";
+
+    // Check if only privacyDashboardUrl is present
+    if (
+      privacyDashboardUrl.length > 0 &&
+      name.length === 0 &&
+      location.length === 0 &&
+      sector.length === 0
+    ) {
+      return false;
+    }
+
+    // Validate URL if privacyDashboardUrl is not empty and a valid url
+    if (privacyDashboardUrl.length > 0) {
+      try {
+        new URL(privacyDashboardUrl);
+      } catch (error) {
+        return false; // Invalid URL
+      }
+    }
 
     const allEmpty =
       name.length === 0 && location.length === 0 && sector.length === 0;

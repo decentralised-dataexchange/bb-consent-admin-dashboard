@@ -32,7 +32,7 @@ import {
 } from "./modalStyle";
 import {
   DataAgreementPayload,
-  validateSources,
+  validateDataSources,
 } from "../dataAgreements/DataAgreementActions";
 import { HttpService } from "../../service/HTTPService";
 import { Purpose } from "../dataAgreements/Purpose";
@@ -393,7 +393,7 @@ export default function DataAgreementModal(props: Props) {
       dataSources &&
       dataSources.length > 0 &&
       AttributeType === "data_using_service"
-        ? validateSources(dataSources)
+        ? validateDataSources(dataSources)
         : true
     ) {
       if (mode === "Create") {
@@ -458,7 +458,7 @@ export default function DataAgreementModal(props: Props) {
       dataSources &&
       dataSources.length > 0 &&
       AttributeType === "data_using_service"
-        ? validateSources(dataSources)
+        ? validateDataSources(dataSources)
         : true
     ) {
       if (mode === "Create") {
@@ -518,7 +518,7 @@ export default function DataAgreementModal(props: Props) {
       (dataSources &&
       dataSources.length > 0 &&
       AttributeType === "data_using_service"
-        ? validateSources(dataSources)
+        ? validateDataSources(dataSources)
         : true) &&
       isFormDataChanged(methods.formState)
     ) {
@@ -534,7 +534,7 @@ export default function DataAgreementModal(props: Props) {
       (dataSources &&
       dataSources.length > 0 &&
       AttributeType === "data_using_service"
-        ? validateSources(dataSources)
+        ? validateDataSources(dataSources)
         : true) &&
       // if da is saved initially so during edit user can directly publish
       (selectedDataAgreement && selectedDataAgreement.lifecycle === "draft"
